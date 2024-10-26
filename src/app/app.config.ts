@@ -1,9 +1,30 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  DEFAULT_CURRENCY_CODE,
+  LOCALE_ID,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
+import { provideClientHydration } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
+import { SeoService } from './shared/seo/seo.service';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration()]
+  providers: [
+    { provide: LOCALE_ID, useValue: $localize`:@@commonLocale:en-US` },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: $localize`:@@commonCurrency:USD`,
+    },
+
+    provideExperimentalZonelessChangeDetection(),
+    provideAnimationsAsync(),
+    provideClientHydration(),
+
+    provideRouter(routes),
+
+    SeoService,
+  ],
 };

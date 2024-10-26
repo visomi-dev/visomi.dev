@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  .no-scroll-print {
+    overflow: hidden !important;
+  }
+
+  body {
+    padding-top: 0 !important;
+    font-size: 12px !important;
+  }
+}
