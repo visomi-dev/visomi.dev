@@ -18,7 +18,8 @@ import { HeaderComponent } from './header/header.component';
   styleUrl: './home.component.css',
 })
 export default class HomeComponent implements OnInit {
-  @HostBinding('class') readonly class = /* tw */ 'flex flex-col';
+  @HostBinding('class') readonly class =
+    /* tw */ 'flex flex-col relative min-h-full pt-24';
 
   private readonly locale = inject(LOCALE_ID);
   private readonly seoService = inject(SeoService);
