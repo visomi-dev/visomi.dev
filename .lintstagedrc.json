@@ -1,3 +1,4 @@
 {
-  "*": ["ng lint"]
+  "src/**/*.{ts}": ["ng lint --fix", "prettier --write -u"],
+  "!**/*.{js,ts,jsx,tsx}": "prettier --write -u"
 }
