@@ -47,6 +47,7 @@ module.exports = tseslint.config(
             '@angular/core/testing',
             '@angular/platform-browser/animations/async',
             '@angular/common/http',
+            '@angular/core/rxjs-interop',
           ],
         },
       ],

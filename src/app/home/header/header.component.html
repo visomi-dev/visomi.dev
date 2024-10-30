@@ -29,7 +29,7 @@
         (keypress)="closeMenu()"
         tabindex="0"
       >
-        @for (item of items; track $index) {
+        @for (item of items; track item.label) {
           <li class="z-20 flex w-full bg-white px-6 py-4 md:w-fit md:p-0">
             <a
               [ngClass]="[

@@ -28,8 +28,8 @@ export class HomeService {
   private readonly httpClient = inject(HttpClient);
 
   readonly codingTime = signal({
-    total: '...',
-    bestDay: '...',
+    total: '',
+    bestDay: '',
   });
   readonly languagesStats = signal<Stat[]>([]);
   readonly editorsStats = signal<Stat[]>([]);

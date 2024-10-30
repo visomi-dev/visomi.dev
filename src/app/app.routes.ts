@@ -12,7 +12,7 @@ export const routes: Routes = [
     path: $localize`:@@routesResume:resume`,
     loadComponent: () => import('./resume/resume.component'),
     resolve: {
-      data: homeResolver,
+      home: homeResolver,
     },
   },
 ];
