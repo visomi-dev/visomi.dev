@@ -9,6 +9,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  @HostBinding('class') readonly class =
-    /* tw */ 'flex flex-col min-h-full w-full';
+  @HostBinding('class') readonly class = /* tw */ 'block min-h-full w-full';
 }

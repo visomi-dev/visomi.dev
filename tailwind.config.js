@@ -19,6 +19,9 @@ module.exports = {
       '9xl': ['8rem', { lineHeight: '1' }],
     },
     extend: {
+      spacing: {
+        18: '4.5rem',
+      },
       padding: {
         18: '4.5rem',
       },

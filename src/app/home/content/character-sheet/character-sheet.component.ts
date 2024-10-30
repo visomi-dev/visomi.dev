@@ -8,5 +8,5 @@ import { Component, HostBinding } from '@angular/core';
   styleUrl: './character-sheet.component.css',
 })
 export class CharacterSheetComponent {
-  @HostBinding('class') readonly class = /* tw */ 'flex flex-col w-full';
+  @HostBinding('class') readonly class = /* tw */ 'block w-full';
 }

@@ -19,8 +19,7 @@ type NavItem = {
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  @HostBinding('class') readonly class =
-    /* tw */ 'flex flex-col sticky top-0 w-full bg-white z-10';
+  @HostBinding('class') readonly class = /* tw */ 'block w-full';
 
   readonly open = signal(false);
 

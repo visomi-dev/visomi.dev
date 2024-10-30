@@ -20,5 +20,5 @@ import { ContactComponent } from './contact/contact.component';
   styleUrl: './content.component.css',
 })
 export class ContentComponent {
-  @HostBinding('class') readonly class = /* tw */ 'flex flex-col w-full';
+  @HostBinding('class') readonly class = /* tw */ 'block w-full';
 }

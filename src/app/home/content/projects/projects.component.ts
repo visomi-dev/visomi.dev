@@ -8,5 +8,5 @@ import { Component, HostBinding } from '@angular/core';
   styleUrl: './projects.component.css',
 })
 export class ProjectsComponent {
-  @HostBinding('class') readonly class = /* tw */ 'flex flex-col w-full';
+  @HostBinding('class') readonly class = /* tw */ 'block w-full';
 }

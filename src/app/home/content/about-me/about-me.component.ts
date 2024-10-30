@@ -10,7 +10,7 @@ import { nav } from '../../constants';
   styleUrl: './about-me.component.css',
 })
 export class AboutMeComponent {
-  @HostBinding('class') readonly class = /* tw */ 'flex flex-col w-full';
+  @HostBinding('class') readonly class = /* tw */ 'block w-full';
 
   nav = nav;
 }
