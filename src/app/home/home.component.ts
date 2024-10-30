@@ -9,17 +9,18 @@ import {
 import { SeoService } from '../shared/seo/seo.service';
 
 import { HeaderComponent } from './header/header.component';
+import { ContentComponent } from './content/content.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, ContentComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export default class HomeComponent implements OnInit {
   @HostBinding('class') readonly class =
-    /* tw */ 'flex flex-col relative min-h-full pt-24';
+    /* tw */ 'flex flex-col relative min-h-full';
 
   private readonly locale = inject(LOCALE_ID);
   private readonly seoService = inject(SeoService);

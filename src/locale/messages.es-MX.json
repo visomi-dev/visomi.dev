@@ -1,15 +1,14 @@
 {
   "locale": "es-MX",
   "translations": {
-    "commonLocale": "es-MX",
-    "commonCurrency": "USD",
+    "routesResume": "cv",
     "homeHeaderIntroduction": "Hola",
     "homeHeaderAboutMe": "Sobre mí",
     "homeHeaderProjects": "Proyectos",
     "homeHeaderCharacterSheet": "CS",
     "homeHeaderContact": "Contacto",
     "homeHeaderResume": "Currículum",
-    "homeHeaderResumeLink": "/cv",
+    "homeHeaderResumeLink": "cv",
     "homeHeaderLogoAlt": "logotipo personal visomi",
     "homeHeaderMenuIconAlt": "icono de menú de hamburguesa",
     "resumePersonalInfoQuote": "Hasta el infinito y más allá",

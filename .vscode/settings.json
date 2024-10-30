@@ -42,5 +42,14 @@
     "/\\*\\s*tw\\s*\\*/\\s*\"([^\"]*)\""
   ],
   "cSpell.language": "en,es,en-US,en-GB,es-ES,es-MX,es-LA",
-  "cSpell.words": ["avanttia", "creze", "kavak", "nive", "visomi", "qwik"]
+  "cSpell.words": [
+    "avanttia",
+    "creze",
+    "hono",
+    "kavak",
+    "nive",
+    "qwik",
+    "visomi",
+    "WAKATIME"
+  ]
 }

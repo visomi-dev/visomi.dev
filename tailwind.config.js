@@ -19,6 +19,12 @@ module.exports = {
       '9xl': ['8rem', { lineHeight: '1' }],
     },
     extend: {
+      padding: {
+        18: '4.5rem',
+      },
+      margin: {
+        18: '4.5rem',
+      },
       borderRadius: {
         '4xl': '2rem',
       },

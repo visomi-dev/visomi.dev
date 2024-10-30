@@ -1,15 +1,14 @@
 {
   "locale": "en-US",
   "translations": {
-    "commonLocale": "en-US",
-    "commonCurrency": "USD",
+    "routesResume": "resume",
     "homeHeaderIntroduction": "Hi",
     "homeHeaderAboutMe": "About Me",
     "homeHeaderProjects": "Projects",
     "homeHeaderCharacterSheet": "CS",
     "homeHeaderContact": "Contact",
     "homeHeaderResume": "Resume",
-    "homeHeaderResumeLink": "/resume",
+    "homeHeaderResumeLink": "resume",
     "homeHeaderLogoAlt": "visomi personal logotype",
     "homeHeaderMenuIconAlt": "hamburger menu icon",
     "resumePersonalInfoQuote": "To Infinity and Beyond",

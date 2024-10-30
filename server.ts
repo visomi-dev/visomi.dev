@@ -1,60 +1,46 @@
+import { fileURLToPath } from 'node:url';
+import { basename, dirname, join, resolve } from 'node:path';
+
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
-import express from 'express';
-import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import { LOCALE_ID } from '@angular/core';
+import { Handler, Hono } from 'hono';
+
 import bootstrap from './src/main.server';
 
-// The Express app is exported so that it can be used by serverless Functions.
-export function app(): express.Express {
-  const server = express();
+export function app(): Hono {
+  const server = new Hono();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
-  const browserDistFolder = resolve(serverDistFolder, '../browser');
-  const indexHtml = join(serverDistFolder, 'index.server.html');
+
+  const lang = basename(serverDistFolder);
 
   const commonEngine = new CommonEngine();
 
-  server.set('view engine', 'html');
-  server.set('views', browserDistFolder);
+  const handler: Handler = async (context) => {
+    const url = context.req.url;
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get(
-    '**',
-    express.static(browserDistFolder, {
-      maxAge: '1y',
-      index: 'index.html',
-    }),
-  );
-
-  // All regular routes use the Angular engine
-  server.get('**', (req, res, next) => {
-    const { protocol, originalUrl, baseUrl, headers } = req;
-
-    commonEngine
-      .render({
+    try {
+      const html = await commonEngine.render({
         bootstrap,
-        documentFilePath: indexHtml,
-        url: `${protocol}://${headers.host}${originalUrl}`,
-        publicPath: browserDistFolder,
-        providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
-      })
-      .then((html) => res.send(html))
-      .catch((err) => next(err));
-  });
+        documentFilePath: join(serverDistFolder, 'index.server.html'),
+        url,
+        publicPath: resolve(serverDistFolder, `../../browser/${lang}`),
+        providers: [
+          { provide: APP_BASE_HREF, useValue: `/${lang}` },
+          { provide: LOCALE_ID, useValue: lang },
+        ],
+      });
+
+      return context.html(html);
+    } catch (error) {
+      console.error(error);
+
+      return context.html('Internal Server Error', 500);
+    }
+  };
+
+  server.get('/:home{index.html}?', handler);
+  server.get('/:path{(?!.*\\..*).+$}', handler);
 
   return server;
 }
-
-function run(): void {
-  const port = process.env['PORT'] || 4000;
-
-  // Start up the Node server
-  const server = app();
-  server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
-  });
-}
-
-run();

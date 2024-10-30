@@ -42,8 +42,11 @@ module.exports = tseslint.config(
         'error',
         {
           ignore: [
+            'hono/bun',
+
             '@angular/core/testing',
             '@angular/platform-browser/animations/async',
+            '@angular/common/http',
           ],
         },
       ],

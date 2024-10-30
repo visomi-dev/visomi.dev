@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { homeResolver } from './home/home.resolver';
+
 export const routes: Routes = [
   {
     path: '',
@@ -7,7 +9,10 @@ export const routes: Routes = [
   },
 
   {
-    path: 'resume',
+    path: $localize`:@@routesResume:resume`,
     loadComponent: () => import('./resume/resume.component'),
+    resolve: {
+      data: homeResolver,
+    },
   },
 ];

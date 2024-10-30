@@ -6,7 +6,8 @@ import { nav } from '../constants';
 
 type NavItem = {
   label: string;
-  href: string;
+  routerLink: string;
+  fragment?: string;
   color: string;
 };
 
@@ -19,39 +20,44 @@ type NavItem = {
 })
 export class HeaderComponent {
   @HostBinding('class') readonly class =
-    /* tw */ 'flex flex-col fixed top-0 w-full';
+    /* tw */ 'flex flex-col sticky top-0 w-full bg-white z-10';
 
   readonly open = signal(false);
 
   readonly items: NavItem[] = [
     {
       label: $localize`:@@homeHeaderIntroduction:Hi`,
-      href: `/#${nav.introduction}`,
+      routerLink: `.`,
+      fragment: nav.introduction,
       color: /* tw */ 'text-yellow-500',
     },
     {
       label: $localize`:@@homeHeaderAboutMe:About Me`,
-      href: `/#${nav.aboutMe}`,
+      routerLink: `.`,
+      fragment: nav.aboutMe,
       color: /* tw */ 'text-blue-700',
     },
     {
       label: $localize`:@@homeHeaderProjects:Projects`,
-      href: `/#${nav.projects}`,
+      routerLink: `.`,
+      fragment: nav.projects,
       color: /* tw */ 'text-green-700',
     },
     {
       label: $localize`:@@homeHeaderCharacterSheet:CS`,
-      href: `/#${nav.characterSheet}`,
+      routerLink: `.`,
+      fragment: nav.characterSheet,
       color: /* tw */ 'text-red-500',
     },
     {
       label: $localize`:@@homeHeaderContact:Contact`,
-      href: `/#${nav.contact}`,
+      routerLink: `.`,
+      fragment: nav.contact,
       color: /* tw */ 'text-slate-700',
     },
     {
       label: $localize`:@@homeHeaderResume:Resume`,
-      href: $localize`:@@homeHeaderResumeLink:/resume`,
+      routerLink: $localize`:@@homeHeaderResumeLink:resume`,
       color: /* tw */ 'text-indigo-600',
     },
   ];
