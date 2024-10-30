@@ -1,0 +1,6 @@
+:target::before {
+  content: '';
+  display: block;
+
+  @apply h-18 -mt-18;
+}
