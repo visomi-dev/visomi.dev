@@ -1,13 +1,10 @@
 import {
   Component,
-  effect,
   HostBinding,
   inject,
   LOCALE_ID,
   OnInit,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
 
 import { SeoService } from '../shared/seo/seo.service';
 
@@ -25,18 +22,7 @@ export default class HomeComponent implements OnInit {
   @HostBinding('class') readonly class = /* tw */ 'block relative min-h-full';
 
   private readonly locale = inject(LOCALE_ID);
-  private activatedRoute = inject(ActivatedRoute);
   private readonly seoService = inject(SeoService);
-
-  readonly activatedRouteData = toSignal(this.activatedRoute.data);
-
-  activatedRouteDataEffect = effect(() => {
-    console.log('Fetching home data');
-
-    this.activatedRouteData();
-
-    console.log('Fetched home data');
-  });
 
   ngOnInit() {
     this.seoService.configure({
