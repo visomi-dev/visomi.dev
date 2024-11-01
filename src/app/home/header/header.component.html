@@ -1,14 +1,17 @@
 <header class="flex w-full items-center justify-between px-5 py-4">
-  <nav class="mx-auto flex w-full max-w-2xl justify-between">
-    <img
-      src="assets/images/logotype.svg"
-      alt="visomi personal logotype"
-      alt-i18n="@@homeHeaderLogoAlt"
-    />
+  <nav class="mx-auto flex w-full max-w-2xl justify-between md:flex-col">
+    <div class="w-36">
+      <img
+        class="w-full"
+        src="assets/images/logotype.svg"
+        alt="visomi personal logotype"
+        alt-i18n="@@homeHeaderLogoAlt"
+      />
+    </div>
 
-    <div class="flex items-center justify-end md:flex-1">
+    <div class="flex items-center justify-end md:flex-1 md:justify-start">
       <button
-        class="md:pointer-events-none md:opacity-0"
+        class="md:pointer-events-none md:hidden md:opacity-0"
         (click)="toggleMenu()"
       >
         <img
@@ -20,7 +23,7 @@
 
       <ul
         [ngClass]="[
-          'bottom-18 fixed left-0 z-40 w-full flex-col overflow-hidden transition-all duration-500 md:relative md:flex md:max-h-screen md:w-fit md:flex-row md:gap-4',
+          'fixed bottom-18 left-0 z-40 w-full flex-col overflow-hidden transition-all duration-500 md:relative md:bottom-0 md:flex md:max-h-screen md:w-fit md:gap-4',
           !open()
             ? 'max-h-0'
             : 'flex max-h-screen before:fixed before:left-0 before:top-0 before:z-10 before:h-screen before:w-screen before:bg-black before:bg-opacity-50 md:before:hidden',

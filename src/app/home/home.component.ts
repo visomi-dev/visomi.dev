@@ -19,7 +19,8 @@ import { ContentComponent } from './content/content.component';
   styleUrl: './home.component.css',
 })
 export default class HomeComponent implements OnInit {
-  @HostBinding('class') readonly class = /* tw */ 'block relative min-h-full';
+  @HostBinding('class') readonly class =
+    /* tw */ 'flex flex-col md:flex-row relative min-h-full md:justify-center max-w-xl mx-auto';
 
   private readonly locale = inject(LOCALE_ID);
   private readonly seoService = inject(SeoService);
