@@ -38,6 +38,9 @@ module.exports = {
         sans: 'Poppins, sans-serif',
         display: 'Poppins, sans-serif',
       },
+      width: {
+        xl: '36rem',
+      },
       maxWidth: {
         '2xl': '40rem',
       },

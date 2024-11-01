@@ -1,3 +1,11 @@
-<app-header class="fixed bottom-0 z-10 bg-white md:static md:w-fit" />
+<div class="fixed bottom-0 z-10 w-full md:bottom-auto">
+  <div class="w-full md:flex md:flex-row-reverse md:justify-center">
+    <app-header class="z-10 w-full bg-white md:w-44" />
 
-<app-content class="pb-18" />
+    <div class="w-xl hidden md:block"></div>
+
+    <div class="hidden w-44 md:block"></div>
+  </div>
+</div>
+
+<app-content class="relative mx-auto max-w-xl pb-18 md:z-20 md:pb-0" />

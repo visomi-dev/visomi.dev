@@ -20,7 +20,7 @@ import { ContentComponent } from './content/content.component';
 })
 export default class HomeComponent implements OnInit {
   @HostBinding('class') readonly class =
-    /* tw */ 'flex flex-col md:flex-row relative min-h-full md:justify-center max-w-xl mx-auto';
+    /* tw */ 'flex flex-col md:flex-row relative min-h-full md:justify-center w-full';
 
   private readonly locale = inject(LOCALE_ID);
   private readonly seoService = inject(SeoService);

@@ -11,5 +11,5 @@ import { MeComponent } from './me/me.component';
 })
 export default class ResumeComponent {
   @HostBinding('class') readonly class =
-    /* tw */ 'no-scroll-print mx-auto flex flex-col min-h-full w-full overflow-y-auto md:h-[21.6cm] md:w-[27.9cm] md:flex-row';
+    /* tw */ 'no-scroll-print mx-auto flex flex-col w-full md:h-[27.9cm] md:w-[21.6cm] md:flex-row';
 }
