@@ -19,7 +19,7 @@ import { ContentComponent } from './content/content.component';
   styleUrl: './home.component.css',
 })
 export default class HomeComponent implements OnInit {
-  @HostBinding('class') readonly class =
+  @HostBinding('class') readonly cls =
     /* tw */ 'flex flex-col md:flex-row relative min-h-full md:justify-center w-full';
 
   private readonly locale = inject(LOCALE_ID);

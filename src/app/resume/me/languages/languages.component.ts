@@ -8,5 +8,5 @@ import { Component, HostBinding } from '@angular/core';
   styleUrl: './languages.component.css',
 })
 export class LanguagesComponent {
-  @HostBinding('class') readonly class = /* tw */ 'block';
+  @HostBinding('class') readonly cls = /* tw */ 'block';
 }

@@ -20,5 +20,5 @@ import { LanguagesComponent } from './languages/languages.component';
   styleUrl: './me.component.css',
 })
 export class MeComponent {
-  @HostBinding('class') readonly class = /* tw */ 'block';
+  @HostBinding('class') readonly cls = /* tw */ 'block';
 }

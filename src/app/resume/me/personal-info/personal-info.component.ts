@@ -9,7 +9,7 @@ import { DateTime } from 'luxon';
   styleUrl: './personal-info.component.css',
 })
 export class PersonalInfoComponent {
-  @HostBinding('class') readonly class = /* tw */ 'block w-full';
+  @HostBinding('class') readonly cls = /* tw */ 'block w-full';
 
   readonly age = Math.floor(
     Math.abs(

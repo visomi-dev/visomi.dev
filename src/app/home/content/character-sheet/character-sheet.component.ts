@@ -13,7 +13,7 @@ import { CharacterSheetListComponent } from './list/list.component';
   styleUrl: './character-sheet.component.css',
 })
 export class CharacterSheetComponent {
-  @HostBinding('class') readonly class = /* tw */ 'block w-full';
+  @HostBinding('class') readonly cls = /* tw */ 'block w-full';
 
   private readonly homeService = inject(HomeService);
 

@@ -25,7 +25,7 @@ type Project = {
   styleUrl: './projects.component.css',
 })
 export class ProjectsComponent {
-  @HostBinding('class') readonly class = /* tw */ 'block w-full';
+  @HostBinding('class') readonly cls = /* tw */ 'block w-full';
 
   nav = nav;
 

@@ -14,7 +14,7 @@ type Item = {
   styleUrl: './list.component.css',
 })
 export class CharacterSheetListComponent {
-  @HostBinding('class') readonly class = /* tw */ 'block w-full';
+  @HostBinding('class') readonly cls = /* tw */ 'block w-full';
 
   @Input({
     required: true,

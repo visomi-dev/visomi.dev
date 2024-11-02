@@ -11,7 +11,7 @@ import { nav } from '../../constants';
   styleUrl: './introduction.component.css',
 })
 export class IntroductionComponent {
-  @HostBinding('class') readonly class = /* tw */ 'block w-full';
+  @HostBinding('class') readonly cls = /* tw */ 'block w-full';
 
   nav = nav;
 }

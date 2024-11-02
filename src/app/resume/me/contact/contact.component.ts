@@ -8,5 +8,5 @@ import { Component, HostBinding } from '@angular/core';
   styleUrl: './contact.component.css',
 })
 export class ContactComponent {
-  @HostBinding('class') readonly class = /* tw */ 'block w-full';
+  @HostBinding('class') readonly cls = /* tw */ 'block w-full';
 }

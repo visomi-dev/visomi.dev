@@ -1,7 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
 
-import { nav } from '../../constants';
-
 @Component({
   selector: 'app-about-me',
   standalone: true,
@@ -10,7 +8,5 @@ import { nav } from '../../constants';
   styleUrl: './about-me.component.css',
 })
 export class AboutMeComponent {
-  @HostBinding('class') readonly cls = /* tw */ 'block w-full';
-
-  nav = nav;
+  @HostBinding('class') readonly cls = /* tw */ 'block';
 }

@@ -31,18 +31,19 @@ module.exports = {
       height: {
         18: '4.5rem',
       },
+      width: {
+        xl: '36rem',
+      },
+      maxWidth: {
+        '2xl': '40rem',
+        60: '15rem',
+      },
       borderRadius: {
         '4xl': '2rem',
       },
       fontFamily: {
         sans: 'Poppins, sans-serif',
         display: 'Poppins, sans-serif',
-      },
-      width: {
-        xl: '36rem',
-      },
-      maxWidth: {
-        '2xl': '40rem',
       },
       transitionDuration: {
         400: '400ms',
