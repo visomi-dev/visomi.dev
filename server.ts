@@ -5,6 +5,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
 import { LOCALE_ID } from '@angular/core';
 import { Handler, Hono } from 'hono';
+import { serveStatic } from 'hono/bun';
 
 import bootstrap from './src/main.server';
 
@@ -39,8 +40,25 @@ export function app(): Hono {
     }
   };
 
-  server.get('/:home{index.html}?', handler);
-  server.get('/:path{(?!.*\\..*).+$}', handler);
+  const serve = serveStatic({
+    root: resolve(serverDistFolder, `../../browser`),
+    onFound: (_path, context) => {
+      context.header('Cache-Control', `public, immutable, max-age=31536000`);
+    },
+    onNotFound: (path, context) => {
+      console.warn(`${path} is not found, request to ${context.req.path}`);
+    },
+  });
+
+  server.get('*', (context, ...args) => {
+    const fileName = context.req.url.split('/').pop();
+
+    if (fileName && fileName.includes('.')) {
+      return serve(context, ...args);
+    }
+
+    return handler(context, ...args);
+  });
 
   return server;
 }

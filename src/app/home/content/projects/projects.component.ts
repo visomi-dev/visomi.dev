@@ -13,6 +13,8 @@ type Project = {
     color: string;
   }[];
   preview: string;
+  previewWidth: number;
+  previewHeight: number;
   link: string;
   wip: boolean;
 };
@@ -46,6 +48,8 @@ export class ProjectsComponent {
         },
       ],
       preview: 'assets/images/nive-preview.png',
+      previewWidth: 240,
+      previewHeight: 485,
       link: 'https://nive.visomi.dev',
       wip: true,
     },

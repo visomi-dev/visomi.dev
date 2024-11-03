@@ -9,7 +9,12 @@
         class="flex flex-1 flex-col items-center justify-center gap-2 rounded-lg bg-slate-100 px-4 py-2 md:py-3"
       >
         <div class="w-12">
-          <img class="w-full" [src]="preference.logo" [alt]="preference.name" />
+          <img
+            class="w-full"
+            [src]="preference.logo"
+            [alt]="preference.name"
+            loading="lazy"
+          />
         </div>
 
         <span class="text-center text-xs text-slate-900">

@@ -22,24 +22,6 @@
     },
     {
       "type": "npm",
-      "script": "start",
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "bun",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "Server is running"
-          }
-        }
-      }
-    },
-    {
-      "type": "npm",
       "script": "test",
       "isBackground": true,
       "problemMatcher": {

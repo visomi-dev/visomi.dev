@@ -1,10 +1,7 @@
 // @ts-check
 
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
 import { serve } from 'bun';
 import { Hono } from 'hono';
-import { serveStatic } from 'hono/bun';
 
 // @ts-expect-error
 import { app as serverEnUS } from './server/en-US/server.mjs';
@@ -12,23 +9,12 @@ import { app as serverEnUS } from './server/en-US/server.mjs';
 import { app as serverEsMX } from './server/es-MX/server.mjs';
 
 function run() {
-  const port = import.meta.env.PORT ? parseInt(import.meta.env.PORT, 10) : 4000;
-  const serverDistFolder = dirname(fileURLToPath(import.meta.url));
+  const port = import.meta.env.PORT ? parseInt(import.meta.env.PORT, 10) : 8080;
 
   const server = new Hono();
 
   server.route('/en-US', serverEnUS());
   server.route('/es-MX', serverEsMX());
-
-  server.use(
-    '/:locale{(es-MX|en-US)}/:path{.+\\..+$}',
-    serveStatic({
-      root: resolve(serverDistFolder, `./browser`),
-      onNotFound: (path, context) => {
-        console.warn(`${path} is not found, request to ${context.req.path}`);
-      },
-    }),
-  );
 
   server.get('/:resume{(resume|cv)}', (context) => {
     const resume = context.req.param('resume');
@@ -40,18 +26,18 @@ function run() {
     return context.redirect('/en-US/resume');
   });
 
-  server.get('*', (context) => {
+  server.get('/', (context) => {
     const languages = context.req.header('accept-language')?.split(',') ?? [];
 
     if (languages.includes('en-US')) {
-      return context.redirect('/en-US');
+      return context.redirect('/en-US/');
     }
 
     if (languages.includes('es-MX') || languages.includes('es-419')) {
-      return context.redirect('/es-MX');
+      return context.redirect('/es-MX/');
     }
 
-    return context.redirect('/en-US');
+    return context.redirect('/en-US/');
   });
 
   serve({
