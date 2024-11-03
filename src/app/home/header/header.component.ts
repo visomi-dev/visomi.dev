@@ -1,4 +1,10 @@
-import { Component, HostBinding, signal } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  inject,
+  LOCALE_ID,
+  signal,
+} from '@angular/core';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -22,6 +28,7 @@ export class HeaderComponent {
   @HostBinding('class') readonly cls = /* tw */ 'block';
 
   readonly open = signal(false);
+  readonly locale = inject(LOCALE_ID);
 
   readonly items: NavItem[] = [
     {

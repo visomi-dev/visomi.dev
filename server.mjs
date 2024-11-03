@@ -12,7 +12,7 @@ import { app as serverEnUS } from './server/en-US/server.mjs';
 import { app as serverEsMX } from './server/es-MX/server.mjs';
 
 function run() {
-  const port = import.meta.env.PORT ? parseInt(import.meta.env.PORT, 10) : 4000;
+  const port = import.meta.env.PORT ? parseInt(import.meta.env.PORT, 10) : 8080;
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 
   const server = new Hono();
@@ -44,14 +44,14 @@ function run() {
     const languages = context.req.header('accept-language')?.split(',') ?? [];
 
     if (languages.includes('en-US')) {
-      return context.redirect('/en-US');
+      return context.redirect('/en-US/');
     }
 
     if (languages.includes('es-MX') || languages.includes('es-419')) {
-      return context.redirect('/es-MX');
+      return context.redirect('/es-MX/');
     }
 
-    return context.redirect('/en-US');
+    return context.redirect('/en-US/');
   });
 
   serve({

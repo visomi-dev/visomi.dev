@@ -28,9 +28,10 @@
     "@angular/ssr": "^18.2.2",
     "@fontsource/poppins": "^5.1.0",
     "hono": "^4.6.8",
+    "luxon": "^3.5.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "luxon": "^3.5.0"
+    "uuid": "^11.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.2",
@@ -47,6 +48,7 @@
     "angular-eslint": "18.4.0",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.0.1",
+    "deepl-localize": "^3.0.0",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",

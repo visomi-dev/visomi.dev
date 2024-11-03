@@ -45,7 +45,7 @@ export class ProjectsComponent {
           color: /* tw */ 'bg-gray-400',
         },
       ],
-      preview: 'assets/images/nive-preview.svg',
+      preview: 'assets/images/nive-preview.png',
       link: 'https://nive.visomi.dev',
       wip: true,
     },

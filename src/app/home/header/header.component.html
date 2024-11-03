@@ -36,7 +36,7 @@
           <li class="z-20 flex w-full bg-white px-6 py-4 md:w-fit md:p-0">
             <a
               [ngClass]="[
-                'w-full px-2 py-1 text-center text-2xl md:p-0 md:text-base',
+                'w-full px-2 py-1 text-center text-2xl underline md:p-0 md:text-base',
                 item.color,
               ]"
               [routerLink]="item.routerLink"
@@ -46,6 +46,36 @@
             </a>
           </li>
         }
+
+        <li
+          class="z-20 flex w-full items-center gap-1 bg-white px-6 py-4 md:w-fit md:p-0"
+        >
+          <a
+            [ngClass]="[
+              'block w-full flex-1 px-2 py-1 text-center text-2xl underline md:p-0 md:text-base',
+              locale === 'en-US'
+                ? 'pointer-events-none text-primary'
+                : 'underline',
+            ]"
+            href="/en-US/"
+          >
+            EN
+          </a>
+
+          <span>|</span>
+
+          <a
+            [ngClass]="[
+              'block w-full flex-1 px-2 py-1 text-center text-2xl md:p-0 md:text-base',
+              locale === 'es-MX'
+                ? 'pointer-events-none text-primary'
+                : 'underline',
+            ]"
+            href="/es-MX/"
+          >
+            ES
+          </a>
+        </li>
       </ul>
     </div>
   </nav>

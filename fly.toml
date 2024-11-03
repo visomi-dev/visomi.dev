@@ -1,16 +1,16 @@
-# fly.toml app configuration file generated for papiro-web-server on 2024-07-29T01:40:43-06:00
+# fly.toml app configuration file generated for visomi-dev on 2024-11-02T17:21:28-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'visomi.dev'
+app = 'visomi-dev'
 primary_region = 'qro'
+
+[build]
+  dockerfile = 'Dockerfile'
 
 [env]
   PORT = '8080'
-
-[build]
-dockerfile = "Dockerfile"
 
 [http_service]
   internal_port = 8080
@@ -21,6 +21,4 @@ dockerfile = "Dockerfile"
   processes = ['app']
 
 [[vm]]
-  memory = '256mb'
-  cpu_kind = 'shared'
-  cpus = 1
+  size = 'shared-cpu-1x'
