@@ -2,6 +2,7 @@
 
 import { serve } from 'bun';
 import { Hono } from 'hono';
+// import { compress } from 'hono/compress';
 
 // @ts-expect-error
 import { app as serverEnUS } from './server/en-US/server.mjs';
@@ -39,6 +40,8 @@ function run() {
 
     return context.redirect('/en-US/');
   });
+
+  // server.use(compress());
 
   serve({
     port,
