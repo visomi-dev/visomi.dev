@@ -30,7 +30,7 @@ export default class HomeComponent implements OnInit {
       title: 'visomi.dev',
       description: 'Michael V. S. (visomi) | cross-over developer',
       url: 'https://visomi.dev/',
-      preview: `https://visomi.dev/${this.locale}/assets/images/galaxy-illustration.png`,
+      preview: `https://visomi.dev/${this.locale}/assets/images/galaxy-illustration.webp`,
       index: true,
       follow: true,
       keywords:

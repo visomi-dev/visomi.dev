@@ -27,7 +27,7 @@ export class SeoService {
    *  url: 'https://example.com',
    *  title: 'Example',
    *  description: 'This is an example.',
-   *  preview: '/assets/previews/preview.png',
+   *  preview: '/assets/previews/preview.webp',
    *  index: true,
    *  follow: true,
    * });
