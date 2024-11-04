@@ -1,7 +1,7 @@
 {
   "locale": "es-MX",
   "translations": {
-    "routesResume": "/cv",
+    "routesResume": "cv",
     "homeNavIntroduction": "introducción",
     "homeNavAboutMe": "sobre mí",
     "homeNavProjects": "proyectos",
@@ -66,7 +66,7 @@
     "resumePersonalInfoTitle": "Desarrollador Full-Stack",
     "resumePersonalInfoExp": "{$INTERPOLATION} años de experiencia",
     "resumePersonalInfoQuoteStart": "inicio de cotización",
-    "resumePersonalInfoQuote": "Hasta el infinito y más allá",
+    "resumePersonalInfoQuote": "Al infinito y más allá",
     "resumePersonalInfoQuoteEnd": "inicio de cotización",
     "resumePersonalInfoQuotePerson": "- Buzz Lightyear",
     "resumeSocialNetworksTitle": "Redes sociales",
