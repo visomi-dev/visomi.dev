@@ -11,7 +11,7 @@
     "start": "bun dist/visomi.dev/server.mjs",
     "prestart": "ng build && cp server.mjs dist/visomi.dev",
     "lint": "ng lint",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "commitlint": "commitlint"
   },
   "private": true,

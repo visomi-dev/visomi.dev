@@ -1,12 +1,42 @@
-FROM imbios/bun-node:latest-current-slim AS build
+# use the official Bun image
+# see all versions at https://hub.docker.com/r/oven/bun/tags
+FROM oven/bun AS base
 WORKDIR /usr/src/app
+
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+FROM imbios/bun-node:latest-current-debian AS install
+WORKDIR /usr/src/app
+
+# install devDependencies
+RUN mkdir -p /temp/dev
+COPY package.json bun.lockb /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
+
+# install with --production (exclude devDependencies)
+RUN mkdir -p /temp/prod
+COPY package.json bun.lockb /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
+
+# copy node_modules from temp directory
+# then copy all (non-ignored) project files into the image
+FROM imbios/bun-node:latest-current-debian AS prerelease
+WORKDIR /usr/src/app
+
+COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
-RUN bun install --frozen-lockfile
+
+ENV NODE_ENV=production
 RUN bun run build
 
-FROM oven/bun:distroless
-WORKDIR /usr/src/app
-COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build /usr/src/app/server.mjs ./dist/visomi.dev/server.mjs
-EXPOSE 8080
-ENTRYPOINT [ "bun", "dist/visomi.dev/server.mjs" ]
+# copy production dependencies and source code into final image
+FROM base AS release
+
+COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=prerelease /usr/src/app/dist ./dist
+COPY server.mjs ./dist/visomi.dev/server.mjs
+
+# run the app
+USER bun
+EXPOSE 8080/tcp
+ENTRYPOINT [ "bun", "run", "dist/visomi.dev/server.mjs" ]
