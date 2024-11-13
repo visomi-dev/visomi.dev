@@ -53,6 +53,14 @@ module.exports = tseslint.config(
       ],
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     },
+    settings: {
+      'import/resolver': {
+        // You will also need to install and configure the TypeScript resolver
+        // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
+        typescript: true,
+        node: true,
+      },
+    },
   },
   {
     files: ['**/*.html'],
