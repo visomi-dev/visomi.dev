@@ -14,6 +14,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { routes } from './app.routes';
 import { UI } from './shared/ui';
 import { SEO } from './shared/seo';
+import { Stats } from './home/stats';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
+        scrollPositionRestoration: 'enabled',
       }),
     ),
     provideClientHydration(withEventReplay()),
@@ -31,5 +33,7 @@ export const appConfig: ApplicationConfig = {
 
     UI,
     SEO,
+
+    Stats,
   ],
 };

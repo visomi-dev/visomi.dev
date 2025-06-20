@@ -10,12 +10,10 @@ import { SEO } from '../shared/seo';
 
 import { Header } from './header/header';
 import { Content } from './content/content';
-import { Stats } from './stats';
 
 @Component({
   selector: 'app-home',
   imports: [Header, Content],
-  providers: [Stats],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
