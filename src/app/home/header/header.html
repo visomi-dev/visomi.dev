@@ -1,0 +1,85 @@
+<header class="flex w-full items-center justify-between px-5 py-4">
+  <nav class="mx-auto flex w-full max-w-2xl justify-end md:flex-col">
+    <div class="hidden w-full">
+      <img
+        class="w-full"
+        src="assets/images/logotype.svg"
+        alt="visomi personal logotype"
+        alt-i18n="@@homeHeaderLogoAlt"
+      />
+    </div>
+
+    <div class="flex items-center justify-end md:flex-1 md:justify-start">
+      <button
+        class="md:pointer-events-none md:hidden md:opacity-0"
+        (click)="toggleMenu()"
+      >
+        <img
+          src="assets/images/menu.svg"
+          alt="hamburger menu icon"
+          alt-i18n="@@homeHeaderMenuIconAlt"
+          loading="lazy"
+          width="28"
+          height="28"
+        />
+      </button>
+
+      <ul
+        [ngClass]="[
+          'fixed bottom-18 left-0 z-40 w-full flex-col overflow-hidden transition-all duration-500 md:relative md:bottom-0 md:flex md:max-h-screen md:w-fit md:gap-2',
+          !open()
+            ? 'max-h-0'
+            : 'flex max-h-screen before:fixed before:left-0 before:top-0 before:z-10 before:h-screen before:w-screen before:bg-black before:bg-opacity-50 md:before:hidden',
+        ]"
+        (click)="closeMenu()"
+        (keypress)="closeMenu()"
+        tabindex="0"
+      >
+        @for (item of items; track item.label) {
+        <li class="z-20 flex w-full bg-white px-6 py-4 md:w-fit md:p-0">
+          <a
+            [ngClass]="[
+                'w-full px-2 py-1 text-center text-2xl underline md:p-0 md:text-base',
+                item.color,
+              ]"
+            [routerLink]="item.routerLink"
+            [fragment]="item.fragment"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+        }
+
+        <li
+          class="z-20 flex w-full items-center gap-1 bg-white px-6 py-4 md:w-fit md:p-0"
+        >
+          <a
+            [ngClass]="[
+              'block w-full flex-1 px-2 py-1 text-center text-2xl underline md:p-0 md:text-base',
+              locale === 'en'
+                ? 'pointer-events-none text-primary'
+                : 'underline',
+            ]"
+            href="/en/"
+          >
+            EN
+          </a>
+
+          <span>|</span>
+
+          <a
+            [ngClass]="[
+              'block w-full flex-1 px-2 py-1 text-center text-2xl md:p-0 md:text-base',
+              locale === 'es'
+                ? 'pointer-events-none text-primary'
+                : 'underline',
+            ]"
+            href="/es/"
+          >
+            ES
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

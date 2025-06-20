@@ -1,0 +1,52 @@
+<figure
+  [id]="nav.introduction"
+  class="flex flex-col items-center justify-center rounded-2xl bg-slate-100 px-6 py-8"
+>
+  <div class="w-52 rounded">
+    <img
+      class="h-full w-full"
+      src="assets/images/visomi-illustration.webp"
+      alt="visomi illustration"
+      i18n-alt="@@homeContentIntroductionAlt"
+      width="208"
+      height="231"
+    />
+  </div>
+
+  <figcaption class="mt-6">
+    <h1 class="flex gap-1 text-2xl font-semibold">
+      <span i18n="@@homeContentIntroductionGreeting"> Hello! </span>
+
+      <span>👋</span>
+
+      <span i18n="@@homeContentIntroductionTitle"> I'm Michael </span>
+    </h1>
+  </figcaption>
+
+  <p class="mt-2 flex flex-col text-center text-3xl font-bold">
+    <span i18n="@@homeContentIntroductionDesc">and I transform</span>
+    <span i18n="@@homeContentIntroductionDesc2"
+      >ideas into reality through software development.</span
+    >
+  </p>
+
+  <div class="flex gap-8">
+    <a
+      class="md:hover:bg-opacity-75 mt-6 flex items-center justify-center rounded-full bg-blue-600 px-5 py-2 text-xl text-white"
+      routerLink="."
+      [fragment]="nav.contact"
+      i18n="@@homeContentIntroductionContact"
+    >
+      Contact
+    </a>
+
+    <a
+      class="md:hover:bg-opacity-75 mt-6 flex items-center justify-center rounded-full bg-slate-900 px-5 py-2 text-xl text-white"
+      routerLink="resume"
+      i18n-routerLink="@@homeContentIntroductionResumeLink"
+      i18n="@@homeContentIntroductionResume"
+    >
+      Resume
+    </a>
+  </div>
+</figure>

@@ -1,0 +1,29 @@
+<div class="flex flex-col gap-2">
+  <div class="h-32 w-32 rounded-full">
+    <img
+      class="h-full w-full"
+      src="assets/images/resume/me.jpg"
+      alt="Michael V. S."
+      loading="lazy"
+    />
+  </div>
+
+  <div class="flex flex-col">
+    <h1 class="text-2xl font-bold">Michael Villalba</h1>
+
+    <p class="text-sm" i18n="@@resumePersonalInfoAge">{{ age() }} years old</p>
+  </div>
+
+  <div class="flex flex-col">
+    <h2
+      class="text-xl font-bold text-slate-700"
+      i18n="@@resumePersonalInfoTitle"
+    >
+      Full-Stack Developer
+    </h2>
+
+    <p class="text-sm" i18n="@@resumePersonalInfoExp">
+      {{ experience() }} years of experience
+    </p>
+  </div>
+</div>
