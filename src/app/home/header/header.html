@@ -25,8 +25,8 @@
       </button>
 
       <ul
+        class="fixed bottom-18 left-0 z-40 w-full flex-col overflow-hidden transition-all duration-500 md:relative md:bottom-0 md:flex md:max-h-screen md:w-fit md:gap-2"
         [ngClass]="[
-          'fixed bottom-18 left-0 z-40 w-full flex-col overflow-hidden transition-all duration-500 md:relative md:bottom-0 md:flex md:max-h-screen md:w-fit md:gap-2',
           !open()
             ? 'max-h-0'
             : 'flex max-h-screen before:fixed before:left-0 before:top-0 before:z-10 before:h-screen before:w-screen before:bg-black before:bg-opacity-50 md:before:hidden',
@@ -38,10 +38,8 @@
         @for (item of items; track item.label) {
         <li class="z-20 flex w-full bg-white px-6 py-4 md:w-fit md:p-0">
           <a
-            [ngClass]="[
-                'w-full px-2 py-1 text-center text-2xl underline md:p-0 md:text-base',
-                item.color,
-              ]"
+            class="w-full px-2 py-1 text-center text-2xl underline md:p-0 md:text-base"
+            [ngClass]="[item.color]"
             [routerLink]="item.routerLink"
             [fragment]="item.fragment"
           >
@@ -54,12 +52,8 @@
           class="z-20 flex w-full items-center gap-1 bg-white px-6 py-4 md:w-fit md:p-0"
         >
           <a
-            [ngClass]="[
-              'block w-full flex-1 px-2 py-1 text-center text-2xl underline md:p-0 md:text-base',
-              locale === 'en'
-                ? 'pointer-events-none text-primary'
-                : 'underline',
-            ]"
+            class="block w-full flex-1 px-2 py-1 text-center text-2xl md:p-0 md:text-base"
+            [class]="getLocaleLinkClass('en')"
             href="/en/"
           >
             EN
@@ -68,12 +62,8 @@
           <span>|</span>
 
           <a
-            [ngClass]="[
-              'block w-full flex-1 px-2 py-1 text-center text-2xl md:p-0 md:text-base',
-              locale === 'es'
-                ? 'pointer-events-none text-primary'
-                : 'underline',
-            ]"
+            class="block w-full flex-1 px-2 py-1 text-center text-2xl md:p-0 md:text-base"
+            [class]="getLocaleLinkClass('es')"
             href="/es/"
           >
             ES

@@ -67,6 +67,12 @@ export class Header {
     },
   ];
 
+  getLocaleLinkClass(target: string) {
+    return this.locale === target
+      ? /* tw */ 'pointer-events-none text-primary/50 no-underline cursor-not-allowed'
+      : /* tw */ 'underline';
+  }
+
   toggleMenu() {
     this.open.update((open) => !open);
   }
