@@ -1,24 +1,24 @@
 // @ts-check
 const eslint = require('@eslint/js');
+
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const eslintConfigPrettier = require('eslint-config-prettier');
-const eslintPluginImport = require('eslint-plugin-import');
+const eslintPluginImport = require('eslint-plugin-import-x');
+const createTypeScriptImportResolver =
+  require('eslint-import-resolver-typescript').createTypeScriptImportResolver;
 
 module.exports = tseslint.config(
   {
     files: ['**/*.ts'],
     extends: [
       eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...tseslint.configs.stylistic,
-      ...angular.configs.tsRecommended,
-
-      eslintConfigPrettier,
-      // @ts-ignore eslint-plugin-import does not have types
+      tseslint.configs.recommended,
+      tseslint.configs.stylistic,
       eslintPluginImport.flatConfigs.recommended,
-      // @ts-ignore eslint-plugin-import does not have types
       eslintPluginImport.flatConfigs.typescript,
+      eslintConfigPrettier,
+      angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
     rules: {
@@ -38,7 +38,6 @@ module.exports = tseslint.config(
           style: 'kebab-case',
         },
       ],
-
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -73,15 +72,25 @@ module.exports = tseslint.config(
           format: ['PascalCase'],
         },
       ],
-      'import/order': ['error', { 'newlines-between': 'always' }],
+      'import-x/order': ['error', { 'newlines-between': 'always' }],
+      'import-x/no-unresolved': [
+        'error',
+        {
+          ignore: ['~/shared/ui/*'],
+        },
+      ],
     },
     settings: {
-      'import/resolver': {
-        typescript: {
-          project: './tsconfig.json',
-        },
-        node: true,
-      },
+      'import-x/resolver-next': [
+        createTypeScriptImportResolver({
+          project: [
+            './tsconfig.json',
+            './projects/website/tsconfig.app.json',
+            './projects/webapp/tsconfig.app.json',
+          ],
+          alwaysTryTypes: true,
+        }),
+      ],
     },
   },
   {
@@ -91,5 +100,21 @@ module.exports = tseslint.config(
       ...angular.configs.templateAccessibility,
     ],
     rules: {},
+  },
+  {
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/coverage/**',
+      '**/.angular/**',
+      '**/.vscode/**',
+      '**/.git/**',
+      '**/.github/**',
+      '**/docs/**',
+      '**/scripts/**',
+      '**/e2e/**',
+      '**/generated/**',
+    ],
   },
 );

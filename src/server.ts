@@ -6,7 +6,7 @@ import {
   isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
-import express from 'express';
+import express, { static as expressStatic } from 'express';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -29,12 +29,16 @@ const angularApp = new AngularNodeAppEngine();
  * Serve static files from /browser
  */
 app.use(
-  express.static(browserDistFolder, {
+  expressStatic(browserDistFolder, {
     maxAge: '1y',
     index: false,
     redirect: false,
   }),
 );
+
+app.get('/en/resume', (_req, res) => {
+  res.redirect('/resume');
+});
 
 /**
  * Handle all other requests by rendering the Angular application.
@@ -54,6 +58,7 @@ app.use((req, res, next) => {
  */
 if (isMainModule(import.meta.url)) {
   const port = process.env['PORT'] || 4000;
+
   app.listen(port, (error) => {
     if (error) {
       throw error;
