@@ -14,7 +14,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { routes } from './app.routes';
 import { UI } from './shared/ui';
 import { SEO } from './shared/seo';
-import { Stats } from './home/stats';
+import { Stats } from './landing/stats';
 
 export const appConfig: ApplicationConfig = {
   providers: [

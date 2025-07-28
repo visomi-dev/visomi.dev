@@ -24,10 +24,6 @@ export class Contact {
       href: 'https://github.com/visomi-dev',
     },
     {
-      label: 'Twitter',
-      href: 'https://twitter.com/visomi_dev',
-    },
-    {
       label: 'Linkedin',
       href: 'https://www.linkedin.com/in/visomi',
     },

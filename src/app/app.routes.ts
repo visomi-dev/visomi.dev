@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 
-import { statsResolver } from './home/stats-resolver';
+import { statsResolver } from './landing/stats-resolver';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./home/home').then((m) => m.Home),
+    loadComponent: () => import('./landing/landing').then((m) => m.Landing),
     resolve: {
       stats: statsResolver,
     },

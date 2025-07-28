@@ -88,22 +88,6 @@ export class SEO {
         content: preview,
       },
       {
-        name: 'twitter:url',
-        content: url,
-      },
-      {
-        name: 'twitter:title',
-        content: title,
-      },
-      {
-        name: 'twitter:description',
-        content: description,
-      },
-      {
-        name: 'twitter:image',
-        content: preview,
-      },
-      {
         name: 'keywords',
         content: keywords,
       },

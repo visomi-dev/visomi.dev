@@ -12,12 +12,12 @@ import { Header } from './header/header';
 import { Content } from './content/content';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-landing',
   imports: [Header, Content],
-  templateUrl: './home.html',
-  styleUrl: './home.css',
+  templateUrl: './landing.html',
+  styleUrl: './landing.css',
 })
-export class Home implements OnInit {
+export class Landing implements OnInit {
   @HostBinding('class') readonly cls =
     /* tw */ 'flex flex-col md:flex-row relative min-h-full md:justify-center w-full';
 
@@ -29,7 +29,7 @@ export class Home implements OnInit {
       title: 'visomi.dev',
       description: 'Michael V. S. (visomi) | cross-over developer',
       url: 'https://visomi.dev/',
-      preview: `https://visomi.dev/${this.locale}/assets/images/galaxy-illustration.webp`,
+      preview: `https://visomi.dev/assets/images/galaxy-illustration.webp`,
       index: true,
       follow: true,
       keywords:
