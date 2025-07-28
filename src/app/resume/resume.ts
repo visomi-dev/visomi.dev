@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 
 import { SEO } from '../shared/seo';
+import { RESUME_PATH } from '../constants/paths';
 
 import { Me } from './me/me';
 import { Professional } from './professional/professional';
@@ -28,9 +29,8 @@ export class Resume implements OnInit {
     this.seo.configure({
       title: $localize`:@@resumeTitle:Resume`,
       description: $localize`:@@resumeDescription:A detailed overview of my professional experience, skills, and accomplishments.`,
-      url: 'https://visomi.dev/',
-      preview:
-        `https://visomi.dev/${this.locale}/assets/images/galaxy-illustration.svg`,
+      url: `https://visomi.dev/${this.locale}/${RESUME_PATH}`,
+      preview: `https://visomi.dev/${this.locale}/assets/images/galaxy-illustration.svg`,
       index: true,
       follow: true,
     });

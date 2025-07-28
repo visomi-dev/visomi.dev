@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { statsResolver } from './landing/stats-resolver';
+import { RESUME_PATH } from './constants/paths';
 
 export const routes: Routes = [
   {
@@ -12,7 +13,7 @@ export const routes: Routes = [
   },
 
   {
-    path: $localize`:@@routesResume:resume`,
+    path: RESUME_PATH,
     loadComponent: () => import('./resume/resume').then((m) => m.Resume),
   },
 ];
