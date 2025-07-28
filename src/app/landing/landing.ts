@@ -29,7 +29,7 @@ export class Landing implements OnInit {
       title: 'visomi.dev',
       description: 'Michael (visomi) | cross-over developer',
       url: 'https://visomi.dev/',
-      preview: `https://visomi.dev/${this.locale}/assets/images/galaxy-illustration.webp`,
+      preview: `https://visomi.dev/assets/images/galaxy-illustration.webp`,
       index: true,
       follow: true,
       keywords:

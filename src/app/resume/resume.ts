@@ -30,7 +30,7 @@ export class Resume implements OnInit {
       title: $localize`:@@resumeTitle:Resume`,
       description: $localize`:@@resumeDescription:A detailed overview of my professional experience, skills, and accomplishments.`,
       url: `https://visomi.dev/${this.locale}/${RESUME_PATH}`,
-      preview: `https://visomi.dev/${this.locale}/assets/images/galaxy-illustration.svg`,
+      preview: `https://visomi.dev/assets/images/galaxy-illustration.svg`,
       index: true,
       follow: true,
     });
