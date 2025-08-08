@@ -42,8 +42,8 @@ export class Projects {
           color: /* tw */ 'bg-red-300',
         },
         {
-          name: 'Nest',
-          color: /* tw */ 'bg-gray-400',
+          name: 'Express.js',
+          color: /* tw */ 'bg-black text-white',
         },
       ],
       preview: 'assets/images/nive-preview.webp',

@@ -24,14 +24,14 @@
 
       <div class="flex flex-wrap gap-3">
         @for (link of webLinks; track link.href) {
-        <a
-          [href]="link.href"
-          class="md:hover:text-opacity-75 text-blue-400 underline"
-          target="_blank"
-          rel="noreferrer"
-        >
-          {{ link.label }}
-        </a>
+          <a
+            [href]="link.href"
+            class="md:hover:text-opacity-75 text-blue-400 underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {{ link.label }}
+          </a>
         }
       </div>
     </div>

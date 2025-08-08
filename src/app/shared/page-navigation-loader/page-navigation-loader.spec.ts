@@ -8,9 +8,8 @@ describe('PageNavigationLoader', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PageNavigationLoader]
-    })
-    .compileComponents();
+      imports: [PageNavigationLoader],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PageNavigationLoader);
     component = fixture.componentInstance;

@@ -8,9 +8,8 @@ describe('TechPreferences', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TechPreferences]
-    })
-    .compileComponents();
+      imports: [TechPreferences],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TechPreferences);
     component = fixture.componentInstance;

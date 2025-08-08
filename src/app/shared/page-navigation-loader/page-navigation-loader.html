@@ -1,10 +1,10 @@
 @if (loading() || navigating() || authenticating()) {
-<div
-  class="bg-opacity-25 dark:bg-soft-gray dark:bg-opacity-10 fixed inset-0 z-40 h-screen w-screen bg-black"
-  [@inOutAnimation]
->
   <div
-    class="page-loader-indicator bg-primary fixed top-0 z-50 h-1 w-1/4 rounded"
-  ></div>
-</div>
+    class="bg-opacity-25 dark:bg-soft-gray dark:bg-opacity-10 fixed inset-0 z-40 h-screen w-screen bg-black"
+    [@inOutAnimation]
+  >
+    <div
+      class="page-loader-indicator bg-primary fixed top-0 z-50 h-1 w-1/4 rounded"
+    ></div>
+  </div>
 }
