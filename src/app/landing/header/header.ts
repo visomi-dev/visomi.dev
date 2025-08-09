@@ -1,10 +1,4 @@
-import {
-  Component,
-  HostBinding,
-  inject,
-  LOCALE_ID,
-  signal,
-} from '@angular/core';
+import { Component, inject, LOCALE_ID, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -22,10 +16,11 @@ type NavItem = {
   imports: [NgClass, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css',
+  host: {
+    class: /* tw */ 'block',
+  },
 })
 export class Header {
-  @HostBinding('class') readonly cls = /* tw */ 'block';
-
   readonly open = signal(false);
   readonly locale = inject(LOCALE_ID);
 
