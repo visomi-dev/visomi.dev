@@ -55,19 +55,42 @@
               </p>
             }
 
-            @if (project.link) {
-              <div class="flex justify-center">
+            <div class="mx-auto flex flex-wrap gap-2">
+              @if (project.link) {
+                <div class="flex justify-center">
+                  <a
+                    class="rounded border border-slate-900 px-4 py-2 hover:border-slate-800"
+                    [href]="project.link"
+                    target="_blank"
+                    rel="noreferrer"
+                    i18n="@@homeContentProjectsLink"
+                  >
+                    Visit Website
+                  </a>
+                </div>
+              }
+
+              @if (project.github) {
                 <a
-                  class="mt-2 rounded bg-slate-900 px-4 py-2 text-white hover:bg-slate-800"
-                  [href]="project.link"
+                  class="flex items-center gap-2 rounded border border-slate-900 px-4 py-2 hover:border-slate-800"
+                  [href]="project.github"
                   target="_blank"
                   rel="noreferrer"
-                  i18n="@@homeContentProjectsLink"
                 >
-                  View Project
+                  <img
+                    class="w-4"
+                    src="assets/images/resume/logos/github.svg"
+                    alt="github icon"
+                    i18n-alt="@@githubIconAlt"
+                    loading="lazy"
+                  />
+
+                  <span i18n="@@homeContentProjectsGithub">
+                    View on GitHub
+                  </span>
                 </a>
-              </div>
-            }
+              }
+            </div>
           </div>
         </div>
       </li>

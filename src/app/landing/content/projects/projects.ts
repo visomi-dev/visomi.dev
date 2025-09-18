@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 import { nav } from '../../constants';
@@ -8,6 +8,7 @@ type Project = {
   title: string;
   caption: string;
   description: string;
+  github?: string;
   technologies: {
     name: string;
     color: string;
@@ -24,10 +25,11 @@ type Project = {
   imports: [NgClass],
   templateUrl: './projects.html',
   styleUrl: './projects.css',
+  host: {
+    class: /* tw */ 'block w-full',
+  },
 })
 export class Projects {
-  @HostBinding('class') readonly cls = /* tw */ 'block w-full';
-
   nav = nav;
 
   projects: Project[] = [
@@ -50,6 +52,7 @@ export class Projects {
       previewWidth: 240,
       previewHeight: 485,
       link: 'https://nive.visomi.dev',
+      github: 'https://github.com/visomi-dev/nive',
       wip: true,
     },
   ];

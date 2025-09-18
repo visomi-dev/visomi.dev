@@ -63,7 +63,7 @@ export class Header {
   ];
 
   getLocaleLinkClass(target: string) {
-    return this.locale === target
+    return this.locale.includes(target)
       ? /* tw */ 'pointer-events-none text-primary/50 no-underline cursor-not-allowed'
       : /* tw */ 'underline';
   }
