@@ -10,16 +10,17 @@ export type Theme = 'light' | 'dark';
   providedIn: 'root',
 })
 export class UI {
-  dateTime: typeof DateTime | null = null;
+  DateTime: typeof DateTime | null = null;
   dateTimePromise: Promise<typeof DateTime> | null = null;
 
-  three: typeof import('three') | null = null;
+  Three: typeof import('three') | null = null;
   threePromise: Promise<typeof import('three')> | null = null;
 
   private readonly router = inject(Router);
 
   readonly loading = signal<boolean>(false);
   readonly now = toSignal(from(this.getDateTime()).pipe(map((dateTime) => dateTime.now())));
+  readonly three = toSignal(from(this.getThree()).pipe(map((three) => three)));
   readonly $DateTime = signal<typeof DateTime | null>(null);
   readonly $THREE = signal<typeof import('three') | null>(null);
 
@@ -45,8 +46,8 @@ export class UI {
   }
 
   async getDateTime() {
-    if (this.dateTime != null) {
-      return this.dateTime;
+    if (this.DateTime != null) {
+      return this.DateTime;
     }
 
     if (this.dateTimePromise != null) {
@@ -54,7 +55,7 @@ export class UI {
     }
 
     this.dateTimePromise = import('luxon').then(({ DateTime: dateTime }) => {
-      this.dateTime = dateTime;
+      this.DateTime = dateTime;
       this.$DateTime.set(dateTime);
 
       return dateTime;
@@ -64,8 +65,8 @@ export class UI {
   }
 
   async getThree(): Promise<typeof import('three')> {
-    if (this.three != null) {
-      return this.three;
+    if (this.Three != null) {
+      return this.Three;
     }
 
     if (this.threePromise != null) {
@@ -73,7 +74,7 @@ export class UI {
     }
 
     this.threePromise = import('three').then((module) => {
-      this.three = module;
+      this.Three = module;
       this.$THREE.set(module);
       return module;
     });

@@ -23,6 +23,7 @@
     "firsttris.vscode-jest-runner",
     "ms-playwright.playwright",
     "prettier.prettier-vscode",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "slevesque.shader"
   ]
 }
