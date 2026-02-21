@@ -1,27 +1,36 @@
-import nx from '@nx/eslint-plugin';
+import { configs as nxConfigs } from '@nx/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import { importX } from 'eslint-plugin-import-x';
 import tsParser from '@typescript-eslint/parser';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 
+const importXFiles = ['**/*.ts', '**/*.tsx', '**/*.cts', '**/*.mts', '**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'];
+
 export default [
-  ...nx.configs['flat/base'],
-  ...nx.configs['flat/typescript'],
-  ...nx.configs['flat/javascript'],
+  ...nxConfigs['flat/base'],
+  ...nxConfigs['flat/typescript'],
+  ...nxConfigs['flat/javascript'],
   eslintConfigPrettier,
 
-  importX.flatConfigs.recommended,
-  importX.flatConfigs.typescript,
+  {
+    ...importX.flatConfigs.recommended,
+    files: importXFiles,
+  },
+  {
+    ...importX.flatConfigs.typescript,
+    files: importXFiles,
+  },
 
   {
-      "ignores": [
-        "**/dist",
-        "**/vite.config.*.timestamp*",
-        "**/vitest.config.*.timestamp*",
-        "**/node_modules",
-        "**/legacy"
-      ]
+    ignores: [
+      '**/dist',
+      '**/vite.config.*.timestamp*',
+      '**/vitest.config.*.timestamp*',
+      '**/node_modules',
+      '**/legacy',
+      '**/examples',
+    ],
   },
 
   {
@@ -44,16 +53,7 @@ export default [
   },
 
   {
-    files: [
-      '**/*.ts',
-      '**/*.tsx',
-      '**/*.cts',
-      '**/*.mts',
-      '**/*.js',
-      '**/*.jsx',
-      '**/*.cjs',
-      '**/*.mjs',
-    ],
+    files: importXFiles,
     languageOptions: {
       parser: tsParser,
       ecmaVersion: 'latest',
