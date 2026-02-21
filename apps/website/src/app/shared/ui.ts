@@ -13,11 +13,15 @@ export class UI {
   dateTime: typeof DateTime | null = null;
   dateTimePromise: Promise<typeof DateTime> | null = null;
 
+  three: typeof import('three') | null = null;
+  threePromise: Promise<typeof import('three')> | null = null;
+
   private readonly router = inject(Router);
 
   readonly loading = signal<boolean>(false);
   readonly now = toSignal(from(this.getDateTime()).pipe(map((dateTime) => dateTime.now())));
   readonly $DateTime = signal<typeof DateTime | null>(null);
+  readonly $THREE = signal<typeof import('three') | null>(null);
 
   readonly sidebarMenuOpen = signal<boolean>(false);
   readonly sidebarWorkspaceOpen = signal<boolean>(false);
@@ -57,6 +61,24 @@ export class UI {
     });
 
     return await this.dateTimePromise;
+  }
+
+  async getThree(): Promise<typeof import('three')> {
+    if (this.three != null) {
+      return this.three;
+    }
+
+    if (this.threePromise != null) {
+      return await this.threePromise;
+    }
+
+    this.threePromise = import('three').then((module) => {
+      this.three = module;
+      this.$THREE.set(module);
+      return module;
+    });
+
+    return await this.threePromise;
   }
 
   constructor() {
