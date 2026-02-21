@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "angular.ng-template",
-    "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
     "bradlc.vscode-tailwindcss",
@@ -19,6 +18,11 @@
     "oven.bun-vscode",
     "unifiedjs.vscode-mdx",
     "PKief.material-icon-theme",
-    "Prisma.prisma"
+    "Prisma.prisma",
+    "nrwl.angular-console",
+    "firsttris.vscode-jest-runner",
+    "ms-playwright.playwright",
+    "prettier.prettier-vscode",
+    "esbenp.prettier-vscode"
   ]
 }
