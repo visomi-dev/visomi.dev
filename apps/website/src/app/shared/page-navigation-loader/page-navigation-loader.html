@@ -1,0 +1,11 @@
+@if (loading() || navigating() || authenticating()) {
+  <div
+    class="page-navigation-loader-overlay fixed inset-0 z-40 h-screen w-screen"
+    animate.enter="in-out-enter"
+    animate.leave="in-out-leave"
+  >
+    <div
+      class="page-loader-indicator bg-primary fixed top-0 z-50 h-1 w-1/4 rounded"
+    ></div>
+  </div>
+}
