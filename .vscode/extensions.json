@@ -24,6 +24,7 @@
     "ms-playwright.playwright",
     "prettier.prettier-vscode",
     "esbenp.prettier-vscode",
-    "slevesque.shader"
+    "slevesque.shader",
+    "ebextensions.clang-format-2025"
   ]
 }

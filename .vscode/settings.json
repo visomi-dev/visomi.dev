@@ -70,5 +70,8 @@
     "treeify",
     "tseslint",
     "wakatime"
-  ]
+  ],
+  "[glsl]": {
+    "editor.defaultFormatter": "xaver.clang-format"
+  }
 }

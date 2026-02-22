@@ -1,9 +1,12 @@
-import { Component, effect, inject, PLATFORM_ID, viewChild } from '@angular/core';
+import { Component, effect, inject, PLATFORM_ID, viewChild, type ElementRef } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import type { ElementRef } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 
 import { UI } from '../../shared/ui';
+
+const VERTEX_SHADER_URL = '/assets/home/background/background.vert';
+const FRAGMENT_SHADER_URL = '/assets/home/background/background.frag';
+const TIME_STEP = 1 / 60;
 
 @Component({
   selector: 'app-background',
@@ -19,9 +22,8 @@ export class Background {
   private readonly platformId = inject(PLATFORM_ID);
 
   readonly container = viewChild<ElementRef<HTMLElement>>('container');
-
-  readonly vertexShader = httpResource.text(() => '/assets/home/background/meteor.vert');
-  readonly fragmentShader = httpResource.text(() => '/assets/home/background/meteor.frag');
+  readonly vertexShader = httpResource.text(() => VERTEX_SHADER_URL);
+  readonly fragmentShader = httpResource.text(() => FRAGMENT_SHADER_URL);
 
   readonly initEffect = effect((onCleanup) => {
     if (!isPlatformBrowser(this.platformId)) {
@@ -30,10 +32,10 @@ export class Background {
 
     const containerRef = this.container();
     const three = this.ui.three();
-    const vertexShader = this.vertexShader.value();
-    const fragmentShader = this.fragmentShader.value();
+    const vert = this.vertexShader.value();
+    const frag = this.fragmentShader.value();
 
-    if (containerRef == null || three == null || vertexShader == null || fragmentShader == null) {
+    if (containerRef == null || three == null || vert == null || frag == null) {
       if (containerRef != null) {
         this.ui.getThree();
       }
@@ -47,16 +49,15 @@ export class Background {
     const scene = new Scene();
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const renderer = new WebGLRenderer({ antialias: true });
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const resolution = new Vector2(window.innerWidth, window.innerHeight);
 
     const material = new ShaderMaterial({
       uniforms: {
         iTime: { value: 0 },
-        iResolution: { value: new Vector2(window.innerWidth, window.innerHeight) },
+        iResolution: { value: resolution },
       },
-      vertexShader: vertexShader,
-      fragmentShader: fragmentShader,
+      vertexShader: vert,
+      fragmentShader: frag,
     });
 
     const geometry = new PlaneGeometry(2, 2);
@@ -64,32 +65,34 @@ export class Background {
 
     scene.add(mesh);
 
+    renderer.setSize(resolution.x, resolution.y);
+
     container.insertBefore(renderer.domElement, container.firstChild);
 
     let frameId: number;
 
     const animate = () => {
-      material.uniforms['iTime'].value += 0.016;
+      (material.uniforms['iTime'] as { value: number }).value += TIME_STEP;
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
 
     animate();
 
-    const handleResize = () => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      (material.uniforms['iResolution'].value as InstanceType<typeof Vector2>).set(
-        window.innerWidth,
-        window.innerHeight,
-      );
+    const onResize = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      renderer.setSize(w, h);
+      resolution.set(w, h);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', onResize);
 
     onCleanup(() => {
       cancelAnimationFrame(frameId);
 
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', onResize);
 
       if (renderer.domElement.parentNode === container) {
         container.removeChild(renderer.domElement);
