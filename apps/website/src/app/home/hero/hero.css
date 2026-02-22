@@ -1,0 +1,151 @@
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  color: rgb(248 250 252);
+}
+
+.hero__surface {
+  position: relative;
+  width: min(100%, 64rem);
+  border: 1px solid rgb(51 65 85 / 0.9);
+  background: rgb(2 6 23 / 0.86);
+  backdrop-filter: blur(2px);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 24px 60px rgb(2 6 23 / 0.55);
+}
+
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+.hero__line {
+  position: absolute;
+  background: rgb(148 163 184);
+}
+
+.hero__line--h {
+  inset-inline: 0;
+  height: 1px;
+}
+
+.hero__line--h:nth-child(1) {
+  top: 18%;
+}
+
+.hero__line--h:nth-child(2) {
+  top: 50%;
+}
+
+.hero__line--h:nth-child(3) {
+  top: 82%;
+}
+
+.hero__line--v {
+  inset-block: 0;
+  width: 1px;
+}
+
+.hero__line--v:nth-child(4) {
+  left: 20%;
+}
+
+.hero__line--v:nth-child(5) {
+  left: 50%;
+}
+
+.hero__line--v:nth-child(6) {
+  left: 80%;
+}
+
+.hero__kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(148 163 184);
+}
+
+h1 {
+  margin: 0.75rem 0 0;
+  text-wrap: balance;
+  font-size: clamp(1.9rem, 6vw, 4rem);
+  line-height: 1;
+}
+
+.hero__lede {
+  margin: 1rem 0 0;
+  max-width: 56ch;
+  color: rgb(203 213 225);
+  font-size: clamp(1rem, 3vw, 1.2rem);
+}
+
+.hero__actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hero__actions a {
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid rgb(71 85 105);
+  background: rgb(15 23 42 / 0.92);
+  color: rgb(241 245 249);
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+}
+
+.hero__actions a:hover {
+  background: rgb(30 41 59);
+}
+
+.hero__actions a:focus-visible,
+.hero__about a:focus-visible {
+  outline: 2px solid rgb(56 189 248);
+  outline-offset: 2px;
+}
+
+.hero__about {
+  margin-top: 1.5rem;
+  border-top: 1px solid rgb(51 65 85 / 0.95);
+  padding-top: 1.25rem;
+}
+
+.hero__about h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 4vw, 1.8rem);
+}
+
+.hero__about p {
+  margin: 0.75rem 0 0;
+  color: rgb(226 232 240);
+  line-height: 1.7;
+}
+
+.hero__about a {
+  color: rgb(125 211 252);
+}
+
+@media (width >= 48rem) {
+  .hero {
+    padding: 2.5rem;
+  }
+
+  .hero__surface {
+    padding: 2rem;
+  }
+
+  .hero__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

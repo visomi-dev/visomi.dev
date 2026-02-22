@@ -1,0 +1,20 @@
+.home-layout {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  background: rgb(2 6 23);
+}
+
+app-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.3;
+  filter: saturate(0.6) brightness(0.45);
+}
+
+app-hero {
+  position: relative;
+  z-index: 1;
+}
