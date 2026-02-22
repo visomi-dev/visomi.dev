@@ -78,6 +78,16 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
 
+## Code Generation Rules
+
+- Use the `nx-generate` skill to generate code
+
+Example:
+
+```bash
+nx g @nx/angular:component apps/website/src/app/home/hero/hero
+```
+
 ## Architecture Rules: Screaming & Feature-Based
 
 1. The "Screaming" Directory Rule
