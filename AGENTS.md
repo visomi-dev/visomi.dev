@@ -135,3 +135,11 @@ The Action: Create a Mapper or a class in the domain/ layer to sanitize and tran
    The Rule: Names must be descriptive and follow the name.type.ts pattern.
 
 Examples: login.controller.ts, auth.repository.ts, user.model.ts, auth.routes.ts
+
+## CSS Best Practices
+
+- Don't use CSS variables for colors or any other values, use the `@theme` utility class instead
+
+## UI/UX Best Practices
+
+- First mobile approach, then desktop approach
