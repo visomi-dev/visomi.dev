@@ -43,12 +43,17 @@ void main() {
       vec2 starCenter = vec2(float(dx), float(dy)) + starOffset - cellUv;
 
       float dist = length(starCenter);
-      float starRadius = 0.03 + hash(nCellId + 0.1) * 0.015;
-      float star = 1.0 - smoothstep(starRadius * 0.3, starRadius, dist);
+      float sizeChoice = hash(nCellId + 0.3);
+      float starRadius = sizeChoice > 0.9 ? 0.06 : 0.03;
+      float star = 1.0 - smoothstep(starRadius * 0.5, starRadius, dist);
 
-      float phase = hash(nCellId + 0.5) * 6.28318;
-      float speed = 0.5 + hash(nCellId + 0.7) * 0.5;
-      float twinkle = 0.5 + 0.5 * sin(iTime * speed + phase);
+      float phase = hash(nCellId + 0.5);
+      float freq = 0.1 + hash(nCellId + 0.7) * 0.1;
+      float minAlpha = hash(nCellId + 0.8) * 0.2;
+      float maxAlpha = 0.4 + hash(nCellId + 0.9) * 0.6;
+      float t = fract(iTime * freq + phase);
+      float wave = smoothstep(0.25, 0.5, t) - smoothstep(0.75, 1.0, t);
+      float twinkle = minAlpha + wave * (maxAlpha - minAlpha);
       star *= twinkle;
 
       // Distinct star colors (clearly blue, white, yellow, orange)
