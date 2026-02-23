@@ -1,8 +1,6 @@
 <figure [id]="nav.projects">
   <figcaption>
-    <h2 class="text-4xl font-bold capitalize" i18n="@@homeContentProjectsTitle">
-      Projects
-    </h2>
+    <h2 class="text-4xl font-bold capitalize" i18n="@@homeContentProjectsTitle">Projects</h2>
   </figcaption>
 
   <ul class="mt-6">
@@ -47,10 +45,7 @@
             </div>
 
             @if (project.wip) {
-              <p
-                class="text-center text-sm text-yellow-400 capitalize"
-                i18n="@@homeContentProjectsWIP"
-              >
+              <p class="text-center text-sm text-yellow-400 capitalize" i18n="@@homeContentProjectsWIP">
                 Work In Progress...
               </p>
             }
@@ -85,9 +80,7 @@
                     loading="lazy"
                   />
 
-                  <span i18n="@@homeContentProjectsGithub">
-                    View on GitHub
-                  </span>
+                  <span i18n="@@homeContentProjectsGithub"> View on GitHub </span>
                 </a>
               }
             </div>

@@ -8,9 +8,7 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/website",
         "browser": "apps/website/src/main.ts",
@@ -22,9 +20,7 @@
             "input": "apps/website/public"
           }
         ],
-        "styles": [
-          "apps/website/src/styles.css"
-        ],
+        "styles": ["apps/website/src/styles.css"],
         "server": "apps/website/src/main.server.ts",
         "ssr": {
           "entry": "apps/website/src/server.ts"

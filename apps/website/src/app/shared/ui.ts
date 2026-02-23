@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, from, map } from 'rxjs';
 import type { DateTime } from 'luxon';
+import type * as THREE from 'three';
 
 export type Theme = 'light' | 'dark';
 
@@ -13,7 +14,7 @@ export class UI {
   DateTime: typeof DateTime | null = null;
   dateTimePromise: Promise<typeof DateTime> | null = null;
 
-  Three: typeof import('three') | null = null;
+  Three: typeof THREE | null = null;
   threePromise: Promise<typeof import('three')> | null = null;
 
   private readonly router = inject(Router);
@@ -22,7 +23,7 @@ export class UI {
   readonly now = toSignal(from(this.getDateTime()).pipe(map((dateTime) => dateTime.now())));
   readonly three = toSignal(from(this.getThree()).pipe(map((three) => three)));
   readonly $DateTime = signal<typeof DateTime | null>(null);
-  readonly $THREE = signal<typeof import('three') | null>(null);
+  readonly $THREE = signal<typeof THREE | null>(null);
 
   readonly sidebarMenuOpen = signal<boolean>(false);
   readonly sidebarWorkspaceOpen = signal<boolean>(false);
@@ -64,7 +65,7 @@ export class UI {
     return await this.dateTimePromise;
   }
 
-  async getThree(): Promise<typeof import('three')> {
+  async getThree(): Promise<typeof THREE> {
     if (this.Three != null) {
       return this.Three;
     }

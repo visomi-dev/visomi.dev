@@ -20,11 +20,7 @@ export class PersonalInfo {
       return null;
     }
 
-    return Math.floor(
-      Math.abs(
-        dateTime.fromFormat('1995-05-20', 'yyyy-MM-dd').diffNow('years').years,
-      ),
-    );
+    return Math.floor(Math.abs(dateTime.fromFormat('1995-05-20', 'yyyy-MM-dd').diffNow('years').years));
   });
 
   readonly experience = computed(() => {
@@ -34,10 +30,6 @@ export class PersonalInfo {
       return null;
     }
 
-    return Math.floor(
-      Math.abs(
-        dateTime.fromFormat('2016-06-01', 'yyyy-MM-dd').diffNow('years').years,
-      ),
-    );
+    return Math.floor(Math.abs(dateTime.fromFormat('2016-06-01', 'yyyy-MM-dd').diffNow('years').years));
   });
 }

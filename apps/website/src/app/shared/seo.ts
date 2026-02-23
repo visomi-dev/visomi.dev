@@ -121,11 +121,7 @@ export class SEO {
       },
       {
         name: 'robots',
-        content: [
-          index ? 'index' : 'noindex',
-          follow ? 'follow' : 'nofollow',
-          ...robots,
-        ].join(', '),
+        content: [index ? 'index' : 'noindex', follow ? 'follow' : 'nofollow', ...robots].join(', '),
       },
     ].forEach(({ name, content }) => {
       const tag = this.meta.getTag(`name="${name}"`);

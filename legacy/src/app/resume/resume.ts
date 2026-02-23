@@ -1,10 +1,4 @@
-import {
-  Component,
-  HostBinding,
-  inject,
-  LOCALE_ID,
-  OnInit,
-} from '@angular/core';
+import { Component, HostBinding, inject, LOCALE_ID, OnInit } from '@angular/core';
 
 import { SEO } from '../shared/seo';
 import { RESUME_PATH } from '../constants/paths';

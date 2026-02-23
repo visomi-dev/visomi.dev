@@ -1,26 +1,20 @@
 <figure [id]="nav.characterSheet">
   <figcaption>
-    <h2 class="text-4xl font-bold capitalize" i18n="@@homeContentCSTitle">
-      Character Sheet
-    </h2>
+    <h2 class="text-4xl font-bold capitalize" i18n="@@homeContentCSTitle">Character Sheet</h2>
 
     <p class="mt-2 text-xs" i18n="@@homeContentCSDesc">
-      Approx values, provided by WakaTime, I miss some years of data because I
-      miss configured the plugin. Start using it in 12th may 2018.
+      Approx values, provided by WakaTime, I miss some years of data because I miss configured the plugin. Start using
+      it in 12th may 2018.
     </p>
   </figcaption>
 
   <div class="mt-4 flex flex-col gap-2">
-    <h3 class="text-2xl capitalize" i18n="@@homeContentCSStatsTitle">
-      Statistics
-    </h3>
+    <h3 class="text-2xl capitalize" i18n="@@homeContentCSStatsTitle">Statistics</h3>
 
     <div class="flex flex-col md:flex-row">
       <ul class="flex flex-col gap-2">
         <li>
-          <span class="capitalize" i18n="@@homeContentCSStatsTCT">
-            Total Coding Time:
-          </span>
+          <span class="capitalize" i18n="@@homeContentCSStatsTCT"> Total Coding Time: </span>
 
           <p class="text-blue-700">{{ codingTime().total }}</p>
 
@@ -28,9 +22,7 @@
         </li>
 
         <li>
-          <span class="capitalize" i18n="@@homeContentCSStatsBCD">
-            Best Coding Day:
-          </span>
+          <span class="capitalize" i18n="@@homeContentCSStatsBCD"> Best Coding Day: </span>
 
           <p class="text-blue-700">{{ codingTime().bestDay }}</p>
 
@@ -38,9 +30,7 @@
         </li>
 
         <li>
-          <span class="capitalize" i18n="@@homeContentCSStatsLang">
-            Languages:
-          </span>
+          <span class="capitalize" i18n="@@homeContentCSStatsLang"> Languages: </span>
 
           <app-list [items]="languages()" />
 
@@ -48,9 +38,7 @@
         </li>
 
         <li>
-          <span class="capitalize" i18n="@@homeContentCSStatsEditors">
-            Editors:
-          </span>
+          <span class="capitalize" i18n="@@homeContentCSStatsEditors"> Editors: </span>
 
           <app-list [items]="editors()" />
 
@@ -58,9 +46,7 @@
         </li>
 
         <li>
-          <span class="capitalize" i18n="@@homeContentCSStatsOS">
-            Operating Systems:
-          </span>
+          <span class="capitalize" i18n="@@homeContentCSStatsOS"> Operating Systems: </span>
 
           <app-list [items]="operatingSystems()" />
 
@@ -68,9 +54,7 @@
         </li>
 
         <li>
-          <span class="capitalize" i18n="@@homeContentCSStatsCategories">
-            Categories:
-          </span>
+          <span class="capitalize" i18n="@@homeContentCSStatsCategories"> Categories: </span>
 
           <app-list [items]="categories()" />
         </li>

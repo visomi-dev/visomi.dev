@@ -10,10 +10,7 @@
     </div>
 
     <div class="flex items-center justify-end md:flex-1 md:justify-start">
-      <button
-        class="md:pointer-events-none md:hidden md:opacity-0"
-        (click)="toggleMenu()"
-      >
+      <button class="md:pointer-events-none md:hidden md:opacity-0" (click)="toggleMenu()">
         <img
           src="assets/images/menu.svg"
           alt="hamburger menu icon"
@@ -48,9 +45,7 @@
           </li>
         }
 
-        <li
-          class="z-20 flex w-full items-center gap-1 bg-white px-6 py-4 md:w-fit md:p-0"
-        >
+        <li class="z-20 flex w-full items-center gap-1 bg-white px-6 py-4 md:w-fit md:p-0">
           <a
             class="block w-full flex-1 px-2 py-1 text-center text-2xl md:p-0 md:text-base"
             [class]="getLocaleLinkClass('en')"
