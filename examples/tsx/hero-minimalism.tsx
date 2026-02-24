@@ -91,147 +91,16 @@ export default function MinimalHero() {
   }, []);
 
   return (
-    <section className="minimal-root">
+    <section
+      className="fixed inset-0 box-border h-screen w-screen overflow-hidden bg-[#0a0a0a] text-[#fafafa] antialiased *:box-border"
+      style={{
+        fontFamily:
+          "'Hubot Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif",
+        textRendering: 'optimizeLegibility',
+      }}
+    >
+      <link href="https://fonts.cdnfonts.com/css/hubot-sans" rel="stylesheet" />
       <style>{`
-@import url('https://fonts.cdnfonts.com/css/hubot-sans');
-
-.minimal-root, .minimal-root * {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-.minimal-root {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
-  --bg: #0a0a0a;
-  --fg: #fafafa;
-  --muted: #a1a1aa;
-  --border: #27272a;
-  --accent: #e5e7eb;
-
-  background: var(--bg);
-  color: var(--fg);
-  font-family: 'Hubot Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-}
-
-/* header */
-.header {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  padding: 20px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-}
-.brand {
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-decoration: none;
-}
-.cta {
-  height: 36px;
-  padding: 0 14px;
-  border-radius: 10px;
-  background: #111;
-  color: var(--fg);
-  border: 1px solid var(--border);
-  font-size: 13px;
-  line-height: 36px;
-}
-.cta:hover { background: #0d0d0d; }
-
-/* hero center */
-.hero {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  pointer-events: none;
-}
-.kicker {
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
-.title {
-  font-weight: 600;
-  font-size: clamp(32px, 8vw, 88px);
-  line-height: 0.95;
-  margin: 0;
-  color: var(--fg);
-  text-shadow: none;
-}
-.subtitle {
-  margin-top: 18px;
-  font-size: clamp(14px, 2.2vw, 18px);
-  color: var(--muted);
-}
-
-/* accent lines container */
-.accent-lines {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-/* base line visuals */
-.hline, .vline {
-  position: absolute;
-  background: var(--border);
-  opacity: .75;
-  will-change: transform, opacity;
-}
-
-/* horizontal lines */
-.hline {
-  height: 1px; left: 0; right: 0;
-  transform: scaleX(0);
-  transform-origin: 50% 50%;
-  animation: drawX 800ms cubic-bezier(.22,.61,.36,1) forwards;
-}
-.hline:nth-child(1){ top: 20%; animation-delay: 150ms; }
-.hline:nth-child(2){ top: 50%; animation-delay: 280ms; }
-.hline:nth-child(3){ top: 80%; animation-delay: 410ms; }
-
-/* vertical lines */
-.vline {
-  width: 1px; top: 0; bottom: 0;
-  transform: scaleY(0);
-  transform-origin: 50% 0%;
-  animation: drawY 900ms cubic-bezier(.22,.61,.36,1) forwards;
-}
-.vline:nth-child(4){ left: 20%; animation-delay: 520ms; }
-.vline:nth-child(5){ left: 50%; animation-delay: 640ms; }
-.vline:nth-child(6){ left: 80%; animation-delay: 760ms; }
-
-/* subtle gradient shimmer while drawing */
-.hline::after, .vline::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: linear-gradient(90deg, transparent, rgba(250,250,250,.25), transparent);
-  opacity:0;
-  animation: shimmer 900ms ease-out forwards;
-}
-.hline:nth-child(1)::after{ animation-delay: 150ms; }
-.hline:nth-child(2)::after{ animation-delay: 280ms; }
-.hline:nth-child(3)::after{ animation-delay: 410ms; }
-.vline:nth-child(4)::after{ animation-delay: 520ms; }
-.vline:nth-child(5)::after{ animation-delay: 640ms; }
-.vline:nth-child(6)::after{ animation-delay: 760ms; }
-
-/* keyframes */
 @keyframes drawX {
   0% { transform: scaleX(0); opacity: 0; }
   60% { opacity: .9; }
@@ -243,92 +112,81 @@ export default function MinimalHero() {
   100% { transform: scaleY(1); opacity: .75; }
 }
 @keyframes shimmer {
-  0% { opacity: .0; }
+  0% { opacity: 0; }
   30% { opacity: .25; }
   100% { opacity: 0; }
 }
-
-/* canvas */
-.particleCanvas {
+.accent-lines > *::after {
+  content: "";
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: .6;
+  background: linear-gradient(90deg, transparent, rgba(250,250,250,.25), transparent);
+  opacity: 0;
+  animation: shimmer 900ms ease-out forwards;
 }
-
-/* footer section (copy) */
-.content {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 32px 24px;
-  border-top: 1px solid var(--border);
-  display: grid;
-  place-items: center;
-  text-align: center;
-  gap: 6px;
-}
-.content .tag {
-  font-size: 12px;
-  color: var(--muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.content .heading {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--fg);
-}
-.content .desc {
-  font-size: 14px;
-  color: var(--muted);
-  max-width: 680px;
-}
+.accent-lines > :nth-child(1)::after { animation-delay: 150ms; }
+.accent-lines > :nth-child(2)::after { animation-delay: 280ms; }
+.accent-lines > :nth-child(3)::after { animation-delay: 410ms; }
+.accent-lines > :nth-child(4)::after { animation-delay: 520ms; }
+.accent-lines > :nth-child(5)::after { animation-delay: 640ms; }
+.accent-lines > :nth-child(6)::after { animation-delay: 760ms; }
       `}</style>
 
       {/* Header */}
-      <header className="header">
-        <a className="brand" href="https://codepen.io/RAFA3L" target="_blank" rel="noopener noreferrer">
+      <header className="absolute top-0 right-0 left-0 flex items-center justify-between border-b border-[#27272a] px-6 py-5">
+        <a
+          className="text-sm tracking-[0.06em] text-[#a1a1aa] uppercase no-underline"
+          href="https://codepen.io/RAFA3L"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           NOVA
         </a>
-        <button className="cta" type="button" onClick={() => alert('We’ll get back to you soon.')}>
+        <button
+          type="button"
+          onClick={() => alert("We'll get back to you soon.")}
+          className="h-9 rounded-[10px] border border-[#27272a] bg-[#111] px-[14px] text-[13px] leading-9 text-[#fafafa] hover:bg-[#0d0d0d]"
+        >
           Contact
         </button>
       </header>
 
       {/* Particles */}
-      <canvas ref={canvasRef} className="particleCanvas" />
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-60 mix-blend-screen"
+      />
 
-      {/* Accent Lines (now animated on mount) */}
-      <div className="accent-lines">
-        <div className="hline" />
-        <div className="hline" />
-        <div className="hline" />
-        <div className="vline" />
-        <div className="vline" />
-        <div className="vline" />
+      {/* Accent Lines (animated on mount) */}
+      <div className="accent-lines pointer-events-none absolute inset-0">
+        <div className="absolute top-[20%] right-0 left-0 h-px origin-center scale-x-0 animate-[drawX_800ms_cubic-bezier(.22,.61,.36,1)_forwards] bg-[#27272a] opacity-75 will-change-[transform,opacity] [animation-delay:150ms]" />
+        <div className="absolute top-[50%] right-0 left-0 h-px origin-center scale-x-0 animate-[drawX_800ms_cubic-bezier(.22,.61,.36,1)_forwards] bg-[#27272a] opacity-75 will-change-[transform,opacity] [animation-delay:280ms]" />
+        <div className="absolute top-[80%] right-0 left-0 h-px origin-center scale-x-0 animate-[drawX_800ms_cubic-bezier(.22,.61,.36,1)_forwards] bg-[#27272a] opacity-75 will-change-[transform,opacity] [animation-delay:410ms]" />
+        <div className="absolute top-0 bottom-0 left-[20%] w-px origin-top scale-y-0 animate-[drawY_900ms_cubic-bezier(.22,.61,.36,1)_forwards] bg-[#27272a] opacity-75 will-change-[transform,opacity] [animation-delay:520ms]" />
+        <div className="absolute top-0 bottom-0 left-[50%] w-px origin-top scale-y-0 animate-[drawY_900ms_cubic-bezier(.22,.61,.36,1)_forwards] bg-[#27272a] opacity-75 will-change-[transform,opacity] [animation-delay:640ms]" />
+        <div className="absolute top-0 bottom-0 left-[80%] w-px origin-top scale-y-0 animate-[drawY_900ms_cubic-bezier(.22,.61,.36,1)_forwards] bg-[#27272a] opacity-75 will-change-[transform,opacity] [animation-delay:760ms]" />
       </div>
 
       {/* Hero */}
-      <main className="hero">
+      <main className="pointer-events-none absolute inset-0 grid place-items-center text-center">
         <div>
-          <div className="kicker">Introducing</div>
-          <h1 className="title">
+          <div className="mb-3.5 text-xs tracking-[0.14em] text-[#a1a1aa] uppercase">Introducing</div>
+          <h1 className="m-0 text-[clamp(32px,8vw,88px)] leading-[0.95] font-semibold text-[#fafafa]">
             Build fast.
             <br />
             Ship clean.
           </h1>
-          <p className="subtitle">A minimal React starter focused on clarity, speed, and maintainability.</p>
+          <p className="mt-[18px] text-[clamp(14px,2.2vw,18px)] text-[#a1a1aa]">
+            A minimal React starter focused on clarity, speed, and maintainability.
+          </p>
         </div>
       </main>
 
       {/* Bottom content */}
-      <section className="content">
-        <div className="tag">Designed for focus</div>
-        <div className="heading">Composable. Accessible. Production-ready.</div>
-        <p className="desc">
+      <section className="absolute right-0 bottom-0 left-0 grid place-items-center gap-1.5 border-t border-[#27272a] px-6 py-8 text-center">
+        <div className="text-xs tracking-[0.08em] text-[#a1a1aa] uppercase">Designed for focus</div>
+        <div className="text-[22px] font-semibold text-[#fafafa]">Composable. Accessible. Production-ready.</div>
+        <p className="max-w-[680px] text-sm text-[#a1a1aa]">
           Start with sensible defaults, ship without the noise, and scale your UI with confidence. Works across any app
           architecture.
         </p>

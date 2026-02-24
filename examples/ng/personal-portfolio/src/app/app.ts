@@ -29,7 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
     <!-- Hero Section -->
     <section id="home" class="relative z-10 flex min-h-screen flex-col items-center justify-center p-6 sm:p-12">
       <main
-        class="relative w-full max-w-4xl overflow-hidden rounded-[2rem] border border-slate-700/50 bg-slate-900/40 p-8 shadow-2xl backdrop-blur-md sm:p-16"
+        class="relative w-full max-w-4xl overflow-hidden rounded-4xl border border-slate-700/50 bg-slate-900/40 p-8 shadow-2xl backdrop-blur-md sm:p-16"
       >
         <!-- Decorative glow -->
         <div

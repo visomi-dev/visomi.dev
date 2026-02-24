@@ -18,7 +18,7 @@ const TIME_STEP = 1 / 60;
   },
 })
 export class Background {
-  protected readonly ui = inject(UI);
+  private readonly ui = inject(UI);
   private readonly platformId = inject(PLATFORM_ID);
 
   readonly container = viewChild<ElementRef<HTMLElement>>('container');
