@@ -61,6 +61,7 @@
     "postgres",
     "postgresql",
     "prerender",
+    "primeicons",
     "qwik",
     "recalc",
     "recaptcha",
@@ -69,6 +70,7 @@
     "tailwindcss",
     "treeify",
     "tseslint",
+    "tubelight",
     "wakatime"
   ],
   "[glsl]": {
