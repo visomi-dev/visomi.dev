@@ -11,9 +11,9 @@ import { NavItem, TubelightNavbar } from './tubelight-navbar/tubelight-navbar';
 })
 export class Home {
   navItems: NavItem[] = [
-    { name: 'Home', url: '#home', icon: 'home' },
-    { name: 'About', url: '#about', icon: 'person' },
-    { name: 'Projects', url: '#projects', icon: 'work' },
-    { name: 'Contact', url: '#contact', icon: 'mail' },
+    { name: 'Home', url: '#home', icon: 'pi pi-home' },
+    { name: 'About', url: '#about', icon: 'pi pi-user' },
+    { name: 'Projects', url: '#projects', icon: 'pi pi-briefcase' },
+    { name: 'Contact', url: '#contact', icon: 'pi pi-envelope' },
   ];
 }

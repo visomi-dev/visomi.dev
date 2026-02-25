@@ -1,4 +1,6 @@
+import { LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { LanguageSwitcher } from './language-switcher';
 
 describe('LanguageSwitcher', () => {
@@ -8,6 +10,7 @@ describe('LanguageSwitcher', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LanguageSwitcher],
+      providers: [{ provide: LOCALE_ID, useValue: 'en-US' }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LanguageSwitcher);
@@ -17,5 +20,9 @@ describe('LanguageSwitcher', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should detect English locale', () => {
+    expect(component.activeLanguage()).toBe('en');
   });
 });
