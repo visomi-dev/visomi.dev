@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Unified Technical Resume - V1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1a1a1a",
+              "background-light": "#f8f8f8",
+              "background-dark": "#f8f8f8",
+              "text-main": "#1a1a1a",
+              "text-muted": "#666666",
+              "border-color": "#e2e2e2",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+              mono: ["IBM Plex Mono", "monospace"],
+            },
+            spacing: {
+              '18': '4.5rem',
+            }
+          },
+        },
+      };
+    </script>
+<style type="text/tailwindcss">
+        body {
+            background-color: #f8f8f8;
+            color: #1a1a1a;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f8f8; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d1d1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b5b5b5; 
+        }
+    </style>
+</head>
+<body class="bg-background-light font-display antialiased selection:bg-black selection:text-white min-h-screen flex flex-col">
+<main class="flex-grow pb-24 px-6 pt-16">
+<div class="max-w-3xl mx-auto">
+<div class="mb-16 font-mono text-xs text-text-muted tracking-widest uppercase">
+                // 2024 // RESUME
+            </div>
+<header class="mb-20">
+<h1 class="text-5xl md:text-6xl font-bold tracking-tight text-text-main mb-6">Alex Sterling</h1>
+<p class="text-xl text-text-muted font-light max-w-2xl leading-relaxed">
+                    Senior Systems Engineer &amp; Distributed Systems Architect focused on high-performance infrastructure, scalability, and developer experience.
+                </p>
+<div class="mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm text-text-muted">
+<a class="flex items-center hover:text-text-main transition-colors group" href="#">
+<span class="material-symbols-outlined text-[18px] mr-2 text-text-muted group-hover:text-text-main transition-colors">mail</span>
+                        alex.sterling@example.com
+                    </a>
+<a class="flex items-center hover:text-text-main transition-colors group" href="#">
+<span class="material-symbols-outlined text-[18px] mr-2 text-text-muted group-hover:text-text-main transition-colors">globe</span>
+                        alexsterling.io
+                    </a>
+<a class="flex items-center hover:text-text-main transition-colors group" href="#">
+<span class="material-symbols-outlined text-[18px] mr-2 text-text-muted group-hover:text-text-main transition-colors">code</span>
+                        github.com/asterling
+                    </a>
+</div>
+</header>
+<section class="mb-20 border-t border-border-color pt-12">
+<div class="flex items-baseline justify-between mb-12">
+<h2 class="text-xs font-mono font-bold uppercase tracking-widest text-text-muted">01 // Experience</h2>
+</div>
+<div class="space-y-16">
+<article class="group">
+<div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-4">
+<h3 class="text-2xl font-semibold text-text-main group-hover:text-black transition-colors">Nebula Infrastructure</h3>
+<span class="font-mono text-sm text-text-muted mt-1 md:mt-0">Oct 2021 — Present</span>
+</div>
+<div class="text-base text-text-main/80 font-medium mb-6">Staff Software Engineer</div>
+<ul class="space-y-3 text-text-muted text-base leading-relaxed list-none">
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Architected and led the migration of a monolithic Python application to a microservices architecture using <strong class="text-text-main font-normal">Go and gRPC</strong>, reducing average API latency by 45% and enabling independent scaling.
+                            </li>
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Designed a multi-region <strong class="text-text-main font-normal">Kubernetes</strong> deployment strategy utilizing Federation, achieving 99.99% availability and reducing failover time significantly.
+                            </li>
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Implemented a custom <strong class="text-text-main font-normal">Terraform</strong> provider to standardize infrastructure provisioning across 12 engineering squads.
+                            </li>
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Optimized high-throughput <strong class="text-text-main font-normal">Kafka</strong> clusters handling 50k+ events/sec, tuning configurations to reduce infrastructure costs by $15k/month.
+                            </li>
+</ul>
+</article>
+<article class="group">
+<div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-4">
+<h3 class="text-2xl font-semibold text-text-main group-hover:text-black transition-colors">Vortex Analytics</h3>
+<span class="font-mono text-sm text-text-muted mt-1 md:mt-0">Mar 2018 — Sep 2021</span>
+</div>
+<div class="text-base text-text-main/80 font-medium mb-6">Senior Backend Engineer</div>
+<ul class="space-y-3 text-text-muted text-base leading-relaxed list-none">
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Spearheaded the development of a real-time analytics ingestion pipeline using <strong class="text-text-main font-normal">Rust</strong> and WebAssembly, processing over 2TB of data daily.
+                            </li>
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Revamped the core database schema in <strong class="text-text-main font-normal">PostgreSQL</strong>, implementing partitioning and materialized views which improved complex query performance by 20x.
+                            </li>
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Mentored 3 junior engineers to promotion through code reviews and technical design docs.
+                            </li>
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Integrated <strong class="text-text-main font-normal">Prometheus and Grafana</strong> for comprehensive system monitoring and SLI/SLO tracking.
+                            </li>
+</ul>
+</article>
+<article class="group">
+<div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-4">
+<h3 class="text-2xl font-semibold text-text-main group-hover:text-black transition-colors">Echo Systems</h3>
+<span class="font-mono text-sm text-text-muted mt-1 md:mt-0">Jun 2015 — Feb 2018</span>
+</div>
+<div class="text-base text-text-main/80 font-medium mb-6">Software Engineer II</div>
+<ul class="space-y-3 text-text-muted text-base leading-relaxed list-none">
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Built and maintained RESTful APIs using <strong class="text-text-main font-normal">Node.js and Express</strong>, serving 500k+ monthly active users.
+                            </li>
+<li class="pl-4 border-l border-border-color hover:border-text-main transition-colors">
+                                Automated deployment workflows using <strong class="text-text-main font-normal">Jenkins and Docker</strong>, effectively eliminating environment inconsistencies.
+                            </li>
+</ul>
+</article>
+</div>
+</section>
+<section class="mb-20 border-t border-border-color pt-12">
+<div class="flex items-baseline justify-between mb-12">
+<h2 class="text-xs font-mono font-bold uppercase tracking-widest text-text-muted">02 // Stack</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+<div>
+<h4 class="text-text-main font-medium mb-4">Languages &amp; Runtimes</h4>
+<p class="text-text-muted text-sm leading-relaxed">
+                            Rust, Go, TypeScript (Node.js/Deno), Python, C++, Java, Bash
+                        </p>
+</div>
+<div>
+<h4 class="text-text-main font-medium mb-4">Infrastructure &amp; Cloud</h4>
+<p class="text-text-muted text-sm leading-relaxed">
+                            Kubernetes (CKA), AWS (Solutions Architect), Terraform, Docker, CI/CD (GitHub Actions, ArgoCD)
+                        </p>
+</div>
+<div>
+<h4 class="text-text-main font-medium mb-4">Databases &amp; Storage</h4>
+<p class="text-text-muted text-sm leading-relaxed">
+                            PostgreSQL (Performance Tuning), Redis, Cassandra, Kafka, Elasticsearch, S3
+                        </p>
+</div>
+<div>
+<h4 class="text-text-main font-medium mb-4">System Architecture</h4>
+<p class="text-text-muted text-sm leading-relaxed">
+                            Microservices, Event-Driven Architecture, High Availability, GRPC, GraphQL, REST API Design
+                        </p>
+</div>
+</div>
+</section>
+<section class="mb-20 border-t border-border-color pt-12">
+<div class="flex items-baseline justify-between mb-12">
+<h2 class="text-xs font-mono font-bold uppercase tracking-widest text-text-muted">03 // Open Source</h2>
+</div>
+<div class="grid grid-cols-1 gap-12">
+<div class="group">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-xl font-semibold text-text-main">Kube-Guard</h3>
+<a class="text-xs font-mono text-text-muted hover:text-text-main transition-colors flex items-center gap-2" href="#">
+                                GITHUB <span class="material-symbols-outlined text-sm">arrow_outward</span>
+</a>
+</div>
+<p class="text-text-muted text-base leading-relaxed">
+                            An open-source Kubernetes admission controller written in Go. It automatically validates and mutates pod configurations to ensure compliance with security policies (e.g., preventing root user execution, enforcing resource limits). Gained 500+ stars on GitHub.
+                        </p>
+</div>
+<div class="group">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-xl font-semibold text-text-main">Rusty-Cache</h3>
+<a class="text-xs font-mono text-text-muted hover:text-text-main transition-colors flex items-center gap-2" href="#">
+                                GITHUB <span class="material-symbols-outlined text-sm">arrow_outward</span>
+</a>
+</div>
+<p class="text-text-muted text-base leading-relaxed">
+                            Designed a highly concurrent, in-memory key-value store supporting LRU eviction and TCP-based peer discovery. Implemented using Tokio for async I/O and achieved read/write speeds comparable to Redis in benchmark tests.
+                        </p>
+</div>
+</div>
+</section>
+<section class="border-t border-border-color pt-12">
+<div class="flex items-baseline justify-between mb-12">
+<h2 class="text-xs font-mono font-bold uppercase tracking-widest text-text-muted">04 // Education</h2>
+</div>
+<div class="flex flex-col md:flex-row md:justify-between md:items-baseline">
+<div>
+<h3 class="text-xl font-semibold text-text-main mb-1">Bachelor of Science in Computer Science</h3>
+<div class="text-text-muted">University of Technology, Seattle</div>
+</div>
+<span class="font-mono text-sm text-text-muted mt-2 md:mt-0">2011 — 2015</span>
+</div>
+</section>
+</div>
+</main>
+<footer class="border-t border-border-color py-12 px-6">
+<div class="max-w-3xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-text-muted font-mono">
+<p>© 2024 ALEX STERLING. ALL RIGHTS RESERVED.</p>
+<p class="mt-2 md:mt-0">DESIGNED FOR ATS PARSING</p>
+</div>
+</footer>
+</body></html>

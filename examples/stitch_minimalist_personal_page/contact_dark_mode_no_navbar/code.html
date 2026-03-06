@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact — Senior Systems Engineer</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#191919",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    gridTemplateColumns: {
+                        '16': 'repeat(16, minmax(0, 1fr))',
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">body {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .form-input-base {
+            @apply w-full bg-[#0a0a0a] border border-neutral-800 px-4 py-3 text-sm rounded transition-all duration-200 outline-none text-white placeholder-neutral-600;
+        }
+        .form-input-focus {
+            @apply focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 focus:ring-offset-0;
+        }textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background-color: #262626;
+            border-radius: 4px;
+        }</style>
+</head>
+<body class="min-h-screen font-display flex flex-col selection:bg-neutral-200 selection:text-black bg-black text-white">
+<main class="flex-grow w-full max-w-[1400px] mx-auto px-6 pb-20 grid grid-cols-1 md:grid-cols-12 gap-6 pt-16">
+<header class="col-span-1 md:col-span-12 flex flex-col gap-2 mb-8 md:mb-16">
+<div class="flex items-center gap-2 text-xs font-mono text-neutral-400">
+<span>//</span>
+<span>2024</span>
+<span>//</span>
+<span class="">CONTACT</span>
+</div>
+<h1 class="text-4xl md:text-6xl font-medium tracking-tight mt-4 text-white">Initialize connection.</h1>
+</header>
+<div class="col-span-1 md:col-span-4 flex flex-col justify-between h-full space-y-12">
+<div class="space-y-6">
+<p class="text-sm leading-relaxed max-w-sm text-neutral-400">
+                    Open for select engineering partnerships, technical advisory roles, and high-impact infrastructure projects. Responses typically within 24 hours.
+                </p>
+<div class="space-y-4 pt-4">
+<div class="flex items-center gap-3 group cursor-pointer">
+<span class="material-symbols-outlined text-neutral-400 transition-colors text-lg group-hover:text-white">mail</span>
+<a class="text-sm font-mono transition-colors text-neutral-400 group-hover:text-white" href="mailto:hello@sys-eng.io">hello@sys-eng.io</a>
+</div>
+<div class="flex items-center gap-3 group cursor-pointer">
+<span class="material-symbols-outlined text-neutral-400 transition-colors text-lg group-hover:text-white">code</span>
+<a class="text-sm font-mono transition-colors text-neutral-400 group-hover:text-white" href="#">github.com/sys-eng</a>
+</div>
+</div>
+</div>
+<div class="hidden md:block">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+</span>
+<span class="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">System Operational</span>
+</div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-7 md:col-start-6">
+<div class="border p-8 md:p-10 rounded shadow-sm bg-[#050505] border-neutral-800">
+<form action="#" class="space-y-6" method="POST">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-[11px] uppercase tracking-widest text-neutral-500 font-mono" for="name">Identity</label>
+<input class="form-input-base form-input-focus" id="name" name="name" placeholder="Name or Organization" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="block text-[11px] uppercase tracking-widest text-neutral-500 font-mono" for="email">Return Address</label>
+<input class="form-input-base form-input-focus" id="email" name="email" placeholder="email@domain.com" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-[11px] uppercase tracking-widest text-neutral-500 font-mono" for="type">Protocol</label>
+<div class="relative">
+<select class="form-input-base form-input-focus appearance-none cursor-pointer bg-[#0a0a0a]" id="type" name="type">
+<option value="consulting">Architecture Consulting</option>
+<option value="speaking">Speaking / Technical Writing</option>
+<option value="fulltime">Engineering Roles</option>
+<option value="other">General Inquiry</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-neutral-500">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-[11px] uppercase tracking-widest text-neutral-500 font-mono" for="message">Payload</label>
+<textarea class="form-input-base form-input-focus resize-none" id="message" name="message" placeholder="Brief description of project scope and requirements..." rows="6"></textarea>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<button class="px-8 py-3 text-xs font-mono uppercase tracking-widest rounded active:scale-[0.98] transition-all border bg-white text-black hover:bg-neutral-200 border-white" type="submit">
+                            Transmit
+                        </button>
+<span class="text-[10px] text-neutral-400 font-mono hidden sm:inline-block">
+                            SECURE CHANNEL // TLS 1.3
+                        </span>
+</div>
+</form>
+</div>
+</div>
+<div class="col-span-1 md:hidden mt-8 pt-8 border-t border-neutral-200">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+</span>
+<span class="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">System Operational</span>
+</div>
+</div>
+</main>
+<div class="pointer-events-none fixed inset-0 z-50 opacity-[0.03] grayscale brightness-100 contrast-125 mix-blend-multiply" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBmuHu99N8-fz5S2z9zUcJR1Q2QGd4b-jt3nJCQrCGH68dINTrYm4fqwW7YAO2ef83d2_zjImx7bnkhZwes-RPy9a4KDV7kOy5To7fqQRczb8172Q3L6Vf2jK0-nxaeRtgOhhAI5hs7Ropw9Nvg5uBkzNVKkHmN3ZiKJga3ceeaNYT4rKDh-W5M2s60aeygqZDo-2q0bomPs1a5-9eHVXa2QmdrMZVKOw7tp8SXN0JDw2ZnHB1gZ_Q90onBgHcmODqpc6t6UnCo57Bg'); background-size: cover;"></div>
+</body></html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Unified Projects Portfolio - V1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background-light": "#f7f7f7",
+                        "background-dark": "#191919",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#202020",
+                        "border-light": "#E5E5E5",
+                        "border-dark": "#333333",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+        }
+        .dark .bg-grid {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e5e5e5;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #333333;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4d4d4;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #444444;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 min-h-screen font-display transition-colors duration-300 bg-grid">
+<main class="pb-24 px-6 lg:px-12 max-w-7xl mx-auto pt-16">
+<header class="mb-20">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 text-xs font-mono text-gray-400 dark:text-gray-500 tracking-wider">
+<span>// 2021 — 2024</span>
+<span class="w-8 h-[1px] bg-gray-300 dark:bg-gray-700"></span>
+<span>PROJECTS</span>
+</div>
+<h1 class="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-primary dark:text-white leading-[1.1]">
+                    Engineering<br/>
+<span class="text-gray-400 dark:text-gray-600">Performance &amp; Scale.</span>
+</h1>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-12 mt-8">
+<p class="max-w-xl text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-light">
+                        A curated portfolio of high-throughput systems, distributed architectures, and machine learning infrastructure. Minimal overhead, maximum impact.
+                    </p>
+<div class="flex flex-wrap gap-2 font-mono text-xs">
+<button class="px-4 py-2 bg-primary dark:bg-white text-white dark:text-black border border-transparent rounded transition-all hover:opacity-90">
+                            ALL_SYSTEMS
+                        </button>
+<button class="px-4 py-2 text-gray-500 dark:text-gray-400 border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 bg-transparent rounded transition-all">
+                            INFRASTRUCTURE
+                        </button>
+<button class="px-4 py-2 text-gray-500 dark:text-gray-400 border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 bg-transparent rounded transition-all">
+                            AI_ML
+                        </button>
+<button class="px-4 py-2 text-gray-500 dark:text-gray-400 border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 bg-transparent rounded transition-all">
+                            PRODUCT
+                        </button>
+</div>
+</div>
+</div>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<article class="group flex flex-col h-full bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 rounded overflow-hidden relative">
+<div class="p-8 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-gray-700 dark:text-gray-300 text-[20px]">dns</span>
+</div>
+<span class="font-mono text-[10px] text-gray-400 border border-border-light dark:border-border-dark px-2 py-1 rounded">2024</span>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-primary dark:group-hover:text-white transition-colors">Distributed Event Bus</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 leading-relaxed flex-grow">
+                        Re-architected the core messaging layer for a fintech platform to handle burst traffic during market open. Replaced legacy REST polling with a highly available event streaming backbone.
+                    </p>
+<div class="space-y-6">
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Rust</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Kafka</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">K8s</span>
+</div>
+<div class="pt-6 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2 mb-3">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+<h4 class="font-mono text-[10px] uppercase text-gray-400 tracking-wider">Key Metrics</h4>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">5ms</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">P99 Latency</p>
+</div>
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">1M+</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Events/Sec</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 rounded overflow-hidden relative">
+<div class="p-8 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-gray-700 dark:text-gray-300 text-[20px]">psychology</span>
+</div>
+<span class="font-mono text-[10px] text-gray-400 border border-border-light dark:border-border-dark px-2 py-1 rounded">2023</span>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-primary dark:group-hover:text-white transition-colors">RAG Inference Engine</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 leading-relaxed flex-grow">
+                        Built a custom retrieval-augmented generation pipeline for legal document analysis. Optimized vector search and context window management for high-precision query responses.
+                    </p>
+<div class="space-y-6">
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Python</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Pinecone</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">LLMs</span>
+</div>
+<div class="pt-6 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2 mb-3">
+<span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+<h4 class="font-mono text-[10px] uppercase text-gray-400 tracking-wider">Key Metrics</h4>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">40%</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Cost Reduc.</p>
+</div>
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">98%</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Accuracy</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 rounded overflow-hidden relative">
+<div class="p-8 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-gray-700 dark:text-gray-300 text-[20px]">layers</span>
+</div>
+<span class="font-mono text-[10px] text-gray-400 border border-border-light dark:border-border-dark px-2 py-1 rounded">2023</span>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-primary dark:group-hover:text-white transition-colors">Real-time Collab Suite</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 leading-relaxed flex-grow">
+                        Implemented Operational Transformation (OT) algorithms for a collaborative whiteboard tool. Ensured conflict-free synchronization across global regions.
+                    </p>
+<div class="space-y-6">
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">WebSockets</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Redis</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Go</span>
+</div>
+<div class="pt-6 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2 mb-3">
+<span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+<h4 class="font-mono text-[10px] uppercase text-gray-400 tracking-wider">Key Metrics</h4>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">50k</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Users</p>
+</div>
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">&lt;50ms</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Latency</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 rounded overflow-hidden relative">
+<div class="p-8 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-gray-700 dark:text-gray-300 text-[20px]">cloud_queue</span>
+</div>
+<span class="font-mono text-[10px] text-gray-400 border border-border-light dark:border-border-dark px-2 py-1 rounded">2022</span>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-primary dark:group-hover:text-white transition-colors">Serverless Video Pipeline</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 leading-relaxed flex-grow">
+                        Engineered a transcoding pipeline leveraging ephemeral compute. Optimized for parallel processing of 4K video uploads with automatic scaling based on queue depth.
+                    </p>
+<div class="space-y-6">
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Lambda</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">FFmpeg</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">S3</span>
+</div>
+<div class="pt-6 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2 mb-3">
+<span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+<h4 class="font-mono text-[10px] uppercase text-gray-400 tracking-wider">Key Metrics</h4>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">6x</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Faster</p>
+</div>
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">65%</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Bill Reduc.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 rounded overflow-hidden relative">
+<div class="p-8 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-gray-700 dark:text-gray-300 text-[20px]">settings_input_component</span>
+</div>
+<span class="font-mono text-[10px] text-gray-400 border border-border-light dark:border-border-dark px-2 py-1 rounded">2022</span>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-primary dark:group-hover:text-white transition-colors">Infrastructure as Code v2</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 leading-relaxed flex-grow">
+                        Migrated manually provisioned cloud resources to a fully modular Terraform setup. Implemented drift detection and GitOps workflows for immutable infrastructure.
+                    </p>
+<div class="space-y-6">
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Terraform</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">ArgoCD</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">GCP</span>
+</div>
+<div class="pt-6 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2 mb-3">
+<span class="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
+<h4 class="font-mono text-[10px] uppercase text-gray-400 tracking-wider">Key Metrics</h4>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">15m</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Recovery</p>
+</div>
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">0</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Drifts</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<article class="group flex flex-col h-full bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 rounded overflow-hidden relative">
+<div class="p-8 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-6">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-gray-700 dark:text-gray-300 text-[20px]">storage</span>
+</div>
+<span class="font-mono text-[10px] text-gray-400 border border-border-light dark:border-border-dark px-2 py-1 rounded">2021</span>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-primary dark:group-hover:text-white transition-colors">Multi-Region Sharding</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mb-8 leading-relaxed flex-grow">
+                        Designed horizontal sharding strategy for user data to adhere to GDPR residency laws while maintaining low-latency access for global users.
+                    </p>
+<div class="space-y-6">
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Postgres</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Citus</span>
+<span class="px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 text-[10px] font-mono text-gray-600 dark:text-gray-400 rounded">Docker</span>
+</div>
+<div class="pt-6 border-t border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2 mb-3">
+<span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
+<h4 class="font-mono text-[10px] uppercase text-gray-400 tracking-wider">Key Metrics</h4>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">3</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Regions</p>
+</div>
+<div>
+<p class="text-xl font-bold text-gray-900 dark:text-white font-mono">100%</p>
+<p class="text-[10px] text-gray-500 uppercase tracking-wide">Compliance</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+</main>
+<footer class="border-t border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark py-12">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2 text-xs font-mono text-gray-500 dark:text-gray-500">
+<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+<span>SYSTEM_STATUS: ONLINE</span>
+</div>
+<div class="flex gap-6 text-sm text-gray-500 dark:text-gray-400 font-mono">
+<a class="hover:text-primary dark:hover:text-white transition-colors" href="#">GITHUB</a>
+<a class="hover:text-primary dark:hover:text-white transition-colors" href="#">LINKEDIN</a>
+<a class="hover:text-primary dark:hover:text-white transition-colors" href="#">TWITTER</a>
+</div>
+</div>
+</footer>
+<script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</body></html>

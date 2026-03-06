@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Unified Journey Timeline - V1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ffffff",
+              "background-light": "#000000",
+              "background-dark": "#000000", 
+              "surface-light": "#0a0a0a",
+              "surface-dark": "#0a0a0a",
+              "border-light": "#1f1f1f",
+              "border-dark": "#1f1f1f",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"],
+              "mono": ["Fira Code", "monospace"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#000000",
+              "background-light": "#f7f7f7",
+              "background-dark": "#050505", 
+              "surface-light": "#ffffff",
+              "surface-dark": "#0a0a0a",
+              "border-light": "#e5e5e5",
+              "border-dark": "#262626",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"],
+              "mono": ["Fira Code", "monospace"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .timeline-line-glow {
+            box-shadow: 0 0 15px 1px rgba(255, 255, 255, 0.1);
+        }
+        .dark .timeline-line-glow {
+             box-shadow: 0 0 15px 1px rgba(255, 255, 255, 0.05);
+        }::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e5e5e5;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+    </style>
+</head>
+<body class="dark:bg-background-dark text-gray-900 dark:text-gray-100 font-display transition-colors duration-300 min-h-screen flex flex-col bg-black">
+<main class="flex-grow w-full max-w-7xl mx-auto px-6 pt-12 pb-24">
+<div class="mb-16 md:mb-24 grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8">
+<div class="text-xs font-mono text-gray-400 dark:text-gray-500 pt-2 tracking-widest">
+                // 2024 // JOURNEY
+            </div>
+<div>
+<h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-primary dark:text-white mb-6">
+                    Engineering Journey
+                </h1>
+<p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
+                    A chronological record of systems built, scaling challenges solved, and production-grade software shipped. Focusing on high-throughput architecture and distributed systems.
+                </p>
+</div>
+</div>
+<div class="relative grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8 md:gap-12">
+<div class="absolute left-[19px] md:left-[200px] top-4 bottom-0 w-px dark:bg-border-dark hidden md:block bg-neutral-800"></div>
+<div class="absolute left-[19px] top-4 bottom-0 w-px dark:bg-border-dark md:hidden"></div>
+<div class="sticky top-24 self-start flex flex-row md:flex-col md:items-end z-20 dark:bg-background-dark py-2 md:py-0 md:bg-transparent bg-black">
+<div class="absolute left-[13px] md:left-auto md:-right-[6.5px] top-3.5 md:top-2 w-3.5 h-3.5 rounded-full dark:bg-background-dark border-2 border-primary dark:border-white z-30 bg-black"></div>
+<h2 class="ml-10 md:ml-0 text-2xl md:text-5xl font-bold dark:text-neutral-800 md:text-right transition-colors duration-500 leading-none text-neutral-700">
+                    2024
+                </h2>
+</div>
+<div class="pl-10 md:pl-12 pb-20 md:pb-32">
+<div class="mb-8 flex items-baseline justify-between flex-wrap gap-4">
+<h3 class="text-xl md:text-2xl font-medium text-primary dark:text-white">
+                        Distributed Event Bus Architecture
+                    </h3>
+<span class="inline-flex items-center px-2 py-1 rounded text-xs font-mono font-medium bg-gray-100 dark:bg-neutral-900 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-neutral-800">
+                        SHIPPED: Q1
+                    </span>
+</div>
+<p class="text-gray-600 dark:text-gray-400 mb-10 max-w-3xl leading-relaxed">
+                    Redesigned the core messaging infrastructure to handle 10k+ events/sec. Migrated from a monolithic polling system to a push-based architecture using Kafka and gRPC. Reduced latency by 400ms across the board.
+                </p>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+<div class="lg:col-span-2 rounded border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden group">
+<div class="px-4 py-3 border-b border-border-light dark:border-border-dark bg-gray-50 dark:bg-neutral-900/30 flex items-center justify-between">
+<span class="text-xs font-mono text-gray-500">system_monitor.tsx</span>
+<div class="flex gap-1.5 opacity-50">
+<div class="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
+</div>
+</div>
+<div class="p-8 bg-gray-50/50 dark:bg-neutral-900/10">
+<div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="p-4 rounded bg-white dark:bg-neutral-900 border border-border-light dark:border-border-dark shadow-sm">
+<div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Uptime</div>
+<div class="text-2xl font-semibold text-primary dark:text-white flex items-center gap-2">
+                                        99.99%
+                                        <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+</div>
+<div class="mt-2 h-1 w-full bg-gray-100 dark:bg-neutral-800 rounded-full overflow-hidden">
+<div class="h-full bg-green-500 w-[99%]"></div>
+</div>
+</div>
+<div class="p-4 rounded bg-white dark:bg-neutral-900 border border-border-light dark:border-border-dark shadow-sm">
+<div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Latency (P99)</div>
+<div class="text-2xl font-semibold text-primary dark:text-white flex items-center gap-2">
+                                        45ms
+                                        <span class="material-symbols-outlined text-purple-500 text-sm">bolt</span>
+</div>
+<div class="mt-2 text-xs text-gray-400 font-mono">-12% vs last week</div>
+</div>
+<div class="p-4 rounded bg-white dark:bg-neutral-900 border border-border-light dark:border-border-dark shadow-sm">
+<div class="text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">Throughput</div>
+<div class="text-2xl font-semibold text-primary dark:text-white flex items-center gap-2">
+                                        12.4k
+                                        <span class="material-symbols-outlined text-blue-500 text-sm">show_chart</span>
+</div>
+<div class="mt-2 text-xs text-gray-400 font-mono">events / sec</div>
+</div>
+</div>
+<div class="mt-6 h-32 w-full bg-white dark:bg-neutral-900 border border-border-light dark:border-border-dark rounded p-4 flex items-end gap-1 relative overflow-hidden">
+<div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:14px_14px]"></div>
+<div class="w-1/12 bg-primary/10 dark:bg-white/10 h-[40%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/20 dark:bg-white/20 h-[55%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/30 dark:bg-white/30 h-[45%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/40 dark:bg-white/40 h-[70%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/50 dark:bg-white/50 h-[60%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/60 dark:bg-white/60 h-[85%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/70 dark:bg-white/70 h-[75%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/80 dark:bg-white/80 h-[90%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary dark:bg-white h-[95%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/80 dark:bg-white/80 h-[80%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/70 dark:bg-white/70 h-[60%] rounded-t-sm"></div>
+<div class="w-1/12 bg-primary/60 dark:bg-white/60 h-[50%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<div class="rounded border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden flex flex-col justify-center">
+<div class="px-4 py-2 border-b border-border-light dark:border-border-dark bg-gray-50 dark:bg-neutral-900/30">
+<span class="text-xs font-mono text-gray-500">proto/stream.proto</span>
+</div>
+<div class="p-6 bg-white dark:bg-neutral-950 font-mono text-xs overflow-x-auto">
+<pre class="text-gray-800 dark:text-gray-300"><span class="text-purple-600 dark:text-purple-400">service</span> EventStream {
+  <span class="text-blue-600 dark:text-blue-400">rpc</span> Subscribe (Filter) 
+      <span class="text-purple-600 dark:text-purple-400">returns</span> (stream <span class="text-yellow-600 dark:text-yellow-400">Event</span>);
+  <span class="text-blue-600 dark:text-blue-400">rpc</span> Publish (Event) 
+      <span class="text-purple-600 dark:text-purple-400">returns</span> (Ack);
+}
+<span class="text-gray-500 dark:text-gray-600">// Optimized for low latency</span>
+<span class="text-purple-600 dark:text-purple-400">message</span> Event {
+  <span class="text-red-600 dark:text-red-400">string</span> id = 1;
+  <span class="text-red-600 dark:text-red-400">bytes</span> payload = 2;
+}</pre>
+</div>
+</div>
+<div class="rounded border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-4">
+<div class="p-2 rounded bg-primary/5 dark:bg-white/10 text-primary dark:text-white">
+<span class="material-symbols-outlined">memory</span>
+</div>
+<div>
+<h4 class="text-sm font-semibold">Resource Efficiency</h4>
+<p class="text-xs text-gray-500">Cluster optimization</p>
+</div>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-600 dark:text-gray-400">CPU Load</span>
+<span class="font-mono">42%</span>
+</div>
+<div class="h-1.5 w-full bg-gray-100 dark:bg-neutral-800 rounded-full">
+<div class="h-full bg-primary dark:bg-white w-[42%] rounded-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-gray-600 dark:text-gray-400">Memory Usage</span>
+<span class="font-mono">65%</span>
+</div>
+<div class="h-1.5 w-full bg-gray-100 dark:bg-neutral-800 rounded-full">
+<div class="h-full bg-primary dark:bg-white w-[65%] rounded-full opacity-60"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sticky top-24 self-start flex flex-row md:flex-col md:items-end z-20 dark:bg-background-dark py-2 md:py-0 md:bg-transparent bg-black">
+<div class="absolute left-[13px] md:left-auto md:-right-[6.5px] top-3.5 md:top-2 w-3.5 h-3.5 rounded-full dark:bg-background-dark border-2 border-primary dark:border-white z-30 bg-black"></div>
+<h2 class="ml-10 md:ml-0 text-2xl md:text-5xl font-bold dark:text-neutral-800 md:text-right transition-colors duration-500 leading-none text-neutral-700">
+<span class="block text-sm md:text-lg font-normal text-gray-400 dark:text-neutral-700 mb-1">Early</span>
+                    2023
+                </h2>
+</div>
+<div class="pl-10 md:pl-12 pb-20 md:pb-32">
+<div class="mb-8 flex items-baseline justify-between flex-wrap gap-4">
+<h3 class="text-xl md:text-2xl font-medium text-primary dark:text-white">
+                        SaaS Analytics Platform
+                    </h3>
+</div>
+<p class="text-gray-600 dark:text-gray-400 mb-10 max-w-3xl leading-relaxed">
+                    Built and launched a privacy-first analytics platform from scratch. Leveraged ClickHouse for columnar storage and Go for the ingestion service. Handled 1M+ rows/day on a $20 VPS.
+                </p>
+<div class="rounded border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark overflow-hidden group">
+<div class="bg-gray-100 dark:bg-neutral-900 px-3 py-2 flex gap-2 border-b border-border-light dark:border-border-dark">
+<div class="w-3 h-3 rounded-full bg-red-400/50"></div>
+<div class="w-3 h-3 rounded-full bg-yellow-400/50"></div>
+<div class="w-3 h-3 rounded-full bg-green-400/50"></div>
+</div>
+<div class="relative h-64 md:h-80 overflow-hidden bg-gray-50 dark:bg-black flex items-center justify-center">
+<img alt="Data visualization dashboard" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 filter grayscale-[50%] group-hover:grayscale-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHqbc6rrOBfhvdI-rzzeNnHfX4KxWLCC82Kycp6tQ0HWRLxuut9I5C-XkumrZGD_CEPoeAwobLGEeFCO1VKKt1McflEWuKvxC077pRx_GC1P1ay8Yws-yyUPr7yA9QCOvhniB0xMam0pUEmdzqZ-HIMXmMdeLjqidaXcgEtpXkO2mYzTkEMUwQEYLzDUmV2_4VUWPveSsLeBqg1c8tWzuS99XvutoDYHhzBTyI640_tZmnVCsuBhR27GYRa58tE-FjQMT-wEnedalM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+</div>
+<div class="p-4 border-t border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark flex gap-3 flex-wrap">
+<span class="px-2 py-1 bg-gray-100 dark:bg-neutral-800 rounded text-xs text-gray-700 dark:text-gray-300 font-mono border border-gray-200 dark:border-neutral-700">ClickHouse</span>
+<span class="px-2 py-1 bg-gray-100 dark:bg-neutral-800 rounded text-xs text-gray-700 dark:text-gray-300 font-mono border border-gray-200 dark:border-neutral-700">Go</span>
+<span class="px-2 py-1 bg-gray-100 dark:bg-neutral-800 rounded text-xs text-gray-700 dark:text-gray-300 font-mono border border-gray-200 dark:border-neutral-700">TypeScript</span>
+</div>
+</div>
+</div>
+<div class="sticky top-24 self-start flex flex-row md:flex-col md:items-end z-20 dark:bg-background-dark py-2 md:py-0 md:bg-transparent bg-black">
+<div class="absolute left-[13px] md:left-auto md:-right-[6.5px] top-3.5 md:top-2 w-3.5 h-3.5 rounded-full dark:bg-background-dark border-2 border-primary dark:border-white z-30 bg-black"></div>
+<h2 class="ml-10 md:ml-0 text-2xl md:text-5xl font-bold dark:text-neutral-800 md:text-right transition-colors duration-500 leading-none text-neutral-700">
+                    2021
+                </h2>
+</div>
+<div class="pl-10 md:pl-12 pb-12">
+<div class="mb-8 flex items-baseline justify-between flex-wrap gap-4">
+<h3 class="text-xl md:text-2xl font-medium text-primary dark:text-white">
+                       Global CDN Migration
+                    </h3>
+</div>
+<p class="text-gray-600 dark:text-gray-400 mb-10 max-w-3xl leading-relaxed">
+                       Orchestrated the migration of 50TB+ static assets to a multi-cloud CDN strategy. Implemented edge computing logic for dynamic image resizing and localization.
+                   </p>
+<div class="rounded border border-border-light dark:border-border-dark bg-[#1e1e1e] shadow-lg overflow-hidden max-w-2xl">
+<div class="flex items-center px-4 py-2 bg-[#2d2d2d] border-b border-[#333]">
+<span class="text-xs text-gray-400 font-mono">edge-worker.js</span>
+</div>
+<div class="p-6 overflow-x-auto">
+<pre class="font-mono text-sm text-gray-300 leading-relaxed"><code><span class="text-purple-400">async</span> <span class="text-blue-400">function</span> <span class="text-yellow-300">handleRequest</span>(request) {
+  <span class="text-purple-400">const</span> url = <span class="text-purple-400">new</span> <span class="text-yellow-300">URL</span>(request.url);
+  <span class="text-purple-400">const</span> region = request.cf.colo;
+  <span class="text-gray-500">// Route to nearest efficient bucket</span>
+  <span class="text-purple-400">if</span> (region === <span class="text-green-300">'SFO'</span>) {
+    <span class="text-purple-400">return</span> <span class="text-yellow-300">fetch</span>(US_WEST_BUCKET);
+  }
+  <span class="text-purple-400">return</span> <span class="text-yellow-300">fetch</span>(DEFAULT_BUCKET);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<footer class="mt-24 pt-12 border-t border-border-light dark:border-border-dark flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-sm text-gray-500 dark:text-gray-500 font-mono">
+                © 2024 Systems Engineering. Built with focus.
+            </p>
+<div class="flex gap-4">
+<a class="text-gray-400 hover:text-primary dark:hover:text-white transition-colors" href="#">
+<span class="sr-only">GitHub</span>
+<svg aria-hidden="true" class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path>
+</svg>
+</a>
+<a class="text-gray-400 hover:text-primary dark:hover:text-white transition-colors" href="#">
+<span class="sr-only">Twitter</span>
+<svg aria-hidden="true" class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24">
+<path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+</svg>
+</a>
+</div>
+</footer>
+</main>
+<script>tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ffffff",
+              "background-light": "#000000",
+              "background-dark": "#000000", 
+              "surface-light": "#0a0a0a",
+              "surface-dark": "#0a0a0a",
+              "border-light": "#1f1f1f",
+              "border-dark": "#1f1f1f",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"],
+              "mono": ["Fira Code", "monospace"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }</script>
+</body></html>
