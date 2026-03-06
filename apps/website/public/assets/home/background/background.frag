@@ -27,7 +27,7 @@ void main() {
   vec2 cell = floor(coord);
   vec2 cellUv = fract(coord) - 0.5;
 
-  vec3 color = vec3(0.02, 0.02, 0.08); // dark blue-black background
+  vec3 color = vec3(0.0, 0.0, 0.0); // #000000
 
   // Check neighboring cells for star overlap at edges
   for (int dx = -1; dx <= 1; dx++) {
@@ -59,6 +59,7 @@ void main() {
       // Distinct star colors (clearly blue, white, yellow, orange)
       float colorChoice = hash(nCellId + 0.2);
       vec3 starColor;
+
       if (colorChoice < 0.4) {
         starColor = vec3(0.85, 0.9, 1.0); // blue
       } else if (colorChoice < 0.7) {
@@ -69,6 +70,8 @@ void main() {
         starColor = vec3(1.0, 0.88, 0.7); // orange
       }
 
+      // En modo oscuro, usamos additive blending (suma) para que "brillen"
+      // sobre el fondo negro
       color += star * starColor;
     }
   }

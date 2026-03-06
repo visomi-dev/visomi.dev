@@ -2,7 +2,8 @@ import { Component, effect, inject, PLATFORM_ID, viewChild, type ElementRef } fr
 import { isPlatformBrowser } from '@angular/common';
 import { httpResource } from '@angular/common/http';
 
-import { UI } from '../../shared/ui';
+import { Deps } from '../../../shared/deps';
+import { Settings } from '../../../shared/settings';
 
 const VERTEX_SHADER_URL = '/assets/home/background/background.vert';
 const FRAGMENT_SHADER_URL = '/assets/home/background/background.frag';
@@ -18,8 +19,9 @@ const TIME_STEP = 1 / 60;
   },
 })
 export class Background {
-  private readonly ui = inject(UI);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly deps = inject(Deps);
+  private readonly settings = inject(Settings);
 
   readonly container = viewChild<ElementRef<HTMLElement>>('container');
   readonly vertexShader = httpResource.text(() => VERTEX_SHADER_URL);
@@ -31,13 +33,13 @@ export class Background {
     }
 
     const containerRef = this.container();
-    const three = this.ui.three();
+    const three = this.deps.three();
     const vert = this.vertexShader.value();
     const frag = this.fragmentShader.value();
 
     if (containerRef == null || three == null || vert == null || frag == null) {
       if (containerRef != null) {
-        this.ui.getThree();
+        this.deps.getThree();
       }
 
       return;

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { PageNavigationLoader } from './shared/page-navigation-loader/page-navigation-loader';
-import { LanguageSwitcher } from './shared/language-switcher/language-switcher';
+import { PageNavigationLoader } from './shared/layout/page-navigation-loader/page-navigation-loader';
 
 @Component({
-  imports: [RouterOutlet, PageNavigationLoader, LanguageSwitcher],
+  imports: [RouterOutlet, PageNavigationLoader],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',

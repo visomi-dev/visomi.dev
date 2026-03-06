@@ -14,9 +14,7 @@ import { Settings } from '../../settings';
         style({ opacity: 0, transform: 'translateY(4rem)' }),
         animate('400ms', style({ opacity: 1, transform: 'none' })),
       ]),
-      transition(':leave', [
-        animate('400ms', style({ opacity: 0, transform: 'translateY(-4rem)' })),
-      ]),
+      transition(':leave', [animate('400ms', style({ opacity: 0, transform: 'translateY(-4rem)' }))]),
     ]),
   ],
 })
@@ -28,10 +26,7 @@ export class ThemeSwitcher {
 
   toggleTheme(event?: KeyboardEvent) {
     if (!event || event?.code === 'Space') {
-      const nextTheme =
-        this.themes[
-          (this.themes.indexOf(this.theme()) + 1) % this.themes.length
-        ];
+      const nextTheme = this.themes[(this.themes.indexOf(this.theme()) + 1) % this.themes.length];
 
       this.settings.setTheme(nextTheme);
     }

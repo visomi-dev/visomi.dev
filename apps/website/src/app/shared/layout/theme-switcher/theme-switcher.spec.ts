@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TubelightNavbar } from './tubelight-navbar';
+import { ThemeSwitcher } from './theme-switcher';
 
-describe('TubelightNavbar', () => {
-  let component: TubelightNavbar;
-  let fixture: ComponentFixture<TubelightNavbar>;
+describe('ThemeSwitcher', () => {
+  let component: ThemeSwitcher;
+  let fixture: ComponentFixture<ThemeSwitcher>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TubelightNavbar],
+      imports: [ThemeSwitcher],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TubelightNavbar);
+    fixture = TestBed.createComponent(ThemeSwitcher);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

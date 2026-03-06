@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 
-import { UI } from '../ui';
+import { UI } from '../../ui';
 
 @Component({
   selector: 'app-page-navigation-loader',

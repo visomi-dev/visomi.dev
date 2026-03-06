@@ -1,92 +1,124 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Unified Projects Portfolio - V1</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#000000",
-                        "background-light": "#f7f7f7",
-                        "background-dark": "#191919",
-                        "surface-light": "#FFFFFF",
-                        "surface-dark": "#202020",
-                        "border-light": "#E5E5E5",
-                        "border-dark": "#333333",
-                    },
-                    fontFamily: {
-                        "display": ["Inter", "sans-serif"],
-                        "mono": ["JetBrains Mono", "monospace"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                },
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Unified Projects Portfolio - V1</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#000000',
+              'background-light': '#f7f7f7',
+              'background-dark': '#191919',
+              'surface-light': '#FFFFFF',
+              'surface-dark': '#202020',
+              'border-light': '#E5E5E5',
+              'border-dark': '#333333',
             },
-        }
+            fontFamily: {
+              display: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            borderRadius: {
+              DEFAULT: '0.25rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              full: '9999px',
+            },
+          },
+        },
+      };
     </script>
-<style>
-        .bg-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-        }
-        .dark .bg-grid {
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-        }::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #e5e5e5;
-            border-radius: 4px;
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #333333;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #d4d4d4;
-        }
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background: #444444;
-        }
+    <style>
+      .bg-grid {
+        background-size: 40px 40px;
+        background-image:
+          linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      }
+      .dark .bg-grid {
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #e5e5e5;
+        border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #333333;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #d4d4d4;
+      }
+      .dark ::-webkit-scrollbar-thumb:hover {
+        background: #444444;
+      }
     </style>
-</head>
-<body class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 min-h-screen font-display transition-colors duration-300 bg-grid">
-<nav class="fixed top-0 left-0 w-full z-50 border-b border-border-light dark:border-border-dark bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-sm">
-<div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="w-2 h-2 bg-primary dark:bg-white rounded-full"></div>
-<span class="font-mono font-bold tracking-tight text-lg" style="">VISOMI.DEV<br></span>
-</div>
-<div class="hidden md:flex items-center gap-8 text-[11px] font-mono tracking-widest text-gray-500 dark:text-gray-400">
-<a class="hover:text-primary dark:hover:text-white transition-colors" href="#" style="">// HOME</a>
-<a class="text-primary dark:text-white font-medium" href="#" style="">// WORK</a>
-<a class="hover:text-primary dark:hover:text-white transition-colors" href="#" style="">// SYSTEMS</a>
-<a class="hover:text-primary dark:hover:text-white transition-colors" href="#" style="">// CONTACT</a>
-</div>
-<button class="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')" style="">
-<span class="material-symbols-outlined text-[20px] block dark:hidden" style="">dark_mode</span>
-<span class="material-symbols-outlined text-[20px] hidden dark:block" style="">light_mode</span>
-</button>
-</div>
-</nav>
-<script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display bg-grid min-h-screen text-gray-900 transition-colors duration-300 dark:text-gray-100"
+  >
+    <nav
+      class="border-border-light dark:border-border-dark bg-background-light/90 dark:bg-background-dark/90 fixed top-0 left-0 z-50 w-full border-b backdrop-blur-sm"
+    >
+      <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-12">
+        <div class="flex items-center gap-3">
+          <div class="bg-primary h-2 w-2 rounded-full dark:bg-white"></div>
+          <span class="font-mono text-lg font-bold tracking-tight" style="">ENG.IO<br /></span>
+        </div>
+        <div
+          class="hidden items-center gap-8 font-mono text-[11px] tracking-widest text-gray-500 md:flex dark:text-gray-400"
+        >
+          <a class="hover:text-primary transition-colors dark:hover:text-white" href="#" style="">// HOME</a>
+          <a class="text-primary font-medium dark:text-white" href="#" style="">// WORK</a>
+          <a class="hover:text-primary transition-colors dark:hover:text-white" href="#" style="">// SYSTEMS</a>
+          <a class="hover:text-primary transition-colors dark:hover:text-white" href="#" style="">// CONTACT</a>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="font-mono text-[11px] tracking-widest text-gray-500 dark:text-gray-400">
+            <a class="text-primary font-bold transition-colors dark:text-white" href="#">EN</a>
+            <span class="mx-1">/</span>
+            <a class="hover:text-primary transition-colors dark:hover:text-white" href="#">ES</a>
+          </div>
+          <button
+            class="rounded p-2 transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
+            onclick="document.documentElement.classList.toggle('dark')"
+            style=""
+          >
+            <span class="material-symbols-outlined block text-[20px] dark:hidden" style="">dark_mode</span>
+            <span class="material-symbols-outlined hidden text-[20px] dark:block" style="">light_mode</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <script>
+      if (
+        localStorage.theme === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
     </script>
-</body></html>
+  </body>
+</html>

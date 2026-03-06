@@ -71,6 +71,7 @@
     "treeify",
     "tseslint",
     "tubelight",
+    "visomi",
     "wakatime"
   ],
   "[glsl]": {
