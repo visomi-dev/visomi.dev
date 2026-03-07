@@ -46,9 +46,9 @@
 
     <div class="flex items-center gap-4">
       <div class="font-mono text-xs tracking-widest text-neutral-500 dark:text-neutral-400">
-        <a class="font-bold text-black transition-colors dark:text-white" href="#">EN</a>
+        <a [href]="englishHref()" [class]="getLocaleLinkClass('en')">EN</a>
         <span class="mx-1">/</span>
-        <a class="transition-colors hover:text-black dark:hover:text-white" href="#">ES</a>
+        <a [href]="spanishHref()" [class]="getLocaleLinkClass('es')">ES</a>
       </div>
       <app-theme-switcher />
     </div>

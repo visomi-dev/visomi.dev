@@ -6,8 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './hero.html',
   styleUrl: './hero.css',
   host: {
-    class:
-      /* tw */ 'relative z-10 flex min-h-screen flex-col items-center justify-center -mt-20 px-6 pt-12 text-center',
+    class: /* tw */ 'relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center',
   },
 })
 export class Hero {}

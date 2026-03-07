@@ -1,7 +1,7 @@
 {
-  "name": "api",
+  "name": "server",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/api/src",
+  "sourceRoot": "apps/server/src",
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -9,14 +9,22 @@
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
+      "dependsOn": [
+        "^build",
+        {
+          "projects": ["api", "website"],
+          "target": "build",
+          "params": "forward"
+        }
+      ],
       "options": {
         "platform": "node",
-        "outputPath": "dist/apps/api",
+        "outputPath": "dist/apps/server",
         "format": ["esm"],
         "bundle": false,
-        "main": "apps/api/src/main.ts",
-        "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": ["apps/api/src/assets"],
+        "main": "apps/server/src/main.ts",
+        "tsConfig": "apps/server/tsconfig.app.json",
+        "assets": ["apps/server/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -41,7 +49,7 @@
       "dependsOn": ["build"],
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
-      "outputs": ["{workspaceRoot}/dist/apps/api/package.json", "{workspaceRoot}/dist/apps/api/pnpm-lock.yaml"],
+      "outputs": ["{workspaceRoot}/dist/apps/server/package.json", "{workspaceRoot}/dist/apps/server/pnpm-lock.yaml"],
       "options": {
         "buildTarget": "build"
       }
@@ -49,7 +57,7 @@
     "copy-workspace-modules": {
       "dependsOn": ["build"],
       "cache": true,
-      "outputs": ["{workspaceRoot}/dist/apps/api/workspace_modules"],
+      "outputs": ["{workspaceRoot}/dist/apps/server/workspace_modules"],
       "executor": "@nx/js:copy-workspace-modules",
       "options": {
         "buildTarget": "build"
@@ -65,21 +73,16 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "server:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "api:build:development"
+          "buildTarget": "server:build:development"
         },
         "production": {
-          "buildTarget": "api:build:production"
+          "buildTarget": "server:build:production"
         }
-      }
-    },
-    "test": {
-      "options": {
-        "passWithNoTests": true
       }
     }
   }

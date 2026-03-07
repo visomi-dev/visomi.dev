@@ -5,6 +5,18 @@
   "prefix": "app",
   "sourceRoot": "apps/website/src",
   "tags": [],
+  "i18n": {
+    "locales": {
+      "es": {
+        "translation": "apps/website/src/locales/messages.es.json",
+        "subPath": "es"
+      },
+      "en": {
+        "translation": "apps/website/src/locales/messages.en.json",
+        "subPath": ""
+      }
+    }
+  },
   "targets": {
     "build": {
       "executor": "@angular/build:application",
@@ -25,6 +37,7 @@
         "ssr": {
           "entry": "apps/website/src/server.ts"
         },
+        "localize": true,
         "outputMode": "server"
       },
       "configurations": {
