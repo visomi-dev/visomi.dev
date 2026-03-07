@@ -12,8 +12,16 @@
 }
 
 .in-out-leave {
-  opacity: 0;
-  transition: opacity 400ms ease-in;
+  animation: in-out-leave 400ms ease-in forwards;
+}
+
+@keyframes in-out-leave {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes in-out-enter {

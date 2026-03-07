@@ -12,12 +12,13 @@ export interface NavItem {
   standalone: true,
   imports: [MatIconModule],
   template: `
-    <div class="fixed bottom-0 left-1/2 z-50 mb-6 -translate-x-1/2 sm:top-0 sm:pt-6 w-fit">
-      <div class="bg-slate-900/40 border border-slate-700/50 flex items-center gap-1 rounded-full p-1 shadow-2xl backdrop-blur-xl relative">
-        
+    <div class="fixed bottom-0 left-1/2 z-50 mb-6 w-fit -translate-x-1/2 sm:top-0 sm:pt-6">
+      <div
+        class="relative flex items-center gap-1 rounded-full border border-slate-700/50 bg-slate-900/40 p-1 shadow-2xl backdrop-blur-xl"
+      >
         <!-- Lamp / Active Indicator (CSS Transition) -->
-        <div 
-          class="absolute h-[calc(100%-8px)] bg-blue-500/10 rounded-full -z-10 pointer-events-none border border-blue-500/20 transition-all duration-500 cubic-bezier(0.34,1.56,0.64,1)"
+        <div
+          class="cubic-bezier(0.34,1.56,0.64,1) pointer-events-none absolute -z-10 h-[calc(100%-8px)] rounded-full border border-blue-500/20 bg-blue-500/10 transition-all duration-500"
           [style.left.px]="lampPosition().left"
           [style.width.px]="lampPosition().width"
           [class.opacity-0]="!initialized()"
@@ -35,13 +36,13 @@ export interface NavItem {
             #navItem
             [href]="item.url"
             (click)="setActive(item.name)"
-            class="relative cursor-pointer rounded-full px-4 sm:px-6 py-2 text-sm font-medium transition-colors duration-300 flex items-center justify-center min-w-[44px]"
+            class="relative flex min-w-[44px] cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 sm:px-6"
             [class.text-white]="activeTab() === item.name"
             [class.text-slate-400]="activeTab() !== item.name"
             [class.hover:text-slate-200]="activeTab() !== item.name"
           >
             <span class="hidden md:inline">{{ item.name }}</span>
-            <mat-icon class="md:hidden !text-[20px]">{{ item.icon }}</mat-icon>
+            <mat-icon class="!text-[20px] md:hidden">{{ item.icon }}</mat-icon>
           </a>
         }
       </div>
@@ -52,7 +53,7 @@ export class NavBarComponent {
   items = input.required<NavItem[]>();
   activeTab = signal('');
   initialized = signal(false);
-  
+
   private navItemElements = viewChildren<ElementRef<HTMLElement>>('navItem');
 
   // Computed position for the lamp
@@ -60,19 +61,19 @@ export class NavBarComponent {
     const active = this.activeTab();
     const items = this.navItemElements();
     const itemList = this.items();
-    
+
     if (!active || items.length === 0) return { left: 0, width: 0 };
 
-    const activeIndex = itemList.findIndex(i => i.name === active);
+    const activeIndex = itemList.findIndex((i) => i.name === active);
     const activeEl = items[activeIndex]?.nativeElement;
 
     if (activeEl) {
       return {
         left: activeEl.offsetLeft,
-        width: activeEl.offsetWidth
+        width: activeEl.offsetWidth,
       };
     }
-    
+
     return { left: 0, width: 0 };
   });
 
@@ -82,7 +83,7 @@ export class NavBarComponent {
       if (!this.activeTab() && this.items().length > 0) {
         this.activeTab.set(this.items()[0].name);
       }
-      
+
       // Small delay to allow DOM to settle before showing the lamp animation
       setTimeout(() => {
         this.initialized.set(true);
@@ -94,4 +95,3 @@ export class NavBarComponent {
     this.activeTab.set(name);
   }
 }
-

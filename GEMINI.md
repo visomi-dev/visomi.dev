@@ -82,15 +82,20 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ### Host Bindings
 
-- Use the `host` property in the `@Component` decorator, **never** `@HostBinding` or `@HostListener`:
+- Use the `host` property in the `@Component` decorator, **never** `@HostBinding` or `@HostListener`.
+- **Primary Layout Rule**: Use the `host` property to set the component's base styling (background, text color, layout) using Tailwind classes. This ensures themes are centralized in the Typescript decorator rather than spread across CSS files.
   ```ts
   @Component({
     host: {
-      class: /* tw */ 'block min-h-full w-full',
+      class: /* tw */ 'block min-h-full w-full bg-surface-light text-muted-light dark:bg-surface-dark dark:text-muted-dark',
     },
   })
   ```
 - Add the `/* tw */` annotation before Tailwind class strings in the `host` property to enable IDE IntelliSense.
+- **Fixed Navbar Layout Rules**:
+  - Pages with a fixed navbar must have `pt-20` (80px) on their `host` class to prevent content clipping.
+  - Components intended to be centered relative to the whole screen (like a Hero) must have `-mt-20` on their `host` class to compensate for the page padding.
+  - Navbars must have the `print:hidden` class in the template.
 
 ### Inputs & Outputs
 
@@ -342,7 +347,9 @@ Follow the pattern `@@{page}{Section}{Description}`:
 ### Component CSS
 
 - Each component has a companion `.css` file (even if empty); never delete it.
-- Use component CSS for:
+- **Strict Styling Rule**: Never use hardcoded colors (hex, rgb, names) or `@apply` with hardcoded values in component CSS. All design tokens MUST be defined in `styles.css` under the `@theme` block and used via Tailwind classes.
+- **No :host styling**: Do not use `:host` in component CSS to set base properties like background or layout. Use the `host` property in the decorator instead.
+- Use component CSS ONLY for:
   - Keyframe animations (`@keyframes`)
   - Element-level styles that cannot be expressed as Tailwind utilities (e.g., `canvas` element sizing)
   - `@starting-style` transitions

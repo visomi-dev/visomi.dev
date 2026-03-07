@@ -3,7 +3,7 @@ import { Component, ElementRef, ViewChild, OnDestroy, afterNextRender } from '@a
 @Component({
   selector: 'app-starfield',
   standalone: true,
-  template: `<canvas #canvas class="fixed inset-0 z-0 pointer-events-none opacity-80"></canvas>`,
+  template: `<canvas #canvas class="pointer-events-none fixed inset-0 z-0 opacity-80"></canvas>`,
 })
 export class StarfieldComponent implements OnDestroy {
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -15,13 +15,21 @@ export class StarfieldComponent implements OnDestroy {
       const canvas = this.canvasRef.nativeElement;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
-      
+
       let width = window.innerWidth;
       let height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
 
-      const stars: {x: number, y: number, size: number, opacity: number, speed: number, minOpacity: number, maxOpacity: number}[] = [];
+      const stars: {
+        x: number;
+        y: number;
+        size: number;
+        opacity: number;
+        speed: number;
+        minOpacity: number;
+        maxOpacity: number;
+      }[] = [];
       const numStars = Math.floor((width * height) / 1200);
 
       for (let i = 0; i < numStars; i++) {
@@ -30,16 +38,16 @@ export class StarfieldComponent implements OnDestroy {
           y: Math.random() * height,
           size: Math.random() > 0.9 ? 2 : 1,
           opacity: Math.random(),
-          speed: (Math.random() * 0.005) + 0.001,
+          speed: Math.random() * 0.005 + 0.001,
           minOpacity: Math.random() * 0.2,
-          maxOpacity: Math.random() * 0.6 + 0.4
+          maxOpacity: Math.random() * 0.6 + 0.4,
         });
       }
 
       const animate = () => {
         ctx.clearRect(0, 0, width, height);
-        
-        stars.forEach(star => {
+
+        stars.forEach((star) => {
           // Twinkle effect
           star.opacity += star.speed;
           if (star.opacity >= star.maxOpacity || star.opacity <= star.minOpacity) {

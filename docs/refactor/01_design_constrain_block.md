@@ -6,11 +6,11 @@ This website represents a systems-oriented senior engineer.
 
 It must communicate:
 
-* Architectural thinking
-* Structural clarity
-* Calm confidence
-* Technical depth
-* AI-augmented engineering discipline
+- Architectural thinking
+- Structural clarity
+- Calm confidence
+- Technical depth
+- AI-augmented engineering discipline
 
 The site is not a portfolio template.
 It is a structured system that happens to present a person.
@@ -21,24 +21,24 @@ It is a structured system that happens to present a person.
 
 ### Minimalism is mandatory.
 
-* No visual clutter.
-* No decorative elements without structural purpose.
-* No trend-driven gradients.
-* No UI gimmicks.
-* No excessive animations.
+- No visual clutter.
+- No decorative elements without structural purpose.
+- No trend-driven gradients.
+- No UI gimmicks.
+- No excessive animations.
 
 ### High Signal-to-Noise Ratio.
 
-* Every element must justify its existence.
-* Spacing is intentional and generous.
-* Clear typographic hierarchy.
+- Every element must justify its existence.
+- Spacing is intentional and generous.
+- Clear typographic hierarchy.
 
 ### Typography-driven layout.
 
-* Layout is guided by text blocks and rhythm.
-* Avoid card overload.
-* Avoid excessive borders.
-* Avoid visual fragmentation.
+- Layout is guided by text blocks and rhythm.
+- Avoid card overload.
+- Avoid excessive borders.
+- Avoid visual fragmentation.
 
 ---
 
@@ -46,12 +46,12 @@ It is a structured system that happens to present a person.
 
 The design may subtly reflect:
 
-* Fascination with the universe (structure within vastness).
+- Fascination with the universe (structure within vastness).
   → Calm depth.
   → Controlled contrast.
   → Spatial balance.
 
-* Influence from RPG system design (medieval or futuristic).
+- Influence from RPG system design (medieval or futuristic).
   → Clear progression.
   → Structured sections.
   → Layered information hierarchy.
@@ -64,22 +64,22 @@ This is conceptual, not decorative.
 
 ## 4. Motion & Interaction Rules
 
-* Motion must be subtle and purposeful.
-* No large-scale parallax.
-* No distracting transitions.
-* Duration must feel fast and engineered, not playful.
-* The animated background (already implemented) is the only expressive element.
+- Motion must be subtle and purposeful.
+- No large-scale parallax.
+- No distracting transitions.
+- Duration must feel fast and engineered, not playful.
+- The animated background (already implemented) is the only expressive element.
 
 ---
 
 ## 5. Structural Rules
 
-* Sections must feel modular and composable.
-* Reusable layout primitives only.
-* No ad-hoc styling.
-* All styles must come from defined tokens.
-* No inline styles.
-* No arbitrary values.
+- Sections must feel modular and composable.
+- Reusable layout primitives only.
+- No ad-hoc styling.
+- All styles must come from defined tokens.
+- No inline styles.
+- No arbitrary values.
 
 ---
 
@@ -87,23 +87,23 @@ This is conceptual, not decorative.
 
 Language must feel:
 
-* Calm
-* Precise
-* Architected
-* Direct
-* Non-hype
+- Calm
+- Precise
+- Architected
+- Direct
+- Non-hype
 
 Avoid:
 
-* Buzzwords without depth.
-* Startup marketing tone.
-* Overly emotional phrasing.
+- Buzzwords without depth.
+- Startup marketing tone.
+- Overly emotional phrasing.
 
 Favor:
 
-* Structured statements.
-* Clear capability signals.
-* Technical maturity.
+- Structured statements.
+- Clear capability signals.
+- Technical maturity.
 
 ---
 
@@ -111,10 +111,10 @@ Favor:
 
 Resume must:
 
-* Be semantically structured.
-* Be machine-readable.
-* Maintain clean visual export capability.
-* Avoid complex layout grids that break ATS parsing.
+- Be semantically structured.
+- Be machine-readable.
+- Maintain clean visual export capability.
+- Avoid complex layout grids that break ATS parsing.
 
 Structure > Visual decoration.
 
@@ -122,11 +122,11 @@ Structure > Visual decoration.
 
 ## 8. Implementation Discipline
 
-* SSR-safe.
-* i18n-ready.
-* Accessibility baseline respected.
-* Deterministic design decisions.
-* Document every structural decision.
+- SSR-safe.
+- i18n-ready.
+- Accessibility baseline respected.
+- Deterministic design decisions.
+- Document every structural decision.
 
 No improvisation outside documented guidelines.
 
@@ -136,8 +136,8 @@ No improvisation outside documented guidelines.
 
 If a design decision:
 
-* Feels trendy → reject.
-* Feels decorative → reject.
-* Feels noisy → reject.
-* Feels like a template → reject.
-* Feels engineered and calm → accept.
+- Feels trendy → reject.
+- Feels decorative → reject.
+- Feels noisy → reject.
+- Feels like a template → reject.
+- Feels engineered and calm → accept.

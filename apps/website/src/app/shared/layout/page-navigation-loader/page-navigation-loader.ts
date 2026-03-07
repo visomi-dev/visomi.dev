@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 
 import { UI } from '../../ui';
 
@@ -15,6 +15,9 @@ export class PageNavigationLoader {
   private readonly ui = inject(UI);
 
   readonly loading = this.ui.loading.asReadonly();
-  readonly authenticating = this.ui.loading.asReadonly();
   readonly navigating = this.ui.navigating;
+
+  readonly show = computed(() => {
+    return this.loading() || this.navigating();
+  });
 }

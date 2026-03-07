@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageNavigationLoader } from './page-navigation-loader';
+import { RadioButtons } from './radio-buttons';
 
-describe('PageNavigationLoader', () => {
-  let component: PageNavigationLoader;
-  let fixture: ComponentFixture<PageNavigationLoader>;
+describe('RadioButtons', () => {
+  let component: RadioButtons;
+  let fixture: ComponentFixture<RadioButtons>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PageNavigationLoader],
+      imports: [RadioButtons],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PageNavigationLoader);
+    fixture = TestBed.createComponent(RadioButtons);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,36 @@
+<app-navbar class="print:hidden" />
+
+<main class="mx-auto grid w-full max-w-screen-2xl grow grid-cols-1 gap-6 px-6 pt-16 pb-20 md:grid-cols-12">
+  <header class="mb-8 flex flex-col gap-2 md:col-span-12 md:mb-16">
+    <div class="text-muted-light dark:text-muted-dark flex items-center gap-2 font-mono text-xs">
+      <span>//</span>
+      <span>2024</span>
+      <span>//</span>
+      <span class="text-surface-dark dark:text-surface-light" i18n="@@contactPageLabel">CONTACT</span>
+    </div>
+    <h1
+      class="text-surface-dark dark:text-surface-light mt-4 text-4xl font-medium tracking-tight md:text-6xl"
+      i18n="@@contactPageTitle"
+    >
+      Initialize connection.
+    </h1>
+  </header>
+
+  <app-hero />
+
+  <app-form />
+
+  <div class="border-border-light dark:border-border-dark mt-8 border-t pt-8 md:hidden">
+    <div class="flex items-center gap-2">
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+      </span>
+      <span
+        class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase"
+        i18n="@@contactPageStatusMobile"
+        >System Operational</span
+      >
+    </div>
+  </div>
+</main>

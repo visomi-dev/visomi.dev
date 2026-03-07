@@ -1,0 +1,230 @@
+<app-navbar class="print:hidden" />
+
+<main class="grow px-6 pt-16 pb-24">
+  <div class="mx-auto max-w-3xl">
+    <div
+      class="text-muted-light dark:text-muted-dark mb-16 font-mono text-xs tracking-widest uppercase"
+      i18n="@@resumePageLabel"
+    >
+      // 2024 // RESUME
+    </div>
+
+    <header class="mb-20">
+      <h1
+        class="text-surface-dark dark:text-surface-light mb-6 text-5xl font-bold tracking-tight md:text-6xl"
+        i18n="@@resumeName"
+      >
+        Alex Sterling
+      </h1>
+      <p
+        class="text-muted-light dark:text-muted-dark max-w-2xl text-xl leading-relaxed font-light"
+        i18n="@@resumeSummary"
+      >
+        Senior Systems Engineer &amp; Distributed Systems Architect focused on high-performance infrastructure,
+        scalability, and developer experience.
+      </p>
+      <div class="text-muted-light dark:text-muted-dark mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="mailto:hello@visomi.dev"
+        >
+          <span
+            class="pi pi-envelope text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          hello@visomi.dev
+        </a>
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="https://visomi.dev"
+        >
+          <span
+            class="pi pi-globe text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          visomi.dev
+        </a>
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="https://github.com/visomi-dev"
+        >
+          <span
+            class="pi pi-github text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          github.com/visomi-dev
+        </a>
+      </div>
+    </header>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2
+          class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase"
+          i18n="@@resumeExpLabel"
+        >
+          01 // Experience
+        </h2>
+      </div>
+      <div class="space-y-16">
+        <article class="group">
+          <div class="mb-4 flex flex-col md:flex-row md:items-baseline md:justify-between">
+            <h3
+              class="text-surface-dark dark:text-surface-light group-hover:text-surface-dark text-2xl font-semibold transition-colors dark:group-hover:text-white"
+              i18n="@@resumeExp1Company"
+            >
+              Nebula Infrastructure
+            </h3>
+            <span class="text-muted-light dark:text-muted-dark mt-1 font-mono text-sm md:mt-0" i18n="@@resumeExp1Date"
+              >Oct 2021 — Present</span
+            >
+          </div>
+          <div
+            class="text-surface-dark/80 dark:text-surface-light/80 mb-6 text-base font-medium"
+            i18n="@@resumeExp1Role"
+          >
+            Staff Software Engineer
+          </div>
+          <ul class="text-muted-light dark:text-muted-dark list-none space-y-3 text-base leading-relaxed">
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+              i18n="@@resumeExp1Item1"
+            >
+              Architected and led the migration of a monolithic Python application to a microservices architecture using
+              <strong class="text-surface-dark dark:text-surface-light font-normal">Go and gRPC</strong>, reducing
+              average API latency by 45% and enabling independent scaling.
+            </li>
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+              i18n="@@resumeExp1Item2"
+            >
+              Designed a multi-region
+              <strong class="text-surface-dark dark:text-surface-light font-normal">Kubernetes</strong> deployment
+              strategy utilizing Federation, achieving 99.99% availability and reducing failover time significantly.
+            </li>
+          </ul>
+        </article>
+
+        <article class="group">
+          <div class="mb-4 flex flex-col md:flex-row md:items-baseline md:justify-between">
+            <h3
+              class="text-surface-dark dark:text-surface-light group-hover:text-surface-dark text-2xl font-semibold transition-colors dark:group-hover:text-white"
+              i18n="@@resumeExp2Company"
+            >
+              Vortex Analytics
+            </h3>
+            <span class="text-muted-light dark:text-muted-dark mt-1 font-mono text-sm md:mt-0" i18n="@@resumeExp2Date"
+              >Mar 2018 — Sep 2021</span
+            >
+          </div>
+          <div
+            class="text-surface-dark/80 dark:text-surface-light/80 mb-6 text-base font-medium"
+            i18n="@@resumeExp2Role"
+          >
+            Senior Backend Engineer
+          </div>
+          <ul class="text-muted-light dark:text-muted-dark list-none space-y-3 text-base leading-relaxed">
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+              i18n="@@resumeExp2Item1"
+            >
+              Spearheaded the development of a real-time analytics ingestion pipeline using
+              <strong class="text-surface-dark dark:text-surface-light font-normal">Rust</strong> and WebAssembly,
+              processing over 2TB of data daily.
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2
+          class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase"
+          i18n="@@resumeStackLabel"
+        >
+          02 // Stack
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
+        <div>
+          <h4 class="text-surface-dark dark:text-surface-light mb-4 font-medium" i18n="@@resumeStackLangLabel">
+            Languages &amp; Runtimes
+          </h4>
+          <p class="text-muted-light dark:text-muted-dark text-sm leading-relaxed" i18n="@@resumeStackLangList">
+            Rust, Go, TypeScript (Node.js/Deno), Python, C++, Java, Bash
+          </p>
+        </div>
+        <div>
+          <h4 class="text-surface-dark dark:text-surface-light mb-4 font-medium" i18n="@@resumeStackInfraLabel">
+            Infrastructure &amp; Cloud
+          </h4>
+          <p class="text-muted-light dark:text-muted-dark text-sm leading-relaxed" i18n="@@resumeStackInfraList">
+            Kubernetes (CKA), AWS (Solutions Architect), Terraform, Docker, CI/CD (GitHub Actions, ArgoCD)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2
+          class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase"
+          i18n="@@resumeOssLabel"
+        >
+          03 // Open Source
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 gap-12">
+        <div class="group">
+          <div class="mb-3 flex items-center justify-between">
+            <h3 class="text-surface-dark dark:text-surface-light text-xl font-semibold" i18n="@@resumeOss1Title">
+              Kube-Guard
+            </h3>
+            <a
+              class="text-muted-light dark:text-muted-dark hover:text-surface-dark dark:hover:text-surface-light flex items-center gap-2 font-mono text-xs transition-colors"
+              href="https://github.com/visomi-dev"
+              target="_blank"
+            >
+              GITHUB <span class="pi pi-arrow-up-right text-sm"></span>
+            </a>
+          </div>
+          <p class="text-muted-light dark:text-muted-dark text-base leading-relaxed" i18n="@@resumeOss1Desc">
+            An open-source Kubernetes admission controller written in Go. It automatically validates and mutates pod
+            configurations to ensure compliance with security policies.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2
+          class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase"
+          i18n="@@resumeEduLabel"
+        >
+          04 // Education
+        </h2>
+      </div>
+      <div class="flex flex-col md:flex-row md:items-baseline md:justify-between">
+        <div>
+          <h3 class="text-surface-dark dark:text-surface-light mb-1 text-xl font-semibold" i18n="@@resumeEdu1Title">
+            Bachelor of Science in Computer Science
+          </h3>
+          <div class="text-muted-light dark:text-muted-dark" i18n="@@resumeEdu1School">
+            University of Technology, Seattle
+          </div>
+        </div>
+        <span class="text-muted-light dark:text-muted-dark mt-2 font-mono text-sm md:mt-0" i18n="@@resumeEdu1Date"
+          >2011 — 2015</span
+        >
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="border-border-light dark:border-border-dark border-t px-6 py-12">
+  <div
+    class="mx-auto flex max-w-3xl flex-col items-center justify-between font-mono text-xs text-neutral-400 md:flex-row"
+  >
+    <p i18n="@@resumeFooterCopyright">© 2024 ALEX STERLING. ALL RIGHTS RESERVED.</p>
+    <p class="mt-2 md:mt-0" i18n="@@resumeFooterAts">DESIGNED FOR ATS PARSING</p>
+  </div>
+</footer>

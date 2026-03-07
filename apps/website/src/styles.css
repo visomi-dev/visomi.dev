@@ -62,3 +62,14 @@
 @utility animation-delay-4000 {
   animation-delay: 4s;
 }
+
+@media print {
+  body {
+    padding-top: 0 !important;
+  }
+
+  /* Ensure utilities defined with print: prefix are respected */
+  .print\:hidden {
+    display: none !important;
+  }
+}

@@ -1,0 +1,232 @@
+<app-navbar class="print:hidden" />
+
+<main class="mx-auto max-w-7xl grow px-6 pt-16 pb-24 lg:px-12">
+  <header class="mb-20">
+    <div class="flex flex-col gap-6">
+      <div class="text-muted-light dark:text-muted-dark flex items-center gap-3 font-mono text-xs tracking-wider">
+        <span i18n="@@projectsDateRange">// 2021 — 2024</span>
+        <span class="bg-border-light dark:bg-border-dark h-px w-8"></span>
+        <span i18n="@@projectsLabel">PROJECTS</span>
+      </div>
+      <h1
+        class="text-surface-dark dark:text-surface-light text-5xl leading-[1.1] font-semibold tracking-tight md:text-7xl lg:text-8xl"
+      >
+        <span i18n="@@projectsTitle1">Engineering</span><br />
+        <span class="text-muted-light dark:text-muted-dark" i18n="@@projectsTitle2">Performance &amp; Scale.</span>
+      </h1>
+      <div class="mt-8 flex flex-col justify-between gap-12 md:flex-row md:items-end">
+        <p
+          class="text-muted-light dark:text-muted-dark max-w-xl text-lg leading-relaxed font-light"
+          i18n="@@projectsDescription"
+        >
+          A curated portfolio of high-throughput systems, distributed architectures, and machine learning
+          infrastructure. Minimal overhead, maximum impact.
+        </p>
+        <div class="flex flex-wrap gap-2 font-mono text-xs">
+          <button
+            (click)="setCategory('ALL')"
+            [class]="
+              activeCategory() === 'ALL'
+                ? 'bg-primary-light dark:bg-primary-dark border-transparent text-white dark:text-black'
+                : 'border-border-light dark:border-border-dark text-muted-light dark:text-muted-dark hover:border-primary-light dark:hover:border-primary-dark bg-transparent'
+            "
+            class="rounded border px-4 py-2 transition-all"
+            i18n="@@projectsFilterAll"
+          >
+            ALL_SYSTEMS
+          </button>
+          <button
+            (click)="setCategory('INFRASTRUCTURE')"
+            [class]="
+              activeCategory() === 'INFRASTRUCTURE'
+                ? 'bg-primary-light dark:bg-primary-dark border-transparent text-white dark:text-black'
+                : 'border-border-light dark:border-border-dark text-muted-light dark:text-muted-dark hover:border-primary-light dark:hover:border-primary-dark bg-transparent'
+            "
+            class="rounded border px-4 py-2 transition-all"
+            i18n="@@projectsFilterInfra"
+          >
+            INFRASTRUCTURE
+          </button>
+          <button
+            (click)="setCategory('AI_ML')"
+            [class]="
+              activeCategory() === 'AI_ML'
+                ? 'bg-primary-light dark:bg-primary-dark border-transparent text-white dark:text-black'
+                : 'border-border-light dark:border-border-dark text-muted-light dark:text-muted-dark hover:border-primary-light dark:hover:border-primary-dark bg-transparent'
+            "
+            class="rounded border px-4 py-2 transition-all"
+            i18n="@@projectsFilterAiMl"
+          >
+            AI_ML
+          </button>
+          <button
+            (click)="setCategory('PRODUCT')"
+            [class]="
+              activeCategory() === 'PRODUCT'
+                ? 'bg-primary-light dark:bg-primary-dark border-transparent text-white dark:text-black'
+                : 'border-border-light dark:border-border-dark text-muted-light dark:text-muted-dark hover:border-primary-light dark:hover:border-primary-dark bg-transparent'
+            "
+            class="rounded border px-4 py-2 transition-all"
+            i18n="@@projectsFilterProduct"
+          >
+            PRODUCT
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <!-- Project 1 -->
+    <article
+      class="group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
+    >
+      <div class="flex grow flex-col p-8">
+        <div class="mb-6 flex items-start justify-between">
+          <div
+            class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800"
+          >
+            <span class="pi pi-database text-xl text-neutral-700 dark:text-neutral-300"></span>
+          </div>
+          <span
+            class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase"
+            >2024</span
+          >
+        </div>
+        <h3
+          class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-xl font-semibold text-neutral-900 transition-colors dark:text-white"
+          i18n="@@projectsItem1Title"
+        >
+          Distributed Event Bus
+        </h3>
+        <p class="text-muted-light dark:text-muted-dark mb-8 grow text-sm leading-relaxed" i18n="@@projectsItem1Desc">
+          Re-architected the core messaging layer for a fintech platform to handle burst traffic during market open.
+          Replaced legacy REST polling with a highly available event streaming backbone.
+        </p>
+        <div class="space-y-6">
+          <div class="flex flex-wrap gap-2">
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Rust</span
+            >
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Kafka</span
+            >
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >K8s</span
+            >
+          </div>
+          <div class="border-border-light dark:border-border-dark border-t pt-6">
+            <div class="mb-3 flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+              <h4
+                class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase"
+                i18n="@@projectsItem1MetricsLabel"
+              >
+                Key Metrics
+              </h4>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">5ms</p>
+                <p
+                  class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@projectsItem1MetricLatency"
+                >
+                  P99 Latency
+                </p>
+              </div>
+              <div>
+                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">1M+</p>
+                <p
+                  class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@projectsItem1MetricThroughput"
+                >
+                  Events/Sec
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 2 -->
+    <article
+      class="group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
+    >
+      <div class="flex grow flex-col p-8">
+        <div class="mb-6 flex items-start justify-between">
+          <div
+            class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800"
+          >
+            <span class="pi pi-prime text-xl text-neutral-700 dark:text-neutral-300"></span>
+          </div>
+          <span
+            class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase"
+            >2023</span
+          >
+        </div>
+        <h3
+          class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-xl font-semibold text-neutral-900 transition-colors dark:text-white"
+          i18n="@@projectsItem2Title"
+        >
+          RAG Inference Engine
+        </h3>
+        <p class="text-muted-light dark:text-muted-dark mb-8 grow text-sm leading-relaxed" i18n="@@projectsItem2Desc">
+          Built a custom retrieval-augmented generation pipeline for legal document analysis. Optimized vector search
+          and context window management for high-precision query responses.
+        </p>
+        <div class="space-y-6">
+          <div class="flex flex-wrap gap-2">
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Python</span
+            >
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Pinecone</span
+            >
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >LLMs</span
+            >
+          </div>
+          <div class="border-border-light dark:border-border-dark border-t pt-6">
+            <div class="mb-3 flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+              <h4
+                class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase"
+                i18n="@@projectsItem2MetricsLabel"
+              >
+                Key Metrics
+              </h4>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">40%</p>
+                <p
+                  class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@projectsItem2MetricCost"
+                >
+                  Cost Reduc.
+                </p>
+              </div>
+              <div>
+                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">98%</p>
+                <p
+                  class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@projectsItem2MetricAccuracy"
+                >
+                  Accuracy
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</main>

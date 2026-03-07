@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-2">
+  @if (label()) {
+    <label
+      [for]="inputId()"
+      class="text-muted-light dark:text-muted-dark block font-mono text-[10px] font-bold tracking-widest uppercase"
+    >
+      {{ label() }}
+    </label>
+  }
+  <input
+    [id]="inputId()"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [formControl]="control()"
+    [required]="required()"
+    class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+  />
+</div>

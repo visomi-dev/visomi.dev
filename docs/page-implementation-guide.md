@@ -32,7 +32,14 @@ pnpm nx g @nx/angular:component apps/website/src/app/pages/my-page/my-component 
 - **Remove `Component` suffix** from class name (e.g., `Hero`, not `HeroComponent`).
 - **Remove `standalone: true`** (it's the default in v20+).
 - **Match Filenames:** Ensure `.ts`, `.html`, and `.css` all share the same base name.
-- **Host Binding:** Add the `host` property to the `@Component` decorator with Tailwind classes and an ID if needed for navigation.
+- **Host Binding (Styling):** Use the `host` property to set the component's base styling (background, text color, layout) using Tailwind classes. This centralizes themes in the TS decorator instead of spreading them across CSS files.
+  ```ts
+  @Component({
+    host: {
+      class: /* tw */ 'block min-h-full w-full bg-surface-light text-muted-light dark:bg-surface-dark dark:text-muted-dark',
+    },
+  })
+  ```
 
 ---
 
@@ -42,10 +49,15 @@ pnpm nx g @nx/angular:component apps/website/src/app/pages/my-page/my-component 
 
 - **Gradients:** Use `bg-linear-to-*` instead of `bg-gradient-to-*`.
 - **Opacity:** Use `/number` syntax (e.g., `bg-white/10` or `dark:bg-white/2`).
-- **Design Tokens:** Always prefer the semantic project tokens defined in `styles.css`:
-  - `var(--color-surface-light / -dark)`
-  - `var(--color-border-light / -dark)`
-  - `var(--color-muted-light / -dark)`
+- **Design Tokens:** Always prefer semantic project tokens defined in `styles.css`.
+- **No Hardcoded Values:** Never use hardcoded colors (hex, rgb) or pixel values in templates or CSS. Use Tailwind's default utility classes (e.g., `text-xs`, `max-w-screen-2xl`, `left-5`) or custom tokens defined in `@theme`.
+- **No `col-span-1` Redundancy:** Avoid using `col-span-1` in grid layouts when it is already the default behavior (e.g., in single-column mobile views).
+
+### Shared UI Components
+
+Always check `shared/ui/` for reusable components before implementing local ones.
+
+- **Form Inputs:** Use `<app-input />` from `shared/ui/form/input/input.ts` instead of raw `<input>` elements. It follows the Signal-based reactive pattern and includes standard styling.
 
 ### Internationalization (i18n)
 

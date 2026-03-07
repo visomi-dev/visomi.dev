@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 
 @Component({
   selector: 'app-navbar',
-  imports: [ThemeSwitcher],
+  imports: [RouterModule, ThemeSwitcher],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })

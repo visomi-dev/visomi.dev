@@ -15,7 +15,8 @@ import { Works } from './works/works';
   templateUrl: './home.html',
   styleUrl: './home.css',
   host: {
-    class: /* tw */ 'block min-h-full w-full overflow-x-hidden selection:bg-neutral-900 selection:text-white',
+    class:
+      /* tw */ 'block min-h-full w-full overflow-x-hidden pt-20 bg-surface-light text-muted-light dark:bg-surface-dark dark:text-muted-dark selection:bg-neutral-900 selection:text-white',
   },
 })
 export class Home {}

@@ -1,0 +1,39 @@
+<div [formGroup]="form()" class="control flex flex-col gap-1">
+  @if (label()) {
+    <label [for]="idComputed()" [class]="labelClass()">
+      {{ label() }}
+    </label>
+  }
+
+  <input
+    [id]="idComputed()"
+    [name]="name()"
+    [formControlName]="name()"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [step]="step()"
+    [class]="inputClassComputed()"
+    [attr.pattern]="pattern()"
+    [attr.autocomplete]="autocomplete()"
+    [attr.maxlength]="maxLength()"
+    [attr.minlength]="minLength()"
+    [attr.max]="max()"
+    [attr.min]="min()"
+    [attr.required]="requiredComputed()"
+    [attr.readonly]="readonlyComputed()"
+  />
+
+  @if (error()) {
+    <p class="error overflow-hidden text-red-400 transition-all">
+      {{ error() }}
+    </p>
+  }
+
+  @if (help()) {
+    <p class="text-xs text-slate-500">
+      {{ help() }}
+    </p>
+  }
+
+  <ng-content />
+</div>

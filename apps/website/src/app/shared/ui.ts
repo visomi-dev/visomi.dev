@@ -1,6 +1,13 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import {
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationSkipped,
+  NavigationStart,
+  Router,
+} from '@angular/router';
 import { filter, map } from 'rxjs';
 
 @Injectable({
@@ -15,7 +22,14 @@ export class UI {
   readonly sidebarWorkspaceOpen = signal<boolean>(false);
   readonly navigating = toSignal(
     this.router.events.pipe(
-      filter((event) => event instanceof NavigationStart || event instanceof NavigationEnd),
+      filter(
+        (event) =>
+          event instanceof NavigationStart ||
+          event instanceof NavigationEnd ||
+          event instanceof NavigationCancel ||
+          event instanceof NavigationError ||
+          event instanceof NavigationSkipped,
+      ),
       map((event) => event instanceof NavigationStart),
     ),
     {

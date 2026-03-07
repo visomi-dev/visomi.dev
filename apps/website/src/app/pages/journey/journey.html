@@ -1,0 +1,214 @@
+<app-navbar class="print:hidden" />
+
+<main class="mx-auto w-full max-w-7xl grow px-6 pt-12 pb-24">
+  <div class="mb-16 grid grid-cols-1 gap-8 md:mb-24 md:grid-cols-6">
+    <div
+      class="text-muted-light dark:text-muted-dark col-span-1 pt-2 font-mono text-xs tracking-widest"
+      i18n="@@journeyPageLabel"
+    >
+      // 2024 // JOURNEY
+    </div>
+    <div class="md:col-span-5">
+      <h1
+        class="text-surface-dark dark:text-surface-light mb-6 text-4xl font-semibold tracking-tight md:text-5xl"
+        i18n="@@journeyPageTitle"
+      >
+        Engineering Journey
+      </h1>
+      <p
+        class="text-muted-light dark:text-muted-dark max-w-2xl text-lg leading-relaxed font-light"
+        i18n="@@journeyPageDescription"
+      >
+        A chronological record of systems built, scaling challenges solved, and production-grade software shipped.
+        Focusing on high-throughput architecture and distributed systems.
+      </p>
+    </div>
+  </div>
+
+  <div class="relative grid grid-cols-1 gap-8 md:grid-cols-6 md:gap-12">
+    <!-- Timeline Line -->
+    <div
+      class="bg-border-light dark:bg-border-dark absolute top-4 bottom-0 left-5 hidden w-px md:left-48 md:block"
+    ></div>
+    <div class="bg-border-light dark:bg-border-dark absolute top-4 bottom-0 left-5 w-px md:hidden"></div>
+
+    <!-- 2024 -->
+    <div class="bg-surface-light dark:bg-surface-dark sticky top-24 z-20 self-start py-2 md:bg-transparent md:py-0">
+      <div
+        class="border-surface-dark bg-surface-light dark:bg-surface-dark dark:border-surface-light absolute top-3.5 left-3.5 z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-1.5 md:left-auto"
+      ></div>
+      <h2
+        class="ml-10 text-2xl leading-none font-bold text-neutral-200 transition-colors duration-500 md:ml-0 md:text-right md:text-5xl dark:text-neutral-900"
+      >
+        2024
+      </h2>
+    </div>
+
+    <div class="pb-20 pl-10 md:pb-32 md:pl-12">
+      <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+        <h3
+          class="text-surface-dark dark:text-surface-light text-xl font-medium md:text-2xl"
+          i18n="@@journey2024Item1Title"
+        >
+          Distributed Event Bus Architecture
+        </h3>
+        <span
+          class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark inline-flex items-center rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] tracking-wider uppercase dark:bg-neutral-800"
+          i18n="@@journey2024Item1Status"
+        >
+          SHIPPED: Q1
+        </span>
+      </div>
+      <p class="text-muted-light dark:text-muted-dark mb-10 max-w-3xl leading-relaxed" i18n="@@journey2024Item1Desc">
+        Redesigned the core messaging infrastructure to handle 10k+ events/sec. Migrated from a monolithic polling
+        system to a push-based architecture using Kafka and gRPC. Reduced latency by 400ms across the board.
+      </p>
+
+      <div class="grid w-full grid-cols-1 gap-6 lg:grid-cols-2">
+        <div
+          class="bg-surface-light border-border-light dark:border-border-dark dark:bg-surface-dark group overflow-hidden rounded border lg:col-span-2"
+        >
+          <div
+            class="border-border-light dark:border-border-dark flex items-center justify-between border-b bg-neutral-50/50 px-4 py-3 dark:bg-neutral-900/30"
+          >
+            <span class="text-muted-light dark:text-muted-dark font-mono text-xs">system_monitor.tsx</span>
+            <div class="flex gap-1.5 opacity-50">
+              <div class="h-2.5 w-2.5 rounded-full bg-neutral-300 dark:bg-neutral-700"></div>
+              <div class="h-2.5 w-2.5 rounded-full bg-neutral-300 dark:bg-neutral-700"></div>
+            </div>
+          </div>
+          <div class="bg-gray-50/50 p-8 dark:bg-neutral-900/10">
+            <div class="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
+              <div
+                class="border-border-light dark:border-border-dark rounded-xl border bg-white p-4 shadow-sm dark:bg-neutral-900"
+              >
+                <div
+                  class="text-muted-light dark:text-muted-dark mb-2 font-mono text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@journeyMonitorUptime"
+                >
+                  Uptime
+                </div>
+                <div class="text-surface-dark dark:text-surface-light flex items-center gap-2 text-2xl font-semibold">
+                  99.99%
+                  <span class="pi pi-check-circle text-sm text-green-500"></span>
+                </div>
+                <div class="mt-2 h-1 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
+                  <div class="h-full w-full bg-green-500"></div>
+                </div>
+              </div>
+              <div
+                class="border-border-light dark:border-border-dark rounded-xl border bg-white p-4 shadow-sm dark:bg-neutral-900"
+              >
+                <div
+                  class="text-muted-light dark:text-muted-dark mb-2 font-mono text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@journeyMonitorLatency"
+                >
+                  Latency (P99)
+                </div>
+                <div class="text-surface-dark dark:text-surface-light flex items-center gap-2 text-2xl font-semibold">
+                  45ms
+                  <span class="pi pi-bolt text-sm text-purple-500"></span>
+                </div>
+                <div
+                  class="text-muted-light/60 dark:text-muted-dark/60 mt-2 font-mono text-[10px]"
+                  i18n="@@journeyMonitorLatencyChange"
+                >
+                  -12% vs last week
+                </div>
+              </div>
+              <div
+                class="border-border-light dark:border-border-dark rounded-xl border bg-white p-4 shadow-sm dark:bg-neutral-900"
+              >
+                <div
+                  class="text-muted-light dark:text-muted-dark mb-2 font-mono text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@journeyMonitorThroughput"
+                >
+                  Throughput
+                </div>
+                <div class="text-surface-dark dark:text-surface-light flex items-center gap-2 text-2xl font-semibold">
+                  12.4k
+                  <span class="pi pi-chart-line text-sm text-blue-500"></span>
+                </div>
+                <div
+                  class="text-muted-light/60 dark:text-muted-dark/60 mt-2 font-mono text-[10px]"
+                  i18n="@@journeyMonitorThroughputUnit"
+                >
+                  events / sec
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2023 -->
+    <div class="bg-surface-light dark:bg-surface-dark sticky top-24 z-20 self-start py-2 md:bg-transparent md:py-0">
+      <div
+        class="border-surface-dark bg-surface-light dark:bg-surface-dark dark:border-surface-light absolute top-3.5 left-3.5 z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-1.5 md:left-auto"
+      ></div>
+      <h2
+        class="ml-10 text-2xl leading-none font-bold text-neutral-200 transition-colors duration-500 md:ml-0 md:text-right md:text-5xl dark:text-neutral-900"
+      >
+        <span
+          class="text-muted-light/40 dark:text-muted-dark/20 mb-1 block text-sm font-normal md:text-lg"
+          i18n="@@journey2023Label"
+          >Early</span
+        >
+        2023
+      </h2>
+    </div>
+
+    <div class="pb-20 pl-10 md:pb-32 md:pl-12">
+      <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+        <h3
+          class="text-surface-dark dark:text-surface-light text-xl font-medium md:text-2xl"
+          i18n="@@journey2023Item1Title"
+        >
+          SaaS Analytics Platform
+        </h3>
+      </div>
+      <p class="text-muted-light dark:text-muted-dark mb-10 max-w-3xl leading-relaxed" i18n="@@journey2023Item1Desc">
+        Built and launched a privacy-first analytics platform from scratch. Leveraged ClickHouse for columnar storage
+        and Go for the ingestion service. Handled 1M+ rows/day on a $20 VPS.
+      </p>
+
+      <div
+        class="bg-surface-light border-border-light dark:border-border-dark dark:bg-surface-dark group overflow-hidden rounded border"
+      >
+        <div
+          class="border-border-light dark:border-border-dark flex gap-2 border-b bg-neutral-50 px-3 py-2 dark:bg-neutral-900"
+        >
+          <div class="h-3 w-3 rounded-full bg-red-400/30"></div>
+          <div class="h-3 w-3 rounded-full bg-yellow-400/30"></div>
+          <div class="h-3 w-3 rounded-full bg-green-400/30"></div>
+        </div>
+        <div class="relative flex h-64 items-center justify-center overflow-hidden bg-gray-50 md:h-80 dark:bg-black">
+          <img
+            alt="Data visualization dashboard"
+            class="h-full w-full object-cover opacity-80 grayscale-50 filter transition-opacity duration-500 group-hover:opacity-100 group-hover:grayscale-0"
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1400"
+            i18n-alt="@@journey2023Item1Alt"
+          />
+          <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
+        </div>
+        <div
+          class="border-border-light dark:border-border-dark flex flex-wrap gap-3 border-t bg-neutral-50 p-4 dark:bg-neutral-900"
+        >
+          <span
+            class="border-border-light text-muted-light dark:text-muted-dark rounded-md border bg-white px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-800"
+            >ClickHouse</span
+          >
+          <span
+            class="border-border-light text-muted-light dark:text-muted-dark rounded-md border bg-white px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-800"
+            >Go</span
+          >
+          <span
+            class="border-border-light text-muted-light dark:text-muted-dark rounded-md border bg-white px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-800"
+            >TypeScript</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

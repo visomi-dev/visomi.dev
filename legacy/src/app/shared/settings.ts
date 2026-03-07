@@ -1,13 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import {
-  computed,
-  DOCUMENT,
-  effect,
-  inject,
-  Injectable,
-  PLATFORM_ID,
-  signal,
-} from '@angular/core';
+import { computed, DOCUMENT, effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 
 import { DEVICE_ID_KEY, THEME_KEY } from './constants/storage';
 import { Deps } from './deps';
@@ -38,10 +30,7 @@ export class Settings {
       return false;
     }
 
-    return (
-      theme === 'system' &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    );
+    return theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
   getDeviceId() {
