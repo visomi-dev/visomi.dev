@@ -1,11 +1,9 @@
 import { Component, inject, type OnInit } from '@angular/core';
 
 import { SEO } from '../../shared/seo';
-import { Navbar } from '../../shared/layout/navbar/navbar';
 
 @Component({
   selector: 'app-resume',
-  imports: [Navbar],
   templateUrl: './resume.html',
   styleUrl: './resume.css',
   host: {

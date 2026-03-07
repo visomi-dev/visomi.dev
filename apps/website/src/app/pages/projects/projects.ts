@@ -1,13 +1,11 @@
 import { Component, inject, signal, type OnInit } from '@angular/core';
 
 import { SEO } from '../../shared/seo';
-import { Navbar } from '../../shared/layout/navbar/navbar';
 
 type ProjectCategory = 'ALL' | 'INFRASTRUCTURE' | 'AI_ML' | 'PRODUCT';
 
 @Component({
   selector: 'app-projects',
-  imports: [Navbar],
   templateUrl: './projects.html',
   styleUrl: './projects.css',
   host: {

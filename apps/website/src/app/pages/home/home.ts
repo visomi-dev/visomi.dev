@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 
 import { SEO } from '../../shared/seo';
-import { Navbar } from '../../shared/layout/navbar/navbar';
 
 import { Background } from './background/background';
 import { Features } from './features/features';
@@ -12,7 +11,7 @@ import { Works } from './works/works';
 
 @Component({
   selector: 'app-home',
-  imports: [Background, Features, Footer, Hero, Journey, Navbar, Works],
+  imports: [Background, Features, Footer, Hero, Journey, Works],
   templateUrl: './home.html',
   styleUrl: './home.css',
   host: {

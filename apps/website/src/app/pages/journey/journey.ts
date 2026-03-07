@@ -1,12 +1,10 @@
 import { Component, inject } from '@angular/core';
 import type { OnInit } from '@angular/core';
 
-import { Navbar } from '../../shared/layout/navbar/navbar';
 import { SEO } from '../../shared/seo';
 
 @Component({
   selector: 'app-journey',
-  imports: [Navbar],
   templateUrl: './journey.html',
   styleUrl: './journey.css',
   host: {

@@ -1,14 +1,13 @@
 import { Component, inject, type OnInit } from '@angular/core';
 
 import { SEO } from '../../shared/seo';
-import { Navbar } from '../../shared/layout/navbar/navbar';
 
 import { Form } from './form/form';
 import { Hero } from './hero/hero';
 
 @Component({
   selector: 'app-contact',
-  imports: [Navbar, Hero, Form],
+  imports: [Hero, Form],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
 
