@@ -11,9 +11,12 @@ import express, { static as expressStatic } from 'express';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
+const allowedHosts = ['localhost', '127.0.0.1', 'dev.visomi.dev', 'visomi.dev'];
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts,
+});
 
 /**
  * Serve static files from /browser
