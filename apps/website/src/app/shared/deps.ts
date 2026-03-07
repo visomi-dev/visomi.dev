@@ -14,7 +14,7 @@ export class Deps {
   dateTimePromise: Promise<typeof DateTime> | null = null;
 
   Three: typeof THREE | null = null;
-  threePromise: Promise<typeof import('three')> | null = null;
+  threePromise: Promise<typeof THREE> | null = null;
   readonly now = toSignal(from(this.getDateTime()).pipe(map((dateTime) => dateTime.now())));
   readonly three = toSignal(from(this.getThree()).pipe(map((three) => three)));
   readonly $DateTime = signal<typeof DateTime | null>(null);

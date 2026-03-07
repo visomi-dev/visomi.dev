@@ -11,24 +11,14 @@ import { Settings } from '../../settings';
 export class ThemeSwitcher {
   private readonly settings = inject(Settings);
 
-  readonly theme = this.settings.theme;
-  readonly themes = this.settings.themes;
+  readonly isDarkTheme = this.settings.isDarkTheme;
 
   toggleTheme(event?: KeyboardEvent | MouseEvent) {
     if (event instanceof KeyboardEvent && event.code !== 'Space' && event.code !== 'Enter') {
       return;
     }
 
-    const nextTheme = this.themes[(this.themes.indexOf(this.theme()) + 1) % this.themes.length];
-
-    const doc = document as Document & { startViewTransition?: (callback: () => void) => void };
-
-    if (doc.startViewTransition) {
-      doc.startViewTransition(() => {
-        this.settings.setTheme(nextTheme);
-      });
-    } else {
-      this.settings.setTheme(nextTheme);
-    }
+    const nextTheme = this.isDarkTheme() ? 'light' : 'dark';
+    this.settings.setTheme(nextTheme);
   }
 }

@@ -23,6 +23,8 @@ export class Background {
   private readonly deps = inject(Deps);
   private readonly settings = inject(Settings);
 
+  readonly isDarkTheme = this.settings.isDarkTheme;
+
   readonly container = viewChild<ElementRef<HTMLElement>>('container');
   readonly vertexShader = httpResource.text(() => VERTEX_SHADER_URL);
   readonly fragmentShader = httpResource.text(() => FRAGMENT_SHADER_URL);

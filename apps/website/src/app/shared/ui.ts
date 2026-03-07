@@ -3,8 +3,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 
-export type Theme = 'light' | 'dark';
-
 @Injectable({
   providedIn: 'root',
 })
