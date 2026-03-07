@@ -10,7 +10,15 @@
   --font-family: 'Inter', sans-serif;
   --font-family-mono: 'JetBrains Mono', monospace;
 
+  --color-surface-light: #f3f4f6;
+  --color-surface-dark: #0f0f0f;
+  --color-muted-light: #4b5563;
+  --color-muted-dark: #888888;
+  --color-border-light: #e2e4e7;
+  --color-border-dark: #262626;
+
   --animate-blob: blob 7s infinite;
+  --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;
 
   --keyframes-blob: {
     0% {
@@ -24,6 +32,17 @@
     }
     100% {
       transform: translate(0px, 0px) scale(1);
+    }
+  };
+
+  --keyframes-fade-in-up: {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
     }
   };
 }

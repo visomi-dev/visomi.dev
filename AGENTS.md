@@ -286,6 +286,50 @@ This convention applies to **all** uses of `effect()` in both services and compo
 
 ---
 
+## Internationalization (i18n)
+
+### Template Markers
+
+- Use Angular's built-in `i18n` attribute to mark element content for translation:
+  ```html
+  <h1 i18n="@@homeHeroTitle">Architecting Scalable Systems.</h1>
+  ```
+- Use `i18n-{attribute}` to mark attribute values for translation:
+  ```html
+  <img alt="Hero illustration" i18n-alt="@@homeHeroAlt" />
+  ```
+- **Always use custom IDs** with the `@@` prefix. Never rely on auto-generated IDs.
+
+### Custom ID Naming Convention
+
+Follow the pattern `@@{page}{Section}{Description}`:
+
+| Pattern           | Example                                            |
+| ----------------- | -------------------------------------------------- |
+| Page-level        | `@@homeHeroTitle`, `@@homeHeroBadge`               |
+| Section-specific  | `@@homeJourneyRole2024`, `@@homeWorksProject1Desc` |
+| Attribute binding | `@@homeHeroAlt` (used with `i18n-alt`)             |
+
+- **Page prefix**: lowercase page name (`home`, `resume`, `about`).
+- **Section**: PascalCase section name (`Hero`, `Journey`, `Works`, `Features`, `Footer`).
+- **Description**: PascalCase descriptor (`Title`, `Subtitle`, `Badge`, `Role2024`, `Project1Desc`).
+
+### `$localize` in TypeScript
+
+- Use `$localize` tagged template literals for translatable strings in `.ts` files (e.g., constants, SEO metadata):
+  ```ts
+  const title = $localize`:@@homeNavIntroduction:Introduction`;
+  ```
+- The syntax is `` $localize`:@@customId:Default text` ``.
+- `@angular/localize/init` polyfill is already configured in `project.json`.
+
+### Extraction
+
+- Run `pnpm nx run website:extract-i18n` to generate the translation source file.
+- Translation files follow Angular's XLIFF format.
+
+---
+
 ## CSS & Styling
 
 ### Tailwind CSS

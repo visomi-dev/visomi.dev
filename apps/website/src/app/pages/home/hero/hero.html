@@ -1,1 +1,60 @@
-<p>hero works!</p>
+<div class="animate-fade-in-up mx-auto max-w-4xl space-y-8">
+  <div
+    class="border-border-light dark:border-border-dark mb-4 inline-flex items-center space-x-2 rounded-full border bg-white/60 px-3 py-1 shadow-sm backdrop-blur-sm dark:bg-white/5"
+  >
+    <span class="relative flex h-2 w-2">
+      <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
+      <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+    </span>
+    <span
+      class="text-muted-light dark:text-muted-dark text-xs font-medium tracking-wide uppercase"
+      i18n="@@homeHeroBadge"
+    >
+      Available for hire
+    </span>
+  </div>
+
+  <h1 class="text-5xl leading-[1.1] font-bold tracking-tight text-neutral-900 md:text-7xl lg:text-8xl dark:text-white">
+    <span i18n="@@homeHeroTitleLine1">Architecting</span>
+    <br class="hidden md:block" />
+    <span
+      class="bg-linear-to-r from-neutral-900 to-neutral-500 bg-clip-text text-transparent dark:from-white dark:to-neutral-500"
+      i18n="@@homeHeroTitleLine2"
+    >
+      Scalable Systems.
+    </span>
+  </h1>
+
+  <p
+    class="text-muted-light dark:text-muted-dark mx-auto max-w-2xl text-lg leading-relaxed font-light md:text-xl"
+    i18n="@@homeHeroSubtitle"
+  >
+    Senior Engineer focused on
+    <span class="font-medium text-neutral-900 dark:text-white">AI-augmented infrastructure</span>
+    and product clarity. Building the rails for the next generation of software.
+  </p>
+
+  <div class="flex flex-col items-center justify-center gap-4 pt-8 sm:flex-row">
+    <a
+      class="group relative rounded-full bg-neutral-900 px-8 py-3 font-medium text-white shadow-lg shadow-black/5 transition-all hover:scale-105 hover:bg-neutral-900/90 active:scale-95 dark:bg-white dark:text-black dark:shadow-white/5 dark:hover:bg-white/90"
+      href="#works"
+      i18n="@@homeHeroCtaWork"
+    >
+      View Work
+      <span
+        class="absolute inset-0 rounded-full ring-2 ring-black/5 transition-all group-hover:ring-black/10 dark:ring-white/10 dark:group-hover:ring-white/20"
+      ></span>
+    </a>
+    <a
+      class="border-border-light dark:border-border-dark rounded-full border bg-white px-8 py-3 font-medium text-neutral-900 shadow-sm transition-all hover:border-neutral-400/30 hover:bg-neutral-100 dark:bg-neutral-900 dark:text-white dark:hover:border-neutral-600 dark:hover:bg-neutral-800"
+      href="#"
+      i18n="@@homeHeroCtaCv"
+    >
+      Download CV
+    </a>
+  </div>
+</div>
+
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+  <span class="pi pi-angle-down text-muted-light dark:text-muted-dark text-2xl"></span>
+</div>
