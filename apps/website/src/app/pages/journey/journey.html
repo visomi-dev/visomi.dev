@@ -285,12 +285,12 @@ message Event &#123;
 
     <article class="pb-20 pl-10 md:pb-32 md:pl-12">
       <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white" i18n="@@journeySaasTitle">
+        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white" i18n="@@journeySaaSTitle">
           SaaS Analytics Platform
         </h3>
       </div>
 
-      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400" i18n="@@journeySaasDescription">
+      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400" i18n="@@journeySaaSDescription">
         Built and launched a privacy-first analytics platform from scratch. Leveraged ClickHouse for columnar storage
         and Go for ingestion services. Sustained 1M+ rows/day with predictable infrastructure costs.
       </p>
@@ -308,7 +308,7 @@ message Event &#123;
 
         <div class="relative h-64 overflow-hidden bg-gray-50 px-5 pt-8 pb-6 md:h-80 dark:bg-black">
           <div
-            class="absolute inset-0 bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:24px_24px]"
+            class="absolute inset-0 bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-size-[24px_24px]"
           ></div>
 
           <div class="relative z-10 flex h-full items-end gap-2">
@@ -399,7 +399,7 @@ message Event &#123;
 
         <div class="overflow-x-auto p-6">
           <pre
-            class="min-w-[22rem] font-mono text-xs leading-relaxed text-neutral-300"
+            class="min-w-88 font-mono text-xs leading-relaxed text-neutral-300"
           ><code>async function handleRequest(request) &#123;
   const url = new URL(request.url);
   const region = request.cf.colo;
