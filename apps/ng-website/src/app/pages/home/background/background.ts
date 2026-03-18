@@ -95,10 +95,6 @@ export class Background {
       return;
     }
 
-    if (typeof WebGLRenderingContext === 'undefined' && typeof WebGL2RenderingContext === 'undefined') {
-      return;
-    }
-
     const darkBackgroundRef = this.darkBackground();
     const three = this.deps.three();
     const vert = this.vertexShader.value();
