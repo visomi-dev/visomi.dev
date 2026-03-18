@@ -24,7 +24,7 @@ export default defineConfig({
   },
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm exec nx run website:serve',
+    command: 'pnpm exec astro preview --root apps/website --host 0.0.0.0 --port 4200',
     url: 'http://localhost:4200',
     reuseExistingServer: true,
     cwd: workspaceRoot,

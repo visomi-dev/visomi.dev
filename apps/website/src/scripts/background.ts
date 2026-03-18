@@ -5,8 +5,13 @@ const vertexShaderUrl = `${basePath}assets/home/background/background.vert`;
 const fragmentShaderUrl = `${basePath}assets/home/background/background.frag`;
 const timeStep = 1 / 60;
 
+let scene: THREE.Scene | undefined;
+let camera: THREE.OrthographicCamera | undefined;
 let renderer: THREE.WebGLRenderer | undefined;
 let material: THREE.ShaderMaterial | undefined;
+let geometry: THREE.PlaneGeometry | undefined;
+let mesh: THREE.Mesh | undefined;
+let isThreeInitialized = false;
 
 const initBackground = async () => {
   const lightBackground = document.getElementById('light-bg');
@@ -17,10 +22,16 @@ const initBackground = async () => {
   }
 
   const html = document.documentElement;
+  // Initial load: show the correct background immediately without animation
   const isDarkOnLoad = html.classList.contains('dark');
 
-  lightBackground.classList.toggle('hidden', isDarkOnLoad);
-  darkBackground.classList.toggle('hidden', !isDarkOnLoad);
+  if (isDarkOnLoad) {
+    lightBackground.classList.add('hidden');
+    darkBackground.classList.remove('hidden');
+  } else {
+    darkBackground.classList.add('hidden');
+    lightBackground.classList.remove('hidden');
+  }
 
   let currentTheme: 'light' | 'dark' = isDarkOnLoad ? 'dark' : 'light';
 
@@ -66,8 +77,8 @@ const initBackground = async () => {
       fetch(fragmentShaderUrl).then((response) => response.text()),
     ]);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    scene = new THREE.Scene();
+    camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
 
     material = new THREE.ShaderMaterial({
@@ -79,8 +90,8 @@ const initBackground = async () => {
       fragmentShader,
     });
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const mesh = new THREE.Mesh(geometry, material);
+    geometry = new THREE.PlaneGeometry(2, 2);
+    mesh = new THREE.Mesh(geometry, material);
 
     scene.add(mesh);
 
@@ -92,19 +103,30 @@ const initBackground = async () => {
       if (material) {
         material.uniforms.iTime.value += timeStep;
       }
-      renderer?.render(scene, camera);
+
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
+
       window.requestAnimationFrame(animate);
     };
 
     animate();
+    isThreeInitialized = true;
 
-    window.addEventListener('resize', () => {
+    const onResize = () => {
+      if (!isThreeInitialized) {
+        return;
+      }
+
       const width = window.innerWidth;
       const height = window.innerHeight;
 
       renderer?.setSize(width, height);
       material?.uniforms.iResolution.value.set(width, height);
-    });
+    };
+
+    window.addEventListener('resize', onResize);
   } catch (error) {
     console.error('Failed to initialize 3D background:', error);
   }
