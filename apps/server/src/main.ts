@@ -16,7 +16,7 @@ const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const apiEntryFile = resolve(serverDistFolder, '..', 'api', 'main.js');
-const websiteEntryFile = resolve(serverDistFolder, '..', 'website', 'server', 'server.mjs');
+const websiteEntryFile = resolve(serverDistFolder, '..', 'ng-website', 'server', 'server.mjs');
 
 const loadApiApp = async () => {
   const apiModule = (await import(pathToFileURL(apiEntryFile).href)) as ApiModule;

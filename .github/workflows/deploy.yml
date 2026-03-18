@@ -35,17 +35,13 @@ jobs:
           node-version: 24
           cache: 'pnpm'
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.139.2'
-          extended: true
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: hugo --minify --source apps/website --baseURL /visomi.dev/
+        run: pnpm exec nx run website:build
+        env:
+          BASE_URL: /visomi.dev/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -53,7 +49,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/website/public
+          path: dist/apps/website
 
       - name: Deploy to GitHub Pages
         id: deployment

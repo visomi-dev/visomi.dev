@@ -12,7 +12,7 @@
       "dependsOn": [
         "^build",
         {
-          "projects": ["api", "website"],
+          "projects": ["api", "ng-website"],
           "target": "build",
           "params": "forward"
         }
