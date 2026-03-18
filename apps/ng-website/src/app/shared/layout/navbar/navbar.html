@@ -1,39 +1,44 @@
 <nav class="fixed top-0 left-0 z-50 w-full border-b border-neutral-200 backdrop-blur-sm dark:border-neutral-800">
   <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-12">
-    <a [attr.href]="homeHref()" class="flex items-center gap-3" (click)="navigate($event, '/')">
+    <a routerLink="/" class="flex items-center gap-3">
       <div class="h-2 w-2 rounded-full bg-black dark:bg-white"></div>
       <span class="font-mono text-lg font-bold tracking-tight dark:text-white">VISOMI.DEV</span>
     </a>
 
     <div class="hidden items-center gap-8 font-mono tracking-widest text-gray-500 md:flex dark:text-gray-400">
-      <a [attr.href]="homeHref()" [class]="getNavLinkClass('/')" (click)="navigate($event, '/')" i18n="@@navHome"
+      <a
+        routerLink="/"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="text-black! dark:text-white!"
+        class="transition-colors hover:text-black dark:hover:text-white"
+        i18n="@@navHome"
         >// HOME</a
       >
       <a
-        [attr.href]="journeyHref()"
-        [class]="getNavLinkClass('/journey')"
-        (click)="navigate($event, '/journey')"
+        routerLink="/journey"
+        routerLinkActive="text-black! dark:text-white!"
+        class="transition-colors hover:text-black dark:hover:text-white"
         i18n="@@navJourney"
         >// JOURNEY</a
       >
       <a
-        [attr.href]="projectsHref()"
-        [class]="getNavLinkClass('/projects')"
-        (click)="navigate($event, '/projects')"
+        routerLink="/projects"
+        routerLinkActive="text-black! dark:text-white!"
+        class="transition-colors hover:text-black dark:hover:text-white"
         i18n="@@navProjects"
         >// PROJECTS</a
       >
       <a
-        [attr.href]="resumeHref()"
-        [class]="getNavLinkClass('/resume')"
-        (click)="navigate($event, '/resume')"
+        routerLink="/resume"
+        routerLinkActive="text-black! dark:text-white!"
+        class="transition-colors hover:text-black dark:hover:text-white"
         i18n="@@navResume"
         >// RESUME</a
       >
       <a
-        [attr.href]="contactHref()"
-        [class]="getNavLinkClass('/contact')"
-        (click)="navigate($event, '/contact')"
+        routerLink="/contact"
+        routerLinkActive="text-black! dark:text-white!"
+        class="transition-colors hover:text-black dark:hover:text-white"
         i18n="@@navContact"
         >// CONTACT</a
       >

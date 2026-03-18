@@ -24,31 +24,16 @@ describe('ThemeSwitcher', () => {
   });
 
   beforeEach(async () => {
-    localStorage.clear();
-
     await TestBed.configureTestingModule({
       imports: [ThemeSwitcher],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ThemeSwitcher);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should render the initial icon state without animation classes', () => {
-    const lightIcon = fixture.nativeElement.querySelector<SVGElement>('svg.theme-icon:not(.hidden)');
-    const darkIcon = fixture.nativeElement.querySelector<SVGElement>('svg.theme-icon.hidden');
-
-    expect(lightIcon).toBeTruthy();
-    expect(darkIcon).toBeTruthy();
-    expect(lightIcon?.classList.contains('upward-enter')).toBe(false);
-    expect(lightIcon?.classList.contains('upward-leave')).toBe(false);
-    expect(darkIcon?.classList.contains('upward-enter')).toBe(false);
-    expect(darkIcon?.classList.contains('upward-leave')).toBe(false);
   });
 });

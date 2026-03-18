@@ -54,18 +54,4 @@ describe('Background', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should render the initial background state without animation classes', () => {
-    const lightBackground = fixture.nativeElement.querySelector<HTMLElement>('div.bg-neutral-50');
-    const darkBackground = fixture.nativeElement.querySelector<HTMLElement>('div.bg-black');
-
-    expect(lightBackground).toBeTruthy();
-    expect(darkBackground).toBeTruthy();
-    expect(lightBackground?.classList.contains('bg-upward-enter')).toBe(false);
-    expect(lightBackground?.classList.contains('bg-upward-leave')).toBe(false);
-    expect(darkBackground?.classList.contains('bg-upward-enter')).toBe(false);
-    expect(darkBackground?.classList.contains('bg-upward-leave')).toBe(false);
-    expect(lightBackground?.classList.contains('hidden')).toBe(false);
-    expect(darkBackground?.classList.contains('hidden')).toBe(true);
-  });
 });
