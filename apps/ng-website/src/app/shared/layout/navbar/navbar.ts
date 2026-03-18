@@ -1,10 +1,8 @@
-import { DOCUMENT } from '@angular/common';
 import { computed, Component, inject, LOCALE_ID } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 
-import { getAppHref, getLocaleHref } from '../../app-href';
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 
 @Component({
@@ -14,7 +12,6 @@ import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  private readonly document = inject(DOCUMENT);
   private readonly router = inject(Router);
 
   readonly locale = inject(LOCALE_ID);
@@ -28,17 +25,39 @@ export class Navbar {
     { initialValue: this.router.url },
   );
 
-  readonly homeHref = computed(() => getAppHref(this.document.baseURI, '/'));
-  readonly journeyHref = computed(() => getAppHref(this.document.baseURI, '/journey'));
-  readonly projectsHref = computed(() => getAppHref(this.document.baseURI, '/projects'));
-  readonly resumeHref = computed(() => getAppHref(this.document.baseURI, '/resume'));
-  readonly contactHref = computed(() => getAppHref(this.document.baseURI, '/contact'));
-  readonly englishHref = computed(() => getLocaleHref(this.document.baseURI, this.currentPath() || '/', 'en'));
-  readonly spanishHref = computed(() => getLocaleHref(this.document.baseURI, this.currentPath() || '/', 'es'));
+  readonly englishHref = computed(() => this.getLocaleHref('en'));
+  readonly spanishHref = computed(() => this.getLocaleHref('es'));
 
   getLocaleLinkClass(target: 'en' | 'es') {
     return this.locale.toLowerCase().includes(target)
       ? /* tw */ 'pointer-events-none cursor-not-allowed font-bold text-black/50 no-underline dark:text-white/50'
       : /* tw */ 'transition-colors hover:text-black dark:hover:text-white';
+  }
+
+  private getLocaleHref(target: 'en' | 'es') {
+    const currentUrl = new URL(this.currentPath() || '/', 'http://localhost');
+    const pathname = this.stripLocalePrefix(currentUrl.pathname);
+    const normalizedPathname = pathname || '/';
+    const urlSuffix = `${currentUrl.search}${currentUrl.hash}`;
+
+    if (target === 'es') {
+      const spanishPath = normalizedPathname === '/' ? '/es/' : `/es${normalizedPathname}`;
+
+      return `${spanishPath}${urlSuffix}`;
+    }
+
+    return `${normalizedPathname}${urlSuffix}`;
+  }
+
+  private stripLocalePrefix(pathname: string) {
+    if (pathname === '/es') {
+      return '/';
+    }
+
+    if (pathname.startsWith('/es/')) {
+      return pathname.slice(3);
+    }
+
+    return pathname;
   }
 }
