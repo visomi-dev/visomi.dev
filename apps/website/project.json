@@ -12,7 +12,7 @@
             "command": "tailwindcss -i assets/css/styles.css -o static/css/styles.css --minify"
           },
           {
-            "command": "hugo -d ../../dist/apps/website --gc --minify"
+            "command": "hugo -d ../../dist/apps/website --gc --minify --baseURL \"${BASE_URL:-/}\""
           }
         ],
         "parallel": false,

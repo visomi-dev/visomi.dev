@@ -45,7 +45,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: hugo --minify --source apps/website
+        run: hugo --minify --source apps/website --baseURL /visomi.dev/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
