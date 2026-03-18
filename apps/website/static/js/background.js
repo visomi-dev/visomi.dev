@@ -14,54 +14,45 @@ async function initBackground() {
 
   const html = document.documentElement;
 
-  // Toggle visibility based on theme
-  function updateBackgroundVisibility(isInitialLoad = false) {
-    const isDark = html.classList.contains('dark');
-
-    if (isDark) {
-      if (!isInitialLoad) {
-        lightBg.classList.remove('bg-upward-enter');
-        lightBg.classList.add('bg-upward-leave');
-
-        darkBg.classList.remove('hidden');
-        darkBg.classList.remove('bg-upward-leave');
-        darkBg.classList.add('bg-upward-enter');
-
-        setTimeout(() => {
-          lightBg.classList.add('hidden');
-        }, 700);
-      } else {
-        lightBg.classList.add('hidden');
-        darkBg.classList.remove('hidden');
-        darkBg.classList.add('bg-upward-enter');
-      }
-    } else {
-      if (!isInitialLoad) {
-        darkBg.classList.remove('bg-upward-enter');
-        darkBg.classList.add('bg-upward-leave');
-
-        lightBg.classList.remove('hidden');
-        lightBg.classList.remove('bg-upward-leave');
-        lightBg.classList.add('bg-upward-enter');
-
-        setTimeout(() => {
-          darkBg.classList.add('hidden');
-        }, 700);
-      } else {
-        darkBg.classList.add('hidden');
-        lightBg.classList.remove('hidden');
-        lightBg.classList.add('bg-upward-enter');
-      }
-    }
+  // Initial load: show the correct background immediately without animation
+  const isDarkOnLoad = html.classList.contains('dark');
+  if (isDarkOnLoad) {
+    lightBg.classList.add('hidden');
+    darkBg.classList.remove('hidden');
+  } else {
+    darkBg.classList.add('hidden');
+    lightBg.classList.remove('hidden');
   }
 
-  updateBackgroundVisibility(true);
-
-  // Observe theme changes
+  // Observe theme changes - only animate on user-triggered toggles
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === 'class') {
-        updateBackgroundVisibility(false);
+        const isDark = html.classList.contains('dark');
+
+        if (isDark) {
+          lightBg.classList.remove('bg-upward-enter');
+          lightBg.classList.add('bg-upward-leave');
+
+          darkBg.classList.remove('hidden');
+          darkBg.classList.remove('bg-upward-leave');
+          darkBg.classList.add('bg-upward-enter');
+
+          setTimeout(() => {
+            lightBg.classList.add('hidden');
+          }, 700);
+        } else {
+          darkBg.classList.remove('bg-upward-enter');
+          darkBg.classList.add('bg-upward-leave');
+
+          lightBg.classList.remove('hidden');
+          lightBg.classList.remove('bg-upward-leave');
+          lightBg.classList.add('bg-upward-enter');
+
+          setTimeout(() => {
+            darkBg.classList.add('hidden');
+          }, 700);
+        }
       }
     });
   });
