@@ -32,15 +32,15 @@ const defaultUrl = new URL(getPagePath('en', page), baseUrl).toString();
     <script is:inline>
       (() => {
         const html = document.documentElement;
-        let isDark = true;
-
-        try {
-          const savedTheme = window.localStorage.getItem('theme');
-          const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
-        } catch {
-          isDark = true;
-        }
+        const isDark = (() => {
+          try {
+            const savedTheme = window.localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            return savedTheme === 'dark' || (!savedTheme && systemDark);
+          } catch {
+            return true;
+          }
+        })();
 
         html.classList.toggle('dark', isDark);
       })();
