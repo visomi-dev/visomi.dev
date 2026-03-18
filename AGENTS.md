@@ -61,7 +61,9 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ---
 
-## Angular Component Conventions
+<!-- angular specifc conventions -->
+
+# Angular Component Conventions
 
 ### Decorator
 
@@ -328,6 +330,75 @@ Follow the pattern `@@{page}{Section}{Description}`:
 - Run `pnpm nx run website:extract-i18n` to generate the translation source file.
 - Translation files follow Angular's XLIFF format.
 
+## CSS
+
+### Component CSS
+
+- Each component has a companion `.css` file (even if empty); never delete it.
+- Use component CSS for:
+  - Keyframe animations (`@keyframes`)
+  - Element-level styles that cannot be expressed as Tailwind utilities (e.g., `canvas` element sizing)
+  - `@starting-style` transitions
+- Animations are referenced from templates via `animate.enter` / `animate.leave` attribute names that map to CSS class names.
+
+## Testing
+
+### Component Tests
+
+```ts
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Home } from './home';
+
+describe('Home', () => {
+  let component: Home;
+  let fixture: ComponentFixture<Home>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Home],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(Home);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+```
+
+### Service Tests
+
+```ts
+import { TestBed } from '@angular/core/testing';
+import { Deps } from './deps';
+
+describe('Deps', () => {
+  let service: Deps;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(Deps);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});
+```
+
+## Code Generation
+
+```bash
+pnpm nx g @nx/angular:component apps/website/src/app/pages/some-page/some-page
+```
+
+Generated components must be adjusted to follow **all** the conventions above (e.g., remove `Component` suffix, remove `standalone: true`, adjust file names, etc.).
+
+<!-- angular end specifc conventions -->
+
 ---
 
 ## CSS & Styling
@@ -338,15 +409,6 @@ Follow the pattern `@@{page}{Section}{Description}`:
 - **Never use raw CSS variables for colors or design tokens.** Define them inside `@theme` blocks in `styles.css`.
 - Use `@utility` to define custom utilities.
 - Dark mode uses the `dark` variant, which is configured as `@custom-variant dark (&:where(.dark, .dark *))`.
-
-### Component CSS
-
-- Each component has a companion `.css` file (even if empty); never delete it.
-- Use component CSS for:
-  - Keyframe animations (`@keyframes`)
-  - Element-level styles that cannot be expressed as Tailwind utilities (e.g., `canvas` element sizing)
-  - `@starting-style` transitions
-- Animations are referenced from templates via `animate.enter` / `animate.leave` attribute names that map to CSS class names.
 
 ### Global CSS (`styles.css`)
 
@@ -408,56 +470,6 @@ apps/website/src/app/
 
 ---
 
-## Testing
-
-### Component Tests
-
-```ts
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Home } from './home';
-
-describe('Home', () => {
-  let component: Home;
-  let fixture: ComponentFixture<Home>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Home],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Home);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
-```
-
-### Service Tests
-
-```ts
-import { TestBed } from '@angular/core/testing';
-import { Deps } from './deps';
-
-describe('Deps', () => {
-  let service: Deps;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Deps);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
-```
-
----
-
 ## Formatting & Linting
 
 - **Prettier** handles formatting: 120 char width, single quotes, trailing commas, 2-space indentation.
@@ -480,11 +492,3 @@ describe('Deps', () => {
 - Use semantic HTML5 elements.
 
 ---
-
-## Code Generation
-
-```bash
-pnpm nx g @nx/angular:component apps/website/src/app/pages/some-page/some-page
-```
-
-Generated components must be adjusted to follow **all** the conventions above (e.g., remove `Component` suffix, remove `standalone: true`, adjust file names, etc.).

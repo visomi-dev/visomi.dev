@@ -1,0 +1,230 @@
+{{ define "main" }}
+<main class="min-h-screen-nav mt-20 grow px-6 pt-16 pb-24">
+  <div class="mx-auto max-w-3xl">
+    <div class="text-muted-light dark:text-muted-dark mb-16 font-mono text-xs tracking-widest uppercase">
+      {{ i18n "resumePageLabel" }}
+    </div>
+
+    <header class="mb-20">
+      <h1 class="text-surface-dark dark:text-surface-light mb-6 text-5xl font-bold tracking-tight md:text-6xl">
+        {{ i18n "resumeName" }}
+      </h1>
+      <p class="text-muted-light dark:text-muted-dark max-w-2xl text-xl leading-relaxed font-light">
+        {{ i18n "resumeSummary" }}
+      </p>
+      <div class="text-muted-light dark:text-muted-dark mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="mailto:visomi.dev@gmail.com"
+        >
+          <span
+            class="pi pi-envelope text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          visomi.dev@gmail.com
+        </a>
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="https://visomi.dev"
+        >
+          <span
+            class="pi pi-globe text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          visomi.dev
+        </a>
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="https://github.com/visomi-dev"
+        >
+          <span
+            class="pi pi-github text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          github.com/visomi-dev
+        </a>
+      </div>
+    </header>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {{ i18n "resumeExpLabel" }}
+        </h2>
+      </div>
+      <div class="space-y-16">
+        <!-- AB InBev -->
+        <article class="group">
+          <div class="mb-4 flex flex-col md:flex-row md:items-baseline md:justify-between">
+            <h3
+              class="text-surface-dark dark:text-surface-light group-hover:text-surface-dark text-2xl font-semibold transition-colors dark:group-hover:text-white"
+            >
+              {{ i18n "resumeExpABICompany" }}
+            </h3>
+            <span
+              class="text-muted-light dark:text-muted-dark mt-1 font-mono text-sm md:mt-0"
+              >{{ i18n "resumeExpABIDate" }}</span
+            >
+          </div>
+          <div class="text-surface-dark/80 dark:text-surface-light/80 mb-6 text-base font-medium">
+            {{ i18n "resumeExpABIRole" }}
+          </div>
+          <ul class="text-muted-light dark:text-muted-dark list-none space-y-3 text-base leading-relaxed">
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+            >
+              {{ i18n "resumeExpABIItem1" | safeHTML }}
+            </li>
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+            >
+              {{ i18n "resumeExpABIItem2" | safeHTML }}
+            </li>
+          </ul>
+        </article>
+
+        <!-- Solidus Capital -->
+        <article class="group">
+          <div class="mb-4 flex flex-col md:flex-row md:items-baseline md:justify-between">
+            <h3
+              class="text-surface-dark dark:text-surface-light group-hover:text-surface-dark text-2xl font-semibold transition-colors dark:group-hover:text-white"
+            >
+              {{ i18n "resumeExpSCCompany" }}
+            </h3>
+            <span
+              class="text-muted-light dark:text-muted-dark mt-1 font-mono text-sm md:mt-0"
+              >{{ i18n "resumeExpSCDate" }}</span
+            >
+          </div>
+          <div class="text-surface-dark/80 dark:text-surface-light/80 mb-6 text-base font-medium">
+            {{ i18n "resumeExpSCRole" }}
+          </div>
+          <ul class="text-muted-light dark:text-muted-dark list-none space-y-3 text-base leading-relaxed">
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+            >
+              {{ i18n "resumeExpSCItem1" | safeHTML }}
+            </li>
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+            >
+              {{ i18n "resumeExpSCItem2" }}
+            </li>
+          </ul>
+        </article>
+
+        <!-- Kavak -->
+        <article class="group">
+          <div class="mb-4 flex flex-col md:flex-row md:items-baseline md:justify-between">
+            <h3
+              class="text-surface-dark dark:text-surface-light group-hover:text-surface-dark text-2xl font-semibold transition-colors dark:group-hover:text-white"
+            >
+              {{ i18n "resumeExpKavakCompany" }}
+            </h3>
+            <span
+              class="text-muted-light dark:text-muted-dark mt-1 font-mono text-sm md:mt-0"
+              >{{ i18n "resumeExpKavakDate" }}</span
+            >
+          </div>
+          <div class="text-surface-dark/80 dark:text-surface-light/80 mb-6 text-base font-medium">
+            {{ i18n "resumeExpKavakRole" }}
+          </div>
+          <ul class="text-muted-light dark:text-muted-dark list-none space-y-3 text-base leading-relaxed">
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+            >
+              {{ i18n "resumeExpKavakItem1" | safeHTML }}
+            </li>
+            <li
+              class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors"
+            >
+              {{ i18n "resumeExpKavakItem2" | safeHTML }}
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {{ i18n "resumeStackLabel" }}
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
+        <div>
+          <h4 class="text-surface-dark dark:text-surface-light mb-4 font-medium">
+            {{ i18n "resumeStackLangLabel" }}
+          </h4>
+          <p class="text-muted-light dark:text-muted-dark text-sm leading-relaxed">
+            {{ i18n "resumeStackLangList" }}
+          </p>
+        </div>
+        <div>
+          <h4 class="text-surface-dark dark:text-surface-light mb-4 font-medium">
+            {{ i18n "resumeStackInfraLabel" }}
+          </h4>
+          <p class="text-muted-light dark:text-muted-dark text-sm leading-relaxed">
+            {{ i18n "resumeStackInfraList" }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {{ i18n "resumeOssLabel" }}
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 gap-12">
+        <div class="group">
+          <div class="mb-3 flex items-center justify-between">
+            <h3 class="text-surface-dark dark:text-surface-light text-xl font-semibold">
+              {{ i18n "resumeOss1Title" }}
+            </h3>
+            <a
+              class="text-muted-light dark:text-muted-dark hover:text-surface-dark dark:hover:text-surface-light flex items-center gap-2 font-mono text-xs transition-colors"
+              href="https://github.com/visomi-dev/visomi.dev"
+              target="_blank"
+            >
+              GITHUB <span class="pi pi-arrow-up-right text-sm"></span>
+            </a>
+          </div>
+          <p class="text-muted-light dark:text-muted-dark text-base leading-relaxed">
+            {{ i18n "resumeOss1Desc" }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {{ i18n "resumeEduLabel" }}
+        </h2>
+      </div>
+      <div class="flex flex-col md:flex-row md:items-baseline md:justify-between">
+        <div>
+          <h3 class="text-surface-dark dark:text-surface-light mb-1 text-xl font-semibold">
+            {{ i18n "resumeEdu1Title" }}
+          </h3>
+          <div class="text-muted-light dark:text-muted-dark">
+            {{ i18n "resumeEdu1School" }}
+          </div>
+        </div>
+        <span
+          class="text-muted-light dark:text-muted-dark mt-2 font-mono text-sm md:mt-0"
+          >{{ i18n "resumeEdu1Date" }}</span
+        >
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="border-border-light dark:border-border-dark border-t px-6 py-12">
+  <div
+    class="mx-auto flex max-w-3xl flex-col items-center justify-between font-mono text-xs text-neutral-400 md:flex-row"
+  >
+    <p>{{ i18n "resumeFooterCopyright" }}</p>
+    <p class="mt-2 md:mt-0">{{ i18n "resumeFooterAts" }}</p>
+  </div>
+</footer>
+{{ end }}

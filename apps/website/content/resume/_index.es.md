@@ -1,0 +1,4 @@
++++
+title = "Currículum"
+type = "resume"
++++

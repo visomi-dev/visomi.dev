@@ -94,7 +94,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Add the `/* tw */` annotation before Tailwind class strings in the `host` property to enable IDE IntelliSense.
 - **Fixed Navbar Layout Rules**:
   - Pages with a fixed navbar must have `pt-20` (80px) on their `host` class to prevent content clipping.
-  - Components intended to be centered relative to the whole screen (like a Hero) must have `-mt-20` on their `host` class to compensate for the page padding.
+  - Components intended to be centered relative to the whole screen (like a Hero) must have `mt-20` on their `host` class to compensate for the page padding.
   - Navbars must have the `print:hidden` class in the template.
 
 ### Inputs & Outputs
