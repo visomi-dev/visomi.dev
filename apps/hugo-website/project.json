@@ -9,10 +9,10 @@
       "options": {
         "commands": [
           {
-            "command": "tailwindcss -i assets/css/styles.css -o static/css/styles.css --minify"
+            "command": "pnpm exec tailwindcss -i assets/css/styles.css -o static/css/styles.css --minify"
           },
           {
-            "command": "hugo -d ../../dist/apps/hugo-website --gc --minify --baseURL \"${BASE_URL:-/}\""
+            "command": "pnpm exec hugo -d ../../dist/apps/hugo-website --gc --minify --baseURL \"${BASE_URL:-/}\""
           }
         ],
         "parallel": false,
@@ -24,10 +24,10 @@
       "options": {
         "commands": [
           {
-            "command": "tailwindcss -i assets/css/styles.css -o static/css/styles.css --watch"
+            "command": "pnpm exec tailwindcss -i assets/css/styles.css -o static/css/styles.css --watch"
           },
           {
-            "command": "hugo server -D"
+            "command": "pnpm exec hugo server -D"
           }
         ],
         "parallel": true,
@@ -37,7 +37,7 @@
     "preview": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "hugo -d ../../dist/apps/hugo-website-preview --gc --minify --baseURL /preview/",
+        "command": "pnpm exec hugo -d ../../dist/apps/hugo-website-preview --gc --minify --baseURL /preview/",
         "cwd": "apps/hugo-website"
       }
     }
