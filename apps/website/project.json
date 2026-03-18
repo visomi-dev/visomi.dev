@@ -8,31 +8,31 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist/apps/website"],
       "options": {
-        "command": "pnpm exec astro build",
-        "cwd": "apps/website"
+        "command": "pnpm exec astro build --root apps/website",
+        "cwd": "."
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "continuous": true,
       "options": {
-        "command": "pnpm exec astro dev --host 0.0.0.0 --port 4200",
-        "cwd": "apps/website"
+        "command": "pnpm exec astro dev --root apps/website --host 0.0.0.0 --port 4200",
+        "cwd": "."
       }
     },
     "preview": {
       "executor": "nx:run-commands",
       "continuous": true,
       "options": {
-        "command": "pnpm exec astro build && pnpm exec astro preview --host 0.0.0.0 --port 4300",
-        "cwd": "apps/website"
+        "command": "pnpm exec astro build --root apps/website && pnpm exec astro preview --root apps/website --host 0.0.0.0 --port 4300",
+        "cwd": "."
       }
     },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm exec astro check",
-        "cwd": "apps/website"
+        "command": "pnpm exec astro check --root apps/website",
+        "cwd": "."
       }
     }
   }

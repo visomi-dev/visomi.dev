@@ -55,7 +55,7 @@ const navItems = [
                     ? 'font-bold text-black dark:text-white'
                     : 'hover:text-black dark:hover:text-white'
                 }
-                hrefLang={itemLocale}
+                hreflang={itemLocale}
               >
                 {itemLocale.toUpperCase()}
               </a>
@@ -97,5 +97,5 @@ const navItems = [
     </div>
   </div>
 
-  <script type="module" src={navbarScriptUrl}></script>
+  <script type="module" is:inline src={navbarScriptUrl}></script>
 </nav>
