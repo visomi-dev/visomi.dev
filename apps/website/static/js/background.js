@@ -1,7 +1,16 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
-const VERTEX_SHADER_URL = '/assets/home/background/background.vert';
-const FRAGMENT_SHADER_URL = '/assets/home/background/background.frag';
+const getBasePath = () => {
+  const script = document.currentScript || document.querySelector('script[src*="background.js"]');
+  if (!script) return '';
+  const scriptSrc = script.src;
+  const basePath = scriptSrc.substring(0, scriptSrc.lastIndexOf('/js/') + 1);
+  return basePath;
+};
+
+const BASE_PATH = getBasePath();
+const VERTEX_SHADER_URL = `${BASE_PATH}assets/home/background/background.vert`;
+const FRAGMENT_SHADER_URL = `${BASE_PATH}assets/home/background/background.frag`;
 const TIME_STEP = 1 / 60;
 
 let scene, camera, renderer, material, geometry, mesh;

@@ -6,14 +6,14 @@
     <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
     <meta name="description" content="{{ with.Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}" />
 
-    <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}" />
+    <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | absURL }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="{{ "css/styles.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/styles.css" | absURL }}" />
 
     {{ block "head_extra" .
 
