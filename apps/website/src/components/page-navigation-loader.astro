@@ -1,9 +1,7 @@
----
-import pageNavigationLoaderScriptUrl from '../scripts/page-navigation-loader.ts?url';
----
-
 <div id="page-navigation-loader" class="page-navigation-loader-overlay fixed inset-0 z-[60] hidden h-screen w-screen">
   <div class="page-loader-indicator fixed top-0 z-[70] h-1 w-1/4 rounded bg-black dark:bg-white"></div>
 </div>
 
-<script type="module" is:inline src={pageNavigationLoaderScriptUrl}></script>
+<script>
+  import '../scripts/page-navigation-loader.ts';
+</script>
