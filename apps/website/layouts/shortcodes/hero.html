@@ -15,12 +15,11 @@
     </div>
 
     <h1
-      class="text-5xl leading-[1.1] font-bold tracking-tight text-neutral-900 md:text-7xl lg:text-8xl dark:text-white"
+      class="text-4xl leading-tight font-bold tracking-tight text-neutral-900 sm:text-5xl md:text-7xl md:leading-[1.1] lg:text-8xl dark:text-white"
     >
-      <span>{{ i18n "homeHeroTitleLine1" }}</span>
-      <br class="hidden md:block" />
+      <span class="block">{{ i18n "homeHeroTitleLine1" }}</span>
       <span
-        class="bg-linear-to-r from-neutral-900 to-neutral-500 bg-clip-text text-transparent dark:from-white dark:to-neutral-500"
+        class="block bg-linear-to-r from-neutral-900 to-neutral-500 bg-clip-text text-transparent dark:from-white dark:to-neutral-500"
       >
         {{ i18n "homeHeroTitleLine2" }}
       </span>
@@ -42,7 +41,7 @@
       </a>
       <a
         class="border-border-light dark:border-border-dark rounded-full border bg-white px-8 py-3 font-medium text-neutral-900 shadow-sm transition-all hover:border-neutral-400/30 hover:bg-neutral-100 dark:bg-neutral-900 dark:text-white dark:hover:border-neutral-600 dark:hover:bg-neutral-800"
-        href="{{ "resume" | relURL }}"
+        href="{{ "resume" | relLangURL }}"
       >
         {{ i18n "homeHeroCtaCv" }}
       </a>
