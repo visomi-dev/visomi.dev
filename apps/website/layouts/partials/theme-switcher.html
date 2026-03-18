@@ -1,30 +1,131 @@
+<label
+  tabindex="0"
+  class="theme-switch-label relative flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-md transition-colors outline-none hover:bg-neutral-200 focus-visible:ring-2 focus-visible:ring-black dark:hover:bg-neutral-800 dark:focus-visible:ring-white"
+>
+  <input type="checkbox" class="theme-switch-input sr-only" />
+
+  <svg
+    class="theme-icon-light theme-icon absolute hidden h-7 w-7"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
+    <path
+      class="text-yellow-400"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="currentColor"
+      stroke="currentColor"
+      d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+    />
+  </svg>
+
+  <svg
+    class="theme-icon-dark theme-icon absolute hidden h-6 w-6"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
+    <path
+      class="text-white"
+      fill="currentColor"
+      stroke-width="1.5"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+    />
+  </svg>
+</label>
+
 <script>
   (function () {
-    const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
+    // We select all in case there are multiple on the page
+    const labels = document.querySelectorAll('.theme-switch-label');
 
-    // Check for saved theme preference or default to dark
+    // Initial load
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      html.classList.toggle('dark', savedTheme === 'dark');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    let isDark = false;
+    if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+      html.classList.add('dark');
+      isDark = true;
+    } else {
+      html.classList.remove('dark');
+      isDark = false;
     }
 
-    if (themeToggle) {
-      themeToggle.addEventListener('click', function () {
-        html.classList.toggle('dark');
-        const isDark = html.classList.contains('dark');
+    labels.forEach((label) => {
+      const input = label.querySelector('.theme-switch-input');
+      const iconLight = label.querySelector('.theme-icon-light');
+      const iconDark = label.querySelector('.theme-icon-dark');
+
+      if (isDark) {
+        input.checked = true;
+        iconDark.classList.remove('hidden');
+        iconDark.classList.add('upward-enter');
+      } else {
+        input.checked = false;
+        iconLight.classList.remove('hidden');
+        iconLight.classList.add('upward-enter');
+      }
+
+      function toggleTheme(e) {
+        if (e && e.type === 'click') {
+          e.preventDefault();
+        }
+
+        isDark = !html.classList.contains('dark');
+
+        if (isDark) {
+          html.classList.add('dark');
+        } else {
+          html.classList.remove('dark');
+        }
+
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      });
-    }
 
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+        // Update all switchers
+        labels.forEach((l) => {
+          const inp = l.querySelector('.theme-switch-input');
+          const iLight = l.querySelector('.theme-icon-light');
+          const iDark = l.querySelector('.theme-icon-dark');
 
-    if (mobileMenuBtn && mobileMenu) {
-      mobileMenuBtn.addEventListener('click', function () {
-        mobileMenu.classList.toggle('hidden');
+          inp.checked = isDark;
+
+          if (isDark) {
+            iLight.classList.remove('upward-enter');
+            iLight.classList.add('upward-leave');
+
+            setTimeout(() => {
+              iLight.classList.add('hidden');
+              iDark.classList.remove('hidden');
+              iDark.classList.remove('upward-leave');
+              iDark.classList.add('upward-enter');
+            }, 350);
+          } else {
+            iDark.classList.remove('upward-enter');
+            iDark.classList.add('upward-leave');
+
+            setTimeout(() => {
+              iDark.classList.add('hidden');
+              iLight.classList.remove('hidden');
+              iLight.classList.remove('upward-leave');
+              iLight.classList.add('upward-enter');
+            }, 350);
+          }
+        });
+      }
+
+      label.addEventListener('click', toggleTheme);
+
+      label.addEventListener('keyup', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleTheme();
+        }
       });
-    }
+    });
   })();
 </script>

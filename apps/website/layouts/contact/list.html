@@ -1,0 +1,165 @@
+{{ define "main" }}
+<main class="mx-auto grid w-full max-w-screen-2xl grow grid-cols-1 gap-6 px-6 pt-16 pb-20 md:grid-cols-12">
+  <header class="mb-8 flex flex-col gap-2 md:col-span-12 md:mb-16">
+    <div class="text-muted-light dark:text-muted-dark flex items-center gap-2 font-mono text-xs">
+      <span>//</span>
+      <span>2026</span>
+      <span>//</span>
+      <span class="text-surface-dark dark:text-surface-light">{{ i18n "contactPageLabel" }}</span>
+    </div>
+    <h1
+      class="text-surface-dark dark:text-surface-light mt-4 text-4xl font-medium tracking-tight md:text-6xl"
+    >
+      {{ i18n "contactPageTitle" }}
+    </h1>
+  </header>
+
+  <div class="space-y-6 md:col-span-4 lg:col-span-5">
+    <p class="text-muted-light dark:text-muted-dark max-w-sm text-sm leading-relaxed">
+      {{ i18n "contactHeroDescription" }}
+    </p>
+
+    <div class="space-y-4 pt-4">
+      <div class="group flex cursor-pointer items-center gap-3">
+        <span
+          class="pi pi-envelope text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light text-lg transition-colors"
+        ></span>
+        <a
+          class="text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light font-mono text-sm transition-colors"
+          href="mailto:visomi.dev@gmail.com"
+          >visomi.dev@gmail.com</a
+        >
+      </div>
+      <div class="group flex cursor-pointer items-center gap-3">
+        <span
+          class="pi pi-github text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light text-lg transition-colors"
+        ></span>
+        <a
+          class="text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light font-mono text-sm transition-colors"
+          href="https://github.com/visomi-dev"
+          target="_blank"
+          >github.com/visomi-dev</a
+        >
+      </div>
+    </div>
+    
+    <div class="hidden md:block mt-12">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+        </span>
+        <span
+          class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase"
+          >{{ i18n "contactHeroStatus" }}</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="md:col-span-8 lg:col-span-7">
+    <div
+      class="border-border-light dark:border-border-dark rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 md:p-10 dark:bg-neutral-900"
+    >
+      <form action="https://formspree.io/f/xbjnkyke" method="POST" class="space-y-6">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div class="space-y-2">
+            <label class="text-muted-light dark:text-muted-dark block font-mono text-[10px] font-bold tracking-widest uppercase" for="name">
+              {{ i18n "contactFormLabelIdentity" }}
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+              placeholder="{{ i18n "contactFormPlaceholderIdentity" }}"
+              required
+            />
+          </div>
+          <div class="space-y-2">
+            <label class="text-muted-light dark:text-muted-dark block font-mono text-[10px] font-bold tracking-widest uppercase" for="email">
+              {{ i18n "contactFormLabelEmail" }}
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+              placeholder="{{ i18n "contactFormPlaceholderEmail" }}"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label
+            class="text-muted-light dark:text-muted-dark block font-mono text-[10px] font-bold tracking-widest uppercase"
+            for="type"
+            >{{ i18n "contactFormLabelProtocol" }}</label
+          >
+          <div class="relative">
+            <select
+              class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full cursor-pointer appearance-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+              id="type"
+              name="type"
+            >
+              <option value="consulting">{{ i18n "contactFormOptionConsulting" }}</option>
+              <option value="speaking">{{ i18n "contactFormOptionSpeaking" }}</option>
+              <option value="fulltime">{{ i18n "contactFormOptionFulltime" }}</option>
+              <option value="other">{{ i18n "contactFormOptionOther" }}</option>
+            </select>
+            <div
+              class="text-muted-light dark:text-muted-dark pointer-events-none absolute inset-y-0 right-0 flex items-center px-4"
+            >
+              <span class="pi pi-chevron-down text-sm"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label
+            class="text-muted-light dark:text-muted-dark block font-mono text-[10px] font-bold tracking-widest uppercase"
+            for="message"
+            >{{ i18n "contactFormLabelPayload" }}</label
+          >
+          <textarea
+            class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full resize-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+            id="message"
+            name="message"
+            placeholder="{{ i18n "contactFormPlaceholderPayload" }}"
+            rows="6"
+            required
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button
+            class="bg-surface-dark text-surface-light dark:bg-surface-light dark:text-surface-dark rounded border border-transparent px-8 py-3 font-mono text-[10px] font-bold tracking-widest uppercase transition-all hover:bg-neutral-800 active:scale-95 dark:hover:bg-neutral-100"
+            type="submit"
+          >
+            {{ i18n "contactFormButtonTransmit" }}
+          </button>
+          <span
+            class="text-muted-light/60 dark:text-muted-dark/40 hidden font-mono text-[10px] sm:inline-block"
+          >
+            {{ i18n "contactFormSecurityMsg" }}
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="border-border-light dark:border-border-dark mt-8 border-t pt-8 md:hidden col-span-12">
+    <div class="flex items-center gap-2">
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+      </span>
+      <span
+        class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase"
+        >{{ i18n "contactPageStatusMobile" }}</span
+      >
+    </div>
+  </div>
+</main>
+{{ end }}

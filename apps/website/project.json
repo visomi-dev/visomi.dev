@@ -7,16 +7,31 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "hugo -d ../../dist/apps/website --gc --minify",
+        "commands": [
+          {
+            "command": "tailwindcss -i assets/css/styles.css -o static/css/styles.css --minify"
+          },
+          {
+            "command": "hugo -d ../../dist/apps/website --gc --minify"
+          }
+        ],
+        "parallel": false,
         "cwd": "apps/website"
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "hugo server -D",
-        "cwd": "apps/website",
-        "port": 1313
+        "commands": [
+          {
+            "command": "tailwindcss -i assets/css/styles.css -o static/css/styles.css --watch"
+          },
+          {
+            "command": "hugo server -D"
+          }
+        ],
+        "parallel": true,
+        "cwd": "apps/website"
       }
     },
     "preview": {

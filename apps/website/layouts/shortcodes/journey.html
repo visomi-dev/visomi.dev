@@ -1,75 +1,117 @@
-<section class="px-4 py-20">
-  <div class="mx-auto max-w-4xl">
-    <h2 class="mb-12 text-center font-mono text-sm text-gray-500">{{ i18n "homeJourneyTitle" }}</h2>
+<section class="px-4 py-20" id="journey">
+  <div class="mx-auto max-w-5xl">
+    <h2 class="mb-16 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl dark:text-white">
+      {{ i18n "homeJourneyTitle" }}
+    </h2>
 
-    <div class="space-y-12">
-      <!-- AB InBev -->
-      <div class="relative border-l border-neutral-800 pl-8">
-        <div class="absolute top-0 left-0 h-2 w-2 -translate-x-1/2 rounded-full bg-blue-500"></div>
-        <div class="mb-2 flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-          <span class="font-mono text-xs text-blue-400">{{ i18n "homeJourneyCompany2022" }}</span>
-          <span class="text-gray-600">|</span>
-          <span class="text-gray-400">{{ i18n "homeJourneyRole2022" }}</span>
+    <div class="border-border-light/80 relative ml-3 space-y-16 border-l md:ml-6 dark:border-neutral-700">
+      <!-- 2022 - AB InBev -->
+      <div class="group relative pl-8 md:pl-12">
+        <span
+          class="bg-border-light ring-surface-light absolute top-2 -left-[5px] h-2.5 w-2.5 rounded-full ring-4 transition-colors group-hover:bg-neutral-900 dark:bg-neutral-500 dark:ring-black dark:group-hover:bg-white"
+        ></span>
+
+        <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <span class="text-muted-light/20 text-4xl font-bold tabular-nums dark:text-neutral-700">2022</span>
+          <div class="md:text-right">
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white">{{ i18n "homeJourneyRole2022" }}</h3>
+            <p class="text-muted-light text-sm font-medium dark:text-neutral-400">
+              {{ i18n "homeJourneyCompany2022" }}
+            </p>
+          </div>
         </div>
-        <p class="text-sm leading-relaxed text-gray-500">
-          Leading technical architecture and development of enterprise-scale systems using React, Node.js on Azure.
-          Designed and implemented data ingestion pipelines and real-time visualization dashboards.
-        </p>
+
+        <div
+          class="border-border-light rounded-xl border bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-900/80"
+        >
+          <p class="text-muted-light leading-relaxed dark:text-neutral-300">
+            Leading technical architecture and development of enterprise-scale systems using React, Node.js on Azure.
+            Designed and implemented data ingestion pipelines and real-time visualization dashboards.
+          </p>
+        </div>
       </div>
 
-      <!-- Solidus Capital -->
-      <div class="relative border-l border-neutral-800 pl-8">
-        <div class="absolute top-0 left-0 h-2 w-2 -translate-x-1/2 rounded-full bg-purple-500"></div>
-        <div class="mb-2 flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-          <span class="font-mono text-xs text-purple-400">{{ i18n "homeJourneyCompany2021" }}</span>
-          <span class="text-gray-600">|</span>
-          <span class="text-gray-400">{{ i18n "homeJourneyRole2021" }}</span>
+      <!-- 2021 - Solidus Capital -->
+      <div class="group relative pl-8 md:pl-12">
+        <span
+          class="bg-border-light ring-surface-light absolute top-2 -left-[5px] h-2.5 w-2.5 rounded-full ring-4 transition-colors group-hover:bg-neutral-900 dark:bg-neutral-500 dark:ring-black dark:group-hover:bg-white"
+        ></span>
+
+        <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <span class="text-muted-light/20 text-4xl font-bold tabular-nums dark:text-neutral-700">2021</span>
+          <div class="md:text-right">
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white">
+              {{ i18n "homeJourneyRole2021" }}
+            </h3>
+            <p class="text-muted-light text-sm font-medium dark:text-neutral-400">
+              {{ i18n "homeJourneyCompany2021" }}
+            </p>
+          </div>
         </div>
-        <p class="text-sm leading-relaxed text-gray-500">
-          Oversaw technology strategy and product development. Architected secure financial platforms using React,
-          Node.js, and AWS Serverless infrastructure. Managed cross-functional engineering teams.
-        </p>
+
+        <div
+          class="border-border-light rounded-xl border bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-900/80"
+        >
+          <p class="text-muted-light leading-relaxed dark:text-neutral-300">
+            Oversaw technology strategy and product development. Architected secure financial platforms using React,
+            Node.js, and AWS Serverless infrastructure. Managed cross-functional engineering teams.
+          </p>
+        </div>
       </div>
 
-      <!-- Kavak -->
-      <div class="relative border-l border-neutral-800 pl-8">
-        <div class="absolute top-0 left-0 h-2 w-2 -translate-x-1/2 rounded-full bg-green-500"></div>
-        <div class="mb-2 flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-          <span class="font-mono text-xs text-green-400">{{ i18n "homeJourneyCompany2020" }}</span>
-          <span class="text-gray-600">|</span>
-          <span class="text-gray-400">{{ i18n "homeJourneyRole2020" }}</span>
+      <!-- 2020 - Kavak -->
+      <div class="group relative pl-8 md:pl-12">
+        <span
+          class="bg-border-light ring-surface-light absolute top-2 -left-[5px] h-2.5 w-2.5 rounded-full ring-4 transition-colors group-hover:bg-neutral-900 dark:bg-neutral-500 dark:ring-black dark:group-hover:bg-white"
+        ></span>
+
+        <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <span class="text-muted-light/20 text-4xl font-bold tabular-nums dark:text-neutral-700">2020</span>
+          <div class="md:text-right">
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white">
+              {{ i18n "homeJourneyRole2020" }}
+            </h3>
+            <p class="text-muted-light text-sm font-medium dark:text-neutral-400">
+              {{ i18n "homeJourneyCompany2020" }}
+            </p>
+          </div>
         </div>
-        <p class="text-sm leading-relaxed text-gray-500">
-          Drove the migration to Nx monorepo and AWS infrastructure. Developed scalable frontend services with Angular
-          and backend systems using Serverless. Integrated complex authentication flows with AWS Cognito.
-        </p>
+
+        <div
+          class="border-border-light rounded-xl border bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-900/80"
+        >
+          <p class="text-muted-light leading-relaxed dark:text-neutral-300">
+            Drove the migration to Nx monorepo and AWS infrastructure. Developed scalable frontend services with Angular
+            and backend systems using Serverless. Integrated complex authentication flows with AWS Cognito.
+          </p>
+        </div>
       </div>
 
-      <!-- Avanttia -->
-      <div class="relative border-l border-neutral-800 pl-8">
-        <div class="absolute top-0 left-0 h-2 w-2 -translate-x-1/2 rounded-full bg-orange-500"></div>
-        <div class="mb-2 flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-          <span class="font-mono text-xs text-orange-400">{{ i18n "homeJourneyCompany2018" }}</span>
-          <span class="text-gray-600">|</span>
-          <span class="text-gray-400">{{ i18n "homeJourneyRole2018" }}</span>
-        </div>
-        <p class="text-sm leading-relaxed text-gray-500">
-          Architected fiscal and accounting applications using Node.js, PostgreSQL, and Vue. Managed development teams
-          and interfaced with government SAT services for compliance.
-        </p>
-      </div>
-    </div>
+      <!-- 2018 - Avanttia -->
+      <div class="group relative pl-8 md:pl-12">
+        <span
+          class="bg-border-light ring-surface-light absolute top-2 -left-[5px] h-2.5 w-2.5 rounded-full ring-4 transition-colors group-hover:bg-neutral-900 dark:bg-neutral-500 dark:ring-black dark:group-hover:bg-white"
+        ></span>
 
-    <div class="mt-12 text-center">
-      <a
-        href="/journey"
-        class="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
-      >
-        <span>View full journey</span>
-        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
+        <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <span class="text-muted-light/20 text-4xl font-bold tabular-nums dark:text-neutral-700">2018</span>
+          <div class="md:text-right">
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white">{{ i18n "homeJourneyRole2018" }}</h3>
+            <p class="text-muted-light text-sm font-medium dark:text-neutral-400">
+              {{ i18n "homeJourneyCompany2018" }}
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="border-border-light rounded-xl border bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-900/80"
+        >
+          <p class="text-muted-light leading-relaxed dark:text-neutral-300">
+            Architected fiscal and accounting applications using Node.js, PostgreSQL, and Vue. Managed development teams
+            and interfaced with government SAT services for compliance.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>

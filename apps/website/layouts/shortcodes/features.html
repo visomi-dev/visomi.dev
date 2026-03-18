@@ -1,93 +1,173 @@
-<section class="px-4 py-20">
+<section class="px-4 py-20" id="features">
   <div class="mx-auto max-w-6xl">
     <div class="mb-16 text-center">
-      <h2 class="mb-4 text-3xl font-bold md:text-4xl">{{ i18n "homeFeaturesTitle" }}</h2>
-      <p class="mx-auto max-w-2xl text-gray-400">{{ i18n "homeFeaturesSubtitle" }}</p>
+      <h2 class="mb-4 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl dark:text-white">
+        {{ i18n "homeFeaturesTitle" }}
+      </h2>
+      <p class="text-muted-light dark:text-muted-dark mx-auto max-w-2xl text-lg">
+        {{ i18n "homeFeaturesSubtitle" }}
+      </p>
     </div>
 
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <!-- Engineering Excellence -->
       <div
-        class="rounded-xl border border-neutral-800 bg-neutral-800/30 p-6 transition-colors hover:border-neutral-600"
+        class="group border-border-light dark:border-border-dark rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:border-neutral-400/40 hover:shadow-md dark:bg-neutral-900 dark:hover:border-neutral-600"
       >
-        <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/20">
-          <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-            />
-          </svg>
+        <div class="mb-6 flex items-start justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+              {{ i18n "homeFeaturesCard1Title" }}
+            </h3>
+            <p class="text-muted-light dark:text-muted-dark text-sm">
+              {{ i18n "homeFeaturesCard1Subtitle" }}
+            </p>
+          </div>
+          <span
+            class="rounded border border-emerald-100 bg-emerald-50 px-2 py-1 font-mono text-xs text-emerald-600 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
+          >
+            {{ i18n "homeFeaturesCard1Badge" }}
+          </span>
         </div>
-        <h3 class="mb-2 font-semibold">{{ i18n "homeFeaturesCard1Title" }}</h3>
-        <p class="mb-3 text-sm text-gray-400">{{ i18n "homeFeaturesCard1Subtitle" }}</p>
-        <span
-          class="inline-block rounded bg-blue-500/20 px-2 py-1 font-mono text-xs text-blue-400"
-          >{{ i18n "homeFeaturesCard1Badge" }}</span
+        <div
+          class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-lg border bg-neutral-50 p-4 font-mono text-[11px] dark:bg-neutral-800"
         >
+          <p class="text-neutral-900 dark:text-white">$ npx nx graph</p>
+          <p>
+            Analyzing workspace dependencies...
+            <span class="text-emerald-500">DONE</span>
+          </p>
+          <p>
+            Architecture:
+            <span class="font-bold text-neutral-900 dark:text-white">Modular Monorepo</span>
+          </p>
+          <p>
+            Tech Stack:
+            <span class="font-bold text-neutral-900 dark:text-white">Angular, React, Node.js, AWS</span>
+          </p>
+        </div>
       </div>
 
       <!-- Design-First Approach -->
       <div
-        class="rounded-xl border border-neutral-800 bg-neutral-800/30 p-6 transition-colors hover:border-neutral-600"
+        class="group border-border-light dark:border-border-dark rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:border-neutral-400/40 hover:shadow-md dark:bg-neutral-900 dark:hover:border-neutral-600"
       >
-        <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20">
-          <svg class="h-5 w-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-            />
-          </svg>
+        <div class="mb-6 flex items-start justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+              {{ i18n "homeFeaturesCard2Title" }}
+            </h3>
+            <p class="text-muted-light dark:text-muted-dark text-sm">
+              {{ i18n "homeFeaturesCard2Subtitle" }}
+            </p>
+          </div>
+          <span
+            class="rounded border border-blue-100 bg-blue-50 px-2 py-1 font-mono text-xs text-blue-600 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+          >
+            {{ i18n "homeFeaturesCard2Badge" }}
+          </span>
         </div>
-        <h3 class="mb-2 font-semibold">{{ i18n "homeFeaturesCard2Title" }}</h3>
-        <p class="mb-3 text-sm text-gray-400">{{ i18n "homeFeaturesCard2Subtitle" }}</p>
-        <span
-          class="inline-block rounded bg-purple-500/20 px-2 py-1 font-mono text-xs text-purple-400"
-          >{{ i18n "homeFeaturesCard2Badge" }}</span
+        <div
+          class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-lg border bg-neutral-50 p-4 font-mono text-[11px] dark:bg-neutral-800"
         >
+          <p>
+            <span class="text-purple-600 dark:text-purple-400">@theme</span>
+            &#123;
+          </p>
+          <p class="pl-4">
+            --color-primary:
+            <span class="text-orange-600 dark:text-orange-400">#3B82F6</span>;
+          </p>
+          <p class="pl-4">
+            --spacing-unit:
+            <span class="text-orange-600 dark:text-orange-400">0.25rem</span>;
+          </p>
+          <p class="pl-4">
+            --glass-effect:
+            <span class="text-orange-600 dark:text-orange-400">blur(8px)</span>;
+          </p>
+          <p>&#125;</p>
+        </div>
       </div>
 
       <!-- Technical Leadership -->
       <div
-        class="rounded-xl border border-neutral-800 bg-neutral-800/30 p-6 transition-colors hover:border-neutral-600"
+        class="group border-border-light dark:border-border-dark rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:border-neutral-400/40 hover:shadow-md dark:bg-neutral-900 dark:hover:border-neutral-600"
       >
-        <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/20">
-          <svg class="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
+        <div class="mb-6 flex items-start justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+              {{ i18n "homeFeaturesCard3Title" }}
+            </h3>
+            <p class="text-muted-light dark:text-muted-dark text-sm">
+              {{ i18n "homeFeaturesCard3Subtitle" }}
+            </p>
+          </div>
+          <span
+            class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded border bg-neutral-100 px-2 py-1 font-mono text-xs dark:bg-neutral-800"
+          >
+            Head of Tech
+          </span>
         </div>
-        <h3 class="mb-2 font-semibold">{{ i18n "homeFeaturesCard3Title" }}</h3>
-        <p class="mb-3 text-sm text-gray-400">{{ i18n "homeFeaturesCard3Subtitle" }}</p>
-        <span class="inline-block rounded bg-green-500/20 px-2 py-1 font-mono text-xs text-green-400">Leadership</span>
+        <div
+          class="border-border-light dark:border-border-dark flex items-center justify-center rounded-lg border bg-neutral-50 py-4 dark:bg-neutral-800"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="border-muted-light dark:border-muted-dark flex h-10 w-10 items-center justify-center rounded border border-dashed text-[10px] tracking-tighter uppercase"
+            >
+              Vision
+            </div>
+            <span class="pi pi-arrow-right text-muted-light dark:text-muted-dark"></span>
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded border border-neutral-900 bg-white text-[10px] tracking-tighter uppercase dark:border-white dark:bg-neutral-900"
+            >
+              Product
+            </div>
+            <span class="pi pi-arrow-right text-muted-light dark:text-muted-dark"></span>
+            <div
+              class="border-muted-light dark:border-muted-dark flex h-10 w-10 items-center justify-center rounded border border-dashed text-[10px] tracking-tighter uppercase"
+            >
+              Team
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Accessibility & Quality -->
       <div
-        class="rounded-xl border border-neutral-800 bg-neutral-800/30 p-6 transition-colors hover:border-neutral-600"
+        class="group border-border-light dark:border-border-dark rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:border-neutral-400/40 hover:shadow-md dark:bg-neutral-900 dark:hover:border-neutral-600"
       >
-        <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-500/20">
-          <svg class="h-5 w-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            />
-          </svg>
+        <div class="mb-6 flex items-start justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+              {{ i18n "homeFeaturesCard4Title" }}
+            </h3>
+            <p class="text-muted-light dark:text-muted-dark text-sm">
+              {{ i18n "homeFeaturesCard4Subtitle" }}
+            </p>
+          </div>
+          <div class="flex -space-x-1">
+            <div class="h-5 w-5 rounded-full border-2 border-white bg-emerald-500 dark:border-neutral-900"></div>
+            <div class="h-5 w-5 rounded-full border-2 border-white bg-emerald-500 dark:border-neutral-900"></div>
+            <div class="h-5 w-5 rounded-full border-2 border-white bg-emerald-500 dark:border-neutral-900"></div>
+          </div>
         </div>
-        <h3 class="mb-2 font-semibold">{{ i18n "homeFeaturesCard4Title" }}</h3>
-        <p class="mb-3 text-sm text-gray-400">{{ i18n "homeFeaturesCard4Subtitle" }}</p>
-        <div class="flex flex-wrap gap-1">
-          <span class="rounded bg-orange-500/20 px-2 py-1 font-mono text-xs text-orange-400">A11y</span>
-          <span class="rounded bg-orange-500/20 px-2 py-1 font-mono text-xs text-orange-400">WCAG 2.1 AA</span>
+        <div
+          class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-lg border bg-neutral-50 p-4 font-mono text-[11px] dark:bg-neutral-800"
+        >
+          <div class="mb-1 flex items-center justify-between">
+            <span>{{ i18n "homeFeaturesA11yCheck1" }}</span>
+            <span class="text-emerald-500">PASS</span>
+          </div>
+          <div class="mb-1 flex items-center justify-between">
+            <span>{{ i18n "homeFeaturesA11yCheck2" }}</span>
+            <span class="text-emerald-500">PASS</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span>{{ i18n "homeFeaturesA11yCheck3" }}</span>
+            <span class="text-emerald-500">PASS</span>
+          </div>
         </div>
       </div>
     </div>

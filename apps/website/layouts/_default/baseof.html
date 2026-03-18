@@ -11,111 +11,28 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
-            },
-            colors: {
-              surface: {
-                light: '#f3f4f6',
-                dark: '#0f0f0f',
-              },
-              muted: {
-                light: '#4b5563',
-                dark: '#888888',
-              },
-            },
-          },
-        },
-      };
-    </script>
-
-    <style>
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        font-family: 'Inter', sans-serif;
-        background-color: #0f0f0f;
-        color: #f3f4f6;
-      }
-      .font-mono {
-        font-family: 'JetBrains Mono', monospace;
-      }
-
-      /* Animations */
-      @keyframes blob {
-        0% {
-          transform: translate(0px, 0px) scale(1);
-        }
-        33% {
-          transform: translate(30px, -50px) scale(1.1);
-        }
-        66% {
-          transform: translate(-20px, 20px) scale(0.9);
-        }
-        100% {
-          transform: translate(0px, 0px) scale(1);
-        }
-      }
-      @keyframes fade-in-up {
-        0% {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .animate-blob {
-        animation: blob 7s infinite;
-      }
-      .animate-fade-in-up {
-        animation: fade-in-up 0.8s ease-out forwards;
-      }
-      .animation-delay-2000 {
-        animation-delay: 2s;
-      }
-      .animation-delay-4000 {
-        animation-delay: 4s;
-      }
-
-      /* Grid background */
-      .bg-grid {
-        background-size: 60px 60px;
-        background-image:
-          linear-gradient(to right, #262626 1px, transparent 1px),
-          linear-gradient(to bottom, #262626 1px, transparent 1px);
-        mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-      }
-    </style>
+    <link rel="stylesheet" href="/css/styles.css" />
 
     {{ block "head_extra" .
+
+
+
+
     }}{{
       end
     }}
   </head>
   <body class="min-h-full">
+    {{ partial "page-navigation-loader" . }}
+    {{ partial "background" . }}
     {{ partial "navbar" . }}
 
-    <main class="min-h-screen">{{ block "main" . }}{{ end }}</main>
+    <main class="relative z-10 min-h-screen">{{ block "main" . }}{{ end }}</main>
 
-    {{ partial "footer" . }}
-
-    {{ partial "theme-switcher" . }}
+    <div class="relative z-10">
+      {{ partial "footer" . }}
+    </div>
   </body>
 </html>
