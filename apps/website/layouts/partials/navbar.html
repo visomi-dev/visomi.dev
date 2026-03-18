@@ -1,6 +1,6 @@
 <nav class="fixed top-0 left-0 z-50 w-full border-b border-neutral-200 backdrop-blur-sm dark:border-neutral-800 bg-white/50 dark:bg-black/50">
   <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-12">
-    <a href="{{ "/" | relLangURL }}" class="flex items-center gap-3">
+    <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center gap-3">
       <div class="h-2 w-2 rounded-full bg-black dark:bg-white"></div>
       <span class="font-mono text-lg font-bold tracking-tight dark:text-white">VISOMI.DEV</span>
     </a>
@@ -8,7 +8,7 @@
     <!-- Desktop Navigation Links -->
     <div class="hidden items-center gap-8 font-mono tracking-widest text-gray-500 md:flex dark:text-gray-400">
       <a
-        href="{{ "/" | relLangURL }}"
+        href="{{ .Site.Home.RelPermalink }}"
         class="transition-colors hover:text-black dark:hover:text-white {{ if .IsHome }}text-black dark:text-white{{ end }}"
         >{{ i18n "navHome" }}</a
       >
@@ -59,7 +59,7 @@
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden md:hidden bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-neutral-200 dark:border-neutral-800">
     <div class="px-6 py-6 space-y-4 font-mono tracking-widest flex flex-col">
-      <a href="{{ "/" | relLangURL }}" class="text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white py-2 {{ if .IsHome }}text-black font-bold dark:text-white{{ end }}">{{ i18n "navHome" }}</a>
+      <a href="{{ .Site.Home.RelPermalink }}" class="text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white py-2 {{ if .IsHome }}text-black font-bold dark:text-white{{ end }}">{{ i18n "navHome" }}</a>
       <a href="{{ "journey" | relLangURL }}" class="text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white py-2 {{ if eq .Section "journey" }}text-black font-bold dark:text-white{{ end }}">{{ i18n "navJourney" }}</a>
       <a href="{{ "projects" | relLangURL }}" class="text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white py-2 {{ if eq .Section "projects" }}text-black font-bold dark:text-white{{ end }}">{{ i18n "navProjects" }}</a>
       <a href="{{ "resume" | relLangURL }}" class="text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white py-2 {{ if eq .Section "resume" }}text-black font-bold dark:text-white{{ end }}">{{ i18n "navResume" }}</a>
