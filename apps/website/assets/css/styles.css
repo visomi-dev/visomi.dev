@@ -64,7 +64,7 @@
 }
 
 @utility min-h-screen-nav {
-  min-height: calc(100svh - 5rem);
+  min-height: calc(100svh - (var(--spacing) * 20));
 }
 
 @keyframes upward-enter {
