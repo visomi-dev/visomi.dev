@@ -1,12 +1,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
-const repositoryName = process.env.GITHUB_REPOSITORY?.split('/')[1];
-const isProjectPagesDeployment = Boolean(
-  process.env.GITHUB_ACTIONS && repositoryName && !repositoryName.endsWith('.github.io'),
-);
-const defaultBase = isProjectPagesDeployment ? `/${repositoryName}/` : '/';
-const base = process.env.BASE_URL ?? defaultBase;
+const base = process.env.BASE_URL ?? '/';
 const site = process.env.SITE_URL ?? 'https://visomi.dev';
 
 export default defineConfig({
