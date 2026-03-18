@@ -24,39 +24,43 @@ async function initBackground() {
     lightBg.classList.remove('hidden');
   }
 
-  // Observe theme changes - only animate on user-triggered toggles
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === 'class') {
-        const isDark = html.classList.contains('dark');
+  // Track the current theme so the observer only fires on actual changes
+  let currentTheme = isDarkOnLoad ? 'dark' : 'light';
 
-        if (isDark) {
-          lightBg.classList.remove('bg-upward-enter');
-          lightBg.classList.add('bg-upward-leave');
+  // Observe theme changes - only animate when theme actually changes
+  const observer = new MutationObserver(() => {
+    const isDark = html.classList.contains('dark');
+    const newTheme = isDark ? 'dark' : 'light';
 
-          darkBg.classList.remove('hidden');
-          darkBg.classList.remove('bg-upward-leave');
-          darkBg.classList.add('bg-upward-enter');
+    // Skip if theme hasn't actually changed
+    if (newTheme === currentTheme) return;
+    currentTheme = newTheme;
 
-          setTimeout(() => {
-            lightBg.classList.add('hidden');
-          }, 700);
-        } else {
-          darkBg.classList.remove('bg-upward-enter');
-          darkBg.classList.add('bg-upward-leave');
+    if (isDark) {
+      lightBg.classList.remove('bg-upward-enter');
+      lightBg.classList.add('bg-upward-leave');
 
-          lightBg.classList.remove('hidden');
-          lightBg.classList.remove('bg-upward-leave');
-          lightBg.classList.add('bg-upward-enter');
+      darkBg.classList.remove('hidden');
+      darkBg.classList.remove('bg-upward-leave');
+      darkBg.classList.add('bg-upward-enter');
 
-          setTimeout(() => {
-            darkBg.classList.add('hidden');
-          }, 700);
-        }
-      }
-    });
+      setTimeout(() => {
+        lightBg.classList.add('hidden');
+      }, 700);
+    } else {
+      darkBg.classList.remove('bg-upward-enter');
+      darkBg.classList.add('bg-upward-leave');
+
+      lightBg.classList.remove('hidden');
+      lightBg.classList.remove('bg-upward-leave');
+      lightBg.classList.add('bg-upward-enter');
+
+      setTimeout(() => {
+        darkBg.classList.add('hidden');
+      }, 700);
+    }
   });
-  observer.observe(html, { attributes: true });
+  observer.observe(html, { attributes: true, attributeFilter: ['class'] });
 
   // Initialize Three.js for dark mode
   try {
