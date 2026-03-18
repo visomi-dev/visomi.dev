@@ -7,7 +7,20 @@ import { provideRouter } from '@angular/router';
 import { Navbar } from './navbar';
 
 describe('Navbar', () => {
-  const setup = async (locale = 'en-US') => {
+  const setBaseHref = (href: string) => {
+    let baseElement = document.querySelector('base');
+
+    if (baseElement == null) {
+      baseElement = document.createElement('base');
+      document.head.appendChild(baseElement);
+    }
+
+    baseElement.setAttribute('href', href);
+  };
+
+  const setup = async (locale = 'en-US', baseHref = '/') => {
+    setBaseHref(baseHref);
+
     await TestBed.configureTestingModule({
       imports: [Navbar],
       providers: [provideRouter([]), provideHttpClient(), { provide: LOCALE_ID, useValue: locale }],
@@ -31,6 +44,8 @@ describe('Navbar', () => {
   it('should generate locale links for english locale', async () => {
     const { component } = await setup('en-US');
 
+    expect(component.homeHref()).toBe('/');
+    expect(component.journeyHref()).toBe('/journey');
     expect(component.englishHref()).toBe('/');
     expect(component.spanishHref()).toBe('/es/');
     expect(component.getLocaleLinkClass('en')).toContain('pointer-events-none');
@@ -38,11 +53,22 @@ describe('Navbar', () => {
   });
 
   it('should disable spanish link for spanish locale', async () => {
-    const { component } = await setup('es');
+    const { component } = await setup('es', '/es/');
 
+    expect(component.homeHref()).toBe('/es/');
+    expect(component.journeyHref()).toBe('/es/journey');
     expect(component.englishHref()).toBe('/');
     expect(component.spanishHref()).toBe('/es/');
     expect(component.getLocaleLinkClass('es')).toContain('pointer-events-none');
     expect(component.getLocaleLinkClass('en')).not.toContain('pointer-events-none');
+  });
+
+  it('should keep locale links on nested base paths', async () => {
+    const { component } = await setup('es', '/portfolio/es/');
+
+    expect(component.homeHref()).toBe('/portfolio/es/');
+    expect(component.projectsHref()).toBe('/portfolio/es/projects');
+    expect(component.englishHref()).toBe('/portfolio/');
+    expect(component.spanishHref()).toBe('/portfolio/es/');
   });
 });
