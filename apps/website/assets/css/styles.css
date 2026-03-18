@@ -63,6 +63,10 @@
   animation-delay: 4s;
 }
 
+@utility min-h-screen-nav {
+  min-height: calc(100svh - 5rem);
+}
+
 @keyframes upward-enter {
   from {
     opacity: 0;
