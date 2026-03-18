@@ -29,20 +29,19 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: 24
+          cache: 'pnpm'
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          hugo-version: '0.139.2'
-          extended: true
+          version: 9
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: npx nx build website
+        run: pnpm nx build website
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
