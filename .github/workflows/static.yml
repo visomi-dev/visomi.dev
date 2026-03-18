@@ -47,6 +47,8 @@ jobs:
 
       - name: Build
         run: pnpm exec nx run website:build
+        env:
+          BASE_URL: /visomi.dev/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

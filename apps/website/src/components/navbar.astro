@@ -1,7 +1,6 @@
 ---
 import { createTranslator, getPagePath, locales, type Locale, type PageId } from '../i18n/translations';
 import ThemeSwitcher from './theme-switcher.astro';
-import navbarScriptUrl from '../scripts/navbar.ts?url';
 
 type Props = {
   locale: Locale;
@@ -97,5 +96,5 @@ const navItems = [
     </div>
   </div>
 
-  <script type="module" is:inline src={navbarScriptUrl}></script>
+  <script src="../scripts/navbar.ts"></script>
 </nav>

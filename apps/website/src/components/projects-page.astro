@@ -1,6 +1,5 @@
 ---
 import { createTranslator, type Locale } from '../i18n/translations';
-import projectsScriptUrl from '../scripts/projects.ts?url';
 
 type Props = {
   locale: Locale;
@@ -198,4 +197,4 @@ const t = createTranslator(locale);
   </div>
 </main>
 
-<script type="module" is:inline src={projectsScriptUrl}></script>
+<script src="../scripts/projects.ts"></script>
