@@ -21,6 +21,7 @@ const pageSegments: Record<PageId, string> = {
   resume: 'resume',
   contact: 'contact',
 };
+const basePath = import.meta.env.BASE_URL;
 
 export const createTranslator = (locale: Locale) => {
   const dictionary = translations[locale];
@@ -33,7 +34,11 @@ export const getPagePath = (locale: Locale, page: PageId) => {
   const segment = pageSegments[page];
   const path = segment ? `${prefix}/${segment}/` : `${prefix}/`;
 
-  return path.replaceAll('//', '/');
+  if (basePath === '/') {
+    return path.replaceAll('//', '/');
+  }
+
+  return `${basePath}${path.slice(1)}`.replaceAll('//', '/');
 };
 
 export const stripHtml = (value: string) =>
