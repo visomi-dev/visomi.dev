@@ -24,9 +24,15 @@
     if (isDark) {
       input.checked = true;
       iconDark.classList.remove('hidden');
+      iconDark.classList.remove('upward-enter');
+      iconDark.classList.remove('upward-leave');
+      iconLight.classList.add('hidden');
     } else {
       input.checked = false;
       iconLight.classList.remove('hidden');
+      iconLight.classList.remove('upward-enter');
+      iconLight.classList.remove('upward-leave');
+      iconDark.classList.add('hidden');
     }
 
     function toggleTheme(e) {
