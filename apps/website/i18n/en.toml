@@ -1,17 +1,17 @@
 [navHome]
-other = "HOME"
+other = "// HOME"
 
 [navJourney]
-other = "JOURNEY"
+other = "// JOURNEY"
 
 [navProjects]
-other = "PROJECTS"
+other = "// PROJECTS"
 
 [navResume]
-other = "RESUME"
+other = "// RESUME"
 
 [navContact]
-other = "CONTACT"
+other = "// CONTACT"
 
 [homeHeroTitleLine1]
 other = "Transforming"

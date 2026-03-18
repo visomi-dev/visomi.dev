@@ -1,17 +1,17 @@
 [navHome]
-other = "INICIO"
+other = "// INICIO"
 
 [navJourney]
-other = "TRAYECTORIA"
+other = "// TRAYECTORIA"
 
 [navProjects]
-other = "PROYECTOS"
+other = "// PROYECTOS"
 
 [navResume]
-other = "CURRÍCULUM"
+other = "// CURRÍCULUM"
 
 [navContact]
-other = "CONTACTO"
+other = "// CONTACTO"
 
 [homeHeroTitleLine1]
 other = "Transformando"
