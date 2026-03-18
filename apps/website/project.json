@@ -2,43 +2,37 @@
   "name": "website",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/website",
+  "sourceRoot": "apps/website/src",
   "targets": {
     "build": {
       "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/website"],
       "options": {
-        "commands": [
-          {
-            "command": "tailwindcss -i assets/css/styles.css -o static/css/styles.css --minify"
-          },
-          {
-            "command": "hugo -d ../../dist/apps/website --gc --minify --baseURL \"${BASE_URL:-/}\""
-          }
-        ],
-        "parallel": false,
-        "cwd": "apps/website"
+        "command": "pnpm exec astro build --root apps/website",
+        "cwd": "."
       }
     },
     "serve": {
       "executor": "nx:run-commands",
+      "continuous": true,
       "options": {
-        "commands": [
-          {
-            "command": "tailwindcss -i assets/css/styles.css -o static/css/styles.css --watch"
-          },
-          {
-            "command": "hugo server -D"
-          }
-        ],
-        "parallel": true,
-        "cwd": "apps/website"
+        "command": "pnpm exec astro dev --root apps/website --host 0.0.0.0 --port 4200",
+        "cwd": "."
       }
     },
     "preview": {
       "executor": "nx:run-commands",
+      "continuous": true,
       "options": {
-        "command": "hugo -d ../../dist/apps/website-preview --gc --minify --baseURL /preview/",
-        "cwd": "apps/website"
+        "command": "pnpm exec astro build --root apps/website && pnpm exec astro preview --root apps/website --host 0.0.0.0 --port 4300",
+        "cwd": "."
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec astro check --root apps/website",
+        "cwd": "."
       }
     }
   }

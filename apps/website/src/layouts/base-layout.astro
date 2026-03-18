@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+
+import type { Locale, PageId } from '../i18n/translations';
+import { getPagePath, locales } from '../i18n/translations';
+import Background from '../components/background.astro';
+import Footer from '../components/footer.astro';
+import Navbar from '../components/navbar.astro';
+import PageNavigationLoader from '../components/page-navigation-loader.astro';
+
+type Props = {
+  locale: Locale;
+  page: PageId;
+  title?: string;
+  description: string;
+};
+
+const { locale, page, title, description } = Astro.props;
+const siteTitle = 'VISOMI.DEV';
+const documentTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+const baseUrl = Astro.site ?? Astro.url;
+const canonicalUrl = new URL(getPagePath(locale, page), baseUrl).toString();
+const defaultUrl = new URL(getPagePath('en', page), baseUrl).toString();
+---
+
+<!doctype html>
+<html lang={locale} class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{documentTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="x-default" href={defaultUrl} />
+    {
+      locales.map((itemLocale) => (
+        <link rel="alternate" hreflang={itemLocale} href={new URL(getPagePath(itemLocale, page), baseUrl).toString()} />
+      ))
+    }
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+  </head>
+  <body class="min-h-full">
+    <PageNavigationLoader />
+    <Background />
+    <Navbar locale={locale} currentPage={page} />
+
+    <div class="relative z-10 min-h-screen">
+      <slot />
+    </div>
+
+    <div class="relative z-10">
+      <Footer locale={locale} />
+    </div>
+  </body>
+</html>

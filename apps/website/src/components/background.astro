@@ -1,0 +1,23 @@
+---
+import backgroundScriptUrl from '../scripts/background.ts?url';
+---
+
+<div id="light-bg" class="pointer-events-none fixed inset-0 z-0 hidden bg-neutral-50">
+  <div class="bg-grid absolute inset-0 opacity-60"></div>
+  <div
+    class="animate-blob absolute top-[-10%] left-[-10%] h-96 w-96 rounded-full bg-blue-500/5 opacity-30 mix-blend-multiply blur-3xl filter"
+  >
+  </div>
+  <div
+    class="animate-blob animation-delay-2000 absolute top-[-10%] right-[-10%] h-96 w-96 rounded-full bg-purple-500/5 opacity-30 mix-blend-multiply blur-3xl filter"
+  >
+  </div>
+  <div
+    class="animate-blob animation-delay-4000 absolute bottom-[-20%] left-[20%] h-96 w-96 rounded-full bg-teal-500/5 opacity-30 mix-blend-multiply blur-3xl filter"
+  >
+  </div>
+</div>
+
+<div id="dark-bg" class="fixed inset-0 z-0 hidden overflow-hidden bg-black" aria-hidden="true"></div>
+
+<script type="module" is:inline src={backgroundScriptUrl}></script>

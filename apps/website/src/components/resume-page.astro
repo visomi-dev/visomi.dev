@@ -1,0 +1,185 @@
+---
+import { createTranslator, type Locale } from '../i18n/translations';
+
+type Props = {
+  locale: Locale;
+};
+
+const { locale } = Astro.props;
+const t = createTranslator(locale);
+
+const experiences = [
+  {
+    company: 'resumeExpABICompany',
+    date: 'resumeExpABIDate',
+    role: 'resumeExpABIRole',
+    items: [
+      { key: 'resumeExpABIItem1', html: true },
+      { key: 'resumeExpABIItem2', html: true },
+    ],
+  },
+  {
+    company: 'resumeExpSCCompany',
+    date: 'resumeExpSCDate',
+    role: 'resumeExpSCRole',
+    items: [
+      { key: 'resumeExpSCItem1', html: true },
+      { key: 'resumeExpSCItem2', html: false },
+    ],
+  },
+  {
+    company: 'resumeExpKavakCompany',
+    date: 'resumeExpKavakDate',
+    role: 'resumeExpKavakRole',
+    items: [
+      { key: 'resumeExpKavakItem1', html: true },
+      { key: 'resumeExpKavakItem2', html: true },
+    ],
+  },
+] as const;
+---
+
+<main class="min-h-screen-nav mt-20 grow px-6 pt-16 pb-24">
+  <div class="mx-auto max-w-3xl">
+    <div class="text-muted-light dark:text-muted-dark mb-16 font-mono text-xs tracking-widest uppercase">
+      {t('resumePageLabel')}
+    </div>
+
+    <header class="mb-20">
+      <h1 class="text-surface-dark dark:text-surface-light mb-6 text-5xl font-bold tracking-tight md:text-6xl">
+        {t('resumeName')}
+      </h1>
+      <p class="text-muted-light dark:text-muted-dark max-w-2xl text-xl leading-relaxed font-light">
+        {t('resumeSummary')}
+      </p>
+      <div class="text-muted-light dark:text-muted-dark mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="mailto:visomi.dev@gmail.com"
+        >
+          <span
+            class="pi pi-envelope text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          visomi.dev@gmail.com
+        </a>
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="https://visomi.dev"
+        >
+          <span
+            class="pi pi-globe text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          visomi.dev
+        </a>
+        <a
+          class="hover:text-surface-dark dark:hover:text-surface-light group flex items-center transition-colors"
+          href="https://github.com/visomi-dev"
+        >
+          <span
+            class="pi pi-github text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light mr-2 text-lg transition-colors"
+          ></span>
+          github.com/visomi-dev
+        </a>
+      </div>
+    </header>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {t('resumeExpLabel')}
+        </h2>
+      </div>
+      <div class="space-y-16">
+        {
+          experiences.map((experience) => (
+            <article class="group">
+              <div class="mb-4 flex flex-col md:flex-row md:items-baseline md:justify-between">
+                <h3 class="text-surface-dark dark:text-surface-light group-hover:text-surface-dark text-2xl font-semibold transition-colors dark:group-hover:text-white">
+                  {t(experience.company)}
+                </h3>
+                <span class="text-muted-light dark:text-muted-dark mt-1 font-mono text-sm md:mt-0">
+                  {t(experience.date)}
+                </span>
+              </div>
+              <div class="text-surface-dark/80 dark:text-surface-light/80 mb-6 text-base font-medium">
+                {t(experience.role)}
+              </div>
+              <ul class="text-muted-light dark:text-muted-dark list-none space-y-3 text-base leading-relaxed">
+                {experience.items.map((item) => (
+                  <li class="border-border-light dark:border-border-dark hover:border-surface-dark dark:hover:border-surface-light border-l pl-4 transition-colors">
+                    {item.html ? <Fragment set:html={t(item.key)} /> : t(item.key)}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {t('resumeStackLabel')}
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
+        <div>
+          <h4 class="text-surface-dark dark:text-surface-light mb-4 font-medium">{t('resumeStackLangLabel')}</h4>
+          <p class="text-muted-light dark:text-muted-dark text-sm leading-relaxed">{t('resumeStackLangList')}</p>
+        </div>
+        <div>
+          <h4 class="text-surface-dark dark:text-surface-light mb-4 font-medium">{t('resumeStackInfraLabel')}</h4>
+          <p class="text-muted-light dark:text-muted-dark text-sm leading-relaxed">{t('resumeStackInfraList')}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {t('resumeOssLabel')}
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 gap-12">
+        <div class="group">
+          <div class="mb-3 flex items-center justify-between">
+            <h3 class="text-surface-dark dark:text-surface-light text-xl font-semibold">{t('resumeOss1Title')}</h3>
+            <a
+              class="text-muted-light dark:text-muted-dark hover:text-surface-dark dark:hover:text-surface-light flex items-center gap-2 font-mono text-xs transition-colors"
+              href="https://github.com/visomi-dev/visomi.dev"
+              target="_blank"
+            >
+              GITHUB <span class="pi pi-arrow-up-right text-sm"></span>
+            </a>
+          </div>
+          <p class="text-muted-light dark:text-muted-dark text-base leading-relaxed">{t('resumeOss1Desc')}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {t('resumeEduLabel')}
+        </h2>
+      </div>
+      <div class="flex flex-col md:flex-row md:items-baseline md:justify-between">
+        <div>
+          <h3 class="text-surface-dark dark:text-surface-light mb-1 text-xl font-semibold">{t('resumeEdu1Title')}</h3>
+          <div class="text-muted-light dark:text-muted-dark">{t('resumeEdu1School')}</div>
+        </div>
+        <span class="text-muted-light dark:text-muted-dark mt-2 font-mono text-sm md:mt-0">{t('resumeEdu1Date')}</span>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="border-border-light dark:border-border-dark border-t px-6 py-12">
+  <div
+    class="mx-auto flex max-w-3xl flex-col items-center justify-between font-mono text-xs text-neutral-400 md:flex-row"
+  >
+    <p>{t('resumeFooterCopyright')}</p>
+    <p class="mt-2 md:mt-0">{t('resumeFooterAts')}</p>
+  </div>
+</footer>
