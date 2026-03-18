@@ -1,10 +1,24 @@
-import { killPort } from '@nx/node/utils';
+import { readFile, rm } from 'node:fs/promises';
+import { resolve } from 'node:path';
+
 /* eslint-disable */
+const API_SERVER_PID_PATH = resolve(__dirname, '../../.api-e2e-server.pid');
 
 module.exports = async function () {
-  // Put clean up logic here (e.g. stopping services, docker-compose, etc.).
-  // Hint: `globalThis` is shared between setup and teardown.
-  const port = process.env.PORT ? Number(process.env.PORT) : 3000;
-  await killPort(port);
+  try {
+    const pid = Number((await readFile(API_SERVER_PID_PATH, 'utf8')).trim());
+
+    if (!Number.isNaN(pid)) {
+      process.kill(pid, 'SIGTERM');
+    }
+  } catch (error) {
+    const nodeError = error as NodeJS.ErrnoException;
+
+    if (nodeError.code !== 'ENOENT' && nodeError.code !== 'ESRCH') {
+      throw error;
+    }
+  }
+
+  await rm(API_SERVER_PID_PATH, { force: true });
   console.log(globalThis.__TEARDOWN_MESSAGE__);
 };
