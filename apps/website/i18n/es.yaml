@@ -42,8 +42,12 @@ homeWorksSubtitle: 'Una curación de sistemas, interfaces y exploraciones de arq
 homeWorksGithubLink: 'Ver GitHub'
 homeWorksProject1Title: 'Nive'
 homeWorksProject1Desc: 'Aplicación de gestión de finanzas personales que te ayuda a controlar tu dinero. Del caos financiero al nirvana.'
+homeWorksProject1Tag1: 'Finanzas'
+homeWorksProject1Tag2: 'UX'
 homeWorksProject2Title: 'visomi.dev'
 homeWorksProject2Desc: 'Portafolio personal de código abierto y laboratorio de experimentos. Construido con Angular, Nx y principios de diseño de alto rendimiento.'
+homeWorksProject2Tag1: 'Código Abierto'
+homeWorksProject2Tag2: 'Angular'
 homeWorksProject3Title: 'Próximo Proyecto'
 homeWorksProject3Desc: 'Diseñando el próximo capítulo de ingeniería de software.'
 
