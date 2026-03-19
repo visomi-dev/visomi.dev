@@ -1,4 +1,0 @@
-+++
-title = "Proyectos"
-type = "projects"
-+++

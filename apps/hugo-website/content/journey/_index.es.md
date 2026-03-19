@@ -1,4 +1,0 @@
-+++
-title = "Trayectoria"
-type = "journey"
-+++

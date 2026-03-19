@@ -29,6 +29,22 @@ const defaultUrl = new URL(getPagePath('en', page), baseUrl).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      (() => {
+        const html = document.documentElement;
+        const isDark = (() => {
+          try {
+            const savedTheme = window.localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            return savedTheme === 'dark' || (!savedTheme && systemDark);
+          } catch {
+            return true;
+          }
+        })();
+
+        html.classList.toggle('dark', isDark);
+      })();
+    </script>
     <title>{documentTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
