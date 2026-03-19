@@ -1,8 +1,0 @@
-# Hugo
-.hugo_build.lock
-hugo_stats.json
-public/
-resources/_gen/
-
-# Build output
-dist/

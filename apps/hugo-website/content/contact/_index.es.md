@@ -1,4 +1,0 @@
-+++
-title = "Contacto"
-type = "contact"
-+++

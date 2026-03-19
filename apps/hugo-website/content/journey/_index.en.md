@@ -1,4 +1,0 @@
-+++
-title = "Journey"
-type = "journey"
-+++

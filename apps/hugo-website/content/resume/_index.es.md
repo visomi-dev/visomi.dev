@@ -1,4 +1,0 @@
-+++
-title = "Currículum"
-type = "resume"
-+++
