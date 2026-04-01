@@ -1,0 +1,29 @@
+---
+import { Code } from 'astro/components';
+
+type CodeLang = 'py' | 'text' | 'ts';
+
+type Props = {
+  code: string;
+  lang: CodeLang;
+  title?: string;
+};
+
+const { code, lang, title } = Astro.props;
+---
+
+<div
+  class="chart-surface border-border-light bg-surface-light dark:border-border-dark overflow-hidden rounded-lg border dark:bg-neutral-950"
+>
+  {
+    title && (
+      <div class="border-border-light dark:border-border-dark border-b bg-gray-50 px-4 py-2 dark:bg-neutral-900/40">
+        <span class="text-muted-light font-mono text-[10px] dark:text-neutral-500">{title}</span>
+      </div>
+    )
+  }
+
+  <div class="overflow-x-auto bg-white dark:bg-neutral-950">
+    <Code code={code} lang={lang} theme="github-dark" class="p-4" />
+  </div>
+</div>

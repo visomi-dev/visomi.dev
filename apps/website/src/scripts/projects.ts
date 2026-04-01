@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
   const cards = document.querySelectorAll<HTMLElement>('.project-card');
+  const previewButtons = document.querySelectorAll<HTMLButtonElement>('[data-project-thumb]');
 
-  if (!filterButtons.length || !cards.length) {
+  if (!cards.length) {
     return;
   }
 
@@ -23,21 +24,50 @@ document.addEventListener('DOMContentLoaded', () => {
     'bg-transparent',
   ];
 
-  filterButtons.forEach((button) => {
+  if (filterButtons.length) {
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const filter = button.dataset.filter;
+
+        filterButtons.forEach((item) => {
+          item.classList.remove(...activeClasses);
+          item.classList.add(...inactiveClasses);
+        });
+
+        button.classList.remove(...inactiveClasses);
+        button.classList.add(...activeClasses);
+
+        cards.forEach((card) => {
+          card.style.display = filter === 'ALL' || card.dataset.category === filter ? '' : 'none';
+        });
+      });
+    });
+  }
+
+  previewButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      const filter = button.dataset.filter;
+      const slug = button.dataset.projectThumb;
+      const imageSrc = button.dataset.imageSrc;
+      const imageAlt = button.dataset.imageAlt;
 
-      filterButtons.forEach((item) => {
-        item.classList.remove(...activeClasses);
-        item.classList.add(...inactiveClasses);
+      if (!slug || !imageSrc) {
+        return;
+      }
+
+      const preview = document.querySelector<HTMLImageElement>(`[data-project-preview="${slug}"]`);
+
+      if (!preview) {
+        return;
+      }
+
+      preview.src = imageSrc;
+      preview.alt = imageAlt ?? preview.alt;
+
+      document.querySelectorAll<HTMLButtonElement>(`[data-project-thumb="${slug}"]`).forEach((item) => {
+        item.classList.remove('ring-primary-light', 'dark:ring-primary-dark', 'ring-1');
       });
 
-      button.classList.remove(...inactiveClasses);
-      button.classList.add(...activeClasses);
-
-      cards.forEach((card) => {
-        card.style.display = filter === 'ALL' || card.dataset.category === filter ? '' : 'none';
-      });
+      button.classList.add('ring-primary-light', 'dark:ring-primary-dark', 'ring-1');
     });
   });
 });

@@ -1,199 +1,187 @@
 ---
-import { createTranslator, type Locale } from '../i18n/translations';
+import { getSiteContent } from '../content/site-content';
+import type { Locale } from '../i18n/translations';
 
 type Props = {
   locale: Locale;
 };
 
 const { locale } = Astro.props;
-const t = createTranslator(locale);
+const { projects, projectsList } = getSiteContent(locale);
+const assetBase = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
+const withBase = (path: string) => `${assetBase}${path}`;
 ---
 
-<main class="min-h-screen-nav mx-auto mt-20 max-w-7xl grow px-6 pt-16 pb-24 lg:px-12">
+<main class="min-h-screen-nav mx-auto mt-20 max-w-7xl grow px-6 pt-12 pb-24">
   <header class="mb-20">
     <div class="flex flex-col gap-6">
       <div class="text-muted-light dark:text-muted-dark flex items-center gap-3 font-mono text-xs tracking-wider">
-        <span>{t('projectsDateRange')}</span>
-        <span class="bg-border-light dark:bg-border-dark h-px w-8"></span>
-        <span>{t('projectsLabel')}</span>
+        <span>{projects.pageLabel}</span>
       </div>
       <h1
-        class="text-surface-dark dark:text-surface-light text-5xl leading-[1.1] font-semibold tracking-tight md:text-7xl lg:text-8xl"
+        class="text-surface-dark dark:text-surface-light text-5xl leading-[1.1] font-semibold tracking-tight md:text-6xl"
       >
-        <span>{t('projectsTitle1')}</span><br />
-        <span class="text-muted-light dark:text-muted-dark">{t('projectsTitle2')}</span>
+        <span>{projects.titleLine1}</span><br />
+        <span class="text-muted-light dark:text-muted-dark">{projects.titleLine2}</span>
       </h1>
       <div class="mt-8 flex flex-col justify-between gap-12 md:flex-row md:items-end">
-        <p class="text-muted-light dark:text-muted-dark max-w-xl text-lg leading-relaxed font-light">
-          {t('projectsDescription')}
+        <p class="text-muted-light dark:text-muted-dark max-w-2xl text-lg leading-relaxed font-light">
+          {projects.description}
         </p>
         <div class="flex flex-wrap gap-2 font-mono text-xs" id="project-filters">
-          <button
-            data-filter="ALL"
-            class="filter-btn bg-primary-light dark:bg-primary-dark rounded border border-transparent px-4 py-2 text-white transition-all dark:text-black"
-          >
-            {t('projectsFilterAll')}
-          </button>
-          <button
-            data-filter="PRODUCT"
-            class="filter-btn border-border-light dark:border-border-dark text-muted-light dark:text-muted-dark hover:border-primary-light dark:hover:border-primary-dark rounded border bg-transparent px-4 py-2 transition-all"
-          >
-            {t('projectsFilterProduct')}
-          </button>
+          {
+            projects.filters.map((filter, index) => (
+              <button
+                data-filter={filter.value}
+                class:list={[
+                  'filter-btn rounded border px-4 py-2 transition-all',
+                  index === 0
+                    ? 'bg-primary-light dark:bg-primary-dark border-transparent text-white dark:text-black'
+                    : 'border-border-light dark:border-border-dark text-muted-light dark:text-muted-dark hover:border-primary-light dark:hover:border-primary-dark bg-transparent',
+                ]}
+              >
+                {filter.label}
+              </button>
+            ))
+          }
         </div>
       </div>
     </div>
   </header>
 
-  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" id="projects-grid">
-    <article
-      data-category="PRODUCT"
-      class="project-card group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
-    >
-      <div class="flex grow flex-col p-8">
-        <div class="mb-6 flex items-start justify-between">
-          <div
-            class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800"
-          >
-            <span class="pi pi-wallet text-xl text-neutral-700 dark:text-neutral-300"></span>
-          </div>
-          <span
-            class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase"
-            >2023</span
-          >
-        </div>
-        <h3
-          class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-xl font-semibold text-neutral-900 transition-colors dark:text-white"
-        >
-          {t('projectsNiveTitle')}
-        </h3>
-        <p class="text-muted-light dark:text-muted-dark mb-8 grow text-sm leading-relaxed">{t('projectsNiveDesc')}</p>
-        <div class="space-y-6">
-          <div class="flex flex-wrap gap-2">
-            <span
-              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-              >Angular</span
-            >
-            <span
-              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-              >Node.js</span
-            >
-            <span
-              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-              >Express</span
-            >
-          </div>
-          <div class="border-border-light dark:border-border-dark border-t pt-6">
-            <div class="mb-3 flex items-center gap-2">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              <h4
-                class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase"
-              >
-                {t('projectsMetricsLabel')}
-              </h4>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">WIP</p>
-                <p class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase">
-                  {t('projectsStatusPhase')}
-                </p>
-              </div>
-              <div>
-                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">OSS</p>
-                <p class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase">
-                  {t('projectsStatusLicense')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <a href="https://nive.visomi.dev" target="_blank" class="absolute inset-0 z-10" aria-label="Visit Nive website"
-      ></a>
-    </article>
+  <div class="grid grid-cols-1 gap-6 xl:grid-cols-2" id="projects-grid">
+    {
+      projectsList.map((project) => {
+        const featuredScreenshot = project.screenshots[0];
 
-    <article
-      data-category="PRODUCT"
-      class="project-card group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
-    >
-      <div class="flex grow flex-col p-8">
-        <div class="mb-6 flex items-start justify-between">
-          <div
-            class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800"
+        return (
+          <article
+            data-category={project.category}
+            class="project-card group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
           >
-            <span class="pi pi-globe text-xl text-neutral-700 dark:text-neutral-300"></span>
-          </div>
-          <span
-            class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase"
-            >2024</span
-          >
-        </div>
-        <h3
-          class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-xl font-semibold text-neutral-900 transition-colors dark:text-white"
-        >
-          {t('projectsVisomiTitle')}
-        </h3>
-        <p class="text-muted-light dark:text-muted-dark mb-8 grow text-sm leading-relaxed">{t('projectsVisomiDesc')}</p>
-        <div class="space-y-6">
-          <div class="flex flex-wrap gap-2">
-            <span
-              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-              >Angular</span
-            >
-            <span
-              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-              >Tailwind</span
-            >
-            <span
-              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-              >NX</span
-            >
-          </div>
-          <div class="border-border-light dark:border-border-dark border-t pt-6">
-            <div class="mb-3 flex items-center gap-2">
-              <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-              <h4
-                class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase"
-              >
-                {t('projectsVisomiMetricsLabel')}
-              </h4>
+            <div class="border-border-light dark:border-border-dark relative border-b bg-neutral-100 dark:bg-neutral-900">
+              {project.privatePreview ? (
+                <div class="flex h-64 flex-col items-center justify-center gap-4 bg-linear-to-br from-neutral-100 to-neutral-200 p-8 text-center dark:from-neutral-900 dark:to-neutral-950">
+                  <div class="border-border-light dark:border-border-dark flex h-14 w-14 items-center justify-center rounded-full border bg-white/70 dark:bg-neutral-900/80">
+                    <span class="pi pi-lock text-xl text-neutral-700 dark:text-neutral-300" />
+                  </div>
+                  <div>
+                    <p class="text-surface-dark dark:text-surface-light font-mono text-xs tracking-[0.25em] uppercase">
+                      {projects.privatePreviewLabel}
+                    </p>
+                    <p class="text-muted-light dark:text-muted-dark mt-3 max-w-md text-sm leading-relaxed">
+                      {projects.privatePreviewDescription}
+                    </p>
+                  </div>
+                </div>
+              ) : featuredScreenshot ? (
+                <div class="p-4">
+                  <div class="relative h-64 overflow-hidden rounded-lg border border-black/5 bg-white dark:border-white/5 dark:bg-black">
+                    <img
+                      src={withBase(featuredScreenshot.src)}
+                      alt={featuredScreenshot.alt}
+                      class="project-preview h-full w-full object-cover object-top transition-all duration-300"
+                      data-project-preview={project.slug}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div class="flex h-64 items-center justify-center bg-linear-to-br from-neutral-100 to-neutral-200 dark:from-neutral-900 dark:to-neutral-950">
+                  <span class="pi pi-image text-4xl text-neutral-400" />
+                </div>
+              )}
             </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">100</p>
-                <p class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase">
-                  {t('projectsVisomiMetricLighthouse')}
-                </p>
-              </div>
-              <div>
-                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">A++</p>
-                <p class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase">
-                  {t('projectsVisomiMetricRating')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <a
-        href="https://github.com/visomi-dev/visomi.dev"
-        target="_blank"
-        class="absolute inset-0 z-10"
-        aria-label="View visomi.dev on GitHub"></a>
-    </article>
 
-    <article
-      data-category="OTHER"
-      class="project-card border-border-light dark:border-border-dark flex h-full items-center justify-center rounded border border-dashed p-12 text-center"
-    >
-      <div>
-        <div class="text-muted-light dark:text-muted-dark mb-4 font-mono text-[10px] tracking-[0.2em] uppercase">
-          // Next System
-        </div>
-        <h3 class="text-muted-light dark:text-muted-dark text-lg font-medium italic">{t('projectsFutureTitle')}</h3>
-      </div>
-    </article>
+            <div class="flex grow flex-col p-8">
+              <div class="mb-6 flex items-start justify-between gap-4">
+                <div class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800">
+                  <span class:list={['pi text-xl text-neutral-700 dark:text-neutral-300', project.icon]} />
+                </div>
+                <div class="flex flex-wrap justify-end gap-2">
+                  <span class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase">
+                    {project.year}
+                  </span>
+                  <span class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase">
+                    {project.category}
+                  </span>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <h3 class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-2xl font-semibold text-neutral-900 transition-colors dark:text-white">
+                  {project.title}
+                </h3>
+                <p class="text-surface-dark/80 dark:text-surface-light/80 mb-3 text-sm font-medium">{project.role}</p>
+                <p class="text-muted-light dark:text-muted-dark text-sm leading-relaxed">{project.summary}</p>
+              </div>
+
+              {project.screenshots.length > 1 && !project.privatePreview && (
+                <div class="mb-6">
+                  <div class="mb-3 flex items-center gap-2">
+                    <span class="h-1.5 w-1.5 rounded-full bg-blue-500" />
+                    <h4 class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase">
+                      {projects.screenshotLabel}
+                    </h4>
+                  </div>
+                  <div class="grid grid-cols-4 gap-2">
+                    {project.screenshots.map((screenshot, index) => (
+                      <button
+                        type="button"
+                        class:list={[
+                          'project-thumb border-border-light dark:border-border-dark overflow-hidden rounded border bg-neutral-50 transition-all dark:bg-neutral-900',
+                          index === 0 && 'ring-primary-light dark:ring-primary-dark ring-1',
+                        ]}
+                        data-project-thumb={project.slug}
+                        data-image-src={withBase(screenshot.src)}
+                        data-image-alt={screenshot.alt}
+                        aria-label={screenshot.alt}
+                      >
+                        <img
+                          src={withBase(screenshot.src)}
+                          alt={screenshot.alt}
+                          class="h-16 w-full object-cover object-top"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div class="mt-auto space-y-6">
+                <div class="flex flex-wrap gap-2">
+                  {project.technologies.map((technology) => (
+                    <span class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800">
+                      {technology}
+                    </span>
+                  ))}
+                </div>
+
+                <div class="border-border-light dark:border-border-dark border-t pt-6">
+                  <div class="mb-3 flex items-center gap-2">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <h4 class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase">
+                      {projects.statusLabel}
+                    </h4>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    {project.highlights.map((highlight) => (
+                      <div>
+                        <p class="text-surface-dark dark:text-surface-light font-mono text-lg font-bold">
+                          {highlight.value}
+                        </p>
+                        <p class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase">
+                          {highlight.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        );
+      })
+    }
   </div>
 </main>
 
