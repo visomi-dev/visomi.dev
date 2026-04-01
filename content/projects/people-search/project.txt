@@ -1,0 +1,5 @@
+title: Person Lookup System
+role: Software Architect & Full Stack Engineer
+description:
+Developed an internal app for advanced people search using SQL Server, React (SPA with ShadCN UI), and a C# .NET Core backend exposing a REST API. Configured CI/CD pipelines to deploy the full stack on Azure Web App with automated integration and delivery. Under NDA: client name and screenshots cannot be disclosed
+
