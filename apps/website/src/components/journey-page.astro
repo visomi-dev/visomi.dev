@@ -82,21 +82,23 @@ const growthBars = Array.from({ length: 15 }, (_, index) => ({
 }));
 ---
 
-<main class="min-h-screen-nav mx-auto mt-20 w-full max-w-7xl grow px-6 pt-12 pb-24">
-  <section class="flex flex-col gap-8 md:mb-24">
-    <div class="text-muted-light pt-2 font-mono text-xs tracking-[0.25em] dark:text-neutral-500">
+<main class="min-h-screen-nav mx-auto mt-20 w-full max-w-7xl grow px-6 pt-12 pb-12">
+  <section class="mb-20 flex flex-col gap-6 md:mb-24">
+    <div class="text-muted-light dark:text-muted-dark flex items-center gap-3 font-mono text-xs tracking-wider">
       {journey.pageLabel}
     </div>
 
     <div>
-      <h1 class="text-surface-dark mb-6 text-4xl font-semibold tracking-tight md:text-6xl dark:text-white">
+      <h1
+        class="text-surface-dark dark:text-surface-light mb-6 text-5xl leading-[1.1] font-semibold tracking-tight md:text-6xl"
+      >
         {journey.pageTitle}
       </h1>
-      <p class="text-muted-light max-w-3xl text-xl leading-relaxed font-light dark:text-neutral-400">
+      <p class="text-muted-light dark:text-muted-dark max-w-2xl text-lg leading-relaxed font-light">
         {journey.pageDescription}
       </p>
 
-      <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {
           journey.stats.map((stat) => (
             <article class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80">
@@ -121,7 +123,7 @@ const growthBars = Array.from({ length: 15 }, (_, index) => ({
     >
     </div>
 
-    <div class="sticky top-24 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-56 dark:bg-black">
+    <div class="sticky top-20 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-56 dark:bg-black">
       <div
         class="border-surface-dark bg-surface-light absolute top-3.5 left-3.25 z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
       >
@@ -196,7 +198,7 @@ const growthBars = Array.from({ length: 15 }, (_, index) => ({
               >
               </div>
 
-              <div class="relative z-10 grid gap-3 lg:grid-cols-[repeat(5,minmax(0,1fr))]">
+              <div class="relative z-10 grid gap-3 lg:grid-cols-5">
                 {
                   currentWorkflowStages.map((stage, index) => (
                     <div class="relative">
@@ -228,7 +230,11 @@ const growthBars = Array.from({ length: 15 }, (_, index) => ({
           </div>
         </div>
 
-        <CodeBlock code={currentEntry.code ?? ''} lang={currentEntry.codeLang ?? 'text'} title={currentEntry.codeTitle} />
+        <CodeBlock
+          code={currentEntry.code ?? ''}
+          lang={currentEntry.codeLang ?? 'text'}
+          title={currentEntry.codeTitle}
+        />
 
         <section
           class="chart-surface border-border-light bg-surface-light dark:border-border-dark rounded-lg border p-6 dark:bg-neutral-950"
@@ -280,9 +286,9 @@ const growthBars = Array.from({ length: 15 }, (_, index) => ({
       }
     </article>
 
-    <div class="sticky top-24 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-[224px] dark:bg-black">
+    <div class="sticky top-20 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-56 dark:bg-black">
       <div
-        class="border-surface-dark bg-surface-light absolute top-3.5 left-[13px] z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
+        class="border-surface-dark bg-surface-light absolute top-3.5 left-3.25 z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
       >
       </div>
       <h2
@@ -404,9 +410,9 @@ const growthBars = Array.from({ length: 15 }, (_, index) => ({
       </div>
     </article>
 
-    <div class="sticky top-24 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-[224px] dark:bg-black">
+    <div class="sticky top-20 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-56 dark:bg-black">
       <div
-        class="border-surface-dark bg-surface-light absolute top-3.5 left-[13px] z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
+        class="border-surface-dark bg-surface-light absolute top-3.5 left-3.25 z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
       >
       </div>
       <h2
@@ -432,7 +438,11 @@ const growthBars = Array.from({ length: 15 }, (_, index) => ({
       </p>
 
       <div class="max-w-3xl">
-        <CodeBlock code={foundationEntry.code ?? ''} lang={foundationEntry.codeLang ?? 'text'} title={foundationEntry.codeTitle} />
+        <CodeBlock
+          code={foundationEntry.code ?? ''}
+          lang={foundationEntry.codeLang ?? 'text'}
+          title={foundationEntry.codeTitle}
+        />
       </div>
 
       {

@@ -1,3 +1,6 @@
+import type { ImageMetadata } from 'astro';
+
+import { projectScreenshotAssets } from './project-screenshot-assets';
 import type { Locale } from '../i18n/translations';
 
 type ResumeExperience = {
@@ -48,9 +51,12 @@ type JourneyEntry = {
 };
 
 type ProjectScreenshot = {
-  src: string;
+  src: ImageMetadata;
   alt: string;
 };
+
+const createScreenshots = (assets: ImageMetadata[], alts: string[]): ProjectScreenshot[] =>
+  assets.map((src, index) => ({ src, alt: alts[index] ?? '' }));
 
 type Project = {
   slug: string;
@@ -208,12 +214,12 @@ const projects: Record<Locale, Project[]> = {
         { label: 'Focus', value: 'KYC / KYB onboarding' },
         { label: 'Scope', value: 'MVP architecture + admin review' },
       ],
-      screenshots: [
-        { src: '/projects/guira/welcome.png', alt: 'Guira welcome screen' },
-        { src: '/projects/guira/sign-up.png', alt: 'Guira sign up flow' },
-        { src: '/projects/guira/kyc-documents.png', alt: 'Guira KYC document step' },
-        { src: '/projects/guira/admin-kyc-list.png', alt: 'Guira admin KYC review list' },
-      ],
+      screenshots: createScreenshots(projectScreenshotAssets.guira, [
+        'Guira welcome screen',
+        'Guira sign up flow',
+        'Guira KYC document step',
+        'Guira admin KYC review list',
+      ]),
     },
     {
       slug: 'linne',
@@ -229,12 +235,12 @@ const projects: Record<Locale, Project[]> = {
         { label: 'Upgrade', value: 'AI screenshot processing' },
         { label: 'Reach', value: 'Web + mobile stories flow' },
       ],
-      screenshots: [
-        { src: '/projects/linne/home.png', alt: 'Linne home screen' },
-        { src: '/projects/linne/new-ticket-feed.png', alt: 'Linne ticket feed' },
-        { src: '/projects/linne/new-ticket-story-video.png', alt: 'Linne story creation with video' },
-        { src: '/projects/linne/profile-history.png', alt: 'Linne profile history view' },
-      ],
+      screenshots: createScreenshots(projectScreenshotAssets.linne, [
+        'Linne home screen',
+        'Linne ticket feed',
+        'Linne story creation with video',
+        'Linne profile history view',
+      ]),
     },
     {
       slug: 'mesada',
@@ -250,12 +256,12 @@ const projects: Record<Locale, Project[]> = {
         { label: 'Delivery', value: 'App Store + Play Store' },
         { label: 'Outcome', value: 'Legacy upgrade and stabilization' },
       ],
-      screenshots: [
-        { src: '/projects/mesada/website.png', alt: 'Mesada marketing website' },
-        { src: '/projects/mesada/send.png', alt: 'Mesada send money flow' },
-        { src: '/projects/mesada/history.png', alt: 'Mesada transaction history' },
-        { src: '/projects/mesada/transaction_summary.png', alt: 'Mesada transaction summary' },
-      ],
+      screenshots: createScreenshots(projectScreenshotAssets.mesada, [
+        'Mesada marketing website',
+        'Mesada send money flow',
+        'Mesada transaction history',
+        'Mesada transaction summary',
+      ]),
     },
     {
       slug: 'data-go',
@@ -271,12 +277,31 @@ const projects: Record<Locale, Project[]> = {
         { label: 'Focus', value: 'Agent + supervisor operations' },
         { label: 'Handoff', value: 'Docs and team training' },
       ],
-      screenshots: [
-        { src: '/projects/data-go/dashboard.png', alt: 'Data Go dashboard view' },
-        { src: '/projects/data-go/dashboard_2.png', alt: 'Data Go operational dashboard' },
-        { src: '/projects/data-go/phone.png', alt: 'Data Go phone workspace' },
-        { src: '/projects/data-go/login.png', alt: 'Data Go login screen' },
+      screenshots: createScreenshots(projectScreenshotAssets['data-go'], [
+        'Data Go dashboard view',
+        'Data Go operational dashboard',
+        'Data Go phone workspace',
+        'Data Go login screen',
+      ]),
+    },
+    {
+      slug: 'circular-e',
+      title: 'Circular-E Recycling Pickup Platform',
+      role: 'Product Engineer & Technical Partner',
+      year: '2023',
+      category: 'PLATFORM',
+      icon: 'pi-refresh',
+      summary:
+        'Built with a close collaborator, Circular-E combined a public recycling experience with account, scheduling, and cashback flows so users could request home pickup of recyclable materials and track their impact.',
+      technologies: ['Angular SSR', 'NestJS', 'Prisma', 'Tailwind CSS', 'AWS', 'Redis'],
+      highlights: [
+        { label: 'Flow', value: 'Pickup scheduling + cashback' },
+        { label: 'Surface', value: 'Public site + user dashboard' },
       ],
+      screenshots: createScreenshots(projectScreenshotAssets['circular-e'], [
+        'Circular-E pickup scheduling flow on mobile',
+        'Circular-E recyclable material selection screen',
+      ]),
     },
     {
       slug: 'people-search',
@@ -311,12 +336,12 @@ const projects: Record<Locale, Project[]> = {
         { label: 'Enfoque', value: 'Onboarding KYC / KYB' },
         { label: 'Alcance', value: 'Arquitectura MVP + revision admin' },
       ],
-      screenshots: [
-        { src: '/projects/guira/welcome.png', alt: 'Pantalla de bienvenida de Guira' },
-        { src: '/projects/guira/sign-up.png', alt: 'Flujo de registro de Guira' },
-        { src: '/projects/guira/kyc-documents.png', alt: 'Paso de documentos KYC de Guira' },
-        { src: '/projects/guira/admin-kyc-list.png', alt: 'Lista de revision KYC de Guira' },
-      ],
+      screenshots: createScreenshots(projectScreenshotAssets.guira, [
+        'Pantalla de bienvenida de Guira',
+        'Flujo de registro de Guira',
+        'Paso de documentos KYC de Guira',
+        'Lista de revision KYC de Guira',
+      ]),
     },
     {
       slug: 'linne',
@@ -332,12 +357,12 @@ const projects: Record<Locale, Project[]> = {
         { label: 'Mejora', value: 'Procesamiento AI de screenshots' },
         { label: 'Alcance', value: 'Historias en web + mobile' },
       ],
-      screenshots: [
-        { src: '/projects/linne/home.png', alt: 'Pantalla principal de Linne' },
-        { src: '/projects/linne/new-ticket-feed.png', alt: 'Feed de tickets de Linne' },
-        { src: '/projects/linne/new-ticket-story-video.png', alt: 'Creacion de historias con video en Linne' },
-        { src: '/projects/linne/profile-history.png', alt: 'Historial de perfil en Linne' },
-      ],
+      screenshots: createScreenshots(projectScreenshotAssets.linne, [
+        'Pantalla principal de Linne',
+        'Feed de tickets de Linne',
+        'Creacion de historias con video en Linne',
+        'Historial de perfil en Linne',
+      ]),
     },
     {
       slug: 'mesada',
@@ -353,12 +378,12 @@ const projects: Record<Locale, Project[]> = {
         { label: 'Entrega', value: 'App Store + Play Store' },
         { label: 'Resultado', value: 'Upgrade y estabilizacion' },
       ],
-      screenshots: [
-        { src: '/projects/mesada/website.png', alt: 'Sitio publico de Mesada' },
-        { src: '/projects/mesada/send.png', alt: 'Flujo de envio de dinero en Mesada' },
-        { src: '/projects/mesada/history.png', alt: 'Historial de transacciones de Mesada' },
-        { src: '/projects/mesada/transaction_summary.png', alt: 'Resumen de transaccion de Mesada' },
-      ],
+      screenshots: createScreenshots(projectScreenshotAssets.mesada, [
+        'Sitio publico de Mesada',
+        'Flujo de envio de dinero en Mesada',
+        'Historial de transacciones de Mesada',
+        'Resumen de transaccion de Mesada',
+      ]),
     },
     {
       slug: 'data-go',
@@ -374,12 +399,31 @@ const projects: Record<Locale, Project[]> = {
         { label: 'Enfoque', value: 'Operacion de agentes y supervisores' },
         { label: 'Handoff', value: 'Documentacion y capacitacion' },
       ],
-      screenshots: [
-        { src: '/projects/data-go/dashboard.png', alt: 'Dashboard de Data Go' },
-        { src: '/projects/data-go/dashboard_2.png', alt: 'Dashboard operativo de Data Go' },
-        { src: '/projects/data-go/phone.png', alt: 'Workspace telefonico de Data Go' },
-        { src: '/projects/data-go/login.png', alt: 'Pantalla de acceso de Data Go' },
+      screenshots: createScreenshots(projectScreenshotAssets['data-go'], [
+        'Dashboard de Data Go',
+        'Dashboard operativo de Data Go',
+        'Workspace telefonico de Data Go',
+        'Pantalla de acceso de Data Go',
+      ]),
+    },
+    {
+      slug: 'circular-e',
+      title: 'Circular-E Plataforma de Recoleccion de Reciclaje',
+      role: 'Product Engineer y Socio Tecnico',
+      year: '2023',
+      category: 'PLATFORM',
+      icon: 'pi-refresh',
+      summary:
+        'Construido junto con un colaborador cercano, Circular-E combinaba una experiencia publica de reciclaje con flujos de cuenta, agenda y cashback para solicitar recoleccion de materiales reciclables a domicilio y seguir el impacto del usuario.',
+      technologies: ['Angular SSR', 'NestJS', 'Prisma', 'Tailwind CSS', 'AWS', 'Redis'],
+      highlights: [
+        { label: 'Flujo', value: 'Agenda de recoleccion + cashback' },
+        { label: 'Superficie', value: 'Sitio publico + dashboard de usuario' },
       ],
+      screenshots: createScreenshots(projectScreenshotAssets['circular-e'], [
+        'Flujo mobile de agenda de recoleccion en Circular-E',
+        'Pantalla de seleccion de materiales reciclables en Circular-E',
+      ]),
     },
     {
       slug: 'people-search',
@@ -653,6 +697,7 @@ const content: Record<Locale, SiteContent> = {
       ],
       freelance: [
         'Built a waste collection and recycling application using Angular, NestJS, Prisma, and PostgreSQL.',
+        'Built Circular-E with a friend: a recycling pickup and cashback platform with Angular SSR, NestJS, Prisma, Redis, and AWS-backed delivery flows.',
         'Developed a full-stack telephony-integrated system with Angular, Express, Prisma, Asterisk Realtime, AMI events, REST APIs, WebSockets, and on-prem Ubuntu / Nginx deployment.',
         'Delivered a people and user administration system using React, C#, Azure Web Apps, and Azure Pipelines.',
         'Refactored a sports betting social platform into an Nx monorepo with React, Express, Supabase, BullMQ, Redis, and Capacitor-based mobile deployment.',
@@ -1013,6 +1058,7 @@ const content: Record<Locale, SiteContent> = {
       ],
       freelance: [
         'Construccion de una aplicacion de recoleccion y reciclaje con Angular, NestJS, Prisma y PostgreSQL.',
+        'Construccion de Circular-E con un amigo: una plataforma de recoleccion de reciclaje y cashback con Angular SSR, NestJS, Prisma, Redis y despliegue sobre AWS.',
         'Desarrollo de un sistema full-stack integrado con telefonia usando Angular, Express, Prisma, Asterisk Realtime, eventos AMI, REST APIs, WebSockets y despliegue on-premise en Ubuntu / Nginx.',
         'Entrega de un sistema de administracion de personas y usuarios con React, C#, Azure Web Apps y Azure Pipelines.',
         'Refactor de una plataforma social de apuestas hacia un Nx monorepo con React, Express, Supabase, BullMQ, Redis y despliegue mobile con Capacitor.',
