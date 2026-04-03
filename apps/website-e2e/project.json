@@ -9,6 +9,14 @@
     "e2e": {
       "dependsOn": ["website:build"]
     },
+    "screenshots": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["website:build"],
+      "options": {
+        "command": "taskset -c 0,1 pnpm exec playwright test --config apps/website-e2e/playwright.config.ts --project=chromium --workers=1 --max-failures=1",
+        "cwd": "."
+      }
+    },
     "e2e-ci": {
       "dependsOn": ["website:build"]
     }

@@ -7,7 +7,7 @@
         <span i18n="@@projectsLabel">PROJECTS</span>
       </div>
       <h1
-        class="text-surface-dark dark:text-surface-light text-5xl leading-[1.1] font-semibold tracking-tight md:text-7xl lg:text-8xl"
+        class="text-surface-dark dark:text-surface-light text-5xl leading-[1.1] font-semibold tracking-tight md:text-6xl"
       >
         <span i18n="@@projectsTitle1">Building</span><br />
         <span class="text-muted-light dark:text-muted-dark" i18n="@@projectsTitle2">for the Future.</span>
@@ -53,173 +53,170 @@
   <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
     <!-- Nive -->
     @if (activeCategory() === 'ALL' || activeCategory() === 'PRODUCT') {
-      <article
-        class="group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
-      >
-        <div class="flex grow flex-col p-8">
-          <div class="mb-6 flex items-start justify-between">
-            <div
-              class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800"
-            >
-              <span class="pi pi-wallet text-xl text-neutral-700 dark:text-neutral-300"></span>
-            </div>
+    <article
+      class="group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
+    >
+      <div class="flex grow flex-col p-8">
+        <div class="mb-6 flex items-start justify-between">
+          <div
+            class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800"
+          >
+            <span class="pi pi-wallet text-xl text-neutral-700 dark:text-neutral-300"></span>
+          </div>
+          <span
+            class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase"
+            >2023</span
+          >
+        </div>
+        <h3
+          class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-xl font-semibold text-neutral-900 transition-colors dark:text-white"
+          i18n="@@projectsNiveTitle"
+        >
+          Nive
+        </h3>
+        <p class="text-muted-light dark:text-muted-dark mb-8 grow text-sm leading-relaxed" i18n="@@projectsNiveDesc">
+          A personal finance management app designed to bring "nirvana" to financial chaos. Features modularized
+          budgeting, expense tracking, and data visualization.
+        </p>
+        <div class="space-y-6">
+          <div class="flex flex-wrap gap-2">
             <span
-              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase"
-              >2023</span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Angular</span
+            >
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Node.js</span
+            >
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Express</span
             >
           </div>
-          <h3
-            class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-xl font-semibold text-neutral-900 transition-colors dark:text-white"
-            i18n="@@projectsNiveTitle"
-          >
-            Nive
-          </h3>
-          <p class="text-muted-light dark:text-muted-dark mb-8 grow text-sm leading-relaxed" i18n="@@projectsNiveDesc">
-            A personal finance management app designed to bring "nirvana" to financial chaos. Features modularized
-            budgeting, expense tracking, and data visualization.
-          </p>
-          <div class="space-y-6">
-            <div class="flex flex-wrap gap-2">
-              <span
-                class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-                >Angular</span
+          <div class="border-border-light dark:border-border-dark border-t pt-6">
+            <div class="mb-3 flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              <h4
+                class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase"
+                i18n="@@projectsMetricsLabel"
               >
-              <span
-                class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-                >Node.js</span
-              >
-              <span
-                class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-                >Express</span
-              >
+                Project Status
+              </h4>
             </div>
-            <div class="border-border-light dark:border-border-dark border-t pt-6">
-              <div class="mb-3 flex items-center gap-2">
-                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                <h4
-                  class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase"
-                  i18n="@@projectsMetricsLabel"
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">WIP</p>
+                <p
+                  class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@projectsStatusPhase"
                 >
-                  Project Status
-                </h4>
+                  Phase
+                </p>
               </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">WIP</p>
-                  <p
-                    class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
-                    i18n="@@projectsStatusPhase"
-                  >
-                    Phase
-                  </p>
-                </div>
-                <div>
-                  <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">OSS</p>
-                  <p
-                    class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
-                    i18n="@@projectsStatusLicense"
-                  >
-                    License
-                  </p>
-                </div>
+              <div>
+                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">OSS</p>
+                <p
+                  class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@projectsStatusLicense"
+                >
+                  License
+                </p>
               </div>
             </div>
           </div>
         </div>
-        <a
-          href="https://nive.visomi.dev"
-          target="_blank"
-          class="absolute inset-0 z-10"
-          aria-label="Visit Nive website"
-        ></a>
-      </article>
+      </div>
+      <a
+        href="https://nive.visomi.dev"
+        target="_blank"
+        class="absolute inset-0 z-10"
+        aria-label="Visit Nive website"
+      ></a>
+    </article>
     }
 
     <!-- visomi.dev -->
     @if (activeCategory() === 'ALL' || activeCategory() === 'PRODUCT') {
-      <article
-        class="group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
-      >
-        <div class="flex grow flex-col p-8">
-          <div class="mb-6 flex items-start justify-between">
-            <div
-              class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800"
-            >
-              <span class="pi pi-globe text-xl text-neutral-700 dark:text-neutral-300"></span>
-            </div>
+    <article
+      class="group border-border-light bg-surface-light hover:border-primary-light dark:border-border-dark dark:bg-surface-dark dark:hover:border-primary-dark relative flex h-full flex-col overflow-hidden rounded border transition-all duration-300"
+    >
+      <div class="flex grow flex-col p-8">
+        <div class="mb-6 flex items-start justify-between">
+          <div
+            class="border-border-light dark:border-border-dark flex h-10 w-10 items-center justify-center rounded-xl border bg-neutral-50 dark:bg-neutral-800"
+          >
+            <span class="pi pi-globe text-xl text-neutral-700 dark:text-neutral-300"></span>
+          </div>
+          <span
+            class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase"
+            >2024</span
+          >
+        </div>
+        <h3
+          class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-xl font-semibold text-neutral-900 transition-colors dark:text-white"
+          i18n="@@projectsVisomiTitle"
+        >
+          visomi.dev
+        </h3>
+        <p class="text-muted-light dark:text-muted-dark mb-8 grow text-sm leading-relaxed" i18n="@@projectsVisomiDesc">
+          Personal portfolio and modular monorepo showcase. Built with a focus on performance, accessibility (WCAG 2.1
+          AA), and premium aesthetics using Angular.
+        </p>
+        <div class="space-y-6">
+          <div class="flex flex-wrap gap-2">
             <span
-              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-full border px-2 py-1 font-mono text-[10px] tracking-wider uppercase"
-              >2024</span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Angular</span
+            >
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >Tailwind</span
+            >
+            <span
+              class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
+              >NX</span
             >
           </div>
-          <h3
-            class="group-hover:text-primary-light dark:group-hover:text-primary-dark mb-3 text-xl font-semibold text-neutral-900 transition-colors dark:text-white"
-            i18n="@@projectsVisomiTitle"
-          >
-            visomi.dev
-          </h3>
-          <p
-            class="text-muted-light dark:text-muted-dark mb-8 grow text-sm leading-relaxed"
-            i18n="@@projectsVisomiDesc"
-          >
-            Personal portfolio and modular monorepo showcase. Built with a focus on performance, accessibility (WCAG 2.1
-            AA), and premium aesthetics using Angular.
-          </p>
-          <div class="space-y-6">
-            <div class="flex flex-wrap gap-2">
-              <span
-                class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-                >Angular</span
+          <div class="border-border-light dark:border-border-dark border-t pt-6">
+            <div class="mb-3 flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+              <h4
+                class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase"
+                i18n="@@projectsVisomiMetricsLabel"
               >
-              <span
-                class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-                >Tailwind</span
-              >
-              <span
-                class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-800"
-                >NX</span
-              >
+                Core Metrics
+              </h4>
             </div>
-            <div class="border-border-light dark:border-border-dark border-t pt-6">
-              <div class="mb-3 flex items-center gap-2">
-                <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                <h4
-                  class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-widest uppercase"
-                  i18n="@@projectsVisomiMetricsLabel"
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">100</p>
+                <p
+                  class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@projectsVisomiMetricLighthouse"
                 >
-                  Core Metrics
-                </h4>
+                  Lighthouse
+                </p>
               </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">100</p>
-                  <p
-                    class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
-                    i18n="@@projectsVisomiMetricLighthouse"
-                  >
-                    Lighthouse
-                  </p>
-                </div>
-                <div>
-                  <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">A++</p>
-                  <p
-                    class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
-                    i18n="@@projectsVisomiMetricRating"
-                  >
-                    AXE RATING
-                  </p>
-                </div>
+              <div>
+                <p class="text-surface-dark dark:text-surface-light font-mono text-xl font-bold">A++</p>
+                <p
+                  class="text-muted-light dark:text-muted-dark text-[10px] font-bold tracking-widest uppercase"
+                  i18n="@@projectsVisomiMetricRating"
+                >
+                  AXE RATING
+                </p>
               </div>
             </div>
           </div>
         </div>
-        <a
-          href="https://github.com/visomi-dev/visomi.dev"
-          target="_blank"
-          class="absolute inset-0 z-10"
-          aria-label="View visomi.dev on GitHub"
-        ></a>
-      </article>
+      </div>
+      <a
+        href="https://github.com/visomi-dev/visomi.dev"
+        target="_blank"
+        class="absolute inset-0 z-10"
+        aria-label="View visomi.dev on GitHub"
+      ></a>
+    </article>
     }
 
     <!-- Future System -->

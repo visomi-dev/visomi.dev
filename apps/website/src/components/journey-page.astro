@@ -1,138 +1,169 @@
 ---
-import { createTranslator, type Locale } from '../i18n/translations';
+import CodeBlock from './code-block.astro';
+import { getSiteContent } from '../content/site-content';
+import type { Locale } from '../i18n/translations';
 
 type Props = {
   locale: Locale;
 };
 
 const { locale } = Astro.props;
-const t = createTranslator(locale);
-const eventBusBars = Array.from({ length: 30 }, (_, index) => ({
-  key: index,
-  height: (index % 5) * 10 + 30,
-  delay: index * 70,
-}));
-const analyticsBars = Array.from({ length: 15 }, (_, index) => ({
+const { journey } = getSiteContent(locale);
+const [currentEntry, growthEntry, foundationEntry] = journey.entries;
+
+const currentWorkflowStages = [
+  {
+    label: 'Signal intake',
+    detail: 'scraper jobs, product requests, team prompts',
+    badge: 'automation + ai',
+  },
+  {
+    label: 'Agent orchestration',
+    detail: 'CrewAI flows coordinate tasks and reasoning',
+    badge: 'agents',
+  },
+  {
+    label: 'Domain services',
+    detail: 'Python and FastAPI services apply business rules',
+    badge: 'backend',
+  },
+  {
+    label: 'Evaluation',
+    detail: 'validation, checks, and typed contracts gate outputs',
+    badge: 'quality',
+  },
+  {
+    label: 'Handoff',
+    detail: 'React applications expose the final operator workflow',
+    badge: 'frontend',
+  },
+] as const;
+
+const currentStackGroups = [
+  {
+    title: 'Automation',
+    subtitle: 'Long-running data pipelines',
+    items: ['NestJS', 'Puppeteer', 'BullMQ', 'Redis', 'SQLite'],
+  },
+  {
+    title: 'Frontend',
+    subtitle: 'Operator-facing AI surfaces',
+    items: ['React', 'React Router v7', 'Zustand', 'React Hook Form', 'Zod'],
+  },
+  {
+    title: 'Backend',
+    subtitle: 'Domain and persistence layer',
+    items: ['Python', 'FastAPI', 'SQLAlchemy', 'Alembic', 'PostgreSQL'],
+  },
+  {
+    title: 'Agents',
+    subtitle: 'Current AI workflow focus',
+    items: ['CrewAI', 'Domain services', 'Evaluations', 'Nx utilities', 'ESLint'],
+  },
+  {
+    title: 'Foundations',
+    subtitle: 'Shared delivery standards across teams',
+    items: [
+      'Design system',
+      'Shared templates',
+      'Utilities',
+      'Validation layers',
+      'OpenAPI middleware',
+      'Nx monorepo',
+      'Microfrontends',
+    ],
+  },
+] as const;
+
+const growthBars = Array.from({ length: 15 }, (_, index) => ({
   key: index,
   height: (index % 3) * 20 + 20,
   delay: 100 + index * 50,
 }));
-const protoExample = String.raw`service EventStream {
-  rpc Subscribe(Filter) returns (stream Event);
-  rpc Publish(Event) returns (Ack);
-}
-
-// optimized for low latency
-message Event {
-  string id = 1;
-  bytes payload = 2;
-}`;
-const edgeWorkerExample = String.raw`async function handleRequest(request) {
-  const url = new URL(request.url);
-  const region = request.cf.colo;
-
-  if (region === 'SFO' || region === 'LAX') {
-    return fetch(US_WEST_BUCKET + url.pathname);
-  }
-
-  return fetch(DEFAULT_BUCKET + url.pathname);
-}`;
 ---
 
-<main class="min-h-screen-nav mx-auto mt-20 w-full max-w-7xl grow px-6 pt-12 pb-24">
-  <section class="mb-16 grid grid-cols-1 gap-8 md:mb-24 md:grid-cols-[200px_1fr]">
-    <div class="text-muted-light pt-2 font-mono text-xs tracking-[0.25em] dark:text-neutral-500">
-      {t('journeyPageLabel')}
+<main class="min-h-screen-nav mx-auto mt-20 w-full max-w-7xl grow px-6 pt-12 pb-12">
+  <section class="mb-20 flex flex-col gap-6 md:mb-24">
+    <div class="text-muted-light dark:text-muted-dark flex items-center gap-3 font-mono text-xs tracking-wider">
+      {journey.pageLabel}
     </div>
 
     <div>
-      <h1 class="text-surface-dark mb-6 text-4xl font-semibold tracking-tight md:text-6xl dark:text-white">
-        {t('journeyPageTitle')}
+      <h1
+        class="text-surface-dark dark:text-surface-light mb-6 text-5xl leading-[1.1] font-semibold tracking-tight md:text-6xl"
+      >
+        {journey.pageTitle}
       </h1>
-      <p class="text-muted-light max-w-3xl text-xl leading-relaxed font-light dark:text-neutral-400">
-        {t('journeyPageDescription')}
+      <p class="text-muted-light dark:text-muted-dark max-w-2xl text-lg leading-relaxed font-light">
+        {journey.pageDescription}
       </p>
 
-      <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <article
-          class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
-        >
-          <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500">
-            {t('journeyStatsTotalTime')}
-          </p>
-          <p class="text-surface-dark text-4xl font-bold dark:text-white">13k+ hrs</p>
-        </article>
-        <article
-          class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
-        >
-          <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500">
-            {t('journeyStatsLevel')}
-          </p>
-          <p class="text-surface-dark text-4xl font-bold dark:text-white">Senior+</p>
-        </article>
-        <article
-          class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
-        >
-          <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500">
-            {t('journeyStatsClass')}
-          </p>
-          <p class="text-surface-dark text-4xl font-bold dark:text-white">Crossover</p>
-        </article>
-        <article
-          class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
-        >
-          <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500">
-            {t('journeyStatsOS')}
-          </p>
-          <p class="text-surface-dark text-4xl font-bold dark:text-white">Linux</p>
-        </article>
+      <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          journey.stats.map((stat) => (
+            <article class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80">
+              <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500">
+                {stat.label}
+              </p>
+              <p class="text-surface-dark text-4xl font-bold dark:text-white">{stat.value}</p>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
 
-  <section class="relative grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-12">
+  <section class="relative grid grid-cols-1 gap-4 md:grid-cols-[200px_1fr]">
     <div
-      class="timeline-line-glow bg-border-light dark:bg-border-dark absolute top-4 bottom-0 left-[19px] hidden w-px md:left-[200px] md:block"
+      class="timeline-line-glow bg-border-light dark:bg-border-dark absolute top-4 bottom-0 left-4.75 hidden w-px md:left-50 md:block"
     >
     </div>
     <div
-      class="timeline-line-glow bg-border-light dark:bg-border-dark absolute top-4 bottom-0 left-[19px] w-px md:hidden"
+      class="timeline-line-glow bg-border-light dark:bg-border-dark absolute top-4 bottom-0 left-4.75 w-px md:hidden"
     >
     </div>
 
-    <div class="bg-surface-light sticky top-24 z-20 self-start py-2 md:bg-transparent md:py-0 dark:bg-black">
+    <div class="sticky top-20 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-56 dark:bg-black">
       <div
-        class="border-surface-dark bg-surface-light absolute top-3.5 left-[13px] z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
+        class="border-surface-dark bg-surface-light absolute top-3.5 left-3.25 z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
       >
       </div>
       <h2
         class="ml-10 text-2xl leading-none font-bold text-neutral-300 transition-colors duration-500 md:ml-0 md:text-right md:text-6xl dark:text-neutral-800"
       >
-        2024
+        {currentEntry.year}
       </h2>
+      {
+        currentEntry.eyebrow && (
+          <p class="mt-2 ml-10 font-mono text-[10px] tracking-[0.25em] text-neutral-400 uppercase md:ml-0 md:text-right dark:text-neutral-700">
+            {currentEntry.eyebrow}
+          </p>
+        )
+      }
     </div>
 
-    <article class="pb-20 pl-10 md:pb-32 md:pl-12">
-      <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white">{t('journeyEventBusTitle')}</h3>
-        <span
-          class="border-border-light text-muted-light dark:border-border-dark inline-flex items-center rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] tracking-[0.2em] uppercase dark:bg-neutral-900 dark:text-neutral-400"
-          >{t('journeyEventBusBadge')}</span
-        >
+    <article class="pb-20 pl-2 md:pb-32 md:pl-4">
+      <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white">{currentEntry.title}</h3>
+        {
+          currentEntry.badge && (
+            <span class="border-border-light text-muted-light dark:border-border-dark inline-flex items-center rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] tracking-[0.2em] uppercase dark:bg-neutral-900 dark:text-neutral-400">
+              {currentEntry.badge}
+            </span>
+          )
+        }
       </div>
 
-      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400">
-        {t('journeyEventBusDescription')}
-      </p>
+      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400">{currentEntry.description}</p>
 
-      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div class="space-y-6">
         <div
           class="chart-surface border-border-light bg-surface-light dark:border-border-dark overflow-hidden rounded-lg border lg:col-span-2 dark:bg-neutral-950"
         >
           <div
             class="border-border-light dark:border-border-dark flex items-center justify-between border-b bg-gray-50 px-4 py-3 dark:bg-neutral-900/40"
           >
-            <span class="text-muted-light font-mono text-xs dark:text-neutral-500">system_monitor.tsx</span>
+            <span class="text-muted-light font-mono text-xs dark:text-neutral-500">{currentEntry.codeTitle}</span>
             <div class="flex gap-1.5 opacity-50">
               <span class="h-2.5 w-2.5 rounded-full bg-neutral-400"></span>
               <span class="h-2.5 w-2.5 rounded-full bg-neutral-400"></span>
@@ -141,75 +172,71 @@ const edgeWorkerExample = String.raw`async function handleRequest(request) {
 
           <div class="bg-gray-50/50 p-6 md:p-8 dark:bg-neutral-950/50">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <article
-                class="border-border-light dark:border-border-dark rounded border bg-white p-4 shadow-sm dark:bg-neutral-900"
-              >
-                <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500">
-                  {t('journeyUptimeLabel')}
-                </p>
-                <div class="text-surface-dark flex items-center gap-2 text-2xl font-semibold dark:text-white">
-                  <span>99.99%</span>
-                  <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-                </div>
-                <div class="bg-border-light mt-2 h-1 w-full overflow-hidden rounded-full dark:bg-neutral-800">
-                  <div class="h-full w-[99%] bg-emerald-500"></div>
-                </div>
-              </article>
-
-              <article
-                class="border-border-light dark:border-border-dark rounded border bg-white p-4 shadow-sm dark:bg-neutral-900"
-              >
-                <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500">
-                  {t('journeyLatencyLabel')}
-                </p>
-                <div class="text-surface-dark text-2xl font-semibold dark:text-white">45ms</div>
-                <p class="text-muted-light mt-2 font-mono text-xs dark:text-neutral-500">{t('journeyLatencyMeta')}</p>
-              </article>
-
-              <article
-                class="border-border-light dark:border-border-dark rounded border bg-white p-4 shadow-sm dark:bg-neutral-900"
-              >
-                <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500">
-                  {t('journeyThroughputLabel')}
-                </p>
-                <div class="text-surface-dark text-2xl font-semibold dark:text-white">12.4k</div>
-                <p class="text-muted-light mt-2 font-mono text-xs dark:text-neutral-500">
-                  {t('journeyThroughputMeta')}
-                </p>
-              </article>
+              {
+                currentEntry.metrics?.map((metric, index) => (
+                  <article class="border-border-light dark:border-border-dark rounded border bg-white p-4 shadow-sm dark:bg-neutral-900">
+                    <p class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500">
+                      {metric.label}
+                    </p>
+                    <div class="text-surface-dark flex items-center gap-2 text-2xl font-semibold dark:text-white">
+                      <span>{metric.value}</span>
+                      {index === 0 && <span class="h-2.5 w-2.5 rounded-full bg-emerald-500" />}
+                    </div>
+                    {metric.meta && (
+                      <p class="text-muted-light mt-2 font-mono text-xs dark:text-neutral-500">{metric.meta}</p>
+                    )}
+                  </article>
+                ))
+              }
             </div>
 
             <div
-              class="border-border-light dark:border-border-dark relative mt-6 flex h-32 items-end gap-1 overflow-hidden rounded border bg-white p-4 dark:bg-neutral-900"
+              class="border-border-light dark:border-border-dark relative mt-6 overflow-hidden rounded border bg-white p-4 dark:bg-neutral-900"
             >
               <div
                 class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[14px_14px]"
               >
               </div>
-              {
-                eventBusBars.map((bar) => (
-                  <div
-                    class="bar-animation bg-surface-dark/70 dark:bg-surface-light/80 relative z-10 min-w-0 flex-1 rounded-t-sm"
-                    style={`height: ${bar.height}%; animation-delay: ${bar.delay}ms`}
-                  />
-                ))
-              }
+
+              <div class="relative z-10 grid gap-3 lg:grid-cols-5">
+                {
+                  currentWorkflowStages.map((stage, index) => (
+                    <div class="relative">
+                      <article class="border-border-light dark:border-border-dark h-full rounded-lg border bg-neutral-50/90 p-4 dark:bg-neutral-950/80">
+                        <div class="mb-3 flex items-center justify-between gap-2">
+                          <span class="text-surface-dark dark:text-surface-light font-mono text-[10px] tracking-[0.2em] uppercase">
+                            0{index + 1}
+                          </span>
+                          <span class="text-muted-light dark:text-muted-dark rounded border border-black/10 px-2 py-1 font-mono text-[9px] tracking-[0.2em] uppercase dark:border-white/10">
+                            {stage.badge}
+                          </span>
+                        </div>
+                        <h4 class="text-surface-dark dark:text-surface-light mb-2 text-sm font-semibold">
+                          {stage.label}
+                        </h4>
+                        <p class="text-muted-light dark:text-muted-dark text-xs leading-relaxed">{stage.detail}</p>
+                      </article>
+
+                      {index < currentWorkflowStages.length - 1 && (
+                        <div class="pointer-events-none absolute top-1/2 -right-2 z-20 hidden -translate-y-1/2 lg:block">
+                          <span class="pi pi-arrow-right text-xs text-neutral-400 dark:text-neutral-600" />
+                        </div>
+                      )}
+                    </div>
+                  ))
+                }
+              </div>
             </div>
           </div>
         </div>
 
-        <div
-          class="chart-surface border-border-light bg-surface-light dark:border-border-dark overflow-hidden rounded-lg border dark:bg-neutral-950"
-        >
-          <div class="border-border-light dark:border-border-dark border-b bg-gray-50 px-4 py-2 dark:bg-neutral-900/40">
-            <span class="text-muted-light font-mono text-[10px] dark:text-neutral-500">proto/stream.proto</span>
-          </div>
-          <div class="overflow-x-auto bg-white p-6 font-mono text-[10px] leading-relaxed dark:bg-neutral-950">
-            <pre class="min-w-[18rem] text-neutral-700 dark:text-neutral-300"><code>{protoExample}</code></pre>
-          </div>
-        </div>
+        <CodeBlock
+          code={currentEntry.code ?? ''}
+          lang={currentEntry.codeLang ?? 'text'}
+          title={currentEntry.codeTitle}
+        />
 
-        <div
+        <section
           class="chart-surface border-border-light bg-surface-light dark:border-border-dark rounded-lg border p-6 dark:bg-neutral-950"
         >
           <div class="mb-4 flex items-center gap-3">
@@ -217,60 +244,68 @@ const edgeWorkerExample = String.raw`async function handleRequest(request) {
               <span class="pi pi-cog text-xs text-neutral-900 dark:text-white"></span>
             </div>
             <div>
-              <h4 class="text-surface-dark text-sm font-semibold dark:text-white">{t('journeyResourceTitle')}</h4>
+              <h4 class="text-surface-dark text-sm font-semibold dark:text-white">Platform composition</h4>
               <p class="text-muted-light font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500">
-                {t('journeyResourceSubtitle')}
+                scraper plus ai solution stack
               </p>
             </div>
           </div>
 
-          <div class="space-y-4">
-            <div>
-              <div class="mb-1 flex justify-between text-xs">
-                <span class="text-muted-light dark:text-neutral-400">{t('journeyResourceCpu')}</span>
-                <span class="text-surface-dark font-mono dark:text-white">42%</span>
-              </div>
-              <div class="bg-border-light h-1.5 w-full rounded-full dark:bg-neutral-800">
-                <div class="bg-surface-dark h-full w-[42%] rounded-full dark:bg-white"></div>
-              </div>
-            </div>
-
-            <div>
-              <div class="mb-1 flex justify-between text-xs">
-                <span class="text-muted-light dark:text-neutral-400">{t('journeyResourceMemory')}</span>
-                <span class="text-surface-dark font-mono dark:text-white">65%</span>
-              </div>
-              <div class="bg-border-light h-1.5 w-full rounded-full dark:bg-neutral-800">
-                <div class="bg-surface-dark/70 h-full w-[65%] rounded-full dark:bg-white/80"></div>
-              </div>
-            </div>
+          <div class="grid gap-3">
+            {
+              currentStackGroups.map((group) => (
+                <article class="border-border-light dark:border-border-dark rounded-lg border bg-white p-4 dark:bg-neutral-900">
+                  <div class="mb-3">
+                    <h5 class="text-surface-dark dark:text-surface-light text-sm font-semibold">{group.title}</h5>
+                    <p class="text-muted-light dark:text-muted-dark mt-1 text-xs leading-relaxed">{group.subtitle}</p>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <span class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded border bg-neutral-50 px-2 py-1 font-mono text-[10px] dark:bg-neutral-950">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              ))
+            }
           </div>
-        </div>
+        </section>
       </div>
+
+      {
+        currentEntry.tags && (
+          <div class="border-border-light bg-surface-light dark:border-border-dark mt-6 flex flex-wrap gap-2 rounded-lg border p-4 dark:bg-neutral-950">
+            {currentEntry.tags.map((tag) => (
+              <span class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
     </article>
 
-    <div class="bg-surface-light sticky top-24 z-20 self-start py-2 md:bg-transparent md:py-0 dark:bg-black">
+    <div class="sticky top-20 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-56 dark:bg-black">
       <div
-        class="border-surface-dark bg-surface-light absolute top-3.5 left-[13px] z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
+        class="border-surface-dark bg-surface-light absolute top-3.5 left-3.25 z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
       >
       </div>
       <h2
         class="ml-10 text-2xl leading-none font-bold text-neutral-300 transition-colors duration-500 md:ml-0 md:text-right md:text-6xl dark:text-neutral-800"
       >
         <span class="mb-1 block text-sm font-normal text-neutral-400 md:text-lg dark:text-neutral-700"
-          >{t('journeyEarlyYearLabel')}</span
+          >{growthEntry.eyebrow}</span
         >
-        2023
+        {growthEntry.year}
       </h2>
     </div>
 
     <article class="pb-20 pl-10 md:pb-32 md:pl-12">
       <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white">{t('journeySaaSTitle')}</h3>
+        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white">{growthEntry.title}</h3>
       </div>
-      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400">
-        {t('journeySaaSDescription')}
-      </p>
+      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400">{growthEntry.description}</p>
 
       <div
         class="chart-surface border-border-light bg-surface-light dark:border-border-dark overflow-hidden rounded-lg border dark:bg-neutral-950"
@@ -290,7 +325,7 @@ const edgeWorkerExample = String.raw`async function handleRequest(request) {
           </div>
           <div class="relative z-10 flex h-full items-end gap-2">
             {
-              analyticsBars.map((bar) => (
+              growthBars.map((bar) => (
                 <div
                   class="bar-animation min-w-0 flex-1 rounded-t-sm bg-sky-500/35 dark:bg-sky-300/30"
                   style={`height: ${bar.height}%; animation-delay: ${bar.delay}ms`}
@@ -305,13 +340,13 @@ const edgeWorkerExample = String.raw`async function handleRequest(request) {
             preserveAspectRatio="none"
           >
             <polyline
-              points="0,38 12,35 24,37 36,30 48,32 60,27 72,26 84,22 96,24"
+              points="0,48 12,42 24,38 36,34 48,31 60,25 72,23 84,18 96,14"
               fill="none"
               stroke-linecap="round"
               stroke-width="1.6"
               class="stroke-sky-500/75 dark:stroke-sky-300/75"></polyline>
             <polyline
-              points="0,45 12,42 24,40 36,43 48,38 60,40 72,36 84,34 96,32"
+              points="0,58 12,53 24,49 36,46 48,44 60,40 72,37 84,32 96,28"
               fill="none"
               stroke-linecap="round"
               stroke-width="1.6"
@@ -322,52 +357,105 @@ const edgeWorkerExample = String.raw`async function handleRequest(request) {
           </div>
         </div>
 
+        {
+          growthEntry.tags && (
+            <div class="border-border-light bg-surface-light dark:border-border-dark flex flex-wrap gap-2 border-t p-4 dark:bg-neutral-950">
+              {growthEntry.tags.map((tag) => (
+                <span class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <div class="mt-6 grid gap-6 lg:grid-cols-[1fr_22rem]">
+        <CodeBlock code={growthEntry.code ?? ''} lang={growthEntry.codeLang ?? 'text'} title={growthEntry.codeTitle} />
+
         <div
-          class="border-border-light bg-surface-light dark:border-border-dark flex flex-wrap gap-2 border-t p-4 dark:bg-neutral-950"
+          class="chart-surface border-border-light bg-surface-light dark:border-border-dark rounded-lg border p-6 dark:bg-neutral-950"
         >
-          <span
-            class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
-            >ClickHouse</span
-          >
-          <span
-            class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
-            >Go</span
-          >
-          <span
-            class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
-            >TypeScript</span
-          >
+          <div class="mb-4 flex items-center gap-3">
+            <div class="flex h-8 w-8 items-center justify-center rounded bg-neutral-900/5 dark:bg-white/10">
+              <span class="pi pi-chart-line text-xs text-neutral-900 dark:text-white"></span>
+            </div>
+            <div>
+              <h4 class="text-surface-dark text-sm font-semibold dark:text-white">Growth indicators</h4>
+              <p class="text-muted-light font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500">
+                Leadership and delivery focus
+              </p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            {
+              growthEntry.progress?.map((item) => (
+                <div>
+                  <div class="mb-1 flex justify-between text-xs">
+                    <span class="text-muted-light dark:text-neutral-400">{item.label}</span>
+                    <span class="text-surface-dark font-mono dark:text-white">{item.value}</span>
+                  </div>
+                  <div class="bg-border-light h-1.5 w-full rounded-full dark:bg-neutral-800">
+                    <div
+                      class="bg-surface-dark h-full rounded-full dark:bg-white"
+                      style={`width: ${item.percentage}%`}
+                    />
+                  </div>
+                </div>
+              ))
+            }
+          </div>
         </div>
       </div>
     </article>
 
-    <div class="bg-surface-light sticky top-24 z-20 self-start py-2 md:bg-transparent md:py-0 dark:bg-black">
+    <div class="sticky top-20 z-30 -mx-6 self-start bg-[#fafafa] px-6 py-3 md:w-56 dark:bg-black">
       <div
-        class="border-surface-dark bg-surface-light absolute top-3.5 left-[13px] z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
+        class="border-surface-dark bg-surface-light absolute top-3.5 left-3.25 z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
       >
       </div>
       <h2
         class="ml-10 text-2xl leading-none font-bold text-neutral-300 transition-colors duration-500 md:ml-0 md:text-right md:text-6xl dark:text-neutral-800"
       >
-        2021
+        {foundationEntry.year}
       </h2>
+      {
+        foundationEntry.eyebrow && (
+          <p class="mt-2 ml-10 font-mono text-[10px] tracking-[0.25em] text-neutral-400 uppercase md:ml-0 md:text-right dark:text-neutral-700">
+            {foundationEntry.eyebrow}
+          </p>
+        )
+      }
     </div>
 
     <article class="pb-8 pl-10 md:pl-12">
       <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white">{t('journeyCdnTitle')}</h3>
+        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white">{foundationEntry.title}</h3>
       </div>
-      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400">{t('journeyCdnDescription')}</p>
+      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400">
+        {foundationEntry.description}
+      </p>
 
-      <div class="chart-surface max-w-3xl overflow-hidden rounded-lg border border-neutral-700 bg-[#1f1f1f] shadow-xl">
-        <div class="border-b border-neutral-700 bg-neutral-800 px-4 py-2">
-          <span class="font-mono text-[11px] text-neutral-400">edge-worker.js</span>
-        </div>
-        <div class="overflow-x-auto p-6">
-          <pre
-            class="min-w-[22rem] font-mono text-xs leading-relaxed text-neutral-300"><code>{edgeWorkerExample}</code></pre>
-        </div>
+      <div class="max-w-3xl">
+        <CodeBlock
+          code={foundationEntry.code ?? ''}
+          lang={foundationEntry.codeLang ?? 'text'}
+          title={foundationEntry.codeTitle}
+        />
       </div>
+
+      {
+        foundationEntry.tags && (
+          <div class="mt-6 flex max-w-3xl flex-wrap gap-2">
+            {foundationEntry.tags.map((tag) => (
+              <span class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
     </article>
   </section>
 </main>

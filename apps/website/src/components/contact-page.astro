@@ -7,26 +7,25 @@ type Props = {
 
 const { locale } = Astro.props;
 const t = createTranslator(locale);
+const year = new Date().getFullYear();
 ---
 
 <main
-  class="min-h-screen-nav mx-auto mt-20 grid w-full max-w-screen-2xl grow grid-cols-1 gap-6 px-6 pt-16 pb-20 md:grid-cols-12"
+  class="min-h-screen-nav mx-auto mt-20 grid w-full max-w-7xl grow grid-cols-1 gap-6 px-6 pt-12 pb-12 md:grid-cols-12"
 >
-  <header class="mb-8 flex flex-col gap-2 md:col-span-12 md:mb-16">
-    <div class="text-muted-light dark:text-muted-dark flex items-center gap-2 font-mono text-xs">
-      <span>//</span>
-      <span>2026</span>
-      <span>//</span>
-      <span class="text-surface-dark dark:text-surface-light">{t('contactPageLabel')}</span>
+  <header class="mb-20 flex flex-col gap-6 md:col-span-12">
+    <div class="text-muted-light dark:text-muted-dark flex items-center gap-3 font-mono text-xs tracking-wider">
+      <span>{`// ${year} // ${t('contactPageLabel')}`}</span>
     </div>
-    <h1 class="text-surface-dark dark:text-surface-light mt-4 text-4xl font-medium tracking-tight md:text-6xl">
+    <h1 class="text-surface-dark dark:text-surface-light text-5xl leading-[1.1] font-semibold tracking-tight md:text-6xl">
       {t('contactPageTitle')}
     </h1>
+    <p class="text-muted-light dark:text-muted-dark max-w-2xl text-lg leading-relaxed font-light">
+      {t('contactHeroDescription')}
+    </p>
   </header>
 
   <div class="space-y-6 md:col-span-4 lg:col-span-5">
-    <p class="text-muted-light dark:text-muted-dark max-w-sm text-sm leading-relaxed">{t('contactHeroDescription')}</p>
-
     <div class="space-y-4 pt-4">
       <div class="group flex cursor-pointer items-center gap-3">
         <span

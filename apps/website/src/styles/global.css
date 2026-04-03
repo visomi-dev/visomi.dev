@@ -65,6 +65,11 @@ html.dark body {
   color: #f5f5f5;
 }
 
+a,
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 @utility bg-grid {
   background-size: 60px 60px;
   background-image:

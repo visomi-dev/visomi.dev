@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "angular.ng-template",
+    "astro-build.astro-vscode",
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
     "bradlc.vscode-tailwindcss",

@@ -1,0 +1,4 @@
+project: Web and Hybrid App for Money Transfers between the U.S. and Mexico
+role: Full Stack Software Engineer
+description: 
+Migration, Maintenance & Deployment: Migrated a fintech remittance platform from legacy React/React Native to modern versions, improving performance and stability across devices. Provided full-stack support with Django REST Framework, Celery, and Postgres. Managed deployments to App Store, Google Play, and EC2. The app included KYC verification and enabled secure money transfers from the U.S. to Mexico

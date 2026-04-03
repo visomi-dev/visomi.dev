@@ -1,12 +1,12 @@
 ---
 import HomePage from '../../components/home-page.astro';
-import { createTranslator, stripHtml } from '../../i18n/translations';
+import { getSiteContent } from '../../content/site-content';
 import BaseLayout from '../../layouts/base-layout.astro';
 
 const locale = 'es';
-const t = createTranslator(locale);
+const { home } = getSiteContent(locale);
 ---
 
-<BaseLayout locale={locale} page="home" description={stripHtml(t('homeHeroSubtitle'))}>
+<BaseLayout locale={locale} page="home" description={home.metaDescription}>
   <HomePage locale={locale} />
 </BaseLayout>

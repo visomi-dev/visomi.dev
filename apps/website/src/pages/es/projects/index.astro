@@ -1,13 +1,13 @@
 ---
 import ProjectsPage from '../../../components/projects-page.astro';
-import { createTranslator } from '../../../i18n/translations';
+import { getSiteContent } from '../../../content/site-content';
 import BaseLayout from '../../../layouts/base-layout.astro';
 
 const locale = 'es';
-const t = createTranslator(locale);
-const pageTitle = `${t('projectsTitle1')} ${t('projectsTitle2')}`;
+const { projects } = getSiteContent(locale);
+const pageTitle = `${projects.titleLine1} ${projects.titleLine2}`;
 ---
 
-<BaseLayout locale={locale} page="projects" title={pageTitle} description={t('projectsDescription')}>
+<BaseLayout locale={locale} page="projects" title={pageTitle} description={projects.description}>
   <ProjectsPage locale={locale} />
 </BaseLayout>
