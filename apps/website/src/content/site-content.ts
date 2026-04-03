@@ -325,16 +325,16 @@ const projects: Record<Locale, Project[]> = {
     {
       slug: 'guira',
       title: 'Plataforma Fintech de Pagos Internacionales para LATAM',
-      role: 'Arquitecto de Software y Full Stack Engineer',
+      role: 'Arquitecto de software e ingeniero full-stack',
       year: '2025',
       category: 'FINTECH',
       icon: 'pi-send',
       summary:
-        'MVP de una plataforma fintech para que personas y empresas en Latinoamerica paguen proveedores internacionales en USD mediante conversion local a USDC y payouts con Bridge.',
+        'MVP de una plataforma fintech para que personas y empresas en Latinoamerica paguen a proveedores internacionales en USD mediante conversion local a USDC y desembolsos con Bridge.',
       technologies: ['React Router v7', 'Supabase', 'Prisma', 'Docker', 'Edge Functions'],
       highlights: [
         { label: 'Enfoque', value: 'Onboarding KYC / KYB' },
-        { label: 'Alcance', value: 'Arquitectura MVP + revision admin' },
+        { label: 'Alcance', value: 'Arquitectura MVP + panel de revision' },
       ],
       screenshots: createScreenshots(projectScreenshotAssets.guira, [
         'Pantalla de bienvenida de Guira',
@@ -346,15 +346,15 @@ const projects: Record<Locale, Project[]> = {
     {
       slug: 'linne',
       title: 'Linne Plataforma Social de Picks Deportivos',
-      role: 'Arquitecto de Software y Full Stack Engineer',
+      role: 'Arquitecto de software e ingeniero full-stack',
       year: '2025',
       category: 'PLATFORM',
       icon: 'pi-video',
       summary:
-        'Refactor de un producto social generado automaticamente hacia una plataforma lista para produccion, con flujos de datos controlados, procesamiento asincrono y experiencia compartida entre web y mobile.',
+        'Refactor de un producto social generado automaticamente hacia una plataforma lista para produccion, con flujos de datos controlados, procesamiento asincrono y una experiencia compartida entre web y mobile.',
       technologies: ['React', 'Node.js', 'PostgreSQL', 'Zustand', 'Capacitor', 'BullMQ'],
       highlights: [
-        { label: 'Mejora', value: 'Procesamiento AI de screenshots' },
+        { label: 'Mejora', value: 'Procesamiento de capturas con IA' },
         { label: 'Alcance', value: 'Historias en web + mobile' },
       ],
       screenshots: createScreenshots(projectScreenshotAssets.linne, [
@@ -388,12 +388,12 @@ const projects: Record<Locale, Project[]> = {
     {
       slug: 'data-go',
       title: 'SaaS Omnicanal para Call Center',
-      role: 'Arquitecto de Software y Full Stack Engineer',
+      role: 'Arquitecto de software e ingeniero full-stack',
       year: '2024',
       category: 'PLATFORM',
       icon: 'pi-desktop',
       summary:
-        'MVP de una plataforma para call center orientada a agentes y supervisores, incluyendo definicion de arquitectura, seleccion de stack, diseno UI, implementacion inicial y handoff tecnico.',
+        'MVP de una plataforma para call center orientada a agentes y supervisores, incluyendo definicion de arquitectura, seleccion de stack, diseno de interfaz, implementacion inicial y transferencia tecnica.',
       technologies: ['Angular', 'Express', 'Prisma', 'MySQL', 'AWS Cognito', 'Figma'],
       highlights: [
         { label: 'Enfoque', value: 'Operacion de agentes y supervisores' },
@@ -409,12 +409,12 @@ const projects: Record<Locale, Project[]> = {
     {
       slug: 'circular-e',
       title: 'Circular-E Plataforma de Recoleccion de Reciclaje',
-      role: 'Product Engineer y Socio Tecnico',
+      role: 'Product Engineer y socio tecnico',
       year: '2023',
       category: 'PLATFORM',
       icon: 'pi-refresh',
       summary:
-        'Construido junto con un colaborador cercano, Circular-E combinaba una experiencia publica de reciclaje con flujos de cuenta, agenda y cashback para solicitar recoleccion de materiales reciclables a domicilio y seguir el impacto del usuario.',
+        'Construido junto con un colaborador cercano, Circular-E combinaba una experiencia publica de reciclaje con flujos de cuenta, agenda y cashback para solicitar la recoleccion de materiales reciclables a domicilio y dar seguimiento al impacto del usuario.',
       technologies: ['Angular SSR', 'NestJS', 'Prisma', 'Tailwind CSS', 'AWS', 'Redis'],
       highlights: [
         { label: 'Flujo', value: 'Agenda de recoleccion + cashback' },
@@ -428,12 +428,12 @@ const projects: Record<Locale, Project[]> = {
     {
       slug: 'people-search',
       title: 'Sistema de Busqueda de Personas',
-      role: 'Arquitecto de Software y Full Stack Engineer',
+      role: 'Arquitecto de software e ingeniero full-stack',
       year: '2024',
       category: 'INTERNAL',
       icon: 'pi-lock',
       summary:
-        'Plataforma interna de busqueda de personas soportada por SQL Server, un SPA en React y una API en C# .NET, entregada con despliegue automatizado en Azure y presentada a alto nivel por NDA.',
+        'Plataforma interna de busqueda de personas respaldada por SQL Server, un SPA en React y una API en C# .NET, entregada con despliegue automatizado en Azure y mostrada solo a alto nivel por NDA.',
       technologies: ['React', 'ShadCN UI', 'C# .NET Core', 'SQL Server', 'Azure Web App', 'Azure Pipelines'],
       highlights: [
         { label: 'Visibilidad', value: 'Producto interno' },
@@ -803,79 +803,84 @@ const content: Record<Locale, SiteContent> = {
   es: {
     home: {
       metaDescription:
-        'Senior full-stack engineer y tech lead enfocado en plataformas escalables, arquitectura reusable y flujos de trabajo potenciados con IA.',
+        'Ingeniero full-stack senior y lider tecnico enfocado en plataformas escalables, arquitectura reutilizable y flujos de trabajo potenciados por IA.',
       heroBadge: 'Disponible para roles senior de ingenieria y liderazgo',
-      heroTitleLine1: 'Arquitectando software',
-      heroTitleLine2: 'que se entrega y escala.',
+      heroTitleLine1: 'Software pensado para',
+      heroTitleLine2: 'salir a produccion y escalar.',
       heroSubtitle:
-        'Soy Michael Villalba, senior full-stack engineer y tech lead enfocado en plataformas web escalables, arquitectura reusable, developer experience y flujos de trabajo potenciados con IA.',
+        'Soy Michael Villalba, ingeniero full-stack senior y lider tecnico enfocado en plataformas web escalables, arquitectura reutilizable, experiencia de desarrollo y flujos de trabajo potenciados por IA.',
       heroPrimaryCta: 'Ver proyectos',
       heroSecondaryCta: 'Curriculum',
       journeyTitle: 'Trayectoria',
-      worksTitle: 'Proyectos Seleccionados',
+      worksTitle: 'Proyectos seleccionados',
       worksSubtitle: 'Fintech, plataformas internas y arquitectura de producto con restricciones reales de entrega.',
       worksLinkLabel: 'Ver GitHub',
-      featuresTitle: 'Lo Que Aporto',
-      featuresSubtitle: 'Arquitectura, ejecucion y habilitacion de equipos a partir de mas de una decada construyendo.',
+      featuresTitle: 'Lo que aporto',
+      featuresSubtitle:
+        'Arquitectura, ejecucion y acompanamiento tecnico construidos a lo largo de mas de una decada entregando software.',
       journeyItems: [
         {
           year: '2022',
-          role: 'Tech Lead / Senior Full-Stack Engineer',
+          role: 'Lider tecnico / Ingeniero full-stack senior',
           company: 'AB InBev',
           description:
-            'Liderando arquitectura de plataformas internas entre sistemas de scraping, design systems, foundations de monorepo e iniciativas potenciadas con IA.',
+            'Liderando la arquitectura de plataformas internas entre sistemas de scraping, sistemas de diseno, bases de monorepo e iniciativas potenciadas por IA.',
         },
         {
           year: '2021',
-          role: 'Head of Technology',
+          role: 'Director de Tecnologia',
           company: 'Solidus Capital',
           description:
-            'Direccion tecnica para productos fintech y de remesas, equilibrando arquitectura, entrega y liderazgo de equipo con multiples integraciones.',
+            'Direccion tecnica para productos fintech y de remesas, equilibrando arquitectura, ejecucion y liderazgo de equipo en entornos con multiples integraciones.',
         },
         {
           year: '2020',
-          role: 'Chapter Lead',
+          role: 'Lider de capitulo',
           company: 'Kavak',
           description:
-            'Ayude a destrabar autenticacion Angular con AWS Cognito y contribui a la adopcion de Nx monorepo en un entorno de alto crecimiento.',
+            'Ayude a destrabar la autenticacion en Angular con AWS Cognito y contribui a la adopcion de un monorepo con Nx en un entorno de alto crecimiento.',
         },
         {
           year: '2018',
-          role: 'Tech Lead',
+          role: 'Lider tecnico',
           company: 'Avanttia / CONTPAQi',
           description:
-            'Conecte objetivos de negocio con arquitectura y ejecucion, mejorando velocidad de entrega mediante mejores patrones, estructura y reusable foundations.',
+            'Conecte objetivos de negocio con arquitectura y ejecucion, mejorando la velocidad de entrega mediante mejores patrones, estructura y bases reutilizables.',
         },
       ],
       features: [
         {
-          title: 'Arquitectura de Plataforma',
-          subtitle: 'Monorepos, microfrontends y foundations compartidas',
+          title: 'Arquitectura de plataforma',
+          subtitle: 'Monorepos, microfrontends y bases compartidas',
           badge: 'Sistemas escalables',
-          lines: ['Nx monorepos', 'Patrones de microfrontend', 'Validacion y contratos de API'],
+          lines: ['Monorepos con Nx', 'Patrones de microfrontend', 'Validacion y contratos de API'],
           tone: 'emerald',
         },
         {
-          title: 'Velocidad de Entrega',
+          title: 'Velocidad de entrega',
           subtitle: 'MVPs sin sacrificar mantenibilidad',
           badge: 'Enfoque en ejecucion',
           lines: [
-            'Arquitectura a MVP en meses',
-            'Templates y utilidades reusables',
-            'Sistemas operando por largo tiempo',
+            'De arquitectura a MVP en meses',
+            'Plantillas y utilidades reutilizables',
+            'Sistemas que siguen funcionando con el tiempo',
           ],
           tone: 'blue',
         },
         {
-          title: 'Liderazgo Tecnico',
+          title: 'Liderazgo tecnico',
           subtitle: 'Puente entre producto, negocio e ingenieria',
-          badge: 'Lead hands-on',
-          lines: ['Hiring y mentoring', 'Code reviews y estandares', 'Decisiones mas claras para equipos'],
+          badge: 'Liderazgo cercano',
+          lines: [
+            'Contratacion y mentoria',
+            'Revisiones de codigo y estandares',
+            'Decisiones mas claras para los equipos',
+          ],
           tone: 'neutral',
         },
         {
-          title: 'Workflows con IA',
-          subtitle: 'Uso pragmatico de agentes y tooling con LLMs',
+          title: 'Flujos de trabajo con IA',
+          subtitle: 'Uso pragmatico de agentes y herramientas con LLMs',
           badge: 'Enfoque actual',
           lines: [
             'Productividad de desarrolladores',
@@ -888,30 +893,30 @@ const content: Record<Locale, SiteContent> = {
     },
     projects: {
       pageLabel: `// 2017 - ${year} // PROYECTOS`,
-      titleLine1: 'Sistemas de',
-      titleLine2: 'Proyecto Seleccionados.',
+      titleLine1: 'Sistemas y',
+      titleLine2: 'proyectos seleccionados.',
       description:
-        'Una seleccion curada de plataformas, herramientas internas y productos fintech. Cada proyecto mantiene la tarjeta ligera mientras expone previews visuales cuando el trabajo puede mostrarse publicamente.',
+        'Una seleccion curada de plataformas, herramientas internas y productos fintech. Cada proyecto mantiene una presentacion concisa, pero muestra vistas previas cuando el trabajo puede compartirse publicamente.',
       filters: [
         { label: 'TODOS', value: 'ALL' },
         { label: 'FINTECH', value: 'FINTECH' },
         { label: 'PLATAFORMA', value: 'PLATFORM' },
         { label: 'INTERNO', value: 'INTERNAL' },
       ],
-      statusLabel: 'Snapshot del Proyecto',
-      screenshotLabel: 'Preview',
-      privatePreviewLabel: 'Preview Privado',
+      statusLabel: 'Resumen del proyecto',
+      screenshotLabel: 'Vista previa',
+      privatePreviewLabel: 'Vista previa privada',
       privatePreviewDescription:
-        'Este trabajo esta cubierto por NDA, por eso la superficie visual permanece oculta aunque la arquitectura y el stack sigan visibles.',
+        'Este trabajo esta cubierto por NDA, por eso la capa visual se mantiene oculta aunque la arquitectura y la pila tecnologica sigan siendo visibles.',
     },
     resume: {
       metaDescription:
-        'Curriculum de Michael Villalba, senior full-stack engineer y tech lead con experiencia en fintech, SaaS, sistemas empresariales y workflows potenciados con IA.',
+        'Curriculum de Michael Villalba, ingeniero full-stack senior y lider tecnico con experiencia en fintech, SaaS, sistemas empresariales y flujos de trabajo potenciados por IA.',
       pageLabel: `// ${year} // CURRICULUM`,
       name: 'Michael Villalba Sotelo',
-      headline: 'Senior Full-Stack Engineer | Tech Lead | AI-Enabled Software Architect',
+      headline: 'Ingeniero Full-Stack Senior | Lider tecnico | Arquitecto de software con IA aplicada',
       summary:
-        'Ingeniero full-stack y lider tecnico con 11+ anos de experiencia construyendo plataformas web, sistemas internos, motores de automatizacion y arquitecturas orientadas a developer experience en fintech, e-commerce, SaaS, enterprise e iniciativas de IA.',
+        'Ingeniero full-stack y lider tecnico con mas de 11 anos de experiencia construyendo plataformas web, sistemas internos, motores de automatizacion y arquitecturas orientadas a la experiencia de desarrollo en fintech, e-commerce, SaaS, entornos empresariales e iniciativas de IA.',
       location: 'Ciudad de Mexico, Mexico',
       email: 'visomi.dev@gmail.com',
       phone: '(+52) 55 8760 6759',
@@ -919,79 +924,79 @@ const content: Record<Locale, SiteContent> = {
       github: 'github.com/visomi-dev',
       linkedin: 'linkedin.com/in/visomi',
       experienceLabel: '01 // Experiencia',
-      stackLabel: '02 // Skills Tecnicos',
+      stackLabel: '02 // Capacidades tecnicas',
       mentoringLabel: '03 // Mentoria',
-      freelanceLabel: '04 // Freelance Seleccionado',
+      freelanceLabel: '04 // Freelance seleccionado',
       educationLabel: '05 // Educacion',
       languagesLabel: '06 // Idiomas',
       experience: [
         {
           company: 'AB InBev (Grupo Modelo)',
-          role: 'Tech Lead / Senior Full-Stack Engineer',
+          role: 'Lider tecnico / Ingeniero full-stack senior',
           date: 'Ago 2022 - Presente',
           location: 'Mexico',
           items: [
-            'Lidero arquitectura y entrega de plataformas internas entre scraping, design systems, ecosistemas de microfrontends, integraciones cercanas a SAP e iniciativas con agentes de IA.',
-            'Disene y entregue un scraping engine configurable con NestJS, Puppeteer, BullMQ, Redis y SQLite para extraer precios de competidores en multiples sitios, incluyendo experiencias con infinite scroll.',
-            'Lleve la iniciativa desde arquitectura hasta MVP en 3 meses y aprobacion de produccion en 6 meses, operando despues por alrededor de 2 anos con mantenimiento ligero basado en reglas JSON.',
-            'Cree foundations reutilizables de frontend y backend, incluyendo templates compartidos, capas de validacion, utilidades y middleware preparado para OpenAPI para estandarizar la entrega entre equipos.',
-            'Impulse la evolucion desde aplicaciones fragmentadas hacia patrones con Nx monorepo y microfrontends para mejor escalabilidad, releases y reutilizacion.',
+            'Lidero la arquitectura y entrega de plataformas internas entre scraping, sistemas de diseno, ecosistemas de microfrontends, integraciones cercanas a SAP e iniciativas con agentes de IA.',
+            'Disene y entregue un motor de scraping configurable con NestJS, Puppeteer, BullMQ, Redis y SQLite para extraer precios de competidores en multiples sitios, incluyendo experiencias con desplazamiento infinito.',
+            'Lleve la iniciativa desde la arquitectura hasta un MVP en 3 meses y a aprobacion de produccion en 6 meses, operando despues por alrededor de 2 anos con mantenimiento ligero basado en reglas JSON.',
+            'Cree bases reutilizables de frontend y backend, incluyendo plantillas compartidas, capas de validacion, utilidades y middleware preparado para OpenAPI para estandarizar la entrega entre equipos.',
+            'Impulse la evolucion desde aplicaciones fragmentadas hacia un monorepo con Nx y patrones de microfrontend para mejorar escalabilidad, despliegues y reutilizacion.',
           ],
         },
         {
           company: 'Solidus Capital',
-          role: 'Head of Technology',
+          role: 'Director de Tecnologia',
           date: 'Jul 2021 - Jul 2022',
           location: 'Mexico',
           items: [
-            'Lidere ingenieria para productos fintech y relacionados con crypto, incluyendo plataformas de wealth tracking y productos de remesas con multiples integraciones.',
+            'Lidere ingenieria para productos fintech y vinculados con cripto, incluyendo plataformas de seguimiento patrimonial y productos de remesas con multiples integraciones.',
             'Defini la direccion tecnica de una plataforma orientada al cliente con flujos KYC / KYB, estructuras de holdings e integraciones con servicios externos.',
-            'Coordine developers y partners externos mientras participaba directamente en arquitectura, hiring, code review y resolucion tecnica.',
-            'Regrese como freelancer para reactivar el producto Mesada, actualizando el frontend de React 15 a React 17, corrigiendo problemas backend y preparando la app para App Store y Play Store.',
+            'Coordine desarrolladores y socios externos mientras participaba directamente en arquitectura, contratacion, revisiones de codigo y resolucion tecnica.',
+            'Regrese como freelancer para reactivar el producto Mesada, actualizando el frontend de React 15 a React 17, corrigiendo problemas de backend y preparando la app para App Store y Play Store.',
           ],
         },
         {
           company: 'Kavak',
-          role: 'Chapter Lead',
+          role: 'Lider de capitulo',
           date: 'Ago 2020 - Abr 2021',
           location: 'Mexico',
           items: [
-            'Lidere iniciativas tecnicas frontend en un entorno de hypergrowth mientras seguia contribuyendo de forma hands-on.',
-            'Implemente autenticacion con AWS Cognito en Angular 12 en una fase temprana donde esa integracion habia bloqueado al equipo.',
-            'Contribui a la adopcion de Nx monorepo y a mejoras estructurales frontend en un producto de gran escala.',
+            'Lidere iniciativas tecnicas de frontend en un entorno de crecimiento acelerado mientras seguia contribuyendo de forma directa.',
+            'Implemente autenticacion con AWS Cognito en Angular 12 en una fase temprana en la que esa integracion habia bloqueado al equipo.',
+            'Contribui a la adopcion de un monorepo con Nx y a mejoras estructurales de frontend en un producto de gran escala.',
           ],
         },
         {
           company: 'Avanttia / CONTPAQi',
-          role: 'Tech Lead',
+          role: 'Lider tecnico',
           date: 'Oct 2018 - Ago 2020',
           location: 'Mexico',
           items: [
             'Fui el puente entre objetivos de negocio, arquitectura y ejecucion diaria para productos fiscales y financieros.',
-            'Defini practicas de ingenieria, estandares de arquitectura y workflows de desarrollo para un equipo que trabajaba en cobranza, cuentas por pagar y facturacion.',
-            'Arquitete y entregue un sistema de facturacion en 1 mes usando microservicios Node.js, Vue, PostgreSQL y MongoDB, ayudando a abrir una nueva oportunidad de ingresos.',
-            'Mejore developer experience y velocidad de entrega mediante arquitectura mas clara, guia tecnica y patrones reutilizables.',
+            'Defini practicas de ingenieria, estandares de arquitectura y flujos de desarrollo para un equipo que trabajaba en cobranza, cuentas por pagar y facturacion.',
+            'Arquitecte y entregue un sistema de facturacion en 1 mes usando microservicios con Node.js, Vue, PostgreSQL y MongoDB, ayudando a abrir una nueva oportunidad de ingresos.',
+            'Mejore la experiencia de desarrollo y la velocidad de entrega mediante una arquitectura mas clara, guia tecnica y patrones reutilizables.',
           ],
         },
         {
           company: 'Creze',
-          role: 'Tech Lead',
+          role: 'Lider tecnico',
           date: 'Jun 2017 - Oct 2018',
           location: 'Mexico',
           items: [
-            'Transicione de infraestructura y soporte hacia desarrollo profesional de software y avance rapidamente hacia liderazgo tecnico.',
-            'Aprendi React, JSX, Node.js y webpack con rapidez y entregue el sitio solicitado en aproximadamente una semana.',
-            'Fui promovido a Tech Lead en 6 meses y lidere un equipo pequeno de 3 developers construyendo aplicaciones web y dashboards internos para seguimiento de credito y operaciones KYC / KYB.',
+            'Transicione de infraestructura y soporte hacia el desarrollo profesional de software y avance rapidamente hacia liderazgo tecnico.',
+            'Aprendi React, JSX, Node.js y webpack con rapidez, y entregue el sitio solicitado en aproximadamente una semana.',
+            'Fui promovido a lider tecnico en 6 meses y lidere un equipo pequeno de 3 desarrolladores construyendo aplicaciones web y tableros internos para seguimiento de credito y operaciones KYC / KYB.',
           ],
         },
         {
           company: 'DataVoice y Enlaza Comunicaciones',
-          role: 'Technical Support Engineer / Systems Support',
+          role: 'Ingeniero de soporte tecnico / Soporte de sistemas',
           date: 'Jul 2014 - May 2017',
           location: 'Mexico',
           items: [
-            'Construyi una base solida en Linux, Windows, networking, telefonia, servidores y automatizacion antes de moverme por completo a software engineering.',
-            'Avance desde responsabilidades de becario hasta trabajo de soporte de alta confianza, incluyendo configuracion de software, administracion de servidores, troubleshooting e incidentes criticos.',
+            'Construyi una base solida en Linux, Windows, redes, telefonia, servidores y automatizacion antes de moverme por completo hacia la ingenieria de software.',
+            'Avance desde responsabilidades de becario hasta trabajo de soporte de alta confianza, incluyendo configuracion de software, administracion de servidores, diagnostico de fallas y manejo de incidentes criticos.',
             'Automatice tareas operativas con Python, Django, scripts, dashboards y herramientas CLI mientras trabajaba con telefonia e infraestructura.',
           ],
         },
@@ -1022,21 +1027,21 @@ const content: Record<Locale, SiteContent> = {
         {
           label: 'Arquitectura',
           items: [
-            'Nx monorepos',
+            'Monorepos con Nx',
             'Microfrontends',
-            'Librerias compartidas',
-            'Middleware patterns',
-            'Domain services',
-            'API contracts',
+            'Bibliotecas compartidas',
+            'Patrones de middleware',
+            'Servicios de dominio',
+            'Contratos de API',
             'OpenAPI',
           ],
         },
         {
-          label: 'Data e Infra',
+          label: 'Datos e infraestructura',
           items: ['PostgreSQL', 'MySQL', 'SQL Server', 'MongoDB', 'Redis', 'SQLite', 'Azure', 'AWS', 'Ubuntu', 'Nginx'],
         },
         {
-          label: 'Tooling e IA',
+          label: 'Herramientas e IA',
           items: [
             'Zod',
             'ESLint',
@@ -1046,22 +1051,22 @@ const content: Record<Locale, SiteContent> = {
             'Husky',
             'BullMQ',
             'Puppeteer',
-            'AI agents',
+            'Agentes de IA',
             'CrewAI',
             'Integraciones OpenAI',
           ],
         },
       ],
       mentoring: [
-        'Mentor de desarrollo web en Kodemia entre feb 2019 y jul 2022, ensenando workflows practicos de desarrollo a personas que querian entrar a la industria.',
-        'Varios developers mentoreados bajo mi guia avanzaron despues hacia roles senior y de Tech Lead, algo que sigo considerando de mis logros mas valiosos.',
+        'Mentor de desarrollo web en Kodemia entre feb 2019 y jul 2022, ensenando flujos de trabajo practicos a personas que querian entrar a la industria.',
+        'Varios desarrolladores a quienes acompane avanzaron despues hacia roles senior y de liderazgo tecnico, algo que sigo considerando uno de mis logros mas valiosos.',
       ],
       freelance: [
         'Construccion de una aplicacion de recoleccion y reciclaje con Angular, NestJS, Prisma y PostgreSQL.',
-        'Construccion de Circular-E con un amigo: una plataforma de recoleccion de reciclaje y cashback con Angular SSR, NestJS, Prisma, Redis y despliegue sobre AWS.',
-        'Desarrollo de un sistema full-stack integrado con telefonia usando Angular, Express, Prisma, Asterisk Realtime, eventos AMI, REST APIs, WebSockets y despliegue on-premise en Ubuntu / Nginx.',
+        'Construccion de Circular-E con un socio cercano: una plataforma de recoleccion de reciclaje y cashback con Angular SSR, NestJS, Prisma, Redis y despliegue sobre AWS.',
+        'Desarrollo de un sistema full-stack integrado con telefonia usando Angular, Express, Prisma, Asterisk Realtime, eventos AMI, APIs REST, WebSockets y despliegue local en Ubuntu / Nginx.',
         'Entrega de un sistema de administracion de personas y usuarios con React, C#, Azure Web Apps y Azure Pipelines.',
-        'Refactor de una plataforma social de apuestas hacia un Nx monorepo con React, Express, Supabase, BullMQ, Redis y despliegue mobile con Capacitor.',
+        'Refactor de una plataforma social de apuestas hacia un monorepo con Nx, React, Express, Supabase, BullMQ, Redis y despliegue movil con Capacitor.',
         'Construccion de una aplicacion de remesas para Bolivia usando React, Express, Supabase, BullMQ e integraciones con Bridge.',
       ],
       education: {
@@ -1075,16 +1080,16 @@ const content: Record<Locale, SiteContent> = {
     },
     journey: {
       metaDescription:
-        'Una trayectoria curada sobre el crecimiento de Michael Villalba desde soporte y sistemas hacia arquitectura, liderazgo tecnico y delivery potenciado con IA.',
+        'Una trayectoria curada sobre el crecimiento de Michael Villalba desde soporte y sistemas hacia arquitectura, liderazgo tecnico y entrega potenciada por IA.',
       pageLabel: `// 2011 - ${year} // TRAYECTORIA`,
       pageTitle: 'Trayectoria de Ingenieria',
       pageDescription:
-        'La historia detras del trabajo: curiosidad por las computadoras, base en sistemas y soporte, crecimiento rapido hacia software engineering y un enfoque actual en arquitectura escalable, mentoring y delivery potenciado con IA.',
+        'La historia detras del trabajo: curiosidad por las computadoras, base en sistemas y soporte, crecimiento rapido hacia la ingenieria de software y un enfoque actual en arquitectura escalable, mentoria y entrega potenciada por IA.',
       stats: [
-        { label: 'Anos Construyendo', value: '11+' },
-        { label: 'Nivel Actual', value: 'Senior / Lead' },
-        { label: 'Lente Central', value: 'Arquitectura + DX' },
-        { label: 'SO Principal', value: 'Linux' },
+        { label: 'Anos construyendo', value: '11+' },
+        { label: 'Nivel actual', value: 'Senior / Lead' },
+        { label: 'Enfoque central', value: 'Arquitectura + DX' },
+        { label: 'SO principal', value: 'Linux' },
       ],
       entries: [
         {
@@ -1093,15 +1098,15 @@ const content: Record<Locale, SiteContent> = {
           title: 'Automatizacion, reutilizacion y pensamiento de plataforma a escala',
           badge: 'AB INBEV // ACTIVO',
           description:
-            'En AB InBev el enfoque se volvio mas grande y mas duradero: automatizaciones que pueden operar por anos, un design system frontend mas foundations reutilizables para multiples equipos, patrones con Nx monorepo y microfrontends para escalar y gestionar releases, y ahora una plataforma de soluciones centrada en IA que combina frontends en React, servicios en Python y flujos con agentes para mejorar tanto el producto como la productividad del equipo.',
+            'En AB InBev el enfoque se volvio mas amplio y mas duradero: automatizaciones que pueden operar por anos, un sistema de diseno de frontend con bases reutilizables para multiples equipos, patrones de monorepo con Nx y microfrontends para escalar y gestionar despliegues, y ahora una plataforma de soluciones centrada en IA que combina frontends en React, servicios en Python y flujos con agentes para mejorar tanto el producto como la productividad del equipo.',
           metrics: [
             { label: 'Ventana MVP', value: '3 meses' },
             { label: 'Operacion automatizada', value: '2 anos', meta: 'mantenimiento ligero con JSON' },
-            { label: 'Enfoque actual', value: 'Soluciones IA', meta: 'React + Python + agentes' },
+            { label: 'Enfoque actual', value: 'Soluciones con IA', meta: 'React + Python + agentes' },
           ],
           progress: [
-            { label: 'Foundations reutilizables', value: '82%', percentage: 82 },
-            { label: 'Foco de entrega IA', value: '88%', percentage: 88 },
+            { label: 'Bases reutilizables', value: '82%', percentage: 82 },
+            { label: 'Foco de entrega con IA', value: '88%', percentage: 88 },
           ],
           codeTitle: 'platform/current-focus.ts',
           code: currentFocusSnippet,
@@ -1132,7 +1137,7 @@ const content: Record<Locale, SiteContent> = {
           eyebrow: 'Aceleracion',
           title: 'De autodidacta a lider tecnico',
           description:
-            'Creze, Avanttia, Kavak y Solidus Capital marcaron la transicion de developer hands-on hacia arquitectura y liderazgo. El hilo comun fue velocidad con estructura: aprender stacks nuevos rapidamente, traducir objetivos de negocio a ejecucion tecnica y crear sistemas mas claros para que los equipos avanzaran con menos friccion.',
+            'Creze, Avanttia, Kavak y Solidus Capital marcaron la transicion de un perfil tecnico muy involucrado en la ejecucion hacia arquitectura y liderazgo. El hilo conductor fue la velocidad con estructura: aprender stacks nuevos rapidamente, traducir objetivos de negocio a ejecucion tecnica y crear sistemas mas claros para que los equipos avanzaran con menos friccion.',
           progress: [
             { label: 'Velocidad de entrega', value: 'Alta', percentage: 78 },
             { label: 'Enfoque en DX', value: 'Fuerte', percentage: 86 },
@@ -1145,13 +1150,13 @@ const content: Record<Locale, SiteContent> = {
         {
           year: '2014',
           eyebrow: 'Fundamentos',
-          title: 'Soporte, Linux, automatizacion y el paso hacia software',
+          title: 'Soporte, Linux, automatizacion y el paso hacia el software',
           description:
-            'La etapa inicial no fue glamorosa, pero si formativa. El trabajo de soporte construyo intuicion profunda sobre Linux, telefonia, networking y troubleshooting. Los problemas operativos repetitivos se fueron transformando en scripts, dashboards y automatizaciones, haciendo que el salto a software engineering se sintiera menos como un cambio brusco y mas como una extension natural de resolver problemas.',
+            'La etapa inicial no fue glamorosa, pero si formativa. El trabajo de soporte construyo una intuicion profunda sobre Linux, telefonia, redes y resolucion de fallas. Los problemas operativos repetitivos se fueron transformando en scripts, dashboards y automatizaciones, haciendo que el salto a la ingenieria de software se sintiera menos como un cambio brusco y mas como una extension natural de resolver problemas.',
           codeTitle: 'foundations/automation.py',
           code: foundationsSnippet,
           codeLang: 'py',
-          tags: ['Linux', 'Asterisk', 'Python', 'Django', 'CLI tools'],
+          tags: ['Linux', 'Asterisk', 'Python', 'Django', 'Herramientas CLI'],
         },
       ],
     },
