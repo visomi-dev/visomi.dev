@@ -4,7 +4,7 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/ng-website/src",
-  "tags": [],
+  "tags": ["deprecated", "legacy"],
   "i18n": {
     "locales": {
       "es": {
