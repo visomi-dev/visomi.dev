@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+export const initNavbar = () => {
   const button = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
 
@@ -9,4 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
   button.addEventListener('click', () => {
     menu.classList.toggle('hidden');
   });
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initNavbar);
+} else {
+  initNavbar();
+}

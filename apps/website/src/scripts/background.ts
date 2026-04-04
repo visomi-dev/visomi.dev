@@ -13,7 +13,7 @@ let geometry: THREE.PlaneGeometry | undefined;
 let mesh: THREE.Mesh | undefined;
 let isThreeInitialized = false;
 
-const initBackground = async () => {
+export const initBackground = async () => {
   const lightBackground = document.getElementById('light-bg');
   const darkBackground = document.getElementById('dark-bg');
 

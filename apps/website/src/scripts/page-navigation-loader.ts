@@ -1,6 +1,10 @@
-const loader = document.getElementById('page-navigation-loader');
+export const initPageNavigationLoader = () => {
+  const loader = document.getElementById('page-navigation-loader');
 
-if (loader) {
+  if (!loader) {
+    return;
+  }
+
   document.addEventListener('click', (event) => {
     const target = event.target;
 
@@ -37,4 +41,10 @@ if (loader) {
       loader.classList.add('hidden');
     }, 400);
   });
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPageNavigationLoader);
+} else {
+  initPageNavigationLoader();
 }

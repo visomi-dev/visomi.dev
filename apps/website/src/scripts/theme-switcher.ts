@@ -1,10 +1,10 @@
-(function () {
+export const initThemeSwitcher = () => {
   const html = document.documentElement;
   const labels = document.querySelectorAll<HTMLElement>('.theme-switch-label');
 
   // Initial load
   const savedTheme = localStorage.getItem('theme');
-  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
 
   let isDark = false;
 
@@ -92,4 +92,6 @@
       }
     });
   });
-})();
+};
+
+initThemeSwitcher();

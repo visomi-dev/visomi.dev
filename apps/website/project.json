@@ -34,6 +34,14 @@
         "command": "pnpm exec astro check --root apps/website",
         "cwd": "."
       }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/apps/website"],
+      "options": {
+        "command": "pnpm exec vitest run --config apps/website/vitest.config.ts --coverage",
+        "cwd": "."
+      }
     }
   }
 }

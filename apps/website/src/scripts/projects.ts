@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+export const initProjects = () => {
   const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
   const cards = document.querySelectorAll<HTMLElement>('.project-card');
   const previewButtons = document.querySelectorAll<HTMLButtonElement>('[data-project-thumb]');
@@ -70,4 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
       button.classList.add('ring-primary-light', 'dark:ring-primary-dark', 'ring-1');
     });
   });
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProjects);
+} else {
+  initProjects();
+}

@@ -1,32 +1,43 @@
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { devices, test, type BrowserContextOptions, type Page } from '@playwright/test';
+import { devices, type Browser, type BrowserContextOptions, type Page } from '@playwright/test';
 
-const locales = [
-  {
-    code: 'en',
-    routes: [
-      { name: 'home', path: '/' },
-      { name: 'journey', path: '/journey/' },
-      { name: 'projects', path: '/projects/' },
-      { name: 'resume', path: '/resume/' },
-      { name: 'contact', path: '/contact/' },
-    ],
-  },
-  {
-    code: 'es',
-    routes: [
-      { name: 'home', path: '/es/' },
-      { name: 'journey', path: '/es/journey/' },
-      { name: 'projects', path: '/es/projects/' },
-      { name: 'resume', path: '/es/resume/' },
-      { name: 'contact', path: '/es/contact/' },
-    ],
-  },
-] as const;
+export type ScreenshotRoute = {
+  locale: 'en' | 'es';
+  name: 'home' | 'journey' | 'projects' | 'resume' | 'contact';
+  path: string;
+};
 
-const viewports: Array<{ name: string; context: BrowserContextOptions }> = [
+export type ScreenshotViewport = {
+  name: string;
+  context: BrowserContextOptions;
+};
+
+export const routesByPage = {
+  contact: [
+    { locale: 'en', name: 'contact', path: '/contact/' },
+    { locale: 'es', name: 'contact', path: '/es/contact/' },
+  ],
+  home: [
+    { locale: 'en', name: 'home', path: '/' },
+    { locale: 'es', name: 'home', path: '/es/' },
+  ],
+  journey: [
+    { locale: 'en', name: 'journey', path: '/journey/' },
+    { locale: 'es', name: 'journey', path: '/es/journey/' },
+  ],
+  projects: [
+    { locale: 'en', name: 'projects', path: '/projects/' },
+    { locale: 'es', name: 'projects', path: '/es/projects/' },
+  ],
+  resume: [
+    { locale: 'en', name: 'resume', path: '/resume/' },
+    { locale: 'es', name: 'resume', path: '/es/resume/' },
+  ],
+} as const satisfies Record<string, ScreenshotRoute[]>;
+
+export const viewports: readonly ScreenshotViewport[] = [
   {
     name: 'mobile-sm',
     context: {
@@ -103,37 +114,24 @@ const waitForPageToSettle = async (page: Page) => {
   await page.waitForTimeout(500);
 };
 
-test.describe('website screenshots', () => {
-  test.setTimeout(300_000);
+export const captureScreenshot = async (browser: Browser, route: ScreenshotRoute, viewport: ScreenshotViewport) => {
+  const context = await browser.newContext(viewport.context);
+  const page = await context.newPage();
 
-  for (const locale of locales) {
-    for (const route of locale.routes) {
-      for (const viewport of viewports) {
-        test(`${locale.code} ${route.name} ${viewport.name}`, async ({ browser, browserName }) => {
-          test.skip(browserName !== 'chromium', 'Screenshot coverage is generated in Chromium only.');
+  try {
+    await page.goto(route.path, { waitUntil: 'domcontentloaded' });
+    await waitForPageToSettle(page);
 
-          const context = await browser.newContext(viewport.context);
-          const page = await context.newPage();
+    const outputDirectory = join(screenshotsRoot, route.locale, viewport.name);
 
-          try {
-            await page.goto(route.path, { waitUntil: 'domcontentloaded' });
+    await mkdir(outputDirectory, { recursive: true });
 
-            await waitForPageToSettle(page);
-
-            const outputDirectory = join(screenshotsRoot, locale.code, viewport.name);
-
-            await mkdir(outputDirectory, { recursive: true });
-
-            await page.screenshot({
-              path: join(outputDirectory, `${route.name}.png`),
-              fullPage: true,
-              scale: 'css',
-            });
-          } finally {
-            await context.close();
-          }
-        });
-      }
-    }
+    await page.screenshot({
+      path: join(outputDirectory, `${route.name}.png`),
+      fullPage: true,
+      scale: 'css',
+    });
+  } finally {
+    await context.close();
   }
-});
+};
