@@ -53,6 +53,18 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (min-width: 1920px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 2560px) {
+  html {
+    font-size: 18px;
+  }
+}
+
 body {
   min-height: 100%;
   background-color: #fafafa;
