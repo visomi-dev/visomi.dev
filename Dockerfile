@@ -31,6 +31,6 @@ RUN pnpm install --frozen-lockfile --prod
 
 COPY --from=build /workspace/dist ./dist
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["node", "dist/apps/server/main.js"]

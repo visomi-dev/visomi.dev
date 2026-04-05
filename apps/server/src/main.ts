@@ -7,8 +7,8 @@ type ApiModule = {
   app?: Express;
 };
 
-type WebsiteSsrModule = {
-  reqHandler?: (req: Request, res: Response, next: NextFunction) => Promise<void> | void;
+type AstroMiddlewareModule = {
+  handler?: (req: Request, res: Response, next: NextFunction) => Promise<void> | void;
 };
 
 const host = process.env.HOST ?? '0.0.0.0';
@@ -16,7 +16,8 @@ const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const apiEntryFile = resolve(serverDistFolder, '..', 'api', 'main.js');
-const websiteEntryFile = resolve(serverDistFolder, '..', 'ng-website', 'server', 'server.mjs');
+const astroClientFolder = resolve(serverDistFolder, '..', 'website', 'client');
+const astroEntryFile = resolve(serverDistFolder, '..', 'website', 'server', 'entry.mjs');
 
 const loadApiApp = async () => {
   const apiModule = (await import(pathToFileURL(apiEntryFile).href)) as ApiModule;
@@ -28,22 +29,29 @@ const loadApiApp = async () => {
   return apiModule.app;
 };
 
-const loadWebsiteRequestHandler = async () => {
-  const websiteSsrModule = (await import(pathToFileURL(websiteEntryFile).href)) as WebsiteSsrModule;
+const loadAstroRequestHandler = async () => {
+  const astroModule = (await import(pathToFileURL(astroEntryFile).href)) as AstroMiddlewareModule;
 
-  if (typeof websiteSsrModule.reqHandler !== 'function') {
-    throw new TypeError(`Could not load the Angular SSR request handler from '${websiteEntryFile}'.`);
+  if (typeof astroModule.handler !== 'function') {
+    throw new TypeError(`Could not load the Astro request handler from '${astroEntryFile}'.`);
   }
 
-  return websiteSsrModule.reqHandler;
+  return astroModule.handler;
 };
 
 const bootstrap = async () => {
-  const [apiApp, websiteRequestHandler] = await Promise.all([loadApiApp(), loadWebsiteRequestHandler()]);
+  const [apiApp, astroRequestHandler] = await Promise.all([loadApiApp(), loadAstroRequestHandler()]);
   const app = express();
 
   app.use('/api', apiApp);
-  app.use((req, res, next) => websiteRequestHandler(req, res, next));
+  app.use(
+    express.static(astroClientFolder, {
+      index: false,
+      maxAge: '1y',
+      redirect: false,
+    }),
+  );
+  app.use((req, res, next) => astroRequestHandler(req, res, next));
 
   app.listen(port, host, () => {
     console.log(`[ ready ] http://${host}:${port}`);

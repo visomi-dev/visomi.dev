@@ -3,11 +3,16 @@ import { createTranslator, type Locale } from '../i18n/translations';
 
 type Props = {
   locale: Locale;
+  errors?: Partial<Record<'email' | 'message' | 'name' | 'type', string>>;
+  formValues?: Partial<Record<'email' | 'message' | 'name' | 'type', string>>;
+  status?: 'error' | 'sent' | null;
 };
 
-const { locale } = Astro.props;
+const { errors = {}, formValues = {}, locale, status = null } = Astro.props;
 const t = createTranslator(locale);
 const year = new Date().getFullYear();
+const isSuccess = status === 'sent';
+const isError = status === 'error';
 ---
 
 <main class="min-h-screen-nav mx-auto mt-20 w-full max-w-[1800px] px-6 pt-10 pb-12 md:px-8 md:pt-14 2xl:px-12">
@@ -68,7 +73,26 @@ const year = new Date().getFullYear();
     <div
       class="border-border-light dark:border-border-dark w-full rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300 sm:p-8 md:p-10 xl:max-w-2xl dark:bg-neutral-900"
     >
-      <form action="https://formspree.io/f/xbjnkyke" method="POST" class="space-y-6">
+      {(isSuccess || isError) && (
+        <div
+          class:list={[
+            'mb-6 rounded-xl border px-4 py-3 text-sm leading-6',
+            isSuccess
+              ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200'
+              : 'border-red-200 bg-red-50 text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-200',
+          ]}
+        >
+          {isSuccess
+            ? locale === 'es'
+              ? 'Mensaje enviado. Te respondere pronto.'
+              : 'Message sent. I will get back to you soon.'
+            : locale === 'es'
+              ? 'No se pudo enviar el mensaje. Intentalo de nuevo.'
+              : 'The message could not be sent. Please try again.'}
+        </div>
+      )}
+
+      <form method="POST" class="space-y-6">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div class="space-y-2">
             <label
@@ -81,8 +105,10 @@ const year = new Date().getFullYear();
               name="name"
               class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
               placeholder={t('contactFormPlaceholderIdentity')}
+              value={formValues.name}
               required
             />
+            {errors.name && <p class="text-sm text-red-600 dark:text-red-300">{errors.name}</p>}
           </div>
           <div class="space-y-2">
             <label
@@ -95,8 +121,10 @@ const year = new Date().getFullYear();
               name="email"
               class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
               placeholder={t('contactFormPlaceholderEmail')}
+              value={formValues.email}
               required
             />
+            {errors.email && <p class="text-sm text-red-600 dark:text-red-300">{errors.email}</p>}
           </div>
         </div>
 
@@ -111,10 +139,10 @@ const year = new Date().getFullYear();
               id="type"
               name="type"
             >
-              <option value="consulting">{t('contactFormOptionConsulting')}</option>
-              <option value="speaking">{t('contactFormOptionSpeaking')}</option>
-              <option value="fulltime">{t('contactFormOptionFulltime')}</option>
-              <option value="other">{t('contactFormOptionOther')}</option>
+              <option value="consulting" selected={formValues.type === 'consulting'}>{t('contactFormOptionConsulting')}</option>
+              <option value="speaking" selected={formValues.type === 'speaking'}>{t('contactFormOptionSpeaking')}</option>
+              <option value="fulltime" selected={formValues.type === 'fulltime'}>{t('contactFormOptionFulltime')}</option>
+              <option value="other" selected={formValues.type === 'other'}>{t('contactFormOptionOther')}</option>
             </select>
             <div
               class="text-muted-light dark:text-muted-dark pointer-events-none absolute inset-y-0 right-0 flex items-center px-4"
@@ -122,6 +150,7 @@ const year = new Date().getFullYear();
               <span class="pi pi-chevron-down text-sm"></span>
             </div>
           </div>
+          {errors.type && <p class="text-sm text-red-600 dark:text-red-300">{errors.type}</p>}
         </div>
 
         <div class="space-y-2">
@@ -135,7 +164,8 @@ const year = new Date().getFullYear();
             name="message"
             placeholder={t('contactFormPlaceholderPayload')}
             rows="6"
-            required></textarea>
+            required>{formValues.message}</textarea>
+          {errors.message && <p class="text-sm text-red-600 dark:text-red-300">{errors.message}</p>}
         </div>
 
         <div class="flex items-center justify-between pt-2">
