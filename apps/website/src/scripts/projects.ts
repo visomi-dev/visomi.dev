@@ -49,6 +49,9 @@ export const initProjects = () => {
       const slug = button.dataset.projectThumb;
       const imageSrc = button.dataset.imageSrc;
       const imageAlt = button.dataset.imageAlt;
+      const captionStep = button.dataset.captionStep;
+      const captionTitle = button.dataset.captionTitle;
+      const captionBody = button.dataset.captionBody;
 
       if (!slug || !imageSrc) {
         return;
@@ -61,13 +64,32 @@ export const initProjects = () => {
       }
 
       preview.src = imageSrc;
+      preview.srcset = '';
       preview.alt = imageAlt ?? preview.alt;
+
+      const activeStep = document.querySelector<HTMLElement>(`[data-project-caption-step="${slug}"]`);
+      const activeTitle = document.querySelector<HTMLElement>(`[data-project-caption-title="${slug}"]`);
+      const activeBody = document.querySelector<HTMLElement>(`[data-project-caption-body="${slug}"]`);
+
+      if (activeStep && captionStep) {
+        activeStep.textContent = captionStep;
+      }
+
+      if (activeTitle && captionTitle) {
+        activeTitle.textContent = captionTitle;
+      }
+
+      if (activeBody && captionBody) {
+        activeBody.textContent = captionBody;
+      }
 
       document.querySelectorAll<HTMLButtonElement>(`[data-project-thumb="${slug}"]`).forEach((item) => {
         item.classList.remove('ring-primary-light', 'dark:ring-primary-dark', 'ring-1');
+        item.setAttribute('aria-pressed', 'false');
       });
 
       button.classList.add('ring-primary-light', 'dark:ring-primary-dark', 'ring-1');
+      button.setAttribute('aria-pressed', 'true');
     });
   });
 };
