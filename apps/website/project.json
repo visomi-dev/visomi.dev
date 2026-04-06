@@ -9,6 +9,14 @@
       "outputs": ["{workspaceRoot}/dist/apps/website"],
       "options": {
         "command": "pnpm exec astro build --root apps/website --remote",
+        "cwd": "."
+      }
+    },
+    "build-local": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/website"],
+      "options": {
+        "command": "pnpm exec astro build --root apps/website --remote",
         "cwd": ".",
         "envFile": "./apps/website/.env"
       }
@@ -19,7 +27,6 @@
       "options": {
         "command": "pnpm exec astro build --root apps/website --remote",
         "cwd": ".",
-        "envFile": "./apps/website/.env",
         "env": {
           "WEBSITE_OUTPUT_MODE": "static"
         }
@@ -34,6 +41,14 @@
       }
     },
     "preview": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "options": {
+        "command": "pnpm exec astro build --root apps/website --remote && pnpm exec astro preview --root apps/website --host 0.0.0.0 --port 4300",
+        "cwd": "."
+      }
+    },
+    "preview-local": {
       "executor": "nx:run-commands",
       "continuous": true,
       "options": {
