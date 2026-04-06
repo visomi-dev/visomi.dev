@@ -12,6 +12,17 @@
         "cwd": "."
       }
     },
+    "build-static": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/website"],
+      "options": {
+        "command": "pnpm exec astro build --root apps/website",
+        "cwd": ".",
+        "env": {
+          "WEBSITE_OUTPUT_MODE": "static"
+        }
+      }
+    },
     "serve": {
       "executor": "nx:run-commands",
       "continuous": true,
