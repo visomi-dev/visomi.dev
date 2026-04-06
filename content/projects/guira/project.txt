@@ -1,0 +1,4 @@
+project: LATAM Cross-Border Payments Fintech Platform
+role: Software Architect & Full Stack Engineer
+description:
+I designed and developed the MVP of a fintech platform enabling individuals and businesses in Latin America to pay international providers in USD. The system processes local payments in BOB, converts funds to USDC, and executes payouts via Bridge.xyz. I defined the architecture using React Router v7, Supabase, Prisma, and Docker, implemented KYC/KYB onboarding flows with admin review systems, and built secure integrations through Edge Functions and webhooks. The platform includes role-based access, audit logging, and a provider abstraction layer to support future scalability and vendor flexibility.

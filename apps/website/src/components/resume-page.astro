@@ -1,0 +1,216 @@
+---
+import { getSiteContent } from '../content/site-content';
+import type { Locale } from '../i18n/translations';
+
+type Props = {
+  locale: Locale;
+};
+
+const { locale } = Astro.props;
+const { resume } = getSiteContent(locale);
+---
+
+<main class="min-h-screen-nav mt-20 grow px-6 pt-12 pb-24">
+  <div class="mx-auto max-w-5xl">
+    <div class="text-muted-light dark:text-muted-dark mb-16 font-mono text-xs tracking-widest uppercase">
+      {resume.pageLabel}
+    </div>
+
+    <header class="mb-20 grid gap-10 lg:grid-cols-[1.6fr_0.9fr]">
+      <div>
+        <h1 class="text-surface-dark dark:text-surface-light mb-4 text-4xl font-bold tracking-tight md:text-6xl">
+          {resume.name}
+        </h1>
+        <p class="text-surface-dark/80 dark:text-surface-light/80 mb-6 text-lg font-medium md:text-xl">
+          {resume.headline}
+        </p>
+        <p class="text-muted-light dark:text-muted-dark max-w-3xl text-lg leading-relaxed font-light">
+          {resume.summary}
+        </p>
+      </div>
+
+      <div
+        class="border-border-light dark:border-border-dark rounded-2xl border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
+      >
+        <div class="space-y-4 font-mono text-sm">
+          <div>
+            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Location</p>
+            <p class="text-surface-dark dark:text-surface-light wrap-break-word">{resume.location}</p>
+          </div>
+          <div>
+            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Email</p>
+            <a
+              class="text-surface-dark dark:text-surface-light break-all hover:underline"
+              href={`mailto:${resume.email}`}
+            >
+              {resume.email}
+            </a>
+          </div>
+          <div>
+            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Phone</p>
+            <p class="text-surface-dark dark:text-surface-light">{resume.phone}</p>
+          </div>
+          <div>
+            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Website</p>
+            <a class="text-surface-dark dark:text-surface-light hover:underline" href={`https://${resume.website}`}>
+              {resume.website}
+            </a>
+          </div>
+          <div>
+            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">GitHub</p>
+            <a class="text-surface-dark dark:text-surface-light hover:underline" href={`https://${resume.github}`}>
+              {resume.github}
+            </a>
+          </div>
+          <div>
+            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">LinkedIn</p>
+            <a class="text-surface-dark dark:text-surface-light hover:underline" href={`https://${resume.linkedin}`}>
+              {resume.linkedin}
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {resume.experienceLabel}
+        </h2>
+      </div>
+
+      <div class="space-y-16">
+        {
+          resume.experience.map((experience) => (
+            <article class="group">
+              <div class="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <h3 class="text-surface-dark dark:text-surface-light text-2xl font-semibold">{experience.company}</h3>
+                  <p class="text-surface-dark/80 dark:text-surface-light/80 mt-2 text-base font-medium">
+                    {experience.role}
+                  </p>
+                </div>
+                <div class="text-muted-light dark:text-muted-dark font-mono text-sm md:text-right">
+                  <div>{experience.date}</div>
+                  <div class="mt-1 text-xs tracking-[0.2em] uppercase">{experience.location}</div>
+                </div>
+              </div>
+
+              <ul class="space-y-3">
+                {experience.items.map((item) => (
+                  <li class="border-border-light dark:border-border-dark text-muted-light dark:text-muted-dark border-l pl-4 text-base leading-relaxed transition-colors">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {resume.stackLabel}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {
+          resume.skillGroups.map((group) => (
+            <article class="border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70">
+              <h3 class="text-surface-dark dark:text-surface-light mb-4 text-lg font-semibold">{group.label}</h3>
+              <div class="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <span class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-md border bg-neutral-50 px-2 py-1 font-mono text-[11px] dark:bg-neutral-900">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {resume.mentoringLabel}
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+        {
+          resume.mentoring.map((item) => (
+            <p class="text-muted-light dark:text-muted-dark border-border-light dark:border-border-dark border-l pl-4 text-base leading-relaxed">
+              {item}
+            </p>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {resume.freelanceLabel}
+        </h2>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        {
+          resume.freelance.map((item) => (
+            <article class="border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70">
+              <p class="text-muted-light dark:text-muted-dark text-base leading-relaxed">{item}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {resume.educationLabel}
+        </h2>
+      </div>
+
+      <div class="flex flex-col gap-4 md:flex-row md:items-baseline md:justify-between">
+        <div>
+          <h3 class="text-surface-dark dark:text-surface-light mb-2 text-xl font-semibold">{resume.education.title}</h3>
+          <p class="text-muted-light dark:text-muted-dark">{resume.education.school}</p>
+        </div>
+        <span class="text-muted-light dark:text-muted-dark font-mono text-sm">{resume.education.date}</span>
+      </div>
+    </section>
+
+    <section class="border-border-light dark:border-border-dark border-t pt-12">
+      <div class="mb-12 flex items-baseline justify-between">
+        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+          {resume.languagesLabel}
+        </h2>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        {
+          resume.languages.map((item) => (
+            <article class="border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70">
+              <p class="text-muted-light dark:text-muted-dark text-base leading-relaxed">{item}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="border-border-light dark:border-border-dark border-t px-6 py-12">
+  <div
+    class="mx-auto flex max-w-5xl flex-col items-center justify-between font-mono text-xs text-neutral-400 md:flex-row"
+  >
+    <p>{resume.footerCopyright}</p>
+    <p class="mt-2 md:mt-0">{resume.footerNote}</p>
+  </div>
+</footer>

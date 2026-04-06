@@ -1,0 +1,29 @@
+.upward-enter {
+  animation: 400ms ease-in-out both upward-enter;
+}
+
+.upward-leave {
+  animation: 400ms ease-in-out both upward-leave;
+}
+
+@keyframes upward-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes upward-leave {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4rem);
+  }
+}

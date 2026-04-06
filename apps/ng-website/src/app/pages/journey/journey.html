@@ -1,0 +1,417 @@
+<main class="mx-auto w-full max-w-7xl grow px-6 pt-12 pb-24">
+  <section class="mb-16 grid grid-cols-1 gap-8 md:mb-24 md:grid-cols-[200px_1fr]">
+    <div
+      class="text-muted-light pt-2 font-mono text-xs tracking-[0.25em] dark:text-neutral-500"
+      i18n="@@journeyPageLabel"
+    >
+      // 2011 - 2026 // JOURNEY
+    </div>
+
+    <div>
+      <h1
+        class="text-surface-dark mb-6 text-4xl font-semibold tracking-tight md:text-6xl dark:text-white"
+        i18n="@@journeyPageTitle"
+      >
+        Engineering Journey
+      </h1>
+
+      <p
+        class="text-muted-light max-w-3xl text-xl leading-relaxed font-light dark:text-neutral-400"
+        i18n="@@journeyPageDescription"
+      >
+        A chronological record of systems built, scaling challenges solved, and production-grade software shipped.
+        Focused on high-throughput architecture and distributed systems.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <article
+          class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
+        >
+          <p
+            class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500"
+            i18n="@@journeyStatsTotalTime"
+          >
+            Total Time
+          </p>
+          <p class="text-surface-dark text-4xl font-bold dark:text-white">13k+ hrs</p>
+        </article>
+
+        <article
+          class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
+        >
+          <p
+            class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500"
+            i18n="@@journeyStatsLevel"
+          >
+            Level
+          </p>
+          <p class="text-surface-dark text-4xl font-bold dark:text-white">Senior+</p>
+        </article>
+
+        <article
+          class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
+        >
+          <p
+            class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500"
+            i18n="@@journeyStatsClass"
+          >
+            Class
+          </p>
+          <p class="text-surface-dark text-4xl font-bold dark:text-white">Crossover</p>
+        </article>
+
+        <article
+          class="border-border-light dark:border-border-dark rounded-lg border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80"
+        >
+          <p
+            class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.25em] uppercase dark:text-neutral-500"
+            i18n="@@journeyStatsOS"
+          >
+            Primary OS
+          </p>
+          <p class="text-surface-dark text-4xl font-bold dark:text-white">Linux</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr] md:gap-12">
+    <div
+      class="timeline-line-glow bg-border-light dark:bg-border-dark absolute top-4 bottom-0 left-[19px] hidden w-px md:left-[200px] md:block"
+    ></div>
+    <div
+      class="timeline-line-glow bg-border-light dark:bg-border-dark absolute top-4 bottom-0 left-[19px] w-px md:hidden"
+    ></div>
+
+    <div class="bg-surface-light sticky top-24 z-20 self-start py-2 md:bg-transparent md:py-0 dark:bg-black">
+      <div
+        class="border-surface-dark bg-surface-light absolute top-3.5 left-[13px] z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
+      ></div>
+      <h2
+        class="ml-10 text-2xl leading-none font-bold text-neutral-300 transition-colors duration-500 md:ml-0 md:text-right md:text-6xl dark:text-neutral-800"
+      >
+        2024
+      </h2>
+    </div>
+
+    <article class="pb-20 pl-10 md:pb-32 md:pl-12">
+      <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white" i18n="@@journeyEventBusTitle">
+          Distributed Event Bus Architecture
+        </h3>
+
+        <span
+          class="border-border-light text-muted-light dark:border-border-dark inline-flex items-center rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] tracking-[0.2em] uppercase dark:bg-neutral-900 dark:text-neutral-400"
+          i18n="@@journeyEventBusBadge"
+        >
+          SHIPPED: Q1
+        </span>
+      </div>
+
+      <p
+        class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400"
+        i18n="@@journeyEventBusDescription"
+      >
+        Redesigned the core messaging infrastructure to handle 10k+ events/sec. Migrated from a monolithic polling
+        system to a push-based architecture using Kafka and gRPC. Reduced latency by 400ms across the board.
+      </p>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div
+          class="chart-surface border-border-light bg-surface-light dark:border-border-dark overflow-hidden rounded-lg border lg:col-span-2 dark:bg-neutral-950"
+        >
+          <div
+            class="border-border-light dark:border-border-dark flex items-center justify-between border-b bg-gray-50 px-4 py-3 dark:bg-neutral-900/40"
+          >
+            <span class="text-muted-light font-mono text-xs dark:text-neutral-500">system_monitor.tsx</span>
+            <div class="flex gap-1.5 opacity-50">
+              <span class="h-2.5 w-2.5 rounded-full bg-neutral-400"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-neutral-400"></span>
+            </div>
+          </div>
+
+          <div class="bg-gray-50/50 p-6 md:p-8 dark:bg-neutral-950/50">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <article
+                class="border-border-light dark:border-border-dark rounded border bg-white p-4 shadow-sm dark:bg-neutral-900"
+              >
+                <p
+                  class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500"
+                  i18n="@@journeyUptimeLabel"
+                >
+                  Uptime
+                </p>
+                <div class="text-surface-dark flex items-center gap-2 text-2xl font-semibold dark:text-white">
+                  <span>99.99%</span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                </div>
+                <div class="bg-border-light mt-2 h-1 w-full overflow-hidden rounded-full dark:bg-neutral-800">
+                  <div class="h-full w-[99%] bg-emerald-500"></div>
+                </div>
+              </article>
+
+              <article
+                class="border-border-light dark:border-border-dark rounded border bg-white p-4 shadow-sm dark:bg-neutral-900"
+              >
+                <p
+                  class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500"
+                  i18n="@@journeyLatencyLabel"
+                >
+                  Latency (P99)
+                </p>
+                <div class="text-surface-dark text-2xl font-semibold dark:text-white">45ms</div>
+                <p class="text-muted-light mt-2 font-mono text-xs dark:text-neutral-500" i18n="@@journeyLatencyMeta">
+                  -12% vs last week
+                </p>
+              </article>
+
+              <article
+                class="border-border-light dark:border-border-dark rounded border bg-white p-4 shadow-sm dark:bg-neutral-900"
+              >
+                <p
+                  class="text-muted-light mb-2 font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500"
+                  i18n="@@journeyThroughputLabel"
+                >
+                  Throughput
+                </p>
+                <div class="text-surface-dark text-2xl font-semibold dark:text-white">12.4k</div>
+                <p class="text-muted-light mt-2 font-mono text-xs dark:text-neutral-500" i18n="@@journeyThroughputMeta">
+                  events / sec
+                </p>
+              </article>
+            </div>
+
+            <div
+              class="border-border-light dark:border-border-dark relative mt-6 flex h-32 items-end gap-1 overflow-hidden rounded border bg-white p-4 dark:bg-neutral-900"
+            >
+              <div
+                class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[14px_14px]"
+              ></div>
+
+              @for (bar of monitorBars; track $index) {
+                <div
+                  class="bar-animation bg-surface-dark/70 dark:bg-surface-light/80 relative z-10 min-w-0 flex-1 rounded-t-sm"
+                  [style.height.%]="bar"
+                  [style.animation-delay.ms]="$index * 70"
+                ></div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="chart-surface border-border-light bg-surface-light dark:border-border-dark overflow-hidden rounded-lg border dark:bg-neutral-950"
+        >
+          <div class="border-border-light dark:border-border-dark border-b bg-gray-50 px-4 py-2 dark:bg-neutral-900/40">
+            <span class="text-muted-light font-mono text-[10px] dark:text-neutral-500">proto/stream.proto</span>
+          </div>
+
+          <div class="overflow-x-auto bg-white p-6 font-mono text-[10px] leading-relaxed dark:bg-neutral-950">
+            <pre class="min-w-[18rem] text-neutral-700 dark:text-neutral-300"><code>service EventStream &#123;
+  rpc Subscribe(Filter) returns (stream Event);
+  rpc Publish(Event) returns (Ack);
+&#125;
+
+// optimized for low latency
+message Event &#123;
+  string id = 1;
+  bytes payload = 2;
+&#125;</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="chart-surface border-border-light bg-surface-light dark:border-border-dark rounded-lg border p-6 dark:bg-neutral-950"
+        >
+          <div class="mb-4 flex items-center gap-3">
+            <div class="flex h-8 w-8 items-center justify-center rounded bg-neutral-900/5 dark:bg-white/10">
+              <span class="pi pi-cog text-xs text-neutral-900 dark:text-white"></span>
+            </div>
+
+            <div>
+              <h4 class="text-surface-dark text-sm font-semibold dark:text-white" i18n="@@journeyResourceTitle">
+                Resource Efficiency
+              </h4>
+              <p
+                class="text-muted-light font-mono text-[10px] tracking-[0.2em] uppercase dark:text-neutral-500"
+                i18n="@@journeyResourceSubtitle"
+              >
+                Cluster Optimization
+              </p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <div class="mb-1 flex justify-between text-xs">
+                <span class="text-muted-light dark:text-neutral-400" i18n="@@journeyResourceCpu">CPU Load</span>
+                <span class="text-surface-dark font-mono dark:text-white">42%</span>
+              </div>
+              <div class="bg-border-light h-1.5 w-full rounded-full dark:bg-neutral-800">
+                <div class="bg-surface-dark h-full w-[42%] rounded-full dark:bg-white"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="mb-1 flex justify-between text-xs">
+                <span class="text-muted-light dark:text-neutral-400" i18n="@@journeyResourceMemory">Memory Usage</span>
+                <span class="text-surface-dark font-mono dark:text-white">65%</span>
+              </div>
+              <div class="bg-border-light h-1.5 w-full rounded-full dark:bg-neutral-800">
+                <div class="bg-surface-dark/70 h-full w-[65%] rounded-full dark:bg-white/80"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <div class="bg-surface-light sticky top-24 z-20 self-start py-2 md:bg-transparent md:py-0 dark:bg-black">
+      <div
+        class="border-surface-dark bg-surface-light absolute top-3.5 left-[13px] z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
+      ></div>
+      <h2
+        class="ml-10 text-2xl leading-none font-bold text-neutral-300 transition-colors duration-500 md:ml-0 md:text-right md:text-6xl dark:text-neutral-800"
+      >
+        <span
+          class="mb-1 block text-sm font-normal text-neutral-400 md:text-lg dark:text-neutral-700"
+          i18n="@@journeyEarlyYearLabel"
+        >
+          Early
+        </span>
+        2023
+      </h2>
+    </div>
+
+    <article class="pb-20 pl-10 md:pb-32 md:pl-12">
+      <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white" i18n="@@journeySaaSTitle">
+          SaaS Analytics Platform
+        </h3>
+      </div>
+
+      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400" i18n="@@journeySaaSDescription">
+        Built and launched a privacy-first analytics platform from scratch. Leveraged ClickHouse for columnar storage
+        and Go for ingestion services. Sustained 1M+ rows/day with predictable infrastructure costs.
+      </p>
+
+      <div
+        class="chart-surface border-border-light bg-surface-light dark:border-border-dark overflow-hidden rounded-lg border dark:bg-neutral-950"
+      >
+        <div
+          class="border-border-light dark:border-border-dark flex gap-2 border-b bg-gray-100 px-3 py-2 dark:bg-neutral-900/40"
+        >
+          <span class="h-2.5 w-2.5 rounded-full bg-red-400/50"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/50"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-emerald-400/50"></span>
+        </div>
+
+        <div class="relative h-64 overflow-hidden bg-gray-50 px-5 pt-8 pb-6 md:h-80 dark:bg-black">
+          <div
+            class="absolute inset-0 bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-size-[24px_24px]"
+          ></div>
+
+          <div class="relative z-10 flex h-full items-end gap-2">
+            @for (bar of analyticsBars; track $index) {
+              <div
+                class="bar-animation min-w-0 flex-1 rounded-t-sm bg-sky-500/35 dark:bg-sky-300/30"
+                [style.height.%]="bar"
+                [style.animation-delay.ms]="100 + $index * 50"
+              ></div>
+            }
+          </div>
+
+          <svg
+            class="pointer-events-none absolute inset-0 z-20 h-full w-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
+            <polyline
+              points="0,38 12,35 24,37 36,30 48,32 60,27 72,26 84,22 96,24"
+              fill="none"
+              stroke-linecap="round"
+              stroke-width="1.6"
+              class="stroke-sky-500/75 dark:stroke-sky-300/75"
+            ></polyline>
+            <polyline
+              points="0,45 12,42 24,40 36,43 48,38 60,40 72,36 84,34 96,32"
+              fill="none"
+              stroke-linecap="round"
+              stroke-width="1.6"
+              class="stroke-cyan-500/60 dark:stroke-cyan-300/65"
+            ></polyline>
+          </svg>
+
+          <div
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-black/20 to-transparent"
+          ></div>
+        </div>
+
+        <div
+          class="border-border-light bg-surface-light dark:border-border-dark flex flex-wrap gap-2 border-t p-4 dark:bg-neutral-950"
+        >
+          <span
+            class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
+          >
+            ClickHouse
+          </span>
+          <span
+            class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
+          >
+            Go
+          </span>
+          <span
+            class="border-border-light text-muted-light rounded border bg-gray-100 px-2 py-1 font-mono text-[10px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
+          >
+            TypeScript
+          </span>
+        </div>
+      </div>
+    </article>
+
+    <div class="bg-surface-light sticky top-24 z-20 self-start py-2 md:bg-transparent md:py-0 dark:bg-black">
+      <div
+        class="border-surface-dark bg-surface-light absolute top-3.5 left-[13px] z-30 h-3.5 w-3.5 rounded-full border-2 md:top-2 md:-right-[6.5px] md:left-auto dark:border-white dark:bg-black"
+      ></div>
+      <h2
+        class="ml-10 text-2xl leading-none font-bold text-neutral-300 transition-colors duration-500 md:ml-0 md:text-right md:text-6xl dark:text-neutral-800"
+      >
+        2021
+      </h2>
+    </div>
+
+    <article class="pb-8 pl-10 md:pl-12">
+      <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+        <h3 class="text-surface-dark text-xl font-medium md:text-3xl dark:text-white" i18n="@@journeyCdnTitle">
+          Global CDN Migration
+        </h3>
+      </div>
+
+      <p class="text-muted-light mb-10 max-w-3xl leading-relaxed dark:text-neutral-400" i18n="@@journeyCdnDescription">
+        Orchestrated the migration of 50TB+ static assets into a multi-cloud CDN strategy. Implemented edge routing and
+        image transformations for regionalized delivery and lower request latency.
+      </p>
+
+      <div class="chart-surface max-w-3xl overflow-hidden rounded-lg border border-neutral-700 bg-[#1f1f1f] shadow-xl">
+        <div class="border-b border-neutral-700 bg-neutral-800 px-4 py-2">
+          <span class="font-mono text-[11px] text-neutral-400">edge-worker.js</span>
+        </div>
+
+        <div class="overflow-x-auto p-6">
+          <pre
+            class="min-w-88 font-mono text-xs leading-relaxed text-neutral-300"
+          ><code>async function handleRequest(request) &#123;
+  const url = new URL(request.url);
+  const region = request.cf.colo;
+
+  if (region === 'SFO' || region === 'LAX') &#123;
+    return fetch(US_WEST_BUCKET + url.pathname);
+  &#125;
+
+  return fetch(DEFAULT_BUCKET + url.pathname);
+&#125;</code></pre>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>

@@ -1,0 +1,64 @@
+{
+  "name": "website-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/website-e2e/src",
+  "implicitDependencies": ["website"],
+  "// targets": "to see all targets run: nx show project website-e2e --web",
+  "targets": {
+    "e2e": {
+      "dependsOn": ["website:build"]
+    },
+    "screenshots": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["website:build"],
+      "options": {
+        "command": "pnpm exec playwright test --config apps/website-e2e/playwright.screenshots.config.ts --max-failures=1",
+        "cwd": "."
+      }
+    },
+    "screenshots-contact": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["website:build"],
+      "options": {
+        "command": "pnpm exec playwright test --config apps/website-e2e/playwright.screenshots.config.ts apps/website-e2e/src/website-screenshots-contact.spec.ts --max-failures=1",
+        "cwd": "."
+      }
+    },
+    "screenshots-home": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["website:build"],
+      "options": {
+        "command": "pnpm exec playwright test --config apps/website-e2e/playwright.screenshots.config.ts apps/website-e2e/src/website-screenshots-home.spec.ts --max-failures=1",
+        "cwd": "."
+      }
+    },
+    "screenshots-journey": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["website:build"],
+      "options": {
+        "command": "pnpm exec playwright test --config apps/website-e2e/playwright.screenshots.config.ts apps/website-e2e/src/website-screenshots-journey.spec.ts --max-failures=1",
+        "cwd": "."
+      }
+    },
+    "screenshots-projects": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["website:build"],
+      "options": {
+        "command": "pnpm exec playwright test --config apps/website-e2e/playwright.screenshots.config.ts apps/website-e2e/src/website-screenshots-projects.spec.ts --max-failures=1",
+        "cwd": "."
+      }
+    },
+    "screenshots-resume": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["website:build"],
+      "options": {
+        "command": "pnpm exec playwright test --config apps/website-e2e/playwright.screenshots.config.ts apps/website-e2e/src/website-screenshots-resume.spec.ts --max-failures=1",
+        "cwd": "."
+      }
+    },
+    "e2e-ci": {
+      "dependsOn": ["website:build"]
+    }
+  }
+}

@@ -1,0 +1,84 @@
+<div
+  class="border-border-light dark:border-border-dark rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 md:p-10 dark:bg-neutral-900"
+>
+  <form [formGroup]="contactForm" class="space-y-6">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <app-input
+        [control]="contactForm.controls.name"
+        label="Identity"
+        placeholder="Name or Organization"
+        i18n-label="@@contactFormLabelIdentity"
+        i18n-placeholder="@@contactFormPlaceholderIdentity"
+      />
+      <app-input
+        [control]="contactForm.controls.email"
+        label="Return Address"
+        placeholder="email@domain.com"
+        type="email"
+        i18n-label="@@contactFormLabelEmail"
+        i18n-placeholder="@@contactFormPlaceholderEmail"
+      />
+    </div>
+
+    <div class="space-y-2">
+      <label
+        class="text-muted-light dark:text-muted-dark block font-mono text-[10px] font-bold tracking-widest uppercase"
+        for="type"
+        i18n="@@contactFormLabelProtocol"
+        >Protocol</label
+      >
+      <div class="relative">
+        <select
+          [formControl]="contactForm.controls.type"
+          class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full cursor-pointer appearance-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+          id="type"
+          name="type"
+        >
+          <option value="consulting" i18n="@@contactFormOptionConsulting">Architecture Consulting</option>
+          <option value="speaking" i18n="@@contactFormOptionSpeaking">Speaking / Technical Writing</option>
+          <option value="fulltime" i18n="@@contactFormOptionFulltime">Engineering Roles</option>
+          <option value="other" i18n="@@contactFormOptionOther">General Inquiry</option>
+        </select>
+        <div
+          class="text-muted-light dark:text-muted-dark pointer-events-none absolute inset-y-0 right-0 flex items-center px-4"
+        >
+          <span class="pi pi-chevron-down text-sm"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <label
+        class="text-muted-light dark:text-muted-dark block font-mono text-[10px] font-bold tracking-widest uppercase"
+        for="message"
+        i18n="@@contactFormLabelPayload"
+        >Payload</label
+      >
+      <textarea
+        [formControl]="contactForm.controls.message"
+        class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full resize-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+        id="message"
+        name="message"
+        placeholder="Brief description of project scope and requirements..."
+        rows="6"
+        i18n-placeholder="@@contactFormPlaceholderPayload"
+      ></textarea>
+    </div>
+
+    <div class="flex items-center justify-between pt-2">
+      <button
+        class="bg-surface-dark text-surface-light dark:bg-surface-light dark:text-surface-dark rounded border border-transparent px-8 py-3 font-mono text-[10px] font-bold tracking-widest uppercase transition-all hover:bg-neutral-800 active:scale-95 dark:hover:bg-neutral-100"
+        type="submit"
+        i18n="@@contactFormButtonTransmit"
+      >
+        Transmit
+      </button>
+      <span
+        class="text-muted-light/60 dark:text-muted-dark/40 hidden font-mono text-[10px] sm:inline-block"
+        i18n="@@contactFormSecurityMsg"
+      >
+        SECURE CHANNEL // TLS 1.3
+      </span>
+    </div>
+  </form>
+</div>

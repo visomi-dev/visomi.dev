@@ -1,0 +1,48 @@
+.page-navigation-loader-overlay {
+  opacity: 1;
+  transition: opacity 400ms ease-in;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.in-out-enter {
+  animation: in-out-enter 400ms ease-out;
+}
+
+.in-out-leave {
+  animation: in-out-leave 400ms ease-in forwards;
+}
+
+@keyframes in-out-leave {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes in-out-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-loader-indicator {
+  animation: page-loader-indicator 1000ms linear infinite;
+}
+
+@keyframes page-loader-indicator {
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}

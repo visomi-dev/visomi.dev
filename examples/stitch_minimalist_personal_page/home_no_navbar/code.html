@@ -1,0 +1,551 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Systems Engineer Home Page - Light Theme</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#111827', // Using dark text color as primary for high contrast elements in light mode
+              'background-light': '#fcfcfc', // Requested soft light grey
+              'background-dark': '#191919',
+              'surface-light': '#f3f4f6',
+              'surface-dark': '#0f0f0f',
+              'text-light': '#111827',
+              'text-dark': '#ededed',
+              'muted-light': '#4b5563',
+              'muted-dark': '#888888',
+              'border-light': '#e2e4e7',
+              'border-dark': '#262626',
+            },
+            fontFamily: {
+              display: ['Inter', 'sans-serif'],
+              sans: ['Inter', 'sans-serif'],
+            },
+            borderRadius: {
+              DEFAULT: '0.5rem',
+              pill: '50rem',
+            },
+            animation: {
+              blob: 'blob 7s infinite',
+              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+            },
+            keyframes: {
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+            },
+            backgroundImage: {
+              'grid-light':
+                'linear-gradient(to right, #e5e7eb 1px, transparent 1px), linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)',
+              'grid-dark':
+                'linear-gradient(to right, #1a1a1a 1px, transparent 1px), linear-gradient(to bottom, #1a1a1a 1px, transparent 1px)',
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      .glass-nav {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .bg-grid {
+        background-size: 60px 60px;
+        mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+      }
+      body {
+        transition:
+          background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+          color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light text-text-light font-display selection:bg-primary relative min-h-screen overflow-x-hidden selection:text-white"
+  >
+    <div class="pointer-events-none fixed inset-0 z-0">
+      <div class="bg-grid-light bg-grid absolute inset-0 opacity-60 transition-opacity duration-500"></div>
+      <div
+        class="animate-blob absolute top-[-10%] left-[-10%] h-96 w-96 rounded-full bg-blue-500/5 opacity-30 mix-blend-multiply blur-3xl filter"
+      ></div>
+      <div
+        class="animate-blob animation-delay-2000 absolute top-[-10%] right-[-10%] h-96 w-96 rounded-full bg-purple-500/5 opacity-30 mix-blend-multiply blur-3xl filter"
+      ></div>
+      <div
+        class="animate-blob animation-delay-4000 absolute bottom-[-20%] left-[20%] h-96 w-96 rounded-full bg-teal-500/5 opacity-30 mix-blend-multiply blur-3xl filter"
+      ></div>
+    </div>
+    <main class="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 pt-12 text-center">
+      <div class="animate-fade-in-up mx-auto max-w-4xl space-y-8">
+        <div
+          class="border-border-light mb-4 inline-flex items-center space-x-2 rounded-full border bg-white/60 px-3 py-1 shadow-sm backdrop-blur-sm"
+        >
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+          </span>
+          <span class="text-muted-light text-xs font-medium tracking-wide uppercase">Available for hire</span>
+        </div>
+        <h1 class="text-text-light text-5xl leading-[1.1] font-bold tracking-tight md:text-6xl">
+          Architecting <br class="hidden md:block" />
+          <span class="from-text-light to-muted-light bg-gradient-to-r bg-clip-text text-transparent"
+            >Scalable Systems.</span
+          >
+        </h1>
+        <p class="text-muted-light mx-auto max-w-2xl text-lg leading-relaxed font-light md:text-xl">
+          Senior Engineer focused on <span class="text-text-light font-medium">AI-augmented infrastructure</span> and
+          product clarity. Building the rails for the next generation of software.
+        </p>
+        <div class="flex flex-col items-center justify-center gap-4 pt-8 sm:flex-row">
+          <a
+            class="group bg-text-light hover:bg-text-light/90 relative rounded-full px-8 py-3 font-medium text-white shadow-lg shadow-black/5 transition-all hover:scale-105 active:scale-95"
+            href="#projects"
+          >
+            View Work
+            <span
+              class="absolute inset-0 rounded-full ring-2 ring-black/5 transition-all group-hover:ring-black/10"
+            ></span>
+          </a>
+          <a
+            class="border-border-light text-text-light hover:bg-surface-light hover:border-muted-light/30 rounded-full border bg-white px-8 py-3 font-medium shadow-sm transition-all"
+            href="#"
+          >
+            Download CV
+          </a>
+        </div>
+      </div>
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 transform animate-bounce">
+        <span class="material-symbols-outlined text-muted-light text-2xl">keyboard_arrow_down</span>
+      </div>
+    </main>
+    <section
+      class="border-border-light relative z-10 border-t bg-white/40 px-6 py-24 backdrop-blur-sm transition-colors duration-500 md:px-12"
+      id="timeline"
+    >
+      <div class="mx-auto max-w-5xl">
+        <h2 class="text-text-light mb-16 text-3xl font-bold tracking-tight md:text-4xl">Engineering Journey</h2>
+        <div class="border-border-light relative ml-3 space-y-16 border-l md:ml-6">
+          <div class="group relative pl-8 md:pl-12">
+            <span
+              class="bg-border-light group-hover:bg-text-light ring-background-light absolute top-2 -left-[5px] h-2.5 w-2.5 rounded-full ring-4 transition-colors"
+            ></span>
+            <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <span class="text-muted-light/20 text-4xl font-bold tabular-nums">2024</span>
+              <div class="md:text-right">
+                <h3 class="text-text-light text-xl font-semibold">Principal Systems Architect</h3>
+                <p class="text-muted-light text-sm font-medium">Aceternity UI &amp; Pro</p>
+              </div>
+            </div>
+            <div
+              class="border-border-light rounded-xl border bg-white p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1"
+            >
+              <p class="text-muted-light mb-6 leading-relaxed">
+                Built and launched high-performance component libraries from scratch. Focused on accessibility,
+                dark-mode first architecture, and framework-agnostic implementations.
+              </p>
+              <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div class="group/card border-border-light relative overflow-hidden rounded-lg border bg-gray-50">
+                  <img
+                    alt="Abstract code visualization dashboard"
+                    class="h-40 w-full object-cover opacity-90 transition-opacity group-hover/card:opacity-100"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-MHHSom2rhzsyTLF_s25M2BIm9ut7qR8xyQtee26MHehgRw1wS17B8Zw35YaLNJNSwV6CeWxDN73ZKf-wP16-qqAOg17_2jbJgf8cdIk4V_jH2dveQ0yRdW30ho7PjlRZ2aTTIjCfjI2uXFpvH5WmhY93pFCvlIk8YD5kGSeiw0mbQE_jW32CFqhYb2oKBXexNtlxjmQ4rd0lhHAS6HjDs5xpOKjqoDm1jpsZ7uMsKbOHP_z5uHUQCriMIzP5vayoh5PwaMZmRwLG"
+                  />
+                  <div class="p-3">
+                    <h4 class="text-text-light text-sm font-semibold">Deploy Wrapper</h4>
+                    <p class="text-muted-light text-xs">Next.js, Golang</p>
+                  </div>
+                </div>
+                <div class="group/card border-border-light relative overflow-hidden rounded-lg border bg-gray-50">
+                  <img
+                    alt="Data analytics interface"
+                    class="h-40 w-full object-cover opacity-90 transition-opacity group-hover/card:opacity-100"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnvcH4GOBcIHCsnqhzfSX_mq-jjVyNJHyaSo8GDkSqGbtXMW5vVnUgN57dx2475q8xakRZpKICizrGSpV_k7KCEuXjfUuaKTG89KyQ8kxkVNu-9Z4BOjTINAh1VanTw64YLBA3aYnwPXr6ZioO7rcKTW09f-zhiJIWjTCl7w39yB7LcCV17YyvdcFm-Wgq0fyJh6QSJn2oCPgeE9q9mHgpfVLOTR7tp5azabfq06woXy-i4aKABm_CFfpwD3CVXUC9Ymf7WG6YWq8p"
+                  />
+                  <div class="p-3">
+                    <h4 class="text-text-light text-sm font-semibold">Analytics Engine</h4>
+                    <p class="text-muted-light text-xs">Rust, WebAssembly</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="group relative pl-8 md:pl-12">
+            <span
+              class="bg-border-light group-hover:bg-text-light ring-background-light absolute top-2 -left-[5px] h-2.5 w-2.5 rounded-full ring-4 transition-colors"
+            ></span>
+            <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <span class="text-muted-light/20 text-4xl font-bold tabular-nums">2023</span>
+              <div class="md:text-right">
+                <h3 class="text-text-light text-xl font-semibold">Senior Backend Engineer</h3>
+                <p class="text-muted-light text-sm font-medium">FinTech Stripe-like Startup</p>
+              </div>
+            </div>
+            <div
+              class="border-border-light rounded-xl border bg-white p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1"
+            >
+              <p class="text-muted-light leading-relaxed">
+                Engineered the core ledger system handling millions of transactions daily. Migrated legacy monolith to
+                event-driven microservices reducing latency by 40%. Implemented idempotent APIs for critical financial
+                operations.
+              </p>
+            </div>
+          </div>
+          <div class="group relative pl-8 md:pl-12">
+            <span
+              class="bg-border-light group-hover:bg-text-light ring-background-light absolute top-2 -left-[5px] h-2.5 w-2.5 rounded-full ring-4 transition-colors"
+            ></span>
+            <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <span class="text-muted-light/20 text-4xl font-bold tabular-nums">2021</span>
+              <div class="md:text-right">
+                <h3 class="text-text-light text-xl font-semibold">Full Stack Developer</h3>
+                <p class="text-muted-light text-sm font-medium">Agency Work</p>
+              </div>
+            </div>
+            <div
+              class="border-border-light rounded-xl border bg-white p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1"
+            >
+              <p class="text-muted-light leading-relaxed">
+                Developed bespoke e-commerce solutions for high-end fashion brands. Mastered React, Node.js, and AWS
+                infrastructure management.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="bg-background-light relative z-10 px-6 py-24 transition-colors duration-500 md:px-12" id="projects">
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-12 flex flex-col items-end justify-between md:flex-row">
+          <div>
+            <h2 class="text-text-light mb-2 text-3xl font-bold tracking-tight md:text-4xl">Selected Works</h2>
+            <p class="text-muted-light">A curation of systems, interfaces, and open source contributions.</p>
+          </div>
+          <a
+            class="text-text-light hover:text-muted-light mt-4 hidden items-center gap-1 font-medium transition-colors md:mt-0 md:flex"
+            href="#"
+          >
+            View GitHub <span class="material-symbols-outlined text-sm">arrow_outward</span>
+          </a>
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="group border-border-light hover:border-muted-light/40 relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-colors duration-300 hover:shadow-md"
+          >
+            <div class="relative h-48 overflow-hidden bg-gray-100">
+              <div
+                class="text-muted-light/10 absolute inset-0 flex items-center justify-center text-6xl font-black select-none"
+              >
+                01
+              </div>
+              <img
+                alt="Abstract gradient sphere representing core system"
+                class="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu3COopyL8YdrMEQ7sIj_9a149gn4QocOJrbOoJu-g41UYl1S8euiNoKqA0CCh00lnA21OEACdcXq8ST0Jrhxsqtol5y2zsaITJzKhzmXXSXJrDNMqEeivFhun-uhzCilXJzeUQ44G5FOPR-VWK1wLi6jsnZiNcvAeZqhLbljLBeAeREB9PqeWp2_6p-GriftoOhdiWevGeOtbniv-pqm5NnTPBZAGc7dOwBLStjUCmELINsItLaVX2SkBpE3L1aLmvx6za-SJlfhl"
+              />
+            </div>
+            <div class="p-6">
+              <div class="mb-4 flex items-start justify-between">
+                <h3 class="text-text-light text-xl font-semibold">HyperGrid</h3>
+                <span class="material-symbols-outlined text-muted-light group-hover:text-text-light transition-colors"
+                  >hub</span
+                >
+              </div>
+              <p class="text-muted-light mb-4 text-sm">
+                A high-performance data grid capable of rendering 1M+ rows with 60fps scrolling. Built with virtual DOM
+                implementation.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="border-border-light text-muted-light rounded-md border bg-gray-50 px-2 py-1 text-xs font-medium"
+                  >TypeScript</span
+                >
+                <span
+                  class="border-border-light text-muted-light rounded-md border bg-gray-50 px-2 py-1 text-xs font-medium"
+                  >WebGL</span
+                >
+              </div>
+            </div>
+          </div>
+          <div
+            class="group border-border-light hover:border-muted-light/40 relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-colors duration-300 hover:shadow-md"
+          >
+            <div class="relative h-48 overflow-hidden bg-gray-100">
+              <div
+                class="text-muted-light/10 absolute inset-0 flex items-center justify-center text-6xl font-black select-none"
+              >
+                02
+              </div>
+              <img
+                alt="Server rack infrastructure abstract"
+                class="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEwKxGw8EIfICXWWVukqe1yb4ks7dFxEznEpMXUE67-McchzxyX1-RBinMLzVdYW-i24kHQEFud_P5qt5Gw9PLtIq8s-SSmudi9SUBtR_VAMAHsNUe5GQb_KDwAATxLvj_FDO1jPU0JJJ0pzh2gwLW4B0ufF3gUBFufR2bO3IWcEL4hRqEKOm4z7pUiGFwzT8RZ1yKezVlpI5lQFhqHDWmodDSAovDRrFb1dTaZldZ72OaTROCQIRZ584zoJJENPv6hPXX766s0DNZ"
+              />
+            </div>
+            <div class="p-6">
+              <div class="mb-4 flex items-start justify-between">
+                <h3 class="text-text-light text-xl font-semibold">Nebula CI</h3>
+                <span class="material-symbols-outlined text-muted-light group-hover:text-text-light transition-colors"
+                  >cloud_queue</span
+                >
+              </div>
+              <p class="text-muted-light mb-4 text-sm">
+                Distributed CI/CD pipeline orchestrator focusing on monorepo dependency graph analysis for smart
+                rebuilding.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="border-border-light text-muted-light rounded-md border bg-gray-50 px-2 py-1 text-xs font-medium"
+                  >Rust</span
+                >
+                <span
+                  class="border-border-light text-muted-light rounded-md border bg-gray-50 px-2 py-1 text-xs font-medium"
+                  >Docker</span
+                >
+              </div>
+            </div>
+          </div>
+          <div
+            class="group border-border-light hover:border-muted-light/40 relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-colors duration-300 hover:shadow-md"
+          >
+            <div class="relative h-48 overflow-hidden bg-gray-100">
+              <div
+                class="text-muted-light/10 absolute inset-0 flex items-center justify-center text-6xl font-black select-none"
+              >
+                03
+              </div>
+              <img
+                alt="Digital security lock abstract"
+                class="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsgdLBM7D5UHYzBYDhYHHr7FuptyNsAxfgMvPBCM7fXXHTtFL71h9Cv9BBWeThMvPBvPnurFzdx9Ibo8HdrmZ5qxUMA3t_RgpJkwqyEjGkJoM0sz2hVLXBX-k9NyEeBmLd_Dce7aq35e3u7hgUDmaTCcChNa05gBQL0tJmc8_L38_uQd71RzQMNzbqVOedso2TDtQy33tZa31P7PZSiT-MLQzTuzll31OxZ40DSHv_gf9PXr0mSWFNXjEPh_H-uVXm1Sqg9fsR-B0H"
+              />
+            </div>
+            <div class="p-6">
+              <div class="mb-4 flex items-start justify-between">
+                <h3 class="text-text-light text-xl font-semibold">Vault UI</h3>
+                <span class="material-symbols-outlined text-muted-light group-hover:text-text-light transition-colors"
+                  >lock</span
+                >
+              </div>
+              <p class="text-muted-light mb-4 text-sm">
+                A minimalist, secure vault for managing environment variables and secrets across teams. End-to-end
+                encrypted.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="border-border-light text-muted-light rounded-md border bg-gray-50 px-2 py-1 text-xs font-medium"
+                  >Golang</span
+                >
+                <span
+                  class="border-border-light text-muted-light rounded-md border bg-gray-50 px-2 py-1 text-xs font-medium"
+                  >React</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section
+      class="border-border-light bg-background-light relative z-10 border-t px-6 py-24 transition-colors duration-500 md:px-12"
+    >
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-16 text-center">
+          <h2 class="text-text-light mb-4 text-3xl font-bold tracking-tight md:text-4xl">Designed for focus</h2>
+          <p class="text-muted-light mx-auto max-w-2xl text-lg">
+            Composable. Accessible. Production-ready. Building with a focus on system integrity and developer
+            experience.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <!-- Card 1: Performance -->
+          <div
+            class="group border-border-light hover:border-muted-light/40 rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-md"
+          >
+            <div class="mb-6 flex items-start justify-between">
+              <div>
+                <h3 class="text-text-light text-lg font-bold">High Performance</h3>
+                <p class="text-muted-light text-sm">Optimized runtime execution</p>
+              </div>
+              <span class="rounded border border-emerald-100 bg-emerald-50 px-2 py-1 font-mono text-xs text-emerald-600"
+                >99.9% uptime</span
+              >
+            </div>
+            <div class="text-muted-light border-border-light rounded-lg border bg-gray-50 p-4 font-mono text-[11px]">
+              <div class="mb-2 flex gap-2">
+                <div class="h-2 w-2 rounded-full bg-red-400"></div>
+                <div class="h-2 w-2 rounded-full bg-yellow-400"></div>
+                <div class="h-2 w-2 rounded-full bg-green-400"></div>
+              </div>
+              <p class="text-text-light">$ gbench --suite=core-v2</p>
+              <p>Running benchmark... <span class="text-emerald-500">DONE</span></p>
+              <p>Execution time: <span class="text-text-light font-bold">1.2ms</span> (p99)</p>
+              <p>Memory overhead: <span class="text-text-light font-bold">14kb</span></p>
+            </div>
+          </div>
+          <!-- Card 2: Type Safety -->
+          <div
+            class="group border-border-light hover:border-muted-light/40 rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-md"
+          >
+            <div class="mb-6 flex items-start justify-between">
+              <div>
+                <h3 class="text-text-light text-lg font-bold">Type Safe</h3>
+                <p class="text-muted-light text-sm">Zero-cost abstractions</p>
+              </div>
+              <span class="rounded border border-blue-100 bg-blue-50 px-2 py-1 font-mono text-xs text-blue-600"
+                >Strict Mode</span
+              >
+            </div>
+            <div class="text-muted-light border-border-light rounded-lg border bg-gray-50 p-4 font-mono text-[11px]">
+              <p><span class="text-purple-600">interface</span> <span class="text-blue-600">SystemConfig</span> {</p>
+              <p class="pl-4">readonly endpoint: <span class="text-orange-600">string</span>;</p>
+              <p class="pl-4">retryPolicy: <span class="text-orange-600">'exponential' | 'linear'</span>;</p>
+              <p>}</p>
+              <p class="mt-1">
+                <span class="text-purple-600">type</span> <span class="text-blue-600">Result</span> =
+                <span class="text-blue-600">Success</span> | <span class="text-blue-600">Failure</span>;
+              </p>
+            </div>
+          </div>
+          <!-- Card 3: Architecture -->
+          <div
+            class="group border-border-light hover:border-muted-light/40 rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-md"
+          >
+            <div class="mb-6 flex items-start justify-between">
+              <div>
+                <h3 class="text-text-light text-lg font-bold">Modular Architecture</h3>
+                <p class="text-muted-light text-sm">Loose coupling, high cohesion</p>
+              </div>
+              <span class="text-muted-light border-border-light rounded border bg-gray-100 px-2 py-1 font-mono text-xs"
+                >v4.2.0</span
+              >
+            </div>
+            <div class="border-border-light flex items-center justify-center rounded-lg border bg-gray-50 py-4">
+              <div class="flex items-center gap-3">
+                <div
+                  class="border-muted-light flex h-10 w-10 items-center justify-center rounded border border-dashed text-[10px] tracking-tighter uppercase"
+                >
+                  Core
+                </div>
+                <span class="material-symbols-outlined text-muted-light">arrow_forward</span>
+                <div
+                  class="border-text-light flex h-10 w-10 items-center justify-center rounded border bg-white text-[10px] tracking-tighter uppercase"
+                >
+                  API
+                </div>
+                <span class="material-symbols-outlined text-muted-light">arrow_forward</span>
+                <div
+                  class="border-muted-light flex h-10 w-10 items-center justify-center rounded border border-dashed text-[10px] tracking-tighter uppercase"
+                >
+                  UI
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Card 4: Accessibility -->
+          <div
+            class="group border-border-light hover:border-muted-light/40 rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-md"
+          >
+            <div class="mb-6 flex items-start justify-between">
+              <div>
+                <h3 class="text-text-light text-lg font-bold">Accessible by Design</h3>
+                <p class="text-muted-light text-sm">WCAG 2.1 AA Compliant</p>
+              </div>
+              <div class="flex -space-x-1">
+                <div class="h-5 w-5 rounded-full border-2 border-white bg-emerald-500"></div>
+                <div class="h-5 w-5 rounded-full border-2 border-white bg-emerald-500"></div>
+                <div class="h-5 w-5 rounded-full border-2 border-white bg-emerald-500"></div>
+              </div>
+            </div>
+            <div class="text-muted-light border-border-light rounded-lg border bg-gray-50 p-4 font-mono text-[11px]">
+              <div class="mb-1 flex items-center justify-between">
+                <span>Screen Reader Support</span>
+                <span class="text-emerald-500">PASS</span>
+              </div>
+              <div class="mb-1 flex items-center justify-between">
+                <span>Keyboard Navigation</span>
+                <span class="text-emerald-500">PASS</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span>Contrast Ratio (7:1)</span>
+                <span class="text-emerald-500">PASS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer
+      class="border-border-light bg-background-light relative z-10 border-t px-6 py-12 transition-colors duration-500"
+    >
+      <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
+        <div class="text-muted-light text-sm">© 2024 Systems Engineer. Built fast, shipped clean.</div>
+        <div class="flex space-x-6">
+          <a class="text-muted-light hover:text-text-light transition-colors" href="#">
+            <span class="sr-only">Twitter</span>
+            <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24">
+              <path
+                d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"
+              ></path>
+            </svg>
+          </a>
+          <a class="text-muted-light hover:text-text-light transition-colors" href="#">
+            <span class="sr-only">GitHub</span>
+            <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24">
+              <path
+                clip-rule="evenodd"
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                fill-rule="evenodd"
+              ></path>
+            </svg>
+          </a>
+          <a class="text-muted-light hover:text-text-light transition-colors" href="#">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24">
+              <path
+                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

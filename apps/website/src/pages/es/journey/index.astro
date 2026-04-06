@@ -1,0 +1,12 @@
+---
+import JourneyPage from '../../../components/journey-page.astro';
+import { getSiteContent } from '../../../content/site-content';
+import BaseLayout from '../../../layouts/base-layout.astro';
+
+const locale = 'es';
+const { journey } = getSiteContent(locale);
+---
+
+<BaseLayout locale={locale} page="journey" title={journey.pageTitle} description={journey.metaDescription}>
+  <JourneyPage locale={locale} />
+</BaseLayout>

@@ -1,0 +1,4 @@
+project: Omnichannel Call Center SaaS Platform
+role: Software Architect & Full Stack Engineer
+description:
+I designed and developed the MVP of an omnichannel call center platform focused on managing and supporting agents and supervisors handling calls across multiple groups and channels. I defined the technical architecture, selected the technology stack (Angular, Express, Prisma, MySQL, AWS Cognito), and led the initial implementation as well as the UI/UX design in Figma. I handed off the project to DataVoice’s development team, delivering full technical documentation and training sessions to ensure a smooth transition and sustainable product growth
