@@ -14,6 +14,28 @@ type AstroMiddlewareModule = {
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 
+const normalizeRuntimeEnv = () => {
+  const remoteUrl = process.env['ASTRO_DB_REMOTE_URL'];
+
+  if (!remoteUrl) {
+    console.warn('[ astro-db ] ASTRO_DB_REMOTE_URL is not set');
+    return;
+  }
+
+  const normalizedRemoteUrl = remoteUrl.trim().replace(/^"|"$/g, '');
+
+  if (normalizedRemoteUrl !== remoteUrl) {
+    process.env['ASTRO_DB_REMOTE_URL'] = normalizedRemoteUrl;
+  }
+
+  try {
+    const parsedUrl = new URL(normalizedRemoteUrl);
+    console.log(`[ astro-db ] using remote ${parsedUrl.protocol}//${parsedUrl.host}`);
+  } catch {
+    console.error('[ astro-db ] invalid ASTRO_DB_REMOTE_URL value at runtime');
+  }
+};
+
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const apiEntryFile = resolve(serverDistFolder, '..', 'api', 'main.js');
 const astroClientFolder = resolve(serverDistFolder, '..', 'website', 'client');
@@ -40,6 +62,8 @@ const loadAstroRequestHandler = async () => {
 };
 
 const bootstrap = async () => {
+  normalizeRuntimeEnv();
+
   const [apiApp, astroRequestHandler] = await Promise.all([loadApiApp(), loadAstroRequestHandler()]);
   const app = express();
 
