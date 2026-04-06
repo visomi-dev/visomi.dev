@@ -1,12 +1,39 @@
 ---
+export const prerender = false;
+
+import { actions, isInputError } from 'astro:actions';
+
 import ContactPage from '../../../components/contact-page.astro';
 import { createTranslator } from '../../../i18n/translations';
 import BaseLayout from '../../../layouts/base-layout.astro';
 
 const locale = 'es';
 const t = createTranslator(locale);
+const result = Astro.getActionResult(actions.contact);
+
+const errors: Partial<Record<'email' | 'message' | 'name' | 'type', string>> = {};
+const formValues: Partial<Record<'email' | 'message' | 'name' | 'type', string>> = {
+  type: 'consulting',
+};
+
+let status: 'error' | 'sent' | null = null;
+
+if (result?.error) {
+  status = 'error';
+
+  if (isInputError(result.error)) {
+    errors.name = result.error.fields.name?.[0];
+    errors.email = result.error.fields.email?.[0];
+    errors.type = result.error.fields.type?.[0];
+    errors.message = result.error.fields.message?.[0];
+  }
+}
+
+if (result && !result.error) {
+  status = 'sent';
+}
 ---
 
 <BaseLayout locale={locale} page="contact" title={t('contactPageTitle')} description={t('contactHeroDescription')}>
-  <ContactPage locale={locale} />
+  <ContactPage locale={locale} errors={errors} formValues={formValues} status={status} />
 </BaseLayout>

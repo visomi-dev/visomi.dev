@@ -1,10 +1,15 @@
 ---
+export const prerender = false;
+
+import { actions, isInputError } from 'astro:actions';
+
 import ContactPage from '../../components/contact-page.astro';
 import { createTranslator } from '../../i18n/translations';
 import BaseLayout from '../../layouts/base-layout.astro';
 
 const locale = 'en';
 const t = createTranslator(locale);
+const result = Astro.getActionResult(actions.contact);
 
 const errors: Partial<Record<'email' | 'message' | 'name' | 'type', string>> = {};
 const formValues: Partial<Record<'email' | 'message' | 'name' | 'type', string>> = {
@@ -13,57 +18,19 @@ const formValues: Partial<Record<'email' | 'message' | 'name' | 'type', string>>
 
 let status: 'error' | 'sent' | null = null;
 
-const getFieldValue = (value: FormDataEntryValue | null) => (typeof value === 'string' ? value.trim() : '');
+if (result?.error) {
+  status = 'error';
 
-const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-
-if (Astro.request.method === 'POST') {
-  try {
-    const data = await Astro.request.formData();
-
-    formValues.name = getFieldValue(data.get('name'));
-    formValues.email = getFieldValue(data.get('email'));
-    formValues.type = getFieldValue(data.get('type')) || 'consulting';
-    formValues.message = getFieldValue(data.get('message'));
-
-    if (!formValues.name) {
-      errors.name = 'Please enter your name.';
-    }
-
-    if (!formValues.email || !isValidEmail(formValues.email)) {
-      errors.email = 'Please enter a valid email address.';
-    }
-
-    if (!formValues.type) {
-      errors.type = 'Please select a contact type.';
-    }
-
-    if (!formValues.message || formValues.message.length < 10) {
-      errors.message = 'Please enter a message with at least 10 characters.';
-    }
-
-    const hasErrors = Object.values(errors).some(Boolean);
-
-    if (!hasErrors) {
-      console.log('[ contact ] accepted Astro-native submission', {
-        email: formValues.email,
-        locale,
-        messageLength: formValues.message?.length,
-        name: formValues.name,
-        type: formValues.type,
-      });
-
-      status = 'sent';
-      formValues.name = '';
-      formValues.email = '';
-      formValues.type = 'consulting';
-      formValues.message = '';
-    } else {
-      status = 'error';
-    }
-  } catch (_error) {
-    status = 'error';
+  if (isInputError(result.error)) {
+    errors.name = result.error.fields.name?.[0];
+    errors.email = result.error.fields.email?.[0];
+    errors.type = result.error.fields.type?.[0];
+    errors.message = result.error.fields.message?.[0];
   }
+}
+
+if (result && !result.error) {
+  status = 'sent';
 }
 ---
 

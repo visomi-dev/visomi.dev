@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import db from '@astrojs/db';
 import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -7,6 +8,9 @@ const output = process.env.WEBSITE_OUTPUT_MODE === 'static' ? 'static' : 'server
 const site = process.env.SITE_URL ?? 'https://visomi.dev';
 
 export default defineConfig({
+  actions: {
+    rpc: false,
+  },
   adapter:
     output === 'server'
       ? node({
@@ -14,6 +18,7 @@ export default defineConfig({
         })
       : undefined,
   base,
+  integrations: [db()],
   output,
   outDir: '../../dist/apps/website',
   publicDir: './public',

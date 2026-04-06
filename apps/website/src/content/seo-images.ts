@@ -1,7 +1,6 @@
 import type { ImageMetadata } from 'astro';
 
 import type { Locale, PageId } from '../i18n/translations';
-
 import circularETwoPhones from '../assets/projects/circular-e/two-phones.png';
 import guiraWelcome from '../assets/projects/guira/welcome.png';
 import linneHome from '../assets/projects/linne/home.png';
