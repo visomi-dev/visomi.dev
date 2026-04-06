@@ -1,7 +1,8 @@
 import type { ImageMetadata } from 'astro';
 
-import { projectScreenshotAssets } from './project-screenshot-assets';
 import type { Locale } from '../i18n/translations';
+
+import { projectScreenshotAssets } from './project-screenshot-assets';
 
 type ResumeExperience = {
   company: string;

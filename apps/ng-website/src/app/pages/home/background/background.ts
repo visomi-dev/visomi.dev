@@ -22,15 +22,16 @@ export class Background {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly deps = inject(Deps);
   private readonly settings = inject(Settings);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   readonly isDarkTheme = this.settings.isDarkTheme;
 
   readonly container = viewChild<ElementRef<HTMLElement>>('container');
-  readonly vertexShader = httpResource.text(() => VERTEX_SHADER_URL);
-  readonly fragmentShader = httpResource.text(() => FRAGMENT_SHADER_URL);
+  readonly vertexShader = httpResource.text(() => (this.isBrowser ? VERTEX_SHADER_URL : undefined));
+  readonly fragmentShader = httpResource.text(() => (this.isBrowser ? FRAGMENT_SHADER_URL : undefined));
 
   readonly initEffect = effect((onCleanup) => {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (!this.isBrowser) {
       return;
     }
 

@@ -2,7 +2,9 @@ import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('three', () => {
   class Scene {
-    add() {}
+    add() {
+      return undefined;
+    }
   }
 
   class OrthographicCamera {}
@@ -33,8 +35,13 @@ vi.mock('three', () => {
   class WebGLRenderer {
     domElement = document.createElement('canvas');
 
-    setSize() {}
-    render() {}
+    setSize() {
+      return undefined;
+    }
+
+    render() {
+      return undefined;
+    }
   }
 
   return {
