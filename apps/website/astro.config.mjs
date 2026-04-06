@@ -8,9 +8,12 @@ const output = process.env.WEBSITE_OUTPUT_MODE === 'static' ? 'static' : 'server
 const site = process.env.SITE_URL ?? 'https://visomi.dev';
 
 export default defineConfig({
-  actions: {
-    rpc: false,
-  },
+  actions:
+    output === 'server'
+      ? {
+          rpc: false,
+        }
+      : undefined,
   adapter:
     output === 'server'
       ? node({

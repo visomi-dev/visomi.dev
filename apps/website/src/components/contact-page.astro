@@ -15,6 +15,7 @@ const t = createTranslator(locale);
 const year = new Date().getFullYear();
 const isSuccess = status === 'sent';
 const isError = status === 'error';
+const isStaticBuild = import.meta.env.WEBSITE_OUTPUT_MODE === 'static';
 const invalidFieldIds = [
   errors.name ? 'name' : null,
   errors.email ? 'email' : null,
@@ -100,7 +101,7 @@ const invalidFieldIds = [
         </div>
       )}
 
-      <form method="POST" action={actions.contact} class="space-y-6" novalidate>
+      <form method="POST" action={isStaticBuild ? undefined : actions.contact} class="space-y-6" novalidate>
         <input type="hidden" name="locale" value={locale} />
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div class="space-y-2">
@@ -219,6 +220,7 @@ const invalidFieldIds = [
           <button
             class="bg-surface-dark text-surface-light dark:bg-surface-light dark:text-surface-dark rounded border border-transparent px-6 py-3 font-mono text-[10px] font-bold tracking-widest uppercase transition-all hover:bg-neutral-800 active:scale-95 sm:px-8 dark:hover:bg-neutral-100"
             type="submit"
+            disabled={isStaticBuild}
           >
             {t('contactFormButtonTransmit')}
           </button>
@@ -226,6 +228,14 @@ const invalidFieldIds = [
             >{t('contactFormSecurityMsg')}</span
           >
         </div>
+
+        {isStaticBuild && (
+          <p class="text-sm text-amber-700 dark:text-amber-300">
+            {locale === 'es'
+              ? 'El formulario de contacto solo esta disponible en la version principal desplegada en el servidor.'
+              : 'The contact form is only available in the primary server deployment.'}
+          </p>
+        )}
       </form>
 
       {invalidFieldIds.length > 0 && (
