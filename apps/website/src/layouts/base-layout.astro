@@ -1,7 +1,10 @@
 ---
 import '../styles/global.css';
 
+import { getImage } from 'astro:assets';
+
 import type { Locale, PageId } from '../i18n/translations';
+import { getSeoImage } from '../content/seo-images';
 import { getPagePath, locales } from '../i18n/translations';
 import Background from '../components/background.astro';
 import Footer from '../components/footer.astro';
@@ -21,6 +24,14 @@ const documentTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 const baseUrl = Astro.site ?? Astro.url;
 const canonicalUrl = new URL(getPagePath(locale, page), baseUrl).toString();
 const defaultUrl = new URL(getPagePath('en', page), baseUrl).toString();
+const seoImage = getSeoImage(page, locale);
+const socialImage = await getImage({
+  src: seoImage.image,
+  width: 1200,
+  height: 630,
+  format: 'png',
+});
+const socialImageUrl = new URL(socialImage.src, baseUrl).toString();
 ---
 
 <!doctype html>
@@ -47,6 +58,21 @@ const defaultUrl = new URL(getPagePath('en', page), baseUrl).toString();
     </script>
     <title>{documentTitle}</title>
     <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta property="og:locale" content={locale === 'es' ? 'es_ES' : 'en_US'} />
+    <meta property="og:title" content={documentTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={seoImage.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={documentTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={seoImage.alt} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang="x-default" href={defaultUrl} />
     {

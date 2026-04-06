@@ -1,4 +1,6 @@
 ---
+import { actions } from 'astro:actions';
+
 import { createTranslator, type Locale } from '../i18n/translations';
 
 type Props = {
@@ -13,6 +15,13 @@ const t = createTranslator(locale);
 const year = new Date().getFullYear();
 const isSuccess = status === 'sent';
 const isError = status === 'error';
+const isStaticBuild = import.meta.env.WEBSITE_OUTPUT_MODE === 'static';
+const invalidFieldIds = [
+  errors.name ? 'name' : null,
+  errors.email ? 'email' : null,
+  errors.type ? 'type' : null,
+  errors.message ? 'message' : null,
+].filter(Boolean) as string[];
 ---
 
 <main class="min-h-screen-nav mx-auto mt-20 w-full max-w-[1800px] px-6 pt-10 pb-12 md:px-8 md:pt-14 2xl:px-12">
@@ -92,7 +101,8 @@ const isError = status === 'error';
         </div>
       )}
 
-      <form method="POST" class="space-y-6">
+      <form method="POST" action={isStaticBuild ? undefined : actions.contact} class="space-y-6" novalidate>
+        <input type="hidden" name="locale" value={locale} />
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div class="space-y-2">
             <label
@@ -103,12 +113,22 @@ const isError = status === 'error';
               type="text"
               id="name"
               name="name"
-              class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+              class:list={[
+                'text-surface-dark dark:text-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950',
+                errors.name
+                  ? 'border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400'
+                  : 'border-border-light focus:border-surface-dark dark:border-border-dark dark:focus:border-surface-light',
+              ]}
               placeholder={t('contactFormPlaceholderIdentity')}
               value={formValues.name}
+              aria-describedby={errors.name ? 'name-error' : undefined}
+              aria-invalid={errors.name ? 'true' : 'false'}
               required
+              transition:persist
             />
-            {errors.name && <p class="text-sm text-red-600 dark:text-red-300">{errors.name}</p>}
+            {errors.name && (
+              <p id="name-error" class="text-sm text-red-600 dark:text-red-300">{errors.name}</p>
+            )}
           </div>
           <div class="space-y-2">
             <label
@@ -119,12 +139,22 @@ const isError = status === 'error';
               type="email"
               id="email"
               name="email"
-              class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+              class:list={[
+                'text-surface-dark dark:text-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950',
+                errors.email
+                  ? 'border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400'
+                  : 'border-border-light focus:border-surface-dark dark:border-border-dark dark:focus:border-surface-light',
+              ]}
               placeholder={t('contactFormPlaceholderEmail')}
               value={formValues.email}
+              aria-describedby={errors.email ? 'email-error' : undefined}
+              aria-invalid={errors.email ? 'true' : 'false'}
               required
+              transition:persist
             />
-            {errors.email && <p class="text-sm text-red-600 dark:text-red-300">{errors.email}</p>}
+            {errors.email && (
+              <p id="email-error" class="text-sm text-red-600 dark:text-red-300">{errors.email}</p>
+            )}
           </div>
         </div>
 
@@ -135,9 +165,17 @@ const isError = status === 'error';
           >
           <div class="relative">
             <select
-              class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full cursor-pointer appearance-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+              class:list={[
+                'text-surface-dark dark:text-surface-light w-full cursor-pointer appearance-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950',
+                errors.type
+                  ? 'border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400'
+                  : 'border-border-light focus:border-surface-dark dark:border-border-dark dark:focus:border-surface-light',
+              ]}
               id="type"
               name="type"
+              aria-describedby={errors.type ? 'type-error' : undefined}
+              aria-invalid={errors.type ? 'true' : 'false'}
+              transition:persist
             >
               <option value="consulting" selected={formValues.type === 'consulting'}>{t('contactFormOptionConsulting')}</option>
               <option value="speaking" selected={formValues.type === 'speaking'}>{t('contactFormOptionSpeaking')}</option>
@@ -150,7 +188,7 @@ const isError = status === 'error';
               <span class="pi pi-chevron-down text-sm"></span>
             </div>
           </div>
-          {errors.type && <p class="text-sm text-red-600 dark:text-red-300">{errors.type}</p>}
+          {errors.type && <p id="type-error" class="text-sm text-red-600 dark:text-red-300">{errors.type}</p>}
         </div>
 
         <div class="space-y-2">
@@ -159,19 +197,30 @@ const isError = status === 'error';
             for="message">{t('contactFormLabelPayload')}</label
           >
           <textarea
-            class="border-border-light text-surface-dark focus:border-surface-dark dark:border-border-dark dark:text-surface-light dark:focus:border-surface-light w-full resize-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950"
+            class:list={[
+              'text-surface-dark dark:text-surface-light w-full resize-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950',
+              errors.message
+                ? 'border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400'
+                : 'border-border-light focus:border-surface-dark dark:border-border-dark dark:focus:border-surface-light',
+            ]}
             id="message"
             name="message"
             placeholder={t('contactFormPlaceholderPayload')}
             rows="6"
-            required>{formValues.message}</textarea>
-          {errors.message && <p class="text-sm text-red-600 dark:text-red-300">{errors.message}</p>}
+            aria-describedby={errors.message ? 'message-error' : undefined}
+            aria-invalid={errors.message ? 'true' : 'false'}
+            required
+            transition:persist>{formValues.message}</textarea>
+          {errors.message && (
+            <p id="message-error" class="text-sm text-red-600 dark:text-red-300">{errors.message}</p>
+          )}
         </div>
 
         <div class="flex items-center justify-between pt-2">
           <button
             class="bg-surface-dark text-surface-light dark:bg-surface-light dark:text-surface-dark rounded border border-transparent px-6 py-3 font-mono text-[10px] font-bold tracking-widest uppercase transition-all hover:bg-neutral-800 active:scale-95 sm:px-8 dark:hover:bg-neutral-100"
             type="submit"
+            disabled={isStaticBuild}
           >
             {t('contactFormButtonTransmit')}
           </button>
@@ -179,7 +228,28 @@ const isError = status === 'error';
             >{t('contactFormSecurityMsg')}</span
           >
         </div>
+
+        {isStaticBuild && (
+          <p class="text-sm text-amber-700 dark:text-amber-300">
+            {locale === 'es'
+              ? 'El formulario de contacto solo esta disponible en la version principal desplegada en el servidor.'
+              : 'The contact form is only available in the primary server deployment.'}
+          </p>
+        )}
       </form>
+
+      {invalidFieldIds.length > 0 && (
+        <script is:inline define:vars={{ firstInvalidFieldId: invalidFieldIds[0] }}>
+          requestAnimationFrame(() => {
+            const invalidField = document.getElementById(firstInvalidFieldId);
+
+            if (invalidField instanceof HTMLElement) {
+              invalidField.focus();
+              invalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          });
+        </script>
+      )}
     </div>
     </div>
   </section>

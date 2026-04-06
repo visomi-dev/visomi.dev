@@ -63,6 +63,9 @@ export default [
     plugins: {
       unicorn: eslintPluginUnicorn,
     },
+    settings: {
+      'import-x/ignore': ['^astro:'],
+    },
     rules: {
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/no-unused-vars': [
@@ -89,6 +92,17 @@ export default [
         },
       ],
       'unicorn/no-null': 'off',
+    },
+  },
+  {
+    files: ['apps/website/**/*.ts'],
+    rules: {
+      'import-x/no-unresolved': [
+        'error',
+        {
+          ignore: ['^astro:'],
+        },
+      ],
     },
   },
 ];
