@@ -1,8 +1,6 @@
 ---
 import '../styles/global.css';
 
-import { getImage } from 'astro:assets';
-
 import type { Locale, PageId } from '../i18n/translations';
 import { getSeoImage } from '../content/seo-images';
 import { getPagePath, locales } from '../i18n/translations';
@@ -25,13 +23,7 @@ const baseUrl = Astro.site ?? Astro.url;
 const canonicalUrl = new URL(getPagePath(locale, page), baseUrl).toString();
 const defaultUrl = new URL(getPagePath('en', page), baseUrl).toString();
 const seoImage = getSeoImage(page, locale);
-const socialImage = await getImage({
-  src: seoImage.image,
-  width: 1200,
-  height: 630,
-  format: 'png',
-});
-const socialImageUrl = new URL(socialImage.src, baseUrl).toString();
+const socialImageUrl = new URL(seoImage.image, baseUrl).toString();
 ---
 
 <!doctype html>
