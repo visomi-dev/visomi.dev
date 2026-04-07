@@ -15,6 +15,12 @@ RUN pnpm install --frozen-lockfile
 
 FROM deps AS build
 
+ARG ASTRO_DB_REMOTE_URL
+ARG ASTRO_DB_APP_TOKEN
+
+ENV ASTRO_DB_REMOTE_URL=$ASTRO_DB_REMOTE_URL
+ENV ASTRO_DB_APP_TOKEN=$ASTRO_DB_APP_TOKEN
+
 COPY . .
 
 RUN pnpm nx run server:build:production
