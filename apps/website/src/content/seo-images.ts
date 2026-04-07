@@ -1,71 +1,59 @@
-import type { ImageMetadata } from 'astro';
-
 import type { Locale, PageId } from '../i18n/translations';
-import enContactPreview from '../assets/seo/en/contact.png';
-import enHomePreview from '../assets/seo/en/home.png';
-import enJourneyPreview from '../assets/seo/en/journey.png';
-import enProjectsPreview from '../assets/seo/en/projects.png';
-import enResumePreview from '../assets/seo/en/resume.png';
-import esContactPreview from '../assets/seo/es/contact.png';
-import esHomePreview from '../assets/seo/es/home.png';
-import esJourneyPreview from '../assets/seo/es/journey.png';
-import esProjectsPreview from '../assets/seo/es/projects.png';
-import esResumePreview from '../assets/seo/es/resume.png';
 
 type SeoImage = {
   alt: string;
-  image: ImageMetadata;
+  image: string;
 };
 
 const seoImagesByPage: Record<PageId, Record<Locale, SeoImage>> = {
   contact: {
     en: {
       alt: 'Contact page preview for VISOMI.DEV',
-      image: enContactPreview,
+      image: '/images/seo/en/contact.png',
     },
     es: {
       alt: 'Vista previa de la pagina de contacto de VISOMI.DEV',
-      image: esContactPreview,
+      image: '/images/seo/es/contact.png',
     },
   },
   home: {
     en: {
       alt: 'VISOMI.DEV home page preview',
-      image: enHomePreview,
+      image: '/images/seo/en/home.png',
     },
     es: {
       alt: 'Vista previa del inicio de VISOMI.DEV',
-      image: esHomePreview,
+      image: '/images/seo/es/home.png',
     },
   },
   journey: {
     en: {
       alt: 'Career journey page preview for VISOMI.DEV',
-      image: enJourneyPreview,
+      image: '/images/seo/en/journey.png',
     },
     es: {
       alt: 'Vista previa de la pagina de trayectoria de VISOMI.DEV',
-      image: esJourneyPreview,
+      image: '/images/seo/es/journey.png',
     },
   },
   projects: {
     en: {
       alt: 'Projects case studies preview for VISOMI.DEV',
-      image: enProjectsPreview,
+      image: '/images/seo/en/projects.png',
     },
     es: {
       alt: 'Vista previa de casos de estudio de VISOMI.DEV',
-      image: esProjectsPreview,
+      image: '/images/seo/es/projects.png',
     },
   },
   resume: {
     en: {
       alt: 'Resume page preview for VISOMI.DEV',
-      image: enResumePreview,
+      image: '/images/seo/en/resume.png',
     },
     es: {
       alt: 'Vista previa del resume de VISOMI.DEV',
-      image: esResumePreview,
+      image: '/images/seo/es/resume.png',
     },
   },
 };
