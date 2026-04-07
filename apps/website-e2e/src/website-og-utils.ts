@@ -3,14 +3,20 @@ import { join } from 'node:path';
 
 import type { Browser } from '@playwright/test';
 
-import { routesByPage, type ScreenshotRoute } from './website-screenshot-utils';
+import type { ScreenshotRoute } from './website-screenshot-utils';
 
-const ogRoutes = Object.values(routesByPage)
-  .flat()
-  .map((route) => ({
-    ...route,
-    path: `/og/${route.locale}/${route.name}/`,
-  })) satisfies ScreenshotRoute[];
+const ogRoutes = [
+  { locale: 'en', name: 'home', path: '/og/en/home/' },
+  { locale: 'es', name: 'home', path: '/og/es/home/' },
+  { locale: 'en', name: 'journey', path: '/og/en/journey/' },
+  { locale: 'es', name: 'journey', path: '/og/es/journey/' },
+  { locale: 'en', name: 'projects', path: '/og/en/projects/' },
+  { locale: 'es', name: 'projects', path: '/og/es/projects/' },
+  { locale: 'en', name: 'resume', path: '/og/en/resume/' },
+  { locale: 'es', name: 'resume', path: '/og/es/resume/' },
+  { locale: 'en', name: 'contact', path: '/og/en/contact/' },
+  { locale: 'es', name: 'contact', path: '/og/es/contact/' },
+] satisfies ScreenshotRoute[];
 
 const ogOutputRoot = join(process.cwd(), 'artifacts/apps/website-e2e/og');
 
