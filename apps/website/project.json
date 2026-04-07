@@ -9,7 +9,10 @@
       "outputs": ["{workspaceRoot}/dist/apps/website"],
       "options": {
         "command": "pnpm exec astro build --root apps/website --remote",
-        "cwd": "."
+        "cwd": ".",
+        "env": {
+          "WEBSITE_OG_GENERATOR": "false"
+        }
       }
     },
     "build-local": {
@@ -18,6 +21,9 @@
       "options": {
         "command": "pnpm exec astro build --root apps/website --remote",
         "cwd": ".",
+        "env": {
+          "WEBSITE_OG_GENERATOR": "false"
+        },
         "envFile": "./apps/website/.env"
       }
     },
