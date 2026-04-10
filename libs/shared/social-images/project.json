@@ -15,6 +15,11 @@
         "assets": ["libs/shared/social-images/*.md"],
         "format": ["esm"]
       }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
     }
   }
 }
