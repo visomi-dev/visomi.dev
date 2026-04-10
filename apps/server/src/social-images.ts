@@ -1,7 +1,6 @@
 import { Queue, QueueEvents } from 'bullmq';
 import express, { type Request, type Response } from 'express';
 import IORedis from 'ioredis';
-
 import {
   GENERATE_PAGE_SOCIAL_IMAGE_JOB_NAME,
   GENERATE_WEBSITE_SOCIAL_IMAGES_JOB_NAME,
@@ -10,7 +9,7 @@ import {
   type GenerateWebsiteSocialImagesJob,
   promoteSocialImageRun,
   readSocialImageManifest,
-} from '@visomi-dev/shared-social-images';
+} from '@visomi.dev/shared-social-images';
 
 const createRedisConnection = () => {
   const redisUrl = process.env['REDIS_URL']?.trim();
