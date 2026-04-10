@@ -16,6 +16,8 @@ type AstroMiddlewareModule = {
 const supportedSocialImageLocales = new Set(['en', 'es']);
 const supportedSocialImagePages = new Set(['contact', 'home', 'journey', 'projects', 'resume']);
 
+const readRouteParam = (value: string | string[] | undefined) => (typeof value === 'string' ? value : null);
+
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 
@@ -87,7 +89,8 @@ const bootstrap = async () => {
   }
 
   app.get('/og/:locale/:page/', (req: Request, res: Response, next: NextFunction) => {
-    const { locale, page } = req.params;
+    const locale = readRouteParam(req.params['locale']);
+    const page = readRouteParam(req.params['page']);
 
     if (!locale || !page || !supportedSocialImageLocales.has(locale) || !supportedSocialImagePages.has(page)) {
       next();
