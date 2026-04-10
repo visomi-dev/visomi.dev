@@ -24,14 +24,11 @@ const clampText = (value: string, maxLength: number) => {
 const normalizeSocialImageCard = (card: SocialImageCardInput): SocialImageCardModel => ({
   ...card,
   accent: clampText(card.accent, 96),
-  brandLabel: 'VISOMI.DEV',
   cta: clampText(card.cta, 26),
-  footerLabel: card.locale === 'es' ? 'ingenieria de software' : 'software engineering',
   highlights: card.highlights.map((highlight) => clampText(highlight, 28)).slice(0, 3),
   previewLabel: card.locale === 'es' ? 'vista previa' : 'preview state',
   subtitle: clampText(card.subtitle, 140),
   title: clampText(card.title, 72),
-  toneLabel: card.locale === 'es' ? 'claro, tecnico y enfocado' : 'clear, technical, focused',
 });
 
 export { SOCIAL_IMAGE_RULES, normalizeSocialImageCard };
