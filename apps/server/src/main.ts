@@ -80,7 +80,6 @@ const bootstrap = async () => {
 
   if (socialImageRuntime) {
     app.use('/api/internal/social-images', socialImageRuntime.router);
-    app.use('/images/seo', socialImageRuntime.staticMiddleware);
   }
 
   app.use('/api', apiApp);

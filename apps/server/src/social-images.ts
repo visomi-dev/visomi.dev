@@ -1,5 +1,3 @@
-import { resolve } from 'node:path';
-
 import { Queue, QueueEvents } from 'bullmq';
 import express, { type Request, type Response } from 'express';
 import IORedis from 'ioredis';
@@ -12,9 +10,7 @@ import {
   type GenerateWebsiteSocialImagesJob,
   promoteSocialImageRun,
   readSocialImageManifest,
-} from '@visomi.dev/shared-social-images';
-
-const websiteSourcePublicSeoDirectory = resolve(process.cwd(), 'apps/website/public/images/seo');
+} from '@visomi-dev/shared-social-images';
 
 const createRedisConnection = () => {
   const redisUrl = process.env['REDIS_URL']?.trim();
@@ -126,11 +122,6 @@ const createSocialImageRuntime = () => {
   return {
     close,
     router,
-    staticMiddleware: express.static(websiteSourcePublicSeoDirectory, {
-      index: false,
-      maxAge: '1h',
-      redirect: false,
-    }),
   };
 };
 
