@@ -36,6 +36,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod
 
 COPY --from=build /workspace/dist ./dist
+COPY --from=build /workspace/dist/libs/shared/social-images ./node_modules/@visomi.dev/shared-social-images
 
 FROM runtime-base AS server-runtime
 
