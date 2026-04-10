@@ -1,7 +1,7 @@
 import { readFile, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-/* eslint-disable */
+ 
 const API_SERVER_PID_PATH = resolve(__dirname, '../../.api-e2e-server.pid');
 
 module.exports = async function () {
