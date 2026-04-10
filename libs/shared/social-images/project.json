@@ -1,0 +1,25 @@
+{
+  "name": "social-images",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/social-images/src",
+  "projectType": "library",
+  "tags": ["scope:shared"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/social-images",
+        "main": "libs/shared/social-images/src/index.ts",
+        "tsConfig": "libs/shared/social-images/tsconfig.lib.json",
+        "assets": ["libs/shared/social-images/*.md"],
+        "format": ["esm"]
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  }
+}

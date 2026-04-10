@@ -4,4 +4,6 @@ This folder contains implementation guides, refactor references, and execution-o
 
 - `page-implementation-guide.md`
 - `refactor-inspiration.md`
+- `social-share-worker-plan.md`
+- `social-share-image-rules.md`
 - `refactor/`

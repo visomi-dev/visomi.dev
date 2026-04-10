@@ -84,6 +84,7 @@ export default [
 
       'import-x/order': ['error', { 'newlines-between': 'always' }],
       'import-x/no-named-as-default': ['off'],
+      'import-x/no-unresolved': ['off'],
 
       'unicorn/filename-case': [
         'error',
