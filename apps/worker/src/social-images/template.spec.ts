@@ -1,4 +1,4 @@
-import { normalizeSocialImageCard, renderSocialImageHtml  } from '@visomi.dev/shared-social-images';
+import { normalizeSocialImageCard, renderSocialImageHtml } from '@visomi.dev/shared-social-images';
 
 describe('renderSocialImageHtml', () => {
   it('renders a standalone HTML document for a social image card', () => {
@@ -16,8 +16,8 @@ describe('renderSocialImageHtml', () => {
     );
 
     expect(html).toContain('<!doctype html>');
-    expect(html).toContain('1200×630');
-    expect(html).toContain('VISOMI.DEV');
+    expect(html).toContain('preview state');
+    expect(html).toContain('highlights');
     expect(html).toContain('Scalable platforms');
   });
 });
