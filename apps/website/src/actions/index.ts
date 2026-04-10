@@ -1,4 +1,4 @@
-/* eslint-disable import-x/no-unresolved */
+ 
 import { ActionError, defineAction } from 'astro:actions';
 import { ContactSubmission, db } from 'astro:db';
 import { z } from 'astro/zod';

@@ -10,7 +10,7 @@ import {
   type GenerateWebsiteSocialImagesJob,
   promoteSocialImageRun,
   readSocialImageManifest,
-} from '@visomi-dev/shared-social-images';
+} from '@visomi.dev/shared-social-images';
 
 const createRedisConnection = () => {
   const redisUrl = process.env['REDIS_URL']?.trim();

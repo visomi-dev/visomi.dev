@@ -1,4 +1,4 @@
-/* eslint-disable import-x/no-unresolved */
+ 
 import { column, defineDb, defineTable, NOW } from 'astro:db';
 
 const ContactSubmission = defineTable({
