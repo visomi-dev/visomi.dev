@@ -3,6 +3,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import express, { type Express, type NextFunction, type Request, type Response } from 'express';
 
+import { createSocialImageRuntime } from './social-images.js';
+
 type ApiModule = {
   app?: Express;
 };
@@ -66,6 +68,20 @@ const bootstrap = async () => {
 
   const [apiApp, astroRequestHandler] = await Promise.all([loadApiApp(), loadAstroRequestHandler()]);
   const app = express();
+  let socialImageRuntime: ReturnType<typeof createSocialImageRuntime> | null = null;
+
+  try {
+    socialImageRuntime = createSocialImageRuntime();
+  } catch (error: unknown) {
+    console.warn('[ social-images ] runtime disabled', error);
+  }
+
+  app.use(express.json());
+
+  if (socialImageRuntime) {
+    app.use('/api/internal/social-images', socialImageRuntime.router);
+    app.use('/images/seo', socialImageRuntime.staticMiddleware);
+  }
 
   app.use('/api', apiApp);
   app.use(
@@ -79,6 +95,24 @@ const bootstrap = async () => {
 
   app.listen(port, host, () => {
     console.log(`[ ready ] http://${host}:${port}`);
+  });
+
+  const shutdown = async (signal: string) => {
+    console.log(`[ server ] shutting down after ${signal}`);
+
+    if (socialImageRuntime) {
+      await socialImageRuntime.close();
+    }
+
+    process.exit(0);
+  };
+
+  process.on('SIGINT', () => {
+    void shutdown('SIGINT');
+  });
+
+  process.on('SIGTERM', () => {
+    void shutdown('SIGTERM');
   });
 };
 

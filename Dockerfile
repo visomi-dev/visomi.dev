@@ -1,4 +1,4 @@
-FROM node:24-alpine AS base
+FROM node:24-bookworm-slim AS base
 
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
@@ -23,9 +23,9 @@ ENV ASTRO_DB_APP_TOKEN=$ASTRO_DB_APP_TOKEN
 
 COPY . .
 
-RUN pnpm nx run server:build:production
+RUN pnpm nx run-many -t build --projects server,worker --configuration production
 
-FROM base AS runtime
+FROM base AS runtime-base
 
 WORKDIR /app
 
@@ -37,6 +37,20 @@ RUN pnpm install --frozen-lockfile --prod
 
 COPY --from=build /workspace/dist ./dist
 
+FROM runtime-base AS server-runtime
+
 EXPOSE 8080
 
 CMD ["node", "dist/apps/server/main.js"]
+
+FROM runtime-base AS worker-runtime
+
+RUN apt-get update \
+  && apt-get install --yes --no-install-recommends chromium ca-certificates fonts-liberation \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
+CMD ["node", "dist/apps/worker/main.js"]
+
+FROM server-runtime AS runtime
