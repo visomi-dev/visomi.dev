@@ -13,6 +13,11 @@ type AstroMiddlewareModule = {
   handler?: (req: Request, res: Response, next: NextFunction) => Promise<void> | void;
 };
 
+const supportedSocialImageLocales = new Set(['en', 'es']);
+const supportedSocialImagePages = new Set(['contact', 'home', 'journey', 'projects', 'resume']);
+
+const readRouteParam = (value: string | string[] | undefined) => (typeof value === 'string' ? value : null);
+
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 
@@ -82,6 +87,18 @@ const bootstrap = async () => {
     app.use('/api/internal/social-images', socialImageRuntime.router);
     app.use('/images/seo', socialImageRuntime.staticMiddleware);
   }
+
+  app.get('/og/:locale/:page/', (req: Request, res: Response, next: NextFunction) => {
+    const locale = readRouteParam(req.params['locale']);
+    const page = readRouteParam(req.params['page']);
+
+    if (!locale || !page || !supportedSocialImageLocales.has(locale) || !supportedSocialImagePages.has(page)) {
+      next();
+      return;
+    }
+
+    res.redirect(301, `/images/seo/${locale}/${page}.png`);
+  });
 
   app.use('/api', apiApp);
   app.use(
