@@ -28,14 +28,11 @@ type SocialImageCardInput = {
 
 type SocialImageCardModel = SocialImageCardInput & {
   accent: string;
-  brandLabel: string;
   cta: string;
-  footerLabel: string;
   highlights: string[];
   previewLabel: string;
   subtitle: string;
   title: string;
-  toneLabel: string;
 };
 
 type GeneratePageSocialImageJob = {

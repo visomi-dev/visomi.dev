@@ -1,0 +1,20 @@
+<main class="page">
+  <section class="hero">
+    <p class="eyebrow">Social Image Previews</p>
+    <h1>Debug the HTML cards before turning them into PNGs.</h1>
+    <p class="lede">{{ previewIntro }}</p>
+  </section>
+
+  <section class="grid" aria-label="Social image preview grid">
+    @for (card of previewCards; track card.id) {
+      <article class="card">
+        <header class="card-header">
+          <h2>{{ card.label }}</h2>
+          <a [href]="card.href" target="_blank" rel="noreferrer">Open frame</a>
+        </header>
+
+        <iframe [src]="card.src" [title]="card.iframeTitle" loading="lazy"></iframe>
+      </article>
+    }
+  </section>
+</main>
