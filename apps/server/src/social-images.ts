@@ -1,4 +1,5 @@
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { Queue, QueueEvents } from 'bullmq';
 import express, { type Request, type Response } from 'express';
@@ -14,7 +15,8 @@ import {
   readSocialImageManifest,
 } from '@visomi.dev/shared-social-images';
 
-const websiteSourcePublicSeoDirectory = resolve(process.cwd(), 'apps/website/public/images/seo');
+const serverDistFolder = dirname(fileURLToPath(import.meta.url));
+const websiteSourcePublicSeoDirectory = resolve(serverDistFolder, '..', 'website', 'public', 'images', 'seo');
 
 const createRedisConnection = () => {
   const redisUrl = process.env['REDIS_URL']?.trim();
