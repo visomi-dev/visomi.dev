@@ -78,6 +78,7 @@
     "@nx/vitest": "22.6.3",
     "@nx/web": "22.6.3",
     "@nx/workspace": "22.6.3",
+    "@oxc-project/runtime": "^0.115.0",
     "@playwright/test": "^1.59.0",
     "@primeng/mcp": "^21.1.5",
     "@schematics/angular": "21.2.6",

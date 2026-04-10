@@ -180,6 +180,9 @@ importers:
       '@nx/workspace':
         specifier: 22.6.3
         version: 22.6.3(@swc-node/register@1.11.1(@swc/core@1.15.21(@swc/helpers@0.5.20))(@swc/types@0.1.25)(typescript@6.0.2))(@swc/core@1.15.21(@swc/helpers@0.5.20))
+      '@oxc-project/runtime':
+        specifier: ^0.115.0
+        version: 0.115.0
       '@playwright/test':
         specifier: ^1.59.0
         version: 1.59.0
@@ -3515,6 +3518,10 @@ packages:
 
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
+
+  '@oxc-project/runtime@0.115.0':
+    resolution: {integrity: sha512-Rg8Wlt5dCbXhQnsXPrkOjL1DTSvXLgb2R/KYfnf1/K+R0k6UMLEmbQXPM+kwrWqSmWA2t0B1EtHy2/3zikQpvQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
 
   '@oxc-project/types@0.113.0':
     resolution: {integrity: sha512-Tp3XmgxwNQ9pEN9vxgJBAqdRamHibi76iowQ38O2I4PMpcvNRQNVsU2n1x1nv9yh0XoTrGFzf7cZSGxmixxrhA==}
@@ -15439,6 +15446,8 @@ snapshots:
       - debug
 
   '@oslojs/encoding@1.1.0': {}
+
+  '@oxc-project/runtime@0.115.0': {}
 
   '@oxc-project/types@0.113.0': {}
 
