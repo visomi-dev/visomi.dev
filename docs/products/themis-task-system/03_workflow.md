@@ -1,4 +1,4 @@
-# Workflow Design
+# Workflow Design: Themis
 
 ## Desired Workflow
 

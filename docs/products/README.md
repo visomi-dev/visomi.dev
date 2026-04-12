@@ -4,4 +4,10 @@ This directory contains product concepts, PRDs, architecture notes, and supporti
 
 ## Current Product Areas
 
-- `task-system/` - PRDs and architecture exploration for the structured developer-friendly task system
+- `themis-task-system/` - PRDs and architecture exploration for Themis, the structured developer-friendly task system
+
+## Notable Docs
+
+- `themis-task-system/07_visual-discovery.md` - first-pass visual direction, screen priorities, and design guidance for Themis
+- `themis-task-system/08_stitch-dashboard-prompt.md` - Google Stitch prompt for the Themis main dashboard visual exploration
+- `themis-task-system/09_stitch-auth-prompts.md` - Google Stitch prompt for Themis sign-in

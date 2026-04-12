@@ -1,4 +1,4 @@
-# UX Model
+# UX Model: Themis
 
 ## UX Goal
 
