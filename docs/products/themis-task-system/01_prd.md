@@ -1,8 +1,8 @@
-# PRD: Structured Task System
+# PRD: Themis
 
 ## Goal
 
-Create a task system that reduces friction in defining, documenting, updating, and executing work.
+Create Themis, a task system that reduces friction in defining, documenting, updating, and executing work.
 
 The system should feel lightweight enough for daily use, but structured enough to support project management discipline and AI-assisted execution.
 

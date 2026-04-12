@@ -1,8 +1,8 @@
-# Task System Overview
+# Themis Overview
 
-## Working Name
+## Product Name
 
-Structured Task System
+Themis
 
 ## Core Problem
 
@@ -19,7 +19,7 @@ Typical friction points:
 
 ## Product Intent
 
-Build a simpler, developer-friendly task system that behaves more like a structured operational database than a traditional project management suite.
+Build Themis as a simpler, developer-friendly task system that behaves more like a structured operational database than a traditional project management suite.
 
 The system should make it easy to:
 

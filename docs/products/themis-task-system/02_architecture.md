@@ -1,4 +1,4 @@
-# Architecture Proposal
+# Architecture Proposal: Themis
 
 ## Recommended Direction
 

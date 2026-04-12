@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#d5e3fc",
+                        "inverse-on-surface": "#9a9d9f",
+                        "error-container": "#fe8983",
+                        "tertiary-fixed-dim": "#71e4b1",
+                        "on-tertiary-container": "#005a3d",
+                        "on-primary-container": "#325668",
+                        "on-primary-fixed": "#1e4355",
+                        "surface-container-high": "#e1e9ee",
+                        "surface-container-low": "#f0f4f7",
+                        "primary-fixed-dim": "#b4daf0",
+                        "tertiary": "#006d4b",
+                        "primary": "#3f6376",
+                        "on-secondary-fixed": "#324053",
+                        "outline-variant": "#a9b4b9",
+                        "on-background": "#2a3439",
+                        "on-error-container": "#752121",
+                        "on-error": "#fff7f6",
+                        "inverse-primary": "#c2e8fe",
+                        "surface": "#f7f9fb",
+                        "on-secondary": "#f8f8ff",
+                        "outline": "#717c82",
+                        "primary-dim": "#325769",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-fixed": "#00452e",
+                        "on-surface-variant": "#566166",
+                        "tertiary-container": "#7ff3be",
+                        "surface-variant": "#d9e4ea",
+                        "primary-container": "#c2e8fe",
+                        "tertiary-fixed": "#7ff3be",
+                        "secondary-container": "#d5e3fc",
+                        "on-surface": "#2a3439",
+                        "surface-container-highest": "#d9e4ea",
+                        "surface-dim": "#cfdce3",
+                        "on-secondary-fixed-variant": "#4e5c71",
+                        "surface-container": "#e8eff3",
+                        "tertiary-dim": "#005f41",
+                        "inverse-surface": "#0b0f10",
+                        "secondary-fixed-dim": "#c7d5ed",
+                        "on-tertiary-fixed-variant": "#006545",
+                        "on-primary": "#f1f9ff",
+                        "on-primary-fixed-variant": "#3c6073",
+                        "secondary": "#526074",
+                        "on-tertiary": "#e6ffef",
+                        "secondary-dim": "#465468",
+                        "surface-tint": "#3f6376",
+                        "on-secondary-container": "#455367",
+                        "primary-fixed": "#c2e8fe",
+                        "background": "#f7f9fb",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#9f403d",
+                        "error-dim": "#4e0309"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .header-text {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<aside class="flex flex-col h-full py-6 fixed left-0 top-0 z-40 h-screen w-64 border-r border-slate-200/50 dark:border-slate-800/50 bg-[#e8eff3] dark:bg-slate-950 font-['Inter'] text-sm tracking-wide">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-sm flex items-center justify-center text-on-primary font-black">T</div>
+<div>
+<h1 class="text-xl font-black text-[#2a3439] dark:text-white leading-tight">Themis</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold opacity-70">Technical PM</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-[#566166] dark:text-slate-500 hover:text-[#3f6376] dark:hover:text-[#f1f9ff] hover:bg-white/50 dark:hover:bg-slate-900/50 transition-all ease-in-out duration-200 group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-white dark:bg-slate-900 text-[#3f6376] dark:text-[#f1f9ff] border-l-2 border-[#3f6376] transition-all ease-in-out duration-200 group" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="font-semibold">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#566166] dark:text-slate-500 hover:text-[#3f6376] dark:hover:text-[#f1f9ff] hover:bg-white/50 dark:hover:bg-slate-900/50 transition-all ease-in-out duration-200 group" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span>Execution</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#566166] dark:text-slate-500 hover:text-[#3f6376] dark:hover:text-[#f1f9ff] hover:bg-white/50 dark:hover:bg-slate-900/50 transition-all ease-in-out duration-200 group" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Archives</span>
+</a>
+</nav>
+<div class="px-3 mt-auto pt-6 border-t border-slate-200/50">
+<a class="flex items-center gap-3 px-3 py-2 text-[#566166] dark:text-slate-500 hover:text-[#3f6376] dark:hover:text-[#f1f9ff] hover:bg-white/50 dark:hover:bg-slate-900/50 transition-all ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#566166] dark:text-slate-500 hover:text-[#3f6376] dark:hover:text-[#f1f9ff] hover:bg-white/50 dark:hover:bg-slate-900/50 transition-all ease-in-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<div class="ml-64 flex flex-col min-h-screen">
+<header class="flex justify-between items-center px-6 w-full sticky top-0 z-50 h-14 border-b border-slate-200/50 dark:border-slate-800/50 bg-[#f7f9fb] dark:bg-slate-900 text-[#3f6376] dark:text-[#f1f9ff] font-['Manrope'] tracking-tight">
+<div class="flex items-center gap-8">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-sm" data-icon="search">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-surface-container-low border-none focus:ring-0 text-sm w-64 rounded-sm placeholder:text-outline/50" placeholder="Search projects..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-1.5 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-1.5 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" data-icon="settings">settings</button>
+<div class="h-6 w-[1px] bg-outline-variant/30 mx-1"></div>
+<button class="bg-primary text-on-primary px-4 py-1.5 text-xs font-bold rounded-sm active:opacity-80 duration-150">New Project</button>
+<img alt="User profile" class="w-8 h-8 rounded-full border border-outline-variant/20" data-alt="professional portrait of a project manager in a clean studio setting with soft neutral lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0XwL1pW_tAVDswVpLzZNth8HIppJx7fThL-fUCPjBmyp6RGtTs18-bx2HsX5vqSmugijSTAxiGqFUyERJdVK7CXte_bNblyLO7Zxo2FIoE1dt0jgQdLLY7B7Htriu2vZP5nTdQ5MWjO73iLllu0p_cRku68NIcwDM03w9It8vvxyex_xp743nMiNW4ZXmhiLsqoXxVoz0toMbHbSuDUgVKEE9SSB94fxTRlTxxORc9bNRb32BKme1B2KGuz-xMwL3uAW2Wh9Vk8SZ"/>
+</div>
+</header>
+<main class="flex-1 p-12 max-w-5xl">
+<div class="mb-12">
+<h2 class="text-3xl font-extrabold font-headline tracking-tighter text-on-surface mb-2">Projects Overview</h2>
+<p class="text-on-surface-variant font-body text-sm">Active technical ledger for Q4 initiatives.</p>
+</div>
+<div class="space-y-0 border-t border-outline-variant/10">
+<div class="py-8 group hover:bg-surface-container-low/30 transition-colors px-4 -mx-4 border-b border-outline-variant/10">
+<div class="flex flex-wrap items-start justify-between gap-6">
+<div class="flex-1 min-w-[300px]">
+<div class="flex items-center gap-3 mb-1">
+<h3 class="text-lg font-bold font-body text-primary tracking-tight">Core Infrastructure Migration</h3>
+<span class="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider text-tertiary border border-tertiary/20 bg-tertiary-container/10">Active</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">Transitioning legacy databases to distributed cloud architecture with zero downtime requirements.</p>
+<div class="flex items-center gap-6 text-[11px] font-medium uppercase tracking-widest text-outline">
+<span class="flex items-center gap-2"><strong class="text-on-surface">42</strong> Tasks</span>
+<span class="flex items-center gap-2"><strong class="text-on-surface">0</strong> Blocked</span>
+<span class="flex items-center gap-2">Updated 45m ago</span>
+</div>
+</div>
+<div class="w-full md:w-64 pt-1">
+<p class="text-[10px] font-bold text-outline-variant uppercase tracking-widest mb-2">Next Step</p>
+<p class="text-sm font-medium text-on-surface leading-snug">Finalize validation scripts for staging environment sync.</p>
+</div>
+</div>
+</div>
+<div class="py-8 group hover:bg-surface-container-low/30 transition-colors px-4 -mx-4 border-b border-outline-variant/10">
+<div class="flex flex-wrap items-start justify-between gap-6">
+<div class="flex-1 min-w-[300px]">
+<div class="flex items-center gap-3 mb-1">
+<h3 class="text-lg font-bold font-body text-primary tracking-tight">Security Audit Framework</h3>
+<span class="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider text-error border border-error/20 bg-error-container/10">Blocked</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">Automated compliance mapping for international data protection standards across all microservices.</p>
+<div class="flex items-center gap-6 text-[11px] font-medium uppercase tracking-widest text-outline">
+<span class="flex items-center gap-2"><strong class="text-on-surface">18</strong> Tasks</span>
+<span class="flex items-center gap-2 text-error"><strong class="text-error">3</strong> Blocked</span>
+<span class="flex items-center gap-2">Updated 2h ago</span>
+</div>
+</div>
+<div class="w-full md:w-64 pt-1">
+<p class="text-[10px] font-bold text-outline-variant uppercase tracking-widest mb-2">Primary Blocker</p>
+<p class="text-sm font-medium text-error leading-snug">Awaiting legal clearance for third-party scanning tool integration.</p>
+</div>
+</div>
+</div>
+<div class="py-8 group hover:bg-surface-container-low/30 transition-colors px-4 -mx-4 border-b border-outline-variant/10">
+<div class="flex flex-wrap items-start justify-between gap-6">
+<div class="flex-1 min-w-[300px]">
+<div class="flex items-center gap-3 mb-1">
+<h3 class="text-lg font-bold font-body text-primary tracking-tight">DevOps Pipeline Refactor</h3>
+<span class="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider text-outline border border-outline/20">Stale</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">Optimizing CI/CD build times by implementing advanced caching and parallel test execution.</p>
+<div class="flex items-center gap-6 text-[11px] font-medium uppercase tracking-widest text-outline">
+<span class="flex items-center gap-2"><strong class="text-on-surface">12</strong> Tasks</span>
+<span class="flex items-center gap-2"><strong class="text-on-surface">0</strong> Blocked</span>
+<span class="flex items-center gap-2">Updated 5d ago</span>
+</div>
+</div>
+<div class="w-full md:w-64 pt-1">
+<p class="text-[10px] font-bold text-outline-variant uppercase tracking-widest mb-2">Next Step</p>
+<p class="text-sm font-medium text-on-surface leading-snug">Assign secondary reviewer for pipeline-as-code definitions.</p>
+</div>
+</div>
+</div>
+<div class="py-8 group hover:bg-surface-container-low/30 transition-colors px-4 -mx-4 border-b border-outline-variant/10">
+<div class="flex flex-wrap items-start justify-between gap-6">
+<div class="flex-1 min-w-[300px]">
+<div class="flex items-center gap-3 mb-1">
+<h3 class="text-lg font-bold font-body text-primary tracking-tight">API Documentation Engine</h3>
+<span class="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider text-tertiary border border-tertiary/20 bg-tertiary-container/10">Active</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">Generating real-time interactive developer documentation from live OpenAPI specifications.</p>
+<div class="flex items-center gap-6 text-[11px] font-medium uppercase tracking-widest text-outline">
+<span class="flex items-center gap-2"><strong class="text-on-surface">31</strong> Tasks</span>
+<span class="flex items-center gap-2"><strong class="text-on-surface">0</strong> Blocked</span>
+<span class="flex items-center gap-2">Updated 1h ago</span>
+</div>
+</div>
+<div class="w-full md:w-64 pt-1">
+<p class="text-[10px] font-bold text-outline-variant uppercase tracking-widest mb-2">Next Step</p>
+<p class="text-sm font-medium text-on-surface leading-snug">Integrate with authentication middleware for private endpoints.</p>
+</div>
+</div>
+</div>
+<div class="py-8 group hover:bg-surface-container-low/30 transition-colors px-4 -mx-4 border-b border-outline-variant/10">
+<div class="flex flex-wrap items-start justify-between gap-6">
+<div class="flex-1 min-w-[300px]">
+<div class="flex items-center gap-3 mb-1">
+<h3 class="text-lg font-bold font-body text-primary tracking-tight">Frontend Component Library</h3>
+<span class="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider text-tertiary border border-tertiary/20 bg-tertiary-container/10">Active</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">Standardizing UI patterns across internal tools using a centralized, theme-able CSS framework.</p>
+<div class="flex items-center gap-6 text-[11px] font-medium uppercase tracking-widest text-outline">
+<span class="flex items-center gap-2"><strong class="text-on-surface">54</strong> Tasks</span>
+<span class="flex items-center gap-2"><strong class="text-on-surface">0</strong> Blocked</span>
+<span class="flex items-center gap-2">Updated 15m ago</span>
+</div>
+</div>
+<div class="w-full md:w-64 pt-1">
+<p class="text-[10px] font-bold text-outline-variant uppercase tracking-widest mb-2">Next Step</p>
+<p class="text-sm font-medium text-on-surface leading-snug">Export final design system tokens for mobile engineering team.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-12 flex justify-center">
+<button class="text-[11px] font-bold uppercase tracking-widest text-outline hover:text-primary transition-colors flex items-center gap-2">
+                    Load Archived Projects
+                    <span class="material-symbols-outlined text-[14px]" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</main>
+</div>
+</body></html>

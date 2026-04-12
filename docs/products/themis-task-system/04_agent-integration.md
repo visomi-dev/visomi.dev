@@ -1,4 +1,4 @@
-# Agent Integration Model
+# Agent Integration Model: Themis
 
 ## Why Agents Matter Here
 
@@ -69,7 +69,7 @@ Example shape:
   "requirements": ["capture summary", "capture blocker", "capture next step"],
   "acceptanceCriteria": ["updates render chronologically", "new updates save without page reload"],
   "dependencies": ["task detail API"],
-  "references": ["/docs/products/task-system/03_workflow.md"],
+  "references": ["/docs/products/themis-task-system/03_workflow.md"],
   "latestUpdate": {
     "summary": "API shape is ready.",
     "nextStep": "Implement frontend composer."
