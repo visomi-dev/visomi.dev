@@ -13,3 +13,4 @@ This directory contains product concepts, PRDs, architecture notes, and supporti
 - `themis-task-system/09_stitch-auth-prompts.md` - Google Stitch prompt for Themis sign-in
 - `themis-task-system/10_stitch-dashboard-prompt.md` - Google Stitch prompt for the Themis main dashboard visual exploration
 - `themis-task-system/11_stitch-projects-overview-prompt.md` - Google Stitch prompt for the preferred Themis projects-first main screen exploration
+- `themis-task-system/12_backend-content-model.md` - backend recommendation for markdown-backed content, structured persistence, and revision history in Themis
