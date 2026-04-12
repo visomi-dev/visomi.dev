@@ -16,7 +16,26 @@ Not closer to:
 
 ## Primary Views
 
-### 1. Inbox / Triage View
+### 1. Projects View
+
+Purpose:
+
+- give a strong first impression
+- orient the user across multiple active projects
+- make it easy to enter the right workstream before looking at individual tasks
+
+Should show:
+
+- project name
+- short project summary
+- current health or momentum signal
+- task counts by execution state
+- notable blocker or next-step signal
+- recent activity age
+
+This should become the recommended first screen.
+
+### 2. Inbox / Triage View
 
 Purpose:
 
@@ -31,7 +50,7 @@ Should show:
 - owner
 - missing definition markers
 
-### 2. Task Detail View
+### 3. Task Detail View
 
 Purpose:
 
@@ -50,7 +69,7 @@ Should show:
 
 This is the core screen.
 
-### 3. Today View
+### 4. Today View
 
 Purpose:
 
@@ -63,7 +82,7 @@ Should show:
 - blocked tasks
 - stale tasks with no recent update
 
-### 4. Initiative View
+### 5. Initiative View
 
 Purpose:
 

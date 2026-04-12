@@ -7,7 +7,7 @@ This prompt is for the sign-in screen of Themis.
 They intentionally avoid repeating the full visual-system guidance already defined in:
 
 - `07_visual-discovery.md`
-- `08_stitch-dashboard-prompt.md`
+- `10_stitch-dashboard-prompt.md`
 
 Use the existing product design direction and design system context.
 
@@ -57,3 +57,42 @@ A sign-in screen for Themis.
 
 Content
 Create one sign-in screen only. Include the Themis brand, a heading, short supporting text, email field, password field, show or hide password control, remember me option, forgot password link, primary sign-in button, create account link, and a subtle area for validation or error messages. Keep the layout centered, calm, minimal, and highly structured. Avoid marketing content, extra panels, or crowded UI.
+
+## Current Exploration
+
+### Screen
+
+![Themis sign-in exploration](./assets/themis-sign-in.png)
+
+### Exported Assets
+
+- Screenshot: `./assets/themis-sign-in.png`
+- HTML export: `./assets/themis-sign-in.html`
+- Approved Stitch screen: `Themis Sign In (Simplified)`
+- Approved Stitch screen ID: `c8ad8798d7d047d184b696eb3cbfd096`
+
+## Review
+
+The sign-in direction is now approved for Themis.
+
+### Approved Qualities
+
+- the neutral palette is aligned with Themis
+- the single-column composition is correct
+- the overall restraint avoids generic SaaS auth patterns
+- the input styling language fits the product system
+- the page feels calm, exact, and product-focused
+- the composition is tight enough to keep sign-in fast and clear
+
+### What To Preserve
+
+1. a single-column centered layout
+2. one quiet primary form panel
+3. plain language and straightforward field labels
+4. limited secondary actions
+5. minimal decoration and no extra marketing sections
+
+### Documentation Status
+
+- status: approved direction
+- use this screen as the auth baseline for future sign-up, recovery, and verification screens

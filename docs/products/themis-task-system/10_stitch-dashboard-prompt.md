@@ -59,3 +59,41 @@ Calm operational notebook. Neutral palette, restrained accents, typography-led h
 
 Content
 Create one main dashboard screen only. Include a top header, quick-create composer, filter row, and main task overview grouped into Ready, In Progress, Blocked, and Stale sections. Each task item should show title, summary, status, priority, owner, latest update age, and completeness markers. Add a secondary summary rail for blockers, next steps, recent decisions, and lightweight metrics.
+
+## Current Exploration
+
+### Screen
+
+![Operational Dashboard exploration](./assets/operational-dashboard.png)
+
+### Exported Assets
+
+- Screenshot: `./assets/operational-dashboard.png`
+- HTML export: `./assets/operational-dashboard.html`
+
+### Review Notes
+
+What is working well:
+
+- strong visual hierarchy
+- calm neutral palette
+- clear active-work grouping
+- good scanability for task rows
+- the overall system tone feels close to Themis
+
+What is not working well enough:
+
+- the screen still feels too overloaded for a first impression
+- too many simultaneous control points make it drift toward a familiar PM dashboard pattern
+- task density dominates too early before the user is oriented across projects
+
+What to preserve in later iterations:
+
+- the dashboard structure
+- the restrained color usage
+- the dense but readable task summaries
+- the balance between overview and utility panels
+
+Recommended conclusion:
+
+Use this exploration as a reference for tone and component language, but move the next main-screen exploration to a **Projects Overview** entry screen instead of another task-heavy dashboard.

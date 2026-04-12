@@ -117,7 +117,44 @@ Risk:
 
 ## First Screens To Design
 
-### 1. Inbox / Triage
+## Screen Order For Documentation And Review
+
+Use this sequence when reviewing or presenting the current Themis visual explorations:
+
+1. Landing Page
+2. Sign In
+3. Dashboard
+4. Projects Overview
+
+The initial dashboard exploration confirmed an important risk: when Themis starts from active-task density, the first impression drifts toward an overloaded PM tool.
+
+Because the user may be managing many projects at the same time, the first screen should orient around projects first, then drill into tasks.
+
+### 1. Projects Overview
+
+Goal:
+
+- give an immediate sense of control across multiple active projects
+- create a stronger first impression than a dense task dashboard
+- help the user enter the correct workstream quickly
+
+Must visually emphasize:
+
+- project name and concise summary
+- current health or momentum
+- active task counts by state
+- most important next step or blocker
+- recent activity signal
+
+Recommended composition:
+
+- strong page heading and short workspace context
+- vertical or masonry-like list of project blocks
+- each project block should feel like a calm operational briefing, not a KPI card
+- each block should allow quick entry into project detail or active tasks
+- optional light sidebar for cross-project signals only if it stays quiet
+
+### 2. Inbox / Triage
 
 Goal:
 
@@ -137,13 +174,13 @@ Recommended composition:
 - vertical list of tasks with definition completeness signal
 - right-side preview panel on desktop optional, stacked on mobile
 
-### 2. Task Detail
+### 3. Task Detail
 
 Goal:
 
 - become the single source of truth for one task
 
-This should be the first high-fidelity screen.
+This should be the second high-fidelity screen after projects overview.
 
 Must visually emphasize:
 
@@ -161,7 +198,7 @@ Recommended composition:
 - secondary rail for metadata, linked items, completeness, dependencies
 - update composer visually separated, but always easy to reach
 
-### 3. Today View
+### 4. Today View
 
 Goal:
 
@@ -180,7 +217,7 @@ Recommended composition:
 - very concise task rows or compact cards
 - age of latest update as a key signal
 
-### 4. Initiative View
+### 5. Initiative View
 
 Goal:
 
@@ -355,6 +392,6 @@ The task detail screen is the product's center of gravity. Once that screen is v
 
 ## Recommendation
 
-Start with **Operational Notebook** as the main direction and design the **Task Detail** screen first.
+Start with **Operational Notebook** as the main direction and design the **Projects Overview** screen first.
 
-That path is the closest match to the current PRD, workflow, and UX model. It gives us a clear visual center, keeps the interface calm, and avoids drifting into generic project-management patterns too early.
+That path gives Themis a stronger first impression, reflects the reality of managing multiple concurrent projects, and reduces the risk of the product looking like another crowded task dashboard. After that, design the **Task Detail** screen as the operational center of gravity.
