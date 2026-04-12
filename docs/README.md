@@ -14,5 +14,5 @@ Documentation in this repository is organized by concern.
 
 - `architecture/monolith-contact-architecture.md`
 - `architecture/turso-env.md`
-- `products/task-system/01_prd.md`
+- `products/themis-task-system/01_prd.md`
 - `redesign/projects.md`
