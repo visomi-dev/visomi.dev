@@ -706,8 +706,8 @@ const content: Record<Locale, SiteContent> = {
         'Built a remittance application for Bolivia using React, Express, Supabase, BullMQ, and Bridge integrations.',
       ],
       education: {
-        title: 'Technical high school in computing (through 4th semester)',
-        school: 'General high school diploma obtained',
+        title: 'General high school diploma',
+        school: 'Technical high school in computing attended through 4th semester',
         date: 'Completed',
       },
       languages: [
@@ -1073,8 +1073,8 @@ const content: Record<Locale, SiteContent> = {
         'Construccion de una aplicacion de remesas para Bolivia usando React, Express, Supabase, BullMQ e integraciones con Bridge.',
       ],
       education: {
-        title: 'Bachillerato tecnico en computacion (hasta cuarto semestre)',
-        school: 'Bachillerato general obtenido',
+        title: 'Bachillerato general',
+        school: 'Bachillerato tecnico en computacion cursado hasta cuarto semestre',
         date: 'Completado',
       },
       languages: ['Espanol: Nativo', 'Ingles: Dominio profesional de trabajo (aprox. B2 en lectura y escritura)'],
