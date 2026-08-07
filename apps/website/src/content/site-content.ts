@@ -576,6 +576,7 @@ const content: Record<Locale, SiteContent> = {
             'Took the scraping initiative from architecture through MVP in 3 months and production approval in 6 months, with the solution operating for roughly 2 years on lightweight JSON-based maintenance updates.',
             'Created reusable frontend and backend foundations, including shared templates, validation layers, utilities, and OpenAPI-ready middleware to standardize delivery across teams.',
             'Led the evolution from fragmented applications to Nx monorepo and microfrontend patterns for better scalability, release management, and code reuse.',
+            'Over the last year, designed and built a platform for AI agents and agent-powered workflows, combining CrewAI orchestration with native model-provider SDKs and reusable domain services.',
           ],
         },
         {
@@ -705,9 +706,9 @@ const content: Record<Locale, SiteContent> = {
         'Built a remittance application for Bolivia using React, Express, Supabase, BullMQ, and Bridge integrations.',
       ],
       education: {
-        title: 'Technical high school studies in computing',
-        school: 'Completed through 4th semester',
-        date: 'Ongoing self-taught path',
+        title: 'Technical high school in computing (through 4th semester)',
+        school: 'General high school diploma obtained',
+        date: 'Completed',
       },
       languages: [
         'Spanish: Native',
@@ -942,6 +943,7 @@ const content: Record<Locale, SiteContent> = {
             'Lleve la iniciativa desde la arquitectura hasta un MVP en 3 meses y a aprobacion de produccion en 6 meses, operando despues por alrededor de 2 anos con mantenimiento ligero basado en reglas JSON.',
             'Cree bases reutilizables de frontend y backend, incluyendo plantillas compartidas, capas de validacion, utilidades y middleware preparado para OpenAPI para estandarizar la entrega entre equipos.',
             'Impulse la evolucion desde aplicaciones fragmentadas hacia un monorepo con Nx y patrones de microfrontend para mejorar escalabilidad, despliegues y reutilizacion.',
+            'Durante el ultimo ano, disene y construi una plataforma para agentes de IA y flujos impulsados por agentes, combinando orquestacion con CrewAI, SDKs nativos de proveedores de modelos y servicios de dominio reutilizables.',
           ],
         },
         {
@@ -1071,9 +1073,9 @@ const content: Record<Locale, SiteContent> = {
         'Construccion de una aplicacion de remesas para Bolivia usando React, Express, Supabase, BullMQ e integraciones con Bridge.',
       ],
       education: {
-        title: 'Estudios tecnicos de preparatoria en computacion',
-        school: 'Completados hasta cuarto semestre',
-        date: 'Ruta autodidacta continua',
+        title: 'Bachillerato tecnico en computacion (hasta cuarto semestre)',
+        school: 'Bachillerato general obtenido',
+        date: 'Completado',
       },
       languages: ['Espanol: Nativo', 'Ingles: Dominio profesional de trabajo (aprox. B2 en lectura y escritura)'],
       footerCopyright: `© ${year} MICHAEL VILLALBA. TODOS LOS DERECHOS RESERVADOS.`,
