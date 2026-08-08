@@ -10,7 +10,184 @@ const { locale } = Astro.props;
 const { resume } = getSiteContent(locale);
 ---
 
-<main class="min-h-screen-nav mt-20 grow px-6 pt-12 pb-24">
+<style is:inline>
+  @page {
+    size: A4;
+    margin: 14mm 16mm;
+  }
+
+  @media print {
+    html {
+      background: #ffffff !important;
+      color: #111827 !important;
+      font-size: 10pt;
+    }
+
+    body {
+      background: #ffffff !important;
+      color: #111827 !important;
+      padding-top: 0 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body > div {
+      min-height: 0 !important;
+    }
+
+    [data-print-hidden],
+    #light-bg,
+    #dark-bg,
+    canvas,
+    .page-navigation-loader-overlay,
+    .print\:hidden {
+      display: none !important;
+    }
+
+    .resume-document {
+      min-height: 0 !important;
+      margin-top: 0 !important;
+      padding: 0 !important;
+    }
+
+    .resume-document > div {
+      max-width: none !important;
+    }
+
+    .resume-document > div > header {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.9fr) !important;
+    }
+
+    .resume-document h1 {
+      color: #111827 !important;
+      font-size: 24pt !important;
+      line-height: 1 !important;
+    }
+
+    .resume-document h2,
+    .resume-document h3,
+    .resume-document p,
+    .resume-document li,
+    .resume-document span,
+    .resume-document a {
+      color: #1f2937 !important;
+    }
+
+    .resume-document header {
+      margin-bottom: 5mm !important;
+      gap: 5mm !important;
+    }
+
+    .resume-document section {
+      margin-bottom: 4mm !important;
+      padding-top: 2mm !important;
+      break-inside: auto;
+    }
+
+    .resume-document article,
+    .resume-document li {
+      break-inside: avoid;
+    }
+
+    .resume-document header > div {
+      break-inside: avoid;
+    }
+
+    .resume-document .space-y-16 > :not(:first-child) {
+      margin-top: 3mm !important;
+    }
+
+    .resume-document .space-y-3 > :not(:first-child) {
+      margin-top: 1.5mm !important;
+    }
+
+    .resume-document .mb-12 {
+      margin-bottom: 2mm !important;
+    }
+
+    .resume-document .mb-16 {
+      margin-bottom: 2mm !important;
+    }
+
+    .resume-document .mb-20 {
+      margin-bottom: 4mm !important;
+    }
+
+    .resume-document .mb-4 {
+      margin-bottom: 1.5mm !important;
+    }
+
+    .resume-document .mb-6 {
+      margin-bottom: 2mm !important;
+    }
+
+    .resume-document .p-6 {
+      padding: 2.5mm !important;
+    }
+
+    .resume-document .text-base {
+      font-size: 8.5pt !important;
+      line-height: 1.35 !important;
+    }
+
+    .resume-document .text-lg {
+      font-size: 9.5pt !important;
+      line-height: 1.4 !important;
+    }
+
+    .resume-document .leading-relaxed {
+      line-height: 1.4 !important;
+    }
+
+    .resume-document .text-2xl {
+      font-size: 12pt !important;
+    }
+
+    .resume-document .text-xl {
+      font-size: 10pt !important;
+    }
+
+    .resume-document .text-sm {
+      font-size: 8pt !important;
+    }
+
+    .resume-document .border-border-light,
+    .resume-document .dark\:border-border-dark {
+      border-color: #d1d5db !important;
+    }
+
+    .resume-document section,
+    .resume-document article,
+    .resume-document header > div:last-child,
+    .resume-document span {
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    .resume-document section {
+      border-top: 0 !important;
+    }
+
+    .resume-document article,
+    .resume-document header > div:last-child {
+      padding: 0 !important;
+    }
+
+    .resume-document li {
+      border-left: 0 !important;
+      padding-left: 0 !important;
+    }
+
+    .resume-document span {
+      padding: 0 !important;
+    }
+  }
+</style>
+
+<main class="resume-document min-h-screen-nav mt-20 grow px-6 pt-12 pb-24">
   <div class="mx-auto max-w-5xl">
     <div class="text-muted-light dark:text-muted-dark mb-16 font-mono text-xs tracking-widest uppercase">
       {resume.pageLabel}
@@ -205,12 +382,3 @@ const { resume } = getSiteContent(locale);
     </section>
   </div>
 </main>
-
-<footer class="border-border-light dark:border-border-dark border-t px-6 py-12">
-  <div
-    class="mx-auto flex max-w-5xl flex-col items-center justify-between font-mono text-xs text-neutral-400 md:flex-row"
-  >
-    <p>{resume.footerCopyright}</p>
-    <p class="mt-2 md:mt-0">{resume.footerNote}</p>
-  </div>
-</footer>

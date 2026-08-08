@@ -2,14 +2,15 @@ FROM node:24-bookworm-slim AS base
 
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
+ENV NX_DAEMON=false
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
 
 FROM base AS deps
 
 WORKDIR /workspace
 
-COPY package.json pnpm-lock.yaml nx.json tsconfig.base.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json ./
 
 RUN pnpm install --frozen-lockfile
 
@@ -31,7 +32,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 RUN pnpm install --frozen-lockfile --prod
 

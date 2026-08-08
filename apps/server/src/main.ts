@@ -16,6 +16,43 @@ type AstroMiddlewareModule = {
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ? Number(process.env.PORT) : 8080;
 
+const MANY_TRAILING_SLASHES = /\/{2,}$/g;
+const WITH_FILE_EXT = /\/[^/]+\.\w+$/;
+const INTERNAL_PREFIXES = new Set(['/_', '/@', '/.', '//']);
+
+const isInternalPath = (path: string) => INTERNAL_PREFIXES.has(path.slice(0, 2));
+const hasFileExtension = (path: string) => WITH_FILE_EXT.test(path);
+
+const redirectTrailingSlash = (req: Request, res: Response, next: NextFunction) => {
+  const pathname = req.path;
+
+  if (pathname === '/' || isInternalPath(pathname)) {
+    next();
+    return;
+  }
+
+  const collapsed = pathname.replace(MANY_TRAILING_SLASHES, '/');
+  if (collapsed !== pathname) {
+    const status = req.method === 'GET' ? 301 : 308;
+    res
+      .status(status)
+      .location(collapsed + req.url.slice(req.path.length))
+      .end();
+    return;
+  }
+
+  if (!collapsed.endsWith('/') && !hasFileExtension(collapsed)) {
+    const status = req.method === 'GET' ? 301 : 308;
+    res
+      .status(status)
+      .location(collapsed + '/' + req.url.slice(req.path.length))
+      .end();
+    return;
+  }
+
+  next();
+};
+
 const normalizeRuntimeEnv = () => {
   const remoteUrl = process.env['ASTRO_DB_REMOTE_URL'];
 
@@ -90,6 +127,7 @@ const bootstrap = async () => {
       redirect: false,
     }),
   );
+  app.use(redirectTrailingSlash);
   app.use((req, res, next) => astroRequestHandler(req, res, next));
 
   app.listen(port, host, () => {
