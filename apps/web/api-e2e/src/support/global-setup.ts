@@ -6,8 +6,11 @@ import { waitForPortOpen } from '@nx/node/utils';
 
 /* eslint-disable */
 var __TEARDOWN_MESSAGE__: string;
+declare global {
+  var __TEARDOWN_MESSAGE__: string;
+}
 const API_SERVER_PID_PATH = resolve(__dirname, '../../.api-e2e-server.pid');
-const API_SERVER_ENTRYPOINT = resolve(__dirname, '../../../../dist/apps/web/api/main.js');
+const API_SERVER_ENTRYPOINT = resolve(__dirname, '../../../../../dist/apps/web/api/main.js');
 
 module.exports = async function () {
   console.log('\nSetting up...\n');
