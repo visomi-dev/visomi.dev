@@ -42,9 +42,11 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm exec nx run website:build-static
+        run: pnpm exec nx run site:build-static
         env:
           BASE_URL: /visomi.dev/
+          ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
+          ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -52,7 +54,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/apps/website
+          path: dist/apps/web/site
 
       - name: Deploy to GitHub Pages
         id: deployment
