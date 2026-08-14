@@ -12,7 +12,7 @@
       "dependsOn": [
         "^build",
         {
-          "projects": ["api", "website", "social-images"],
+          "projects": ["api", "app", "site", "social-images"],
           "target": "build",
           "params": "forward"
         }
