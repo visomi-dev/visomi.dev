@@ -471,7 +471,7 @@ const content: Record<Locale, SiteContent> = {
           role: 'Tech Lead / Senior Full-Stack Engineer',
           company: 'AB InBev',
           description:
-            'Leading frontend and backend architecture for internal platforms, with reusable foundations, Nx monorepos, microfrontends, BSD delivery, and GenAI initiatives.',
+            'Leading frontend and backend architecture for internal platforms, with reusable foundations, Nx monorepos, microfrontends, an operational continuity platform between ERP systems and frontline operations, and GenAI initiatives.',
         },
         {
           year: '2021',
@@ -572,7 +572,7 @@ const content: Record<Locale, SiteContent> = {
           location: 'Mexico',
           items: [
             'Led frontend and backend architecture for internal platforms, prioritizing reusable foundations, design systems, Nx monorepos, microfrontend ecosystems, and clear API boundaries.',
-            'Designed the BSD architecture and delivery model across frontend and backend layers, establishing shared templates, validation, middleware, domain services, and OpenAPI-ready contracts.',
+            'Designed the architecture and delivery model for an operational continuity platform between ERP systems and operations, keeping work moving when ERP connectivity was unavailable, while establishing shared templates, validation, middleware, domain services, and OpenAPI-ready contracts.',
             'Led the evolution from fragmented applications to Nx-based monorepo and microfrontend patterns for better scalability, release management, and code reuse.',
             'Designed and built a GenAI platform for agent-powered workflows, combining React operator surfaces, Python domain services, CrewAI orchestration, native model-provider SDKs, and reusable domain services.',
             'Delivered a configurable web-scraping engine as a focused transitional automation initiative using NestJS, Puppeteer, BullMQ, Redis, and SQLite; it reached MVP in 3 months and production approval in 6 months.',
@@ -737,10 +737,10 @@ const content: Record<Locale, SiteContent> = {
           title: 'Automation, reuse, and platform thinking at scale',
           badge: 'AB INBEV // ACTIVE',
           description:
-            'At AB InBev, the focus became architecture that enables multiple teams to deliver: BSD frontend and backend foundations, a design system, Nx-based monorepo and microfrontend patterns, and a GenAI platform combining React frontends, Python services, and agent-based workflows. Web scraping was a focused transitional automation project within that broader platform work.',
+            'At AB InBev, the focus became architecture that enables multiple teams to deliver: frontend and backend foundations for an operational continuity platform between ERP systems and frontline operations, a design system, Nx-based monorepo and microfrontend patterns, and a GenAI platform combining React frontends, Python services, and agent-based workflows. Web scraping was a focused transitional automation project within that broader platform work.',
           metrics: [
             { label: 'MVP Window', value: '3 months' },
-            { label: 'Architecture Focus', value: 'BSD platform', meta: 'frontend + backend foundations' },
+            { label: 'Architecture Focus', value: 'Operational continuity', meta: 'ERP + frontline operations' },
             { label: 'Current Focus', value: 'GenAI platform', meta: 'React + Python + agents' },
           ],
           progress: [
@@ -826,7 +826,7 @@ const content: Record<Locale, SiteContent> = {
           role: 'Lider tecnico / Ingeniero full-stack senior',
           company: 'AB InBev',
           description:
-            'Liderando la arquitectura frontend y backend de plataformas internas, con bases reutilizables, monorepos Nx, microfrontends, entregas para BSD e iniciativas de GenAI.',
+            'Liderando la arquitectura frontend y backend de plataformas internas, con bases reutilizables, monorepos Nx, microfrontends, continuidad operativa entre ERP y operación e iniciativas de GenAI.',
         },
         {
           year: '2021',
@@ -939,7 +939,7 @@ const content: Record<Locale, SiteContent> = {
           location: 'Mexico',
           items: [
             'Lidere la arquitectura frontend y backend de plataformas internas, priorizando bases reutilizables, sistemas de diseno, monorepos Nx, microfrontends y limites claros entre dominios.',
-            'Disene la arquitectura y el modelo de entrega de BSD entre frontend y backend, con plantillas compartidas, validacion, middleware, servicios de dominio y contratos preparados para OpenAPI.',
+            'Disene la arquitectura y el modelo de entrega de una plataforma de continuidad operativa entre sistemas ERP y la operación, diseñada para mantener el trabajo activo cuando se perdía la conexión con el ERP, con plantillas compartidas, validación, middleware, servicios de dominio y contratos preparados para OpenAPI.',
             'Impulse la evolucion desde aplicaciones fragmentadas hacia un monorepo con Nx y patrones de microfrontend para mejorar escalabilidad, despliegues y reutilizacion.',
             'Disene y construi una plataforma de GenAI para flujos impulsados por agentes, combinando superficies React, servicios de dominio en Python, CrewAI, SDKs nativos de modelos y servicios reutilizables.',
             'Entregue un motor de web scraping configurable como iniciativa de automatizacion transitoria y acotada con NestJS, Puppeteer, BullMQ, Redis y SQLite; llego a MVP en 3 meses y a produccion en 6 meses.',
@@ -1101,10 +1101,10 @@ const content: Record<Locale, SiteContent> = {
           title: 'Automatizacion, reutilizacion y pensamiento de plataforma a escala',
           badge: 'AB INBEV // ACTIVO',
           description:
-            'En AB InBev el enfoque se volvio mas amplio y mas duradero: arquitectura frontend y backend para BSD, un sistema de diseno con bases reutilizables para multiples equipos, patrones de monorepo con Nx y microfrontends, y una plataforma de GenAI que combina frontends en React, servicios en Python y flujos con agentes. El scraping fue una automatizacion transitoria dentro de ese trabajo, no el centro de mi perfil.',
+            'En AB InBev el enfoque se volvio mas amplio y mas duradero: arquitectura frontend y backend para una plataforma de continuidad operativa entre sistemas ERP y la operación, un sistema de diseno con bases reutilizables para multiples equipos, patrones de monorepo con Nx y microfrontends, y una plataforma de GenAI que combina frontends en React, servicios en Python y flujos con agentes. El scraping fue una automatizacion transitoria dentro de ese trabajo, no el centro de mi perfil.',
           metrics: [
             { label: 'Ventana MVP', value: '3 meses' },
-            { label: 'Foco de arquitectura', value: 'Plataforma BSD', meta: 'frontend + backend' },
+            { label: 'Foco de arquitectura', value: 'Continuidad operativa', meta: 'ERP + operación' },
             { label: 'Enfoque actual', value: 'Plataforma GenAI', meta: 'React + Python + agentes' },
           ],
           progress: [

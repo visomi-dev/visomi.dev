@@ -20,7 +20,7 @@ No todo ha sido éxito inmediato. Etapas en empresas de alto crecimiento como **
 
 ## **Enfoque actual: Escala y Mentoría**
 
-En mi etapa más reciente en **AB InBev**, me he especializado en arquitectura frontend y backend para plataformas internas: bases reutilizables para BSD, sistemas de diseño, monorepos con Nx y ecosistemas de microfrontends. Actualmente, diseño una plataforma de GenAI con servicios en Python, superficies React y flujos con agentes para hacer más capaces los productos y más productivo el desarrollo. El web scraping fue una automatización transitoria y acotada dentro de ese recorrido, no el centro de mi perfil.
+En mi etapa más reciente en **AB InBev**, me he especializado en arquitectura frontend y backend para plataformas internas: bases reutilizables y una plataforma de continuidad operativa entre sistemas ERP y la operación, diseñada para mantener el trabajo activo cuando se perdía la conexión con el ERP, además de sistemas de diseño, monorepos con Nx y ecosistemas de microfrontends. Actualmente, diseño una plataforma de GenAI con servicios en Python, superficies React y flujos con agentes para hacer más capaces los productos y más productivo el desarrollo. El web scraping fue una automatización transitoria y acotada dentro de ese recorrido, no el centro de mi perfil.
 
 Sin embargo, de lo que más me enorgullezco no es de una tecnología en particular, sino de mi tiempo como mentor en **Kodemia**. Ver a desarrolladores que estuvieron a mi cargo crecer hasta convertirse en Tech Leads es mi mayor logro profesional.
 
