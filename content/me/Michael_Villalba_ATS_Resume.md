@@ -26,8 +26,8 @@ Full-stack software engineer and technical leader with 11+ years of experience b
 **Tech Lead / Senior Full-Stack Engineer | AB InBev (Grupo Modelo)**  
 _Aug 2022 \- Present | Mexico_
 
-- Lead frontend and backend architecture for enterprise internal platforms, prioritizing reusable foundations, design systems, Nx monorepos, microfrontend ecosystems, BSD delivery, and GenAI initiatives.
-- Designed the BSD architecture and delivery model across frontend and backend layers, establishing shared templates, validation, middleware, domain services, and OpenAPI-ready contracts for multiple teams.
+- Lead frontend and backend architecture for enterprise internal platforms, prioritizing reusable foundations, design systems, Nx monorepos, microfrontend ecosystems, operational continuity, and GenAI initiatives.
+- Designed the architecture and delivery model for an operational continuity platform between ERP systems and operations, keeping work moving when ERP connectivity was unavailable, while establishing shared templates, validation, middleware, domain services, and OpenAPI-ready contracts for multiple teams.
 - Led the evolution from fragmented applications to Nx-based monorepo and microfrontend patterns for better scalability, release management, and code reuse.
 - Designed and built a GenAI platform using React operator surfaces, Python domain services, Nx utilities, native model-provider SDKs, and agent-based approaches such as CrewAI to improve product capabilities and developer productivity.
 - Delivered a configurable web-scraping engine as a focused transitional automation initiative using NestJS, Puppeteer, BullMQ, Redis, and SQLite; it reached MVP in 3 months and production approval in 6 months.
