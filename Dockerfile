@@ -49,7 +49,7 @@ FROM runtime-base AS server-runtime
 
 EXPOSE 8080
 
-CMD ["node", "dist/apps/server/main.js"]
+CMD ["node", "dist/apps/web/server/main.js"]
 
 FROM runtime-base AS worker-runtime
 

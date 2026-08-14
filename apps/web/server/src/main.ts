@@ -49,7 +49,7 @@ const apiEntryFile = resolve(serverDistFolder, '..', 'api', 'main.js');
 const angularEntryFile = resolve(serverDistFolder, '..', 'app', 'server', 'server.mjs');
 const astroClientFolder = resolve(serverDistFolder, '..', 'site', 'client');
 const astroEntryFile = resolve(serverDistFolder, '..', 'site', 'server', 'entry.mjs');
-const workerEntryFile = resolve(serverDistFolder, '..', 'worker', 'apps', 'worker', 'src', 'main.js');
+const workerEntryFile = resolve(serverDistFolder, '..', '..', 'worker', 'main.js');
 
 let httpServer: ReturnType<Express['listen']> | undefined;
 let workerProcess: ChildProcess | undefined;
