@@ -35,9 +35,9 @@ export class Navbar {
   }
 
   private getLocaleHref(target: 'en' | 'es') {
-    const currentUrl = new URL(this.currentPath() || '/', 'http://localhost');
+    const currentUrl = new URL(this.currentPath() ?? '/', 'http://localhost');
     const pathname = this.stripLocalePrefix(currentUrl.pathname);
-    const normalizedPathname = pathname || '/';
+    const normalizedPathname = pathname ?? '/';
     const urlSuffix = `${currentUrl.search}${currentUrl.hash}`;
 
     if (target === 'es') {

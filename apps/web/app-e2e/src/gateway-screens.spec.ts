@@ -10,7 +10,7 @@ test.describe('gateway application screens', () => {
       expect(response?.ok()).toBe(true);
       await expect(page.locator('app-root, main').first()).toBeVisible();
       await page.screenshot({
-        path: `artifacts/apps/web/app-e2e/gateway${route.replaceAll('/', '-') || 'root'}.png`,
+        path: `artifacts/apps/web/app-e2e/gateway${route.replaceAll('/', '-') ?? 'root'}.png`,
         fullPage: true,
       });
     });

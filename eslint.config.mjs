@@ -96,6 +96,17 @@ export default [
     },
   },
   {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
+    rules: {
+      '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    },
+  },
+  {
     files: ['apps/website/**/*.ts'],
     rules: {
       'import-x/no-unresolved': [

@@ -22,7 +22,7 @@ test.describe('gateway public screens', () => {
       await expect(page.locator('main, section').first()).toBeVisible();
       await expect(page.locator('h1').first()).toBeVisible();
       await page.screenshot({
-        path: `artifacts/apps/web/site-e2e/gateway${route.replaceAll('/', '-') || 'root'}.png`,
+        path: `artifacts/apps/web/site-e2e/gateway${route.replaceAll('/', '-') ?? 'root'}.png`,
         fullPage: true,
       });
     });

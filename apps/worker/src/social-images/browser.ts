@@ -32,20 +32,18 @@ const findExecutablePath = async (configuredPath?: string) => {
 };
 
 const getBrowser = async (configuredPath?: string) => {
-  if (!browserPromise) {
-    browserPromise = findExecutablePath(configuredPath)
-      .then((executablePath) =>
-        launch({
-          args: ['--disable-dev-shm-usage', '--no-sandbox', '--disable-setuid-sandbox'],
-          executablePath,
-          headless: true,
-        }),
-      )
-      .catch((error) => {
-        browserPromise = null;
-        throw error;
-      });
-  }
+  browserPromise ??= findExecutablePath(configuredPath)
+    .then((executablePath) =>
+      launch({
+        args: ['--disable-dev-shm-usage', '--no-sandbox', '--disable-setuid-sandbox'],
+        executablePath,
+        headless: true,
+      }),
+    )
+    .catch((error) => {
+      browserPromise = null;
+      throw error;
+    });
 
   return browserPromise;
 };
