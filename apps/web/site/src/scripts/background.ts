@@ -4,16 +4,86 @@ const basePath = import.meta.env.BASE_URL;
 const vertexShaderUrl = `${basePath}assets/home/background/background.vert`;
 const fragmentShaderUrl = `${basePath}assets/home/background/background.frag`;
 const timeStep = 1 / 60;
+const maxPixelRatio = 1.5;
 
-let scene: THREE.Scene | undefined;
-let camera: THREE.OrthographicCamera | undefined;
-let renderer: THREE.WebGLRenderer | undefined;
-let material: THREE.ShaderMaterial | undefined;
-let geometry: THREE.PlaneGeometry | undefined;
-let mesh: THREE.Mesh | undefined;
-let isThreeInitialized = false;
+type BackgroundState = {
+  scene: THREE.Scene;
+  camera: THREE.OrthographicCamera;
+  renderer: THREE.WebGLRenderer;
+  material: THREE.ShaderMaterial;
+  resolution: THREE.Vector2;
+};
+
+type Cleanup = () => void;
+
+let state: BackgroundState | null = null;
+let frameId: number | null = null;
+let isRunning = false;
+const cleanups: Cleanup[] = [];
+
+const stopLoop = () => {
+  isRunning = false;
+  if (frameId !== null) {
+    window.cancelAnimationFrame(frameId);
+    frameId = null;
+  }
+};
+
+const startLoop = () => {
+  if (!state || isRunning) {
+    return;
+  }
+
+  isRunning = true;
+
+  const tick = () => {
+    if (!isRunning || !state) {
+      return;
+    }
+
+    state.material.uniforms.iTime.value += timeStep;
+    state.renderer.render(state.scene, state.camera);
+    frameId = window.requestAnimationFrame(tick);
+  };
+
+  frameId = window.requestAnimationFrame(tick);
+};
+
+const syncLoop = (darkBackground: HTMLElement | null) => {
+  if (!state) {
+    return;
+  }
+
+  const shouldRender = !document.hidden && darkBackground !== null && !darkBackground.classList.contains('hidden');
+
+  if (shouldRender) {
+    startLoop();
+    return;
+  }
+
+  stopLoop();
+};
+
+const teardown = () => {
+  stopLoop();
+
+  while (cleanups.length > 0) {
+    const cleanup = cleanups.pop();
+    cleanup?.();
+  }
+
+  if (state) {
+    state.renderer.dispose();
+    state.material.dispose();
+    state = null;
+  }
+};
 
 export const initBackground = async () => {
+  if (state) {
+    teardown();
+  }
+
   const lightBackground = document.getElementById('light-bg');
   const darkBackground = document.getElementById('dark-bg');
 
@@ -22,7 +92,6 @@ export const initBackground = async () => {
   }
 
   const html = document.documentElement;
-  // Initial load: show the correct background immediately without animation
   const isDarkOnLoad = html.classList.contains('dark');
 
   if (isDarkOnLoad) {
@@ -35,7 +104,7 @@ export const initBackground = async () => {
 
   let currentTheme: 'light' | 'dark' = isDarkOnLoad ? 'dark' : 'light';
 
-  const observer = new MutationObserver(() => {
+  const themeObserver = new MutationObserver(() => {
     const isDark = html.classList.contains('dark');
     const nextTheme: 'light' | 'dark' = isDark ? 'dark' : 'light';
 
@@ -54,6 +123,7 @@ export const initBackground = async () => {
 
       window.setTimeout(() => {
         lightBackground.classList.add('hidden');
+        syncLoop(darkBackground);
       }, 700);
       return;
     }
@@ -66,10 +136,12 @@ export const initBackground = async () => {
 
     window.setTimeout(() => {
       darkBackground.classList.add('hidden');
+      syncLoop(darkBackground);
     }, 700);
   });
 
-  observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+  themeObserver.observe(html, { attributes: true, attributeFilter: ['class'] });
+  cleanups.push(() => themeObserver.disconnect());
 
   try {
     const [vertexShader, fragmentShader] = await Promise.all([
@@ -77,11 +149,11 @@ export const initBackground = async () => {
       fetch(fragmentShaderUrl).then((response) => response.text()),
     ]);
 
-    scene = new THREE.Scene();
-    camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
 
-    material = new THREE.ShaderMaterial({
+    const material = new THREE.ShaderMaterial({
       uniforms: {
         iTime: { value: 0 },
         iResolution: { value: resolution },
@@ -90,52 +162,69 @@ export const initBackground = async () => {
       fragmentShader,
     });
 
-    geometry = new THREE.PlaneGeometry(2, 2);
-    mesh = new THREE.Mesh(geometry, material);
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const mesh = new THREE.Mesh(geometry, material);
 
     scene.add(mesh);
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      alpha: true,
+      powerPreference: 'low-power',
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
     renderer.setSize(resolution.x, resolution.y);
     darkBackground.appendChild(renderer.domElement);
 
-    const animate = () => {
-      if (material) {
-        material.uniforms.iTime.value += timeStep;
-      }
-
-      if (renderer && scene && camera) {
-        renderer.render(scene, camera);
-      }
-
-      window.requestAnimationFrame(animate);
-    };
-
-    animate();
-    isThreeInitialized = true;
+    state = { scene, camera, renderer, material, resolution };
 
     const onResize = () => {
-      if (!isThreeInitialized) {
+      if (!state) {
         return;
       }
 
       const width = window.innerWidth;
       const height = window.innerHeight;
 
-      renderer?.setSize(width, height);
-      material?.uniforms.iResolution.value.set(width, height);
+      renderer.setSize(width, height);
+      resolution.set(width, height);
     };
 
     window.addEventListener('resize', onResize);
+    cleanups.push(() => window.removeEventListener('resize', onResize));
+
+    document.addEventListener('visibilitychange', () => syncLoop(darkBackground));
+    cleanups.push(() => document.removeEventListener('visibilitychange', () => syncLoop(darkBackground)));
+
+    {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          syncLoop(entry?.isIntersecting ? darkBackground : null);
+        },
+        { threshold: 0 },
+      );
+      observer.observe(darkBackground);
+      cleanups.push(() => observer.disconnect());
+    }
+
+    syncLoop(darkBackground);
   } catch (error) {
     console.error('Failed to initialize 3D background:', error);
+    teardown();
   }
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    void initBackground();
-  });
-} else {
+export const destroyBackground = () => teardown();
+
+document.addEventListener('astro:before-swap', () => teardown());
+
+const start = () => {
   void initBackground();
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', start, { once: true });
+} else {
+  start();
 }
