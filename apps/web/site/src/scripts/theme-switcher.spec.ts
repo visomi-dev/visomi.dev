@@ -73,4 +73,34 @@ describe('initThemeSwitcher', () => {
     expect(document.documentElement.classList.contains('dark')).toBe(true);
     expect(localStorage.getItem('theme')).toBe('dark');
   });
+
+  it('re-applies the stored theme and re-attaches handlers on astro:page-load', () => {
+    vi.useFakeTimers();
+
+    document.body.innerHTML = createSwitcherMarkup();
+    localStorage.setItem('theme', 'light');
+    window.matchMedia = vi.fn().mockReturnValue({ matches: true }) as typeof window.matchMedia;
+    document.documentElement.classList.add('dark');
+
+    initThemeSwitcher();
+
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+
+    document.body.innerHTML = createSwitcherMarkup();
+
+    document.dispatchEvent(new Event('astro:page-load'));
+    vi.advanceTimersByTime(0);
+
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+
+    const newLabel = document.querySelector<HTMLElement>('.theme-switch-label');
+
+    newLabel?.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true, key: 'Enter' }));
+    vi.advanceTimersByTime(350);
+
+    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(localStorage.getItem('theme')).toBe('dark');
+
+    vi.useRealTimers();
+  });
 });

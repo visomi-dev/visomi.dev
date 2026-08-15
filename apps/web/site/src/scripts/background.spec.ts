@@ -107,6 +107,9 @@ describe('initBackground', () => {
   });
 
   it('handles shader loading failures without throwing', async () => {
+    const { __resetBackgroundForTesting } = await import('./background');
+    __resetBackgroundForTesting();
+
     document.body.innerHTML = `
       <div id="light-bg"></div>
       <div id="dark-bg"></div>
@@ -115,6 +118,8 @@ describe('initBackground', () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     globalThis.fetch = vi.fn().mockRejectedValue(new Error('network')) as typeof fetch;
+    window.requestAnimationFrame = vi.fn().mockImplementation(() => 1);
+
     await initBackground();
 
     expect(consoleError).toHaveBeenCalled();

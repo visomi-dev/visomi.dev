@@ -12,6 +12,7 @@ type BackgroundState = {
   renderer: THREE.WebGLRenderer;
   material: THREE.ShaderMaterial;
   resolution: THREE.Vector2;
+  darkBackground: HTMLElement;
 };
 
 type Cleanup = () => void;
@@ -20,6 +21,8 @@ let state: BackgroundState | null = null;
 let frameId: number | null = null;
 let isRunning = false;
 const cleanups: Cleanup[] = [];
+let vertexShaderText: string | null = null;
+let fragmentShaderText: string | null = null;
 
 const stopLoop = () => {
   isRunning = false;
@@ -49,12 +52,12 @@ const startLoop = () => {
   frameId = window.requestAnimationFrame(tick);
 };
 
-const syncLoop = (darkBackground: HTMLElement | null) => {
+const syncLoop = () => {
   if (!state) {
     return;
   }
 
-  const shouldRender = !document.hidden && darkBackground !== null && !darkBackground.classList.contains('hidden');
+  const shouldRender = !document.hidden && !state.darkBackground.classList.contains('hidden');
 
   if (shouldRender) {
     startLoop();
@@ -76,6 +79,27 @@ const teardown = () => {
     state.renderer.dispose();
     state.material.dispose();
     state = null;
+  }
+};
+
+const loadShaders = async (): Promise<[string, string] | null> => {
+  if (vertexShaderText !== null && fragmentShaderText !== null) {
+    return [vertexShaderText, fragmentShaderText];
+  }
+
+  try {
+    const [vertex, fragment] = await Promise.all([
+      fetch(vertexShaderUrl).then((response) => response.text()),
+      fetch(fragmentShaderUrl).then((response) => response.text()),
+    ]);
+
+    vertexShaderText = vertex;
+    fragmentShaderText = fragment;
+
+    return [vertex, fragment];
+  } catch (error) {
+    console.error('Failed to load background shaders:', error);
+    return null;
   }
 };
 
@@ -102,17 +126,12 @@ export const initBackground = async () => {
     lightBackground.classList.remove('hidden');
   }
 
-  let currentTheme: 'light' | 'dark' = isDarkOnLoad ? 'dark' : 'light';
-
   const themeObserver = new MutationObserver(() => {
-    const isDark = html.classList.contains('dark');
-    const nextTheme: 'light' | 'dark' = isDark ? 'dark' : 'light';
-
-    if (nextTheme === currentTheme) {
+    if (!state) {
       return;
     }
 
-    currentTheme = nextTheme;
+    const isDark = html.classList.contains('dark');
 
     if (isDark) {
       lightBackground.classList.remove('bg-upward-enter');
@@ -123,7 +142,7 @@ export const initBackground = async () => {
 
       window.setTimeout(() => {
         lightBackground.classList.add('hidden');
-        syncLoop(darkBackground);
+        syncLoop();
       }, 700);
       return;
     }
@@ -136,88 +155,96 @@ export const initBackground = async () => {
 
     window.setTimeout(() => {
       darkBackground.classList.add('hidden');
-      syncLoop(darkBackground);
+      syncLoop();
     }, 700);
   });
 
   themeObserver.observe(html, { attributes: true, attributeFilter: ['class'] });
   cleanups.push(() => themeObserver.disconnect());
 
-  try {
-    const [vertexShader, fragmentShader] = await Promise.all([
-      fetch(vertexShaderUrl).then((response) => response.text()),
-      fetch(fragmentShaderUrl).then((response) => response.text()),
-    ]);
+  const shaders = await loadShaders();
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
+  if (!shaders) {
+    return;
+  }
 
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        iTime: { value: 0 },
-        iResolution: { value: resolution },
-      },
-      vertexShader,
-      fragmentShader,
-    });
+  const [vertexShader, fragmentShader] = shaders;
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const mesh = new THREE.Mesh(geometry, material);
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
 
-    scene.add(mesh);
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      iTime: { value: 0 },
+      iResolution: { value: resolution },
+    },
+    vertexShader,
+    fragmentShader,
+  });
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: false,
-      alpha: true,
-      powerPreference: 'low-power',
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
-    renderer.setSize(resolution.x, resolution.y);
-    darkBackground.appendChild(renderer.domElement);
+  const geometry = new THREE.PlaneGeometry(2, 2);
+  const mesh = new THREE.Mesh(geometry, material);
 
-    state = { scene, camera, renderer, material, resolution };
+  scene.add(mesh);
 
-    const onResize = () => {
-      if (!state) {
+  const renderer = new THREE.WebGLRenderer({
+    antialias: false,
+    alpha: true,
+    powerPreference: 'low-power',
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
+  renderer.setSize(resolution.x, resolution.y);
+  darkBackground.appendChild(renderer.domElement);
+
+  state = { scene, camera, renderer, material, resolution, darkBackground };
+
+  const onResize = () => {
+    if (!state) {
+      return;
+    }
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    renderer.setSize(width, height);
+    resolution.set(width, height);
+  };
+
+  window.addEventListener('resize', onResize);
+  cleanups.push(() => window.removeEventListener('resize', onResize));
+
+  const onVisibilityChange = () => syncLoop();
+
+  document.addEventListener('visibilitychange', onVisibilityChange);
+  cleanups.push(() => document.removeEventListener('visibilitychange', onVisibilityChange));
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+
+      if (entry?.isIntersecting === false) {
+        stopLoop();
         return;
       }
 
-      const width = window.innerWidth;
-      const height = window.innerHeight;
+      syncLoop();
+    },
+    { threshold: 0 },
+  );
+  io.observe(darkBackground);
+  cleanups.push(() => io.disconnect());
 
-      renderer.setSize(width, height);
-      resolution.set(width, height);
-    };
-
-    window.addEventListener('resize', onResize);
-    cleanups.push(() => window.removeEventListener('resize', onResize));
-
-    document.addEventListener('visibilitychange', () => syncLoop(darkBackground));
-    cleanups.push(() => document.removeEventListener('visibilitychange', () => syncLoop(darkBackground)));
-
-    {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          syncLoop(entry?.isIntersecting ? darkBackground : null);
-        },
-        { threshold: 0 },
-      );
-      observer.observe(darkBackground);
-      cleanups.push(() => observer.disconnect());
-    }
-
-    syncLoop(darkBackground);
-  } catch (error) {
-    console.error('Failed to initialize 3D background:', error);
-    teardown();
-  }
+  syncLoop();
 };
 
 export const destroyBackground = () => teardown();
 
-document.addEventListener('astro:before-swap', () => teardown());
+export const __resetBackgroundForTesting = () => {
+  teardown();
+  vertexShaderText = null;
+  fragmentShaderText = null;
+};
 
 const start = () => {
   void initBackground();
@@ -228,3 +255,6 @@ if (document.readyState === 'loading') {
 } else {
   start();
 }
+
+document.addEventListener('astro:before-swap', teardown);
+document.addEventListener('astro:page-load', start);
