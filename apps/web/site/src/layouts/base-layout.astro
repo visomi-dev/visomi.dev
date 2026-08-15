@@ -8,6 +8,7 @@ import Background from '../components/background.astro';
 import Footer from '../components/footer.astro';
 import Navbar from '../components/navbar.astro';
 import PageNavigationLoader from '../components/page-navigation-loader.astro';
+import { ClientRouter } from 'astro:transitions';
 
 type Props = {
   locale: Locale;
@@ -24,6 +25,7 @@ const canonicalUrl = new URL(getPagePath(locale, page), baseUrl).toString();
 const defaultUrl = new URL(getPagePath('en', page), baseUrl).toString();
 const seoImage = getSeoImage(page, locale);
 const socialImageUrl = new URL(seoImage.image, baseUrl).toString();
+const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'];
 ---
 
 <!doctype html>
@@ -73,6 +75,12 @@ const socialImageUrl = new URL(seoImage.image, baseUrl).toString();
       ))
     }
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="prefetch" href={prefetchTargets[0]} />
+    <link rel="prefetch" href={prefetchTargets[1]} />
+    <link rel="prefetch" href={prefetchTargets[2]} />
+    <link rel="prefetch" href={prefetchTargets[3]} />
+    <link rel="prefetch" href={prefetchTargets[4]} />
+    <ClientRouter />
   </head>
   <body class="min-h-full">
     <PageNavigationLoader />
