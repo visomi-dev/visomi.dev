@@ -1,22 +1,18 @@
-export const initThemeSwitcher = () => {
-  const html = document.documentElement;
-  const labels = document.querySelectorAll<HTMLElement>('.theme-switch-label');
+type PageLoadHandler = () => void;
 
-  // Initial load
+let onPageLoad: PageLoadHandler | null = null;
+
+const applyTheme = () => {
   const savedTheme = window.localStorage?.getItem('theme');
   const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
 
-  let isDark = false;
+  return savedTheme === 'dark' || (!savedTheme && systemDark);
+};
 
-  if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
-    html.classList.add('dark');
-    isDark = true;
-  } else {
-    html.classList.remove('dark');
-    isDark = false;
-  }
+const syncIcons = (html: HTMLElement) => {
+  const isDark = html.classList.contains('dark');
 
-  labels.forEach((label) => {
+  document.querySelectorAll<HTMLElement>('.theme-switch-label').forEach((label) => {
     const input = label.querySelector<HTMLInputElement>('.theme-switch-input');
     const iconLight = label.querySelector<HTMLElement>('.theme-icon-light');
     const iconDark = label.querySelector<HTMLElement>('.theme-icon-dark');
@@ -25,73 +21,95 @@ export const initThemeSwitcher = () => {
       return;
     }
 
+    input.checked = isDark;
+
     if (isDark) {
-      input.checked = true;
       iconDark.classList.remove('hidden', 'upward-enter', 'upward-leave');
       iconLight.classList.add('hidden');
     } else {
-      input.checked = false;
       iconLight.classList.remove('hidden', 'upward-enter', 'upward-leave');
       iconDark.classList.add('hidden');
     }
+  });
+};
 
-    function toggleTheme(event?: Event) {
-      if (event?.type === 'click') {
-        event.preventDefault();
-      }
+const toggleTheme = (html: HTMLElement) => {
+  const nextIsDark = !html.classList.contains('dark');
 
-      isDark = !html.classList.contains('dark');
+  html.classList.toggle('dark', nextIsDark);
+  window.localStorage?.setItem('theme', nextIsDark ? 'dark' : 'light');
 
-      if (isDark) {
-        html.classList.add('dark');
-      } else {
-        html.classList.remove('dark');
-      }
+  syncIcons(html);
 
-      window.localStorage?.setItem('theme', isDark ? 'dark' : 'light');
+  document.querySelectorAll<HTMLElement>('.theme-switch-label').forEach((label) => {
+    const lightIcon = label.querySelector<HTMLElement>('.theme-icon-light');
+    const darkIcon = label.querySelector<HTMLElement>('.theme-icon-dark');
 
-      labels.forEach((currentLabel) => {
-        const currentInput = currentLabel.querySelector<HTMLInputElement>('.theme-switch-input');
-        const currentLightIcon = currentLabel.querySelector<HTMLElement>('.theme-icon-light');
-        const currentDarkIcon = currentLabel.querySelector<HTMLElement>('.theme-icon-dark');
-
-        if (!currentInput || !currentLightIcon || !currentDarkIcon) {
-          return;
-        }
-
-        currentInput.checked = isDark;
-
-        if (isDark) {
-          currentLightIcon.classList.remove('upward-enter');
-          currentLightIcon.classList.add('upward-leave');
-
-          window.setTimeout(() => {
-            currentLightIcon.classList.add('hidden');
-            currentDarkIcon.classList.remove('hidden', 'upward-leave');
-            currentDarkIcon.classList.add('upward-enter');
-          }, 350);
-          return;
-        }
-
-        currentDarkIcon.classList.remove('upward-enter');
-        currentDarkIcon.classList.add('upward-leave');
-
-        window.setTimeout(() => {
-          currentDarkIcon.classList.add('hidden');
-          currentLightIcon.classList.remove('hidden', 'upward-leave');
-          currentLightIcon.classList.add('upward-enter');
-        }, 350);
-      });
+    if (!lightIcon || !darkIcon) {
+      return;
     }
 
-    label.addEventListener('click', toggleTheme);
+    if (nextIsDark) {
+      lightIcon.classList.remove('upward-enter');
+      lightIcon.classList.add('upward-leave');
+
+      window.setTimeout(() => {
+        lightIcon.classList.add('hidden');
+        darkIcon.classList.remove('hidden', 'upward-leave');
+        darkIcon.classList.add('upward-enter');
+      }, 350);
+      return;
+    }
+
+    darkIcon.classList.remove('upward-enter');
+    darkIcon.classList.add('upward-leave');
+
+    window.setTimeout(() => {
+      darkIcon.classList.add('hidden');
+      lightIcon.classList.remove('hidden', 'upward-leave');
+      lightIcon.classList.add('upward-enter');
+    }, 350);
+  });
+};
+
+const attachHandlers = (html: HTMLElement) => {
+  document.querySelectorAll<HTMLElement>('.theme-switch-label').forEach((label) => {
+    if (label.dataset['themeSwitchBound'] === 'true') {
+      return;
+    }
+
+    label.dataset['themeSwitchBound'] = 'true';
+
+    label.addEventListener('click', (event) => {
+      event.preventDefault();
+      toggleTheme(html);
+    });
+
     label.addEventListener('keyup', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        toggleTheme();
+        toggleTheme(html);
       }
     });
   });
+};
+
+export const initThemeSwitcher = () => {
+  const html = document.documentElement;
+
+  if (!onPageLoad) {
+    onPageLoad = () => {
+      html.classList.toggle('dark', applyTheme());
+      attachHandlers(html);
+      syncIcons(html);
+    };
+
+    document.addEventListener('astro:page-load', onPageLoad);
+  }
+
+  html.classList.toggle('dark', applyTheme());
+  attachHandlers(html);
+  syncIcons(html);
 };
 
 initThemeSwitcher();
