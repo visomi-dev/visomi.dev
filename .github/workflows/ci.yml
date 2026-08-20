@@ -39,7 +39,11 @@ jobs:
 
       # This enables task distribution via Nx Cloud.
       # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
-      - run: pnpm exec nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="typecheck"
+      # Nx Cloud is not configured in this workspace; the step still emits
+      # the helpful "Nx Cloud is not enabled" notice. `|| true` keeps the
+      # pipeline running even when the binary segfaults intermittently on
+      # fresh runners (a known nx 22.6.3 race when no access token is set).
+      - run: pnpm exec nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="typecheck" || true
 
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
 
@@ -47,5 +51,6 @@ jobs:
       - run: pnpm exec nx record -- echo Hello World
       - run: pnpm exec nx run-many -t lint test build typecheck
       # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/ci/features/self-healing-ci
-      - run: pnpm exec nx fix-ci
+      # Same SIGSEGV-on-fresh-runner issue as start-ci-run; keep it non-blocking.
+      - run: pnpm exec nx fix-ci || true
         if: always()

@@ -58,3 +58,7 @@ debug/
 !debug/.gitkeep
 
 .nx/polygraph
+
+.env
+artifacts
+
