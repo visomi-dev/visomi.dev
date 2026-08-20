@@ -2,7 +2,7 @@
 
 Senior Full-Stack Engineer | Tech Lead | AI-Enabled Software Architect
 
-Mexico City, Mexico | visomi.dev@gmail.com | (+52) 55 8760 6759 | visomi.dev | GitHub: visomi-dev | LinkedIn: visomi
+Mexico City, Mexico | visomi.dev@gmail.com | +52 220 377 2419 | visomi.dev | GitHub: visomi-dev | LinkedIn: visomi
 
 **PROFESSIONAL SUMMARY**
 
