@@ -547,7 +547,7 @@ const content: Record<Locale, SiteContent> = {
     resume: {
       metaDescription:
         'Resume of Michael Villalba, senior full-stack engineer and tech lead with experience across fintech, SaaS, enterprise systems, and AI-enabled workflows.',
-      pageLabel: `// ${year} // RESUME`,
+      pageLabel: '',
       name: 'Michael Villalba Sotelo',
       headline: 'Senior Full-Stack Engineer | Tech Lead | AI-Enabled Software Architect',
       summary:
@@ -558,16 +558,16 @@ const content: Record<Locale, SiteContent> = {
       website: 'visomi.dev',
       github: 'github.com/visomi-dev',
       linkedin: 'linkedin.com/in/visomi',
-      experienceLabel: '01 // Experience',
-      stackLabel: '02 // Technical Skills',
-      mentoringLabel: '03 // Mentoring',
-      freelanceLabel: '04 // Selected Freelance',
-      educationLabel: '05 // Education',
-      languagesLabel: '06 // Languages',
+      experienceLabel: 'Experience',
+      stackLabel: 'Technical Skills',
+      mentoringLabel: 'Mentoring',
+      freelanceLabel: 'Selected Freelance',
+      educationLabel: 'Education',
+      languagesLabel: 'Languages',
       experience: [
         {
           company: 'AB InBev (Grupo Modelo)',
-          role: 'Tech Lead / Senior Full-Stack Engineer',
+          role: 'Software Architect / Tech Lead / Senior Full-Stack Engineer',
           date: 'Aug 2022 - Present',
           location: 'Mexico',
           items: [
@@ -914,7 +914,7 @@ const content: Record<Locale, SiteContent> = {
     resume: {
       metaDescription:
         'Curriculum de Michael Villalba, ingeniero full-stack senior y lider tecnico con experiencia en fintech, SaaS, sistemas empresariales y flujos de trabajo potenciados por IA.',
-      pageLabel: `// ${year} // CURRICULUM`,
+      pageLabel: '',
       name: 'Michael Villalba Sotelo',
       headline: 'Ingeniero Full-Stack Senior | Lider tecnico | Arquitecto de software con IA aplicada',
       summary:
@@ -925,12 +925,12 @@ const content: Record<Locale, SiteContent> = {
       website: 'visomi.dev',
       github: 'github.com/visomi-dev',
       linkedin: 'linkedin.com/in/visomi',
-      experienceLabel: '01 // Experiencia',
-      stackLabel: '02 // Capacidades tecnicas',
-      mentoringLabel: '03 // Mentoria',
-      freelanceLabel: '04 // Freelance seleccionado',
-      educationLabel: '05 // Educacion',
-      languagesLabel: '06 // Idiomas',
+      experienceLabel: 'Experiencia',
+      stackLabel: 'Capacidades tecnicas',
+      mentoringLabel: 'Mentoria',
+      freelanceLabel: 'Freelance seleccionado',
+      educationLabel: 'Educacion',
+      languagesLabel: 'Idiomas',
       experience: [
         {
           company: 'AB InBev (Grupo Modelo)',

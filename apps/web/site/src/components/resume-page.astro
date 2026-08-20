@@ -11,16 +11,20 @@ const { resume } = getSiteContent(locale);
 ---
 
 <style is:inline>
+  .resume-print-only {
+    display: none;
+  }
+
   @page {
     size: A4;
-    margin: 14mm 16mm;
+    margin: 10mm 12mm;
   }
 
   @media print {
     html {
       background: #ffffff !important;
       color: #111827 !important;
-      font-size: 10pt;
+      font-size: 8.5pt;
     }
 
     body {
@@ -48,6 +52,7 @@ const { resume } = getSiteContent(locale);
       min-height: 0 !important;
       margin-top: 0 !important;
       padding: 0 !important;
+      zoom: 1;
     }
 
     .resume-document > div {
@@ -55,14 +60,46 @@ const { resume } = getSiteContent(locale);
     }
 
     .resume-document > div > header {
-      display: grid !important;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.9fr) !important;
+      display: block !important;
+      margin-bottom: 0.5rem !important;
     }
 
     .resume-document h1 {
       color: #111827 !important;
       font-size: 24pt !important;
       line-height: 1 !important;
+    }
+
+    .resume-document > div > header > div:first-child {
+      max-width: none !important;
+    }
+
+    .resume-document > div > header > div:last-child {
+      margin-top: 0.5rem !important;
+      padding: 0 !important;
+    }
+
+    .resume-document > div > header > div:last-child > .space-y-4 {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 0.5rem 0.75rem !important;
+    }
+
+    .resume-document > div > header > div:last-child > .space-y-4 > div {
+      min-width: 0 !important;
+    }
+
+    .resume-document > div > header > div:last-child > .space-y-4 > div > p:first-child {
+      margin-bottom: 0 !important;
+      font-size: 6.5pt !important;
+      line-height: 1.1 !important;
+    }
+
+    .resume-document > div > header > div:last-child > .space-y-4 > div > :last-child {
+      display: block !important;
+      font-size: 7.5pt !important;
+      line-height: 1.2 !important;
+      white-space: nowrap !important;
     }
 
     .resume-document h2,
@@ -75,13 +112,21 @@ const { resume } = getSiteContent(locale);
     }
 
     .resume-document header {
-      margin-bottom: 5mm !important;
-      gap: 5mm !important;
+      margin-bottom: 0 !important;
+      gap: 3mm !important;
+    }
+
+    .resume-document [data-print-page-label] {
+      display: none !important;
+    }
+
+    .resume-document .max-w-3xl {
+      max-width: none !important;
     }
 
     .resume-document section {
-      margin-bottom: 4mm !important;
-      padding-top: 2mm !important;
+      margin-bottom: 0.5rem !important;
+      padding-top: 0 !important;
       break-inside: auto;
     }
 
@@ -95,15 +140,15 @@ const { resume } = getSiteContent(locale);
     }
 
     .resume-document .space-y-16 > :not(:first-child) {
-      margin-top: 3mm !important;
+      margin-top: 0.5rem !important;
     }
 
     .resume-document .space-y-3 > :not(:first-child) {
-      margin-top: 1.5mm !important;
+      margin-top: 0.75mm !important;
     }
 
     .resume-document .mb-12 {
-      margin-bottom: 2mm !important;
+      margin-bottom: 0.25rem !important;
     }
 
     .resume-document .mb-16 {
@@ -111,7 +156,7 @@ const { resume } = getSiteContent(locale);
     }
 
     .resume-document .mb-20 {
-      margin-bottom: 4mm !important;
+      margin-bottom: 0.5rem !important;
     }
 
     .resume-document .mb-4 {
@@ -127,29 +172,29 @@ const { resume } = getSiteContent(locale);
     }
 
     .resume-document .text-base {
-      font-size: 8.5pt !important;
-      line-height: 1.35 !important;
+      font-size: 8.25pt !important;
+      line-height: 1.2 !important;
     }
 
     .resume-document .text-lg {
       font-size: 9.5pt !important;
-      line-height: 1.4 !important;
+      line-height: 1.2 !important;
     }
 
     .resume-document .leading-relaxed {
-      line-height: 1.4 !important;
+      line-height: 1.2 !important;
     }
 
     .resume-document .text-2xl {
-      font-size: 12pt !important;
-    }
-
-    .resume-document .text-xl {
       font-size: 10pt !important;
     }
 
+    .resume-document .text-xl {
+      font-size: 8.5pt !important;
+    }
+
     .resume-document .text-sm {
-      font-size: 8pt !important;
+      font-size: 7.5pt !important;
     }
 
     .resume-document .border-border-light,
@@ -181,6 +226,143 @@ const { resume } = getSiteContent(locale);
       padding-left: 0 !important;
     }
 
+    .resume-document section:first-of-type > .space-y-16 > article > div:first-child {
+      display: block !important;
+      margin-bottom: 0.25rem !important;
+      padding: 0 !important;
+    }
+
+    .resume-document .resume-screen-experience-heading {
+      display: none !important;
+    }
+
+    .resume-document .resume-screen-experience-meta {
+      display: none !important;
+    }
+
+    .resume-document .resume-print-experience-heading {
+      display: flex !important;
+      align-items: baseline !important;
+      gap: 0.35rem !important;
+      min-width: 0 !important;
+      white-space: nowrap !important;
+    }
+
+    .resume-document .resume-print-experience-heading span + span::before {
+      content: ' - ';
+    }
+
+    .resume-document .resume-print-experience-heading span:first-child {
+      overflow: hidden !important;
+      text-overflow: clip !important;
+      font-size: 10pt !important;
+      font-weight: 600 !important;
+    }
+
+    .resume-document .resume-print-experience-heading span:nth-child(2) {
+      overflow: hidden !important;
+      text-overflow: clip !important;
+      font-size: 8pt !important;
+    }
+
+    .resume-document .resume-print-experience-heading span:nth-child(n + 3) {
+      flex-shrink: 0 !important;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+      font-size: 7.5pt !important;
+    }
+
+    .resume-document section:first-of-type > .space-y-16 > article > div:first-child > div > p {
+      margin-top: 0 !important;
+    }
+
+    .resume-document section:first-of-type > .space-y-16 > article > ul {
+      display: grid !important;
+      gap: 1mm !important;
+    }
+
+    .resume-document section:nth-of-type(2) > div:last-child,
+    .resume-document section:nth-of-type(4) > div:last-child,
+    .resume-document section:nth-of-type(5) > div:last-child,
+    .resume-document section:nth-of-type(6) > div:last-child {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 0.5rem 0.75rem !important;
+    }
+
+    .resume-document section:nth-of-type(2) article,
+    .resume-document section:nth-of-type(4) article,
+    .resume-document section:nth-of-type(5) article,
+    .resume-document section:nth-of-type(6) article {
+      min-width: 0 !important;
+    }
+
+    .resume-document section:nth-of-type(2) article > h3 {
+      margin-bottom: 1mm !important;
+    }
+
+    .resume-document section:nth-of-type(2) article > div {
+      gap: 1mm !important;
+    }
+
+    .resume-document section:nth-of-type(2) span {
+      font-size: 6.5pt !important;
+      line-height: 1.1 !important;
+      padding: 0 !important;
+    }
+
+    .resume-document section:nth-of-type(3) > div:last-child {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 0.5rem 0.75rem !important;
+    }
+
+    .resume-document section:nth-of-type(3) p,
+    .resume-document section:nth-of-type(4) p,
+    .resume-document section:nth-of-type(5) p,
+    .resume-document section:nth-of-type(6) p {
+      margin: 0 !important;
+    }
+
+    .resume-document section:nth-of-type(2) > div:last-child,
+    .resume-document section:nth-of-type(4) > div:last-child {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 0.5rem 0.75rem !important;
+    }
+
+    .resume-document section:nth-of-type(4) > div:last-child {
+      gap: 0.5rem !important;
+    }
+
+    .resume-document section:nth-of-type(4) p {
+      font-size: 7pt !important;
+      line-height: 1.15 !important;
+    }
+
+    .resume-document section:nth-of-type(5),
+    .resume-document section:nth-of-type(6) {
+      display: inline-block !important;
+      width: 49% !important;
+      vertical-align: top !important;
+      margin-bottom: 0 !important;
+    }
+
+    .resume-document section:nth-of-type(5) {
+      padding-right: 0.5rem !important;
+    }
+
+    .resume-document section:nth-of-type(6) {
+      padding-left: 0.5rem !important;
+    }
+
+    .resume-document section:nth-of-type(5) > div:last-child,
+    .resume-document section:nth-of-type(6) > div:last-child {
+      display: block !important;
+    }
+
+    .resume-document section:nth-of-type(5) > div:last-child > div {
+      padding: 0 !important;
+    }
+
     .resume-document span {
       padding: 0 !important;
     }
@@ -189,9 +371,16 @@ const { resume } = getSiteContent(locale);
 
 <main class="resume-document min-h-screen-nav mt-20 grow px-6 pt-12 pb-24">
   <div class="mx-auto max-w-5xl">
-    <div class="text-muted-light dark:text-muted-dark mb-16 font-mono text-xs tracking-widest uppercase">
-      {resume.pageLabel}
-    </div>
+    {
+      resume.pageLabel && (
+        <div
+          class="text-muted-light dark:text-muted-dark mb-16 font-mono text-xs tracking-widest uppercase"
+          data-print-page-label
+        >
+          {resume.pageLabel}
+        </div>
+      )
+    }
 
     <header class="mb-20 grid gap-10 lg:grid-cols-[1.6fr_0.9fr]">
       <div>
@@ -261,15 +450,21 @@ const { resume } = getSiteContent(locale);
           resume.experience.map((experience) => (
             <article class="group">
               <div class="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
-                <div>
+                <div class="resume-screen-experience-heading">
                   <h3 class="text-surface-dark dark:text-surface-light text-2xl font-semibold">{experience.company}</h3>
                   <p class="text-surface-dark/80 dark:text-surface-light/80 mt-2 text-base font-medium">
                     {experience.role}
                   </p>
                 </div>
-                <div class="text-muted-light dark:text-muted-dark font-mono text-sm md:text-right">
+                <div class="resume-screen-experience-meta text-muted-light dark:text-muted-dark font-mono text-sm md:text-right">
                   <div>{experience.date}</div>
                   <div class="mt-1 text-xs tracking-[0.2em] uppercase">{experience.location}</div>
+                </div>
+                <div class="resume-print-only resume-print-experience-heading" aria-hidden="true">
+                  <span>{experience.company}</span>
+                  <span>{experience.role}</span>
+                  <span>{experience.date}</span>
+                  <span>{experience.location}</span>
                 </div>
               </div>
 
