@@ -1,9 +1,10 @@
+import type { Request, RequestHandler } from 'express';
+import type { Pool } from 'pg';
+
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import type { MailTransport } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import type { RealtimePublisher } from '@visomi-stack/backend-shared/lib/realtime';
 import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
-import type { Request, RequestHandler } from 'express';
-import type { Pool } from 'pg';
 
 import type { AuthSnapshot } from './application-module';
 

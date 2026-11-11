@@ -1,7 +1,8 @@
+import { afterEach, beforeEach, vi } from 'vitest';
+
 import type * as MockModule3 from '@visomi-stack/backend-shared/lib/database/database';
 import type * as MockModule4 from '@visomi-stack/backend-shared/lib/mail/smtp';
 import type * as MockModule5 from '@visomi-stack/backend-shared/lib/realtime-redis';
-import { afterEach, beforeEach, vi } from 'vitest';
 
 const boundary = vi.hoisted(() => ({
   signals: new Map<string, () => void>(),

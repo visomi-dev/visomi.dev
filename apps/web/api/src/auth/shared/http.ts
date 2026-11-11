@@ -1,6 +1,7 @@
+import type { NextFunction, Request, Response } from 'express';
+
 import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import type { NextFunction, Request, Response } from 'express';
 
 import { validPrincipal, type Principal } from './identity';
 

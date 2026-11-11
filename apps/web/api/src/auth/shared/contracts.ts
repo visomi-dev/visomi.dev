@@ -1,5 +1,6 @@
-import type { ValidationErrors } from '@visomi-stack/web-backend-shared/lib/http/contracts';
 import { z } from 'zod';
+
+import type { ValidationErrors } from '@visomi-stack/web-backend-shared/lib/http/contracts';
 
 export const emptyBody = z.strictObject({});
 export const identifierSchema = z

@@ -1,3 +1,5 @@
+import { and, eq, isNull, sql } from 'drizzle-orm';
+
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { DATABASE } from '@visomi-stack/backend-shared/lib/database/tokens';
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
@@ -5,7 +7,6 @@ import { REALTIME_PUBLISHER } from '@visomi-stack/backend-shared/lib/realtime';
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import type { RealtimePublisher } from '@visomi-stack/backend-shared/lib/realtime';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import { and, eq, isNull, sql } from 'drizzle-orm';
 
 import { AUTH_CONFIG, type AuthConfig } from '../shared/config';
 import { lockIdentity, requireFull, type Principal } from '../shared/identity';

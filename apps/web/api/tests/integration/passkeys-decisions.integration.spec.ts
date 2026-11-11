@@ -2,12 +2,13 @@ import { randomUUID } from 'node:crypto';
 
 import type * as ImportedModule1 from '@simplewebauthn/server';
 import { verifyAuthenticationResponse, verifyRegistrationResponse } from '@simplewebauthn/server';
-import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
-import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import { eq } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { authenticator } from '@visomi-stack/dev-testing/lib/authenticator';
 import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
+
+import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
+import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 
 import { authService, sessionStore } from '../support/injection';
 import { authConfig } from '../../src/auth/shared/config';

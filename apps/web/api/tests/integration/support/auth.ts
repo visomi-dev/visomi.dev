@@ -2,13 +2,14 @@ import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { randomUUID } from 'node:crypto';
 
-import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
-import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
-import { createSmtp } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
 import { SMTPServer } from 'smtp-server';
 import { beforeAll, afterAll, beforeEach, expect } from 'vitest';
 import express from 'express';
+
+import { createSmtp } from '@visomi-stack/backend-shared/lib/mail/smtp';
+import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
+import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 
 import { createApp, createAuthentication, authConfig } from '../../../src/app';

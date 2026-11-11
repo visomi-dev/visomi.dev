@@ -3214,7 +3214,7 @@
       "destination": "apps/web/api/src/app.spec.ts",
       "action": "adapted",
       "sourceSha256": "aafa589064160b590765a4e0c4207e58835414d9a39933780536d6bbe25846f9",
-      "destinationSha256": "14d51ad46a7b99650a0db2cdafcbafeb75d53b2a0247efab7414a30a14cc0bb1",
+      "destinationSha256": "d33b89f38eab9569080e3adc7720b7d9162a1666132f8f5980ffc04205dbf690",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3222,7 +3222,7 @@
       "destination": "apps/web/api/src/app.ts",
       "action": "adapted",
       "sourceSha256": "818391853948009991e388fbd5c11681a61a0daa172ea52a57ef2721bbe17044",
-      "destinationSha256": "bdf07ee0cafbb222c448438309a77c47c6af5bd27aa8a08a1a389940c8a69883",
+      "destinationSha256": "c1c1ca16ea94099b093e7646de0179c5465cf2ef72b7aff737e63ff43dc4a5cd",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3237,7 +3237,7 @@
       "destination": "apps/web/api/src/auth/devices/contract.ts",
       "action": "adapted",
       "sourceSha256": "d955907756dc6e930e98034ed10cb87cbcf2232e9d7f2e15c606d051144f8cbe",
-      "destinationSha256": "ea81ed90d812e6559c60b23470c920150bb25fd75ef527fce635527007f326c2",
+      "destinationSha256": "9e157d5a84e744c86a46c20a1be3a014a90ed3397c8c2fe36ae4e1ef37639cad",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3245,7 +3245,7 @@
       "destination": "apps/web/api/src/auth/devices/controller.ts",
       "action": "adapted",
       "sourceSha256": "6180e22b71fc445ffbcf395d01119b03d3dba9fec82a5cd50335c206f9e4e450",
-      "destinationSha256": "3c9bf552ede019d1a6348877fe7346f1ae759e29cd6bd5c903ffcf9232a3b45f",
+      "destinationSha256": "e6aa4dc9d028fcc3868c4f491dcc1dbd392ce1499b5d22ba2a3d0917427fea64",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3253,7 +3253,7 @@
       "destination": "apps/web/api/src/auth/devices/router.ts",
       "action": "adapted",
       "sourceSha256": "ee7905d548255b6a8e19195defe89b2c36d24891579a0218f57f33f10b106688",
-      "destinationSha256": "a0d0320c1ec894a1170af938b97fb3fe0aec411c838580146e6b318dd50b167d",
+      "destinationSha256": "33c1f10b8833c615ffb9d78dcced44ab4b2aca2f0563b12fc908895d00d8be5c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3261,7 +3261,7 @@
       "destination": "apps/web/api/src/auth/devices/service.spec.ts",
       "action": "adapted",
       "sourceSha256": "b0b77ea29f08d599130456af9aaca063cc75433fcf65c2f4735ce236319fea04",
-      "destinationSha256": "a7a5fe82e4e90bb1c763651ba0eec0a2b0587cf27593487f61d68b81e41980b2",
+      "destinationSha256": "82e491755bbddaf4dad023dbb1341d93e5f80b26f55a14f79aa75da2b7145e44",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3269,7 +3269,7 @@
       "destination": "apps/web/api/src/auth/devices/service.ts",
       "action": "adapted",
       "sourceSha256": "72332dd4614465e2ec95b630801f21ceb30278026c99af8b4f4cd7dc8655ea9e",
-      "destinationSha256": "c5e8835473a64020111a5d7bda8784ac210a1076f6313e714b49842db0e1b498",
+      "destinationSha256": "2df800846f23d472d5cd6918bcbd37d5a00963c3e5693d7f6f68d6a3f0dc72c5",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3277,7 +3277,7 @@
       "destination": "apps/web/api/src/auth/email/contract.ts",
       "action": "adapted",
       "sourceSha256": "44230fc5e86d9977531e22f2113cb0495ddae0e5b0a1e12d1ead9872636a3751",
-      "destinationSha256": "2b82b396d41a7e02e75c1947d5b53647f3ceb16645a74d00ab16930e35b6c648",
+      "destinationSha256": "633c86ccd7c4b93a9baf1ceff07532326ebc5fbfb79f9363ff72834501af26ba",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3285,7 +3285,7 @@
       "destination": "apps/web/api/src/auth/email/controller.ts",
       "action": "adapted",
       "sourceSha256": "3bfcf0ea575cdf90bed6f2d127668d7599b6d3e77d04851a5b29181d4a6ee62a",
-      "destinationSha256": "2a58e94a613207126f0537fe7c0e8490fb75bc47fcb3a0d0aaa3d70bfa6bf80a",
+      "destinationSha256": "5b03978c0a13892e5ee2e6b67b246b035fcc3fb1e4e567e403240c1e797b54e1",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3308,7 +3308,7 @@
       "destination": "apps/web/api/src/auth/email/router.ts",
       "action": "adapted",
       "sourceSha256": "62c9236e687bd82ab9745bd196e5c34a740c31c7cc8dab47a6d7c1835364e3f0",
-      "destinationSha256": "261e26a6e551a3a095969c209224914e76317ab6981a2d7c98a8d481fa717d6e",
+      "destinationSha256": "579fc54148cf682439facd650418629758469f0b951b1cc509acf6ddb6c39f0c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3323,7 +3323,7 @@
       "destination": "apps/web/api/src/auth/email/service.spec.ts",
       "action": "adapted",
       "sourceSha256": "668ec09ab216777491077f3c3842bdf0ccef4982007e1283517c5d0a87e648dc",
-      "destinationSha256": "9caa5e4dde57376ac2bcf6e1685c3be9e92869c7c1864614404e300941eb4983",
+      "destinationSha256": "0ffaf49f261729106783a0826caa29ec7493dcebec8c2875327b3126b6859fb1",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3331,7 +3331,7 @@
       "destination": "apps/web/api/src/auth/email/service.ts",
       "action": "adapted",
       "sourceSha256": "a89e50a982616f709322badf6bcb18003b6ca56379540a9fb7cf385bbcde1bed",
-      "destinationSha256": "75b852c4877488867886f03bc6504b1cd4ffd0e33df1db714b4fbc355e79399e",
+      "destinationSha256": "57e0a71eba7ece3b7c72c5de6494d60b3b079454c1cb953db0eab5a5f8ba932c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3339,7 +3339,7 @@
       "destination": "apps/web/api/src/auth/google/contract.ts",
       "action": "adapted",
       "sourceSha256": "7f7e8a56057eef2f6272cff1864800f5e0db089ccf307058acfcf9b6d5cf69ba",
-      "destinationSha256": "720769b6a71e92562e12360675edd01bd63c4279272ad22435abc69ab51768fa",
+      "destinationSha256": "aebf4c44d5ac33a75bf1fd28b4d5aeee2a49da18f18a11ab27fb70e06b7ae06c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3347,7 +3347,7 @@
       "destination": "apps/web/api/src/auth/google/controller.ts",
       "action": "adapted",
       "sourceSha256": "8e9a1309e6307fc31eb3bbcbfc74b97aba43e036d132f8bb813bc5c3cb9b957d",
-      "destinationSha256": "5d4bcff4707350f5934ec3f1e6bba3c63f6710c397d2805cf49fe1ed0d873b85",
+      "destinationSha256": "4880bd7f9a7c8f5b79174f103457e6bab9fbd965569998d536400fbb7e82c861",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3355,7 +3355,7 @@
       "destination": "apps/web/api/src/auth/google/router.ts",
       "action": "adapted",
       "sourceSha256": "fa3d99c5e8ae7c80e74a57343ae058eb5fddbec1ea5030c043a81ace2949fb20",
-      "destinationSha256": "9f8026868456d6f5c22b2326587e46439163b2703e7177ec24b2a4fae25a3b05",
+      "destinationSha256": "9d5c6a71befa85508db3f466107c37c1ce4cc0d1eed20be4bdb8b2f9b0d9addc",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3370,7 +3370,7 @@
       "destination": "apps/web/api/src/auth/google/service.ts",
       "action": "adapted",
       "sourceSha256": "d96336aebc69255df7ff1c9528897c70dbaf8d4a5e310fe85d23c61a9adb5cd9",
-      "destinationSha256": "864ebf00fa230ca6f770b50ccc9961e7d02b62ba8c11aed2fc97c75f84ba1d8f",
+      "destinationSha256": "a93a9a5bfa3d61affae07c856aac2bf60c0f4b5d826e326b75f07eb869182ba1",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3378,7 +3378,7 @@
       "destination": "apps/web/api/src/auth/methods/contract.ts",
       "action": "adapted",
       "sourceSha256": "3bb0ddf5fe27857d836dd05c153e8cb59a3e3aab87cdcb109d6a9e6e71d1a0bb",
-      "destinationSha256": "ff7da711ceb514446e18c18e3c3e0d186f910d1c548125f39e762f5bde92c52f",
+      "destinationSha256": "0fedb86bf145fd455127d42643196f70f49ca2a68f649d6f1d7ad98719ac6287",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3386,7 +3386,7 @@
       "destination": "apps/web/api/src/auth/methods/controller.ts",
       "action": "adapted",
       "sourceSha256": "c19aa0ad0b95dc9811597fb6039aa4679c7510000152e035bdb199c430d63ce6",
-      "destinationSha256": "b2ccba2d47068c7a7e40e44055b0a7e9091e54431b56ee37515624c84b0c2582",
+      "destinationSha256": "365edd2ed54809a5c6c8c220ed11f4947ad682d07f6930237b752f66a9791da8",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3394,7 +3394,7 @@
       "destination": "apps/web/api/src/auth/methods/router.ts",
       "action": "adapted",
       "sourceSha256": "4732e47adaba3667e461e347f315d3dc7a2e3469c70f7bd861d4cf1b48729eda",
-      "destinationSha256": "3e4ebd50bdddef9e3172dd8ac2b53c130c4f64fa608b7bff6c9a21b2660ebb0f",
+      "destinationSha256": "c8d73cb0233e6a905e2729d2b2da73c90db2b540dde48a4fa0726c8e2b43b757",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3402,7 +3402,7 @@
       "destination": "apps/web/api/src/auth/methods/service.ts",
       "action": "adapted",
       "sourceSha256": "369613e71d95466a77946e47d2bcdf288add6d45de936d5b7a2d70f972d05081",
-      "destinationSha256": "5000af6d0b9b406702151607b296c44abf6e11319e8f669255b710d66b38e709",
+      "destinationSha256": "1ddc460b2267f3f855213ebf3c45a311dc4bc7bf09ef237192befe78ab65c8b7",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3410,7 +3410,7 @@
       "destination": "apps/web/api/src/auth/passkeys/contract.ts",
       "action": "adapted",
       "sourceSha256": "fd3f7eed31948d37860651db7e1120064d1ea2a211bd49de4a5d551743e56a5f",
-      "destinationSha256": "4e444bb77e03cc3b6ac231004a0e2fc07fd51d4922efb1461c87120eaa99a700",
+      "destinationSha256": "c6342f797bc1fe7e9a1bbfa5e24e045b69ace891d85849b1544321d856402968",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3418,7 +3418,7 @@
       "destination": "apps/web/api/src/auth/passkeys/controller.ts",
       "action": "adapted",
       "sourceSha256": "8a6c0a14c5e3a67806d64b2d7db3f162fa624cc79f4abe02e71a6e006d51adc5",
-      "destinationSha256": "4901ff1194ab824d699794096a62a7eb4c2c11f2fc9e6611f69968fe65393323",
+      "destinationSha256": "1062e2714ce21e7b61545829757c5caf95331b0def16c50ca225bc03fdf7602d",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3426,7 +3426,7 @@
       "destination": "apps/web/api/src/auth/passkeys/router.ts",
       "action": "adapted",
       "sourceSha256": "0316e59a2865da42ae43e3ffd0585b01b786ef6f8527d3debcdacca7831ff078",
-      "destinationSha256": "d13844ad50641aa1d9f556bde7ce2ed6d239fc18a896e1d85cbf70a340ca6a1b",
+      "destinationSha256": "003fc5d6862a4fe05decc2cd0cdad1dca86959d9d161d0ffea4cb2cb8d7819ed",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3434,7 +3434,7 @@
       "destination": "apps/web/api/src/auth/passkeys/service.spec.ts",
       "action": "adapted",
       "sourceSha256": "d8bfbb7824071310edc628acb2bf6ca4dee6a49e1c47363fcff3286b282e64b3",
-      "destinationSha256": "aa919d3e0b4be653121fd31d1ee16a446c0d376053387e130cd213af9019cb3c",
+      "destinationSha256": "cda7e707a0fa14717532b181c9c4cf2e07263c879155ee7b469d7d6f77888294",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3442,7 +3442,7 @@
       "destination": "apps/web/api/src/auth/passkeys/service.ts",
       "action": "adapted",
       "sourceSha256": "5ac1a32cf52fb622239cb80d015648b11740e3cb8ab6dc65118f143177d3fdc2",
-      "destinationSha256": "9a12857fc20885fffbe95ab38b96111cc03626c4443c929be5f15cf713528d03",
+      "destinationSha256": "1902cf24236e2902f86e0f351c4e5251b91e30d23a57fc33d74957c2a71282c0",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3457,7 +3457,7 @@
       "destination": "apps/web/api/src/auth/password/contract.ts",
       "action": "adapted",
       "sourceSha256": "22dc57b91a4141663610f324e465b4559a3396d9a2eab21a7e461333562f6f07",
-      "destinationSha256": "6f29f3e4c087e8f21dbd5ea36657d2b8a10c255781a7ea55f1bc2b8ab90a532b",
+      "destinationSha256": "acad60379d3806dc3577248f81082a10b33e61ba049cad57ab839bdf4b227842",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3465,7 +3465,7 @@
       "destination": "apps/web/api/src/auth/password/controller.ts",
       "action": "adapted",
       "sourceSha256": "0987ca194a74d610941cc48846aec36ec08dc6d59164cad5f0dd6d29d7806db5",
-      "destinationSha256": "7b78286a0818cb053502dd3fbd259cebacc05823ec2762f0f07f93a026d53961",
+      "destinationSha256": "341151e81ae6f3393d2128689a1dd6787ac00b183655cce69c0e90d097d800f0",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3480,7 +3480,7 @@
       "destination": "apps/web/api/src/auth/password/crypto.ts",
       "action": "adapted",
       "sourceSha256": "8e5fc30abe8b751738dc9872c0ecaac6e471f5a40548ed3993cfa3f1ff8f80a3",
-      "destinationSha256": "b8c16e3bd5975f477a25af581746aefb3d09402e54332561b73cde1fabebf170",
+      "destinationSha256": "81c0a76e7ee1419b172c20d1c0f519e107ff56d37fbc7651ae273ebe4ab3d54a",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3488,7 +3488,7 @@
       "destination": "apps/web/api/src/auth/password/router.ts",
       "action": "adapted",
       "sourceSha256": "e5fd9d1ed69662a0a79bcb4f71488a6da4619e37b26cf45e06780816d6f04621",
-      "destinationSha256": "c4f3a9ba415bcb3bb1ffc343508c0965cad474155404766ee858f2cee2053de1",
+      "destinationSha256": "fe120fe170c22383edf365ecd7e962f11cf49e17959e28c08a0966a0c588a814",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3503,7 +3503,7 @@
       "destination": "apps/web/api/src/auth/password/service.spec.ts",
       "action": "adapted",
       "sourceSha256": "21cf3681a829215e305505d015c58b57da0acf63c4e477d09e18739292275fe1",
-      "destinationSha256": "ef1be49a00a62f2805631223f2d8db927880176fec076c418dc729e7854171a3",
+      "destinationSha256": "b764208aa6e7f1d791cb778e3c12be3518d94a20a40afd72ed869cf004910889",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3511,7 +3511,7 @@
       "destination": "apps/web/api/src/auth/password/service.ts",
       "action": "adapted",
       "sourceSha256": "351bfbdccf000101d6edb76315f02485386df434955c2f8adc9ef77354c0ce9a",
-      "destinationSha256": "1d4d9592464fa2856d555ed332b3a809c4786447114d19e7d2a1bada3e54939f",
+      "destinationSha256": "ebc9edf50451c3a170f5dbdd8c5c0050e744c2b7200cb689fe30cf575ed621e5",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3519,7 +3519,7 @@
       "destination": "apps/web/api/src/auth/recovery/contract.ts",
       "action": "adapted",
       "sourceSha256": "8482cea9fa8c20c06cfce9b4130707e7ff9b484495d340926540cc5f2ca021bc",
-      "destinationSha256": "8796d6cf4415f5d1634e160b24b805b598243fa9bce842b65fa3bead66cd0adc",
+      "destinationSha256": "19c534d572659031987b79ae63ac7f2a881e96fa2a290daef1a1f49a80e62ca3",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3527,7 +3527,7 @@
       "destination": "apps/web/api/src/auth/recovery/controller.ts",
       "action": "adapted",
       "sourceSha256": "d663d25af1f492fd07e7297ae3c1eec2a10c726255b3a6b02490e4a81ac9332b",
-      "destinationSha256": "3e5b331602e003fba19741ac1190d756753bac4560cbf0fb0088955461dbc61c",
+      "destinationSha256": "add0c9e8488641f523d45738539612c99699d8428e20d891ce014003ab4afb73",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3535,7 +3535,7 @@
       "destination": "apps/web/api/src/auth/recovery/router.ts",
       "action": "adapted",
       "sourceSha256": "36bf1e28219bcd4b3256178f5a3960e05e6c811aaaf50bcce251793bbc56de3a",
-      "destinationSha256": "efb258546aa744b508cd4dd3eee53727402dc4179590e87828c51bfa17e80c57",
+      "destinationSha256": "bbfc4b8ce64dc6c429d5fd24a27b7cd178ad22da8f0fc63e081e7d947f492cb0",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3550,7 +3550,7 @@
       "destination": "apps/web/api/src/auth/recovery/service.ts",
       "action": "adapted",
       "sourceSha256": "adfa7d385ad04d8fecd040cf560cd01b21754032443ce7208e703ade168b029b",
-      "destinationSha256": "cbdbd88db2a25b43eb5c749827a1d48cef1c04dcbed059816c58ec31fdab9384",
+      "destinationSha256": "a734ae3a6f1a1d516a09c4f5f876141b02c926b988e175c70ebc1a20f93fec7c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3558,7 +3558,7 @@
       "destination": "apps/web/api/src/auth/router.spec.ts",
       "action": "adapted",
       "sourceSha256": "0998df3b57f851d1afd13a0f0e016cc43b3174b1b10621e7674ee285f13980ce",
-      "destinationSha256": "0b5658d1754e49d16a725fe2ae76b9c0a75650a90cebfe2235e283120c91c2db",
+      "destinationSha256": "76bb6ca5ab3f94cf066b4750b8b2cd98a09b01156400479ccb8eb82a3941801e",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3566,7 +3566,7 @@
       "destination": "apps/web/api/src/auth/router.ts",
       "action": "adapted",
       "sourceSha256": "4c2f39f13df0ae6d13a99f3aa22792a1b7d0a57af83edc6e01bddb492a27e406",
-      "destinationSha256": "19b36b8900cb2f94440efabfde7ec31de0cb40152b740213a1b2b0d4df42da1c",
+      "destinationSha256": "faf3cc3317fab61b472c2d8f872b0a081d3d7d233adcd84e76df0689044d6a89",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3574,7 +3574,7 @@
       "destination": "apps/web/api/src/auth/runtime.spec.ts",
       "action": "adapted",
       "sourceSha256": "073da075c462d0be33280b3367058449fc488dd6e5e7fe8f1854003dbb57b384",
-      "destinationSha256": "c349f257715463ad5c367bf6ca2468a4f206a5c9f6c1367a4cefcb15bde05254",
+      "destinationSha256": "31c365da3da40bd90396f077aec17fbd93b8dc66a1c71458353d0a2602eb9b9d",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3582,7 +3582,7 @@
       "destination": "apps/web/api/src/auth/runtime.ts",
       "action": "adapted",
       "sourceSha256": "e20e9aa2cd3bbf68725e1df646d48ce6874ff1f10e579943698e85a43efccc73",
-      "destinationSha256": "f03231cb30d355b15eaca31603dfa1866769aa7a8825c46a4092ad7c4edd25e4",
+      "destinationSha256": "d72a826fe1c34b7cedc1ae91c7a0ba17a7859b9b99432e1cc845eebab5e8aa87",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3590,7 +3590,7 @@
       "destination": "apps/web/api/src/auth/sessions/contract.ts",
       "action": "adapted",
       "sourceSha256": "ff025e137aacb170d088c909d3f7595de8d233120082b7e2f4574feb0b0d810f",
-      "destinationSha256": "196136a3f5b22b0a1f1aac48847096b85d1c1ccad300507fb15a2fd89eda4ce3",
+      "destinationSha256": "c31df81a45c43a6f13e802a4c34af69aefb87d33253a76b79fcbbc21715febc5",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3598,7 +3598,7 @@
       "destination": "apps/web/api/src/auth/sessions/controller.ts",
       "action": "adapted",
       "sourceSha256": "86c9b7b267692b886d9ebfe56ad53a3f3a34aa96b2af7c7b6e0ee3016bbfa298",
-      "destinationSha256": "90cd55d11634c544c084c60bf497572ca70ff69a76f6030ea3e26c4e2e4d658d",
+      "destinationSha256": "83b579db82df30ffcb73cc9247e62835be77c66565497b24d8938dbb2c315c22",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3606,7 +3606,7 @@
       "destination": "apps/web/api/src/auth/sessions/response.ts",
       "action": "adapted",
       "sourceSha256": "931af83df9fee20c5ee7b29368648a349c20d6d745d6f1c73f6dc6757ea428c8",
-      "destinationSha256": "813f94824e787270fc497c223013eb2ac69fdb6e43a73d5710e1080710cdedd8",
+      "destinationSha256": "8a0251a5f01c84edc7f6e04baeac2ef442f6c2577b25cd8e70bd4112968aa450",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3614,7 +3614,7 @@
       "destination": "apps/web/api/src/auth/sessions/router.ts",
       "action": "adapted",
       "sourceSha256": "9417900164c5f559cee83e9ed905c11370c47e3b50160124f515bd441956711b",
-      "destinationSha256": "7f74f38079d1d90bc73cbfe2b4fbab6158395a14842b0abe7157b942173cf406",
+      "destinationSha256": "578d9cc3f20677758404330f8e8b80bcfd5e7c9e5360bbebc5e2e54dc1aad3c6",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3622,7 +3622,7 @@
       "destination": "apps/web/api/src/auth/sessions/service.spec.ts",
       "action": "adapted",
       "sourceSha256": "df33a23a73a4bfc27262eb59dfd01543bc25f5c97a5ec5dcdf4aa94715ec5069",
-      "destinationSha256": "e43c725c436712580d2039d5316cbe1d1f740c3df0dce49468b55bfe752e9a5a",
+      "destinationSha256": "bf742b023d71c8000eeb86d654f3b6e1d8e577c15e4b75e46d73b35038bec3f4",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3630,7 +3630,7 @@
       "destination": "apps/web/api/src/auth/sessions/service.ts",
       "action": "adapted",
       "sourceSha256": "3066a03acd037047bc9c0b55f379e045cae6e694cf668cf14ae7d1e905e907ef",
-      "destinationSha256": "428c6a772ac084e67c630798b04109706f9cf462ec818a6b421913ddbc7bb627",
+      "destinationSha256": "5207c18dc027a9d696d5b707401469fbe6d7749001232310d267667949be7983",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3645,7 +3645,7 @@
       "destination": "apps/web/api/src/auth/sessions/store.ts",
       "action": "adapted",
       "sourceSha256": "646d939eaf0d72b55708eb59249156a3458689b0585f769530d33976156130cf",
-      "destinationSha256": "0e5bb175ed3d94cef8ff70327de1f9b18e6330afe491bc2821dde3128c59cc72",
+      "destinationSha256": "1e732e3e59f7d6ace756f59615e8868187a26a800165dd53291ba51aa3ecb9ef",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3653,7 +3653,7 @@
       "destination": "apps/web/api/src/auth/shared/authorization.spec.ts",
       "action": "adapted",
       "sourceSha256": "64c83d5439657384b13dbc6c0612693e9fd8388cfadc56e78fa1a0a2ab119d3e",
-      "destinationSha256": "f0faaaa98fe46e8895369f978a129e9feb397313c1642740c7632006cc166556",
+      "destinationSha256": "a4e7b8fc48ea466436b3b38f13d20c86e03da98a473f24cb3309eca5e61554c3",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3661,7 +3661,7 @@
       "destination": "apps/web/api/src/auth/shared/authorization.ts",
       "action": "adapted",
       "sourceSha256": "52d692380f8cac10860c06d6e3b77b9e809885b887cd962beff0ae7fa74619f5",
-      "destinationSha256": "7d793090bae9829b2c06e0045c320897adec993c2facd8048ad84e65002d583c",
+      "destinationSha256": "e2191745988ddada9ec7ff8af43f3515bd315b526f914932757b3edb74f94ee6",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3684,7 +3684,7 @@
       "destination": "apps/web/api/src/auth/shared/contracts.ts",
       "action": "adapted",
       "sourceSha256": "a87f0c84b4bb8564e39d617773fda8288b04661074f6c5db8c054622efd00671",
-      "destinationSha256": "b909a70063536a5f3252419c0c1b63b4055f54fc2adf36476d2421fb7bbee264",
+      "destinationSha256": "1bbfbd10f9bc282458751f97f0742828232dd48b55eaf59e48e081b28a425f23",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3692,7 +3692,7 @@
       "destination": "apps/web/api/src/auth/shared/flows.spec.ts",
       "action": "adapted",
       "sourceSha256": "ffa031cb9111c3fc47dc5049c46a9e27075faf5c2006d2b2b4c48f6b88ac0e57",
-      "destinationSha256": "1318ed8a5c5f5fefab192a9b77c3c66604456dfb2a66139b1a3270e8935c5b23",
+      "destinationSha256": "a3e619bec7670dee7b5ef28f439f97f428668c3edad1492c8cefaadef92b5e1e",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3700,7 +3700,7 @@
       "destination": "apps/web/api/src/auth/shared/flows.ts",
       "action": "adapted",
       "sourceSha256": "05b1cfbd73aaacff55997bde08559ca2ba15f32f8792300a39c1521cdc091941",
-      "destinationSha256": "0c2d8214ff1260ff427a5615e4ae3480414cce463fa2fe3f1b1b5ccd9730639e",
+      "destinationSha256": "d4d381bac9ce64b495fd28c3857a39e770aba29cf8b97663eff9c232f1d300ad",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3715,7 +3715,7 @@
       "destination": "apps/web/api/src/auth/shared/http.ts",
       "action": "adapted",
       "sourceSha256": "6bfb231492c3edc1c0504c9242c7eea654b1099d67e159e530ee65a5ac69da11",
-      "destinationSha256": "6534bd0cd7b12133472352702dcb4023bc36ad453113ce2fd3147a60a480e3a8",
+      "destinationSha256": "0675c1cdd7c082ee59b9eb207b2cf70666dacc22b51904e9eacd9a788945dce3",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3730,7 +3730,7 @@
       "destination": "apps/web/api/src/auth/shared/identity.ts",
       "action": "adapted",
       "sourceSha256": "e7ad1bcbc418ea87d15531b368d1d4288fd4d3a3c5d0387625b308406e9d9e6a",
-      "destinationSha256": "9cb817e52249898eb10b267f214003ffa5f343174856230d66a44fa888030e5a",
+      "destinationSha256": "4710e8c66a40701af193edb84d45bfc4b4368ab85101de7f5bb9a27a58d1ec79",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3738,7 +3738,7 @@
       "destination": "apps/web/api/src/auth/shared/notifications.spec.ts",
       "action": "adapted",
       "sourceSha256": "8c453997ddc730e92b5ee9cab21b1b1271fc704f29ad6e493d923c91f672a6dc",
-      "destinationSha256": "7636a7ad46e6d9abfb6f587b32079db9fe3045b1d4bcb06942c1a10b3898c17b",
+      "destinationSha256": "a26302aa9faa07dc0ed4b15a64254c3a52ca653b66961e91770b021b1c265cc8",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3754,7 +3754,7 @@
       "destination": "apps/web/api/src/auth/shared/request-limit-store.ts",
       "action": "adapted",
       "sourceSha256": "8b3663480ca8fe906a7798cacdef3328862aeb4bd839bd68a1b1b1f17e2be666",
-      "destinationSha256": "607ac6ab074e9875fe99616caee2d6ed68fd6ba38ff98c6068d2504ea4bae6a2",
+      "destinationSha256": "31af45addb896f0909e7624aab1159a2c0eaece3a5f6fd871159ed4129012ae6",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3769,7 +3769,7 @@
       "destination": "apps/web/api/src/auth/shared/security.spec.ts",
       "action": "adapted",
       "sourceSha256": "9d81965ff320bbd40fd560c58e6f0335d173d2310a6f528f518a01a11c2e5e8a",
-      "destinationSha256": "da2e9c0dc288be03bcb1d1a369bf40038a23f5b25ffac3709e392898fc88cc1b",
+      "destinationSha256": "2d054ef1b922aea5b6f9497dd7fb30d8156c2185c5d9dcbaf9964c9a81e3db86",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3777,7 +3777,7 @@
       "destination": "apps/web/api/src/auth/shared/security.ts",
       "action": "adapted",
       "sourceSha256": "3930a2930211309c72ad017677a6e46e31de45370ca8e5ed54da6eeb3b7191e2",
-      "destinationSha256": "52d7c79aca5ef103a46e91bca444cf709476629952aae901ee822311e55c6617",
+      "destinationSha256": "c17bc41b7207d05b90981f6b8c2279588cf413ab767ef684cfb11d5e75ff3975",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3792,7 +3792,7 @@
       "destination": "apps/web/api/src/auth/totp/contract.ts",
       "action": "adapted",
       "sourceSha256": "56f261355cebb69cd893f881ca5888fbd3c1c124e35db606178501ac679b59f2",
-      "destinationSha256": "19ec4e08e743476a2f97628436f8fd85841d8547a28ca7f5e773cd2ff4f56871",
+      "destinationSha256": "72329af73d52a51b2eb953a95301ca8e824e40a1c6d12e879b99b2fbfcd25c0e",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3800,7 +3800,7 @@
       "destination": "apps/web/api/src/auth/totp/controller.ts",
       "action": "adapted",
       "sourceSha256": "2a4f817009e0f17399800222683cc5baf658e741203f86fc14548d913ad93f57",
-      "destinationSha256": "cf3455318441fc957aa74fdddcd5d2878dcca1899d61954620217a642bdd0689",
+      "destinationSha256": "7196b6c7b56660225d849eb62dd83baba298b8d273f8799be4316a50b4210260",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3808,7 +3808,7 @@
       "destination": "apps/web/api/src/auth/totp/router.ts",
       "action": "adapted",
       "sourceSha256": "aebb680ee3c4baa3c982f7019434f8609db1b634380e3bc00c53f8c6a9a8b3fc",
-      "destinationSha256": "620db596c8bfe3e7b6388b4b4f5660590457cb52b7344e9837cad35046b915f7",
+      "destinationSha256": "2f9d6c0818080cc1a2115c86690504b46fc4b673383d28d193c79d1bed95805c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3837,7 +3837,7 @@
       "destination": "apps/web/api/src/auth/totp/service.ts",
       "action": "adapted",
       "sourceSha256": "759c66bf3391c0945335f4b14304a4bfbbf281a8a34d82333089bb0cf3c55cfd",
-      "destinationSha256": "e2b75f91a663db24de3ea35d5663bec79b8dbe2f0b4bb1b4dfe00d7f46283087",
+      "destinationSha256": "0811869406b3a380ecb8b4fb565fecc8f44f21baac8341e5b38a0af521c7177d",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3845,7 +3845,7 @@
       "destination": "apps/web/api/src/main.spec.ts",
       "action": "adapted",
       "sourceSha256": "78940f691c04756428b7e0ff0fff0da53ff0cd4db0941f38c14c9980de14403a",
-      "destinationSha256": "09de5d47ec4232eee030c462ad4b673eaa3145d2e378898fbc5f0ded596c4dd0",
+      "destinationSha256": "ec3950320b79c7dc3058793320496eebf1631d018ae88cc55ce4deb40de50b1b",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3861,7 +3861,7 @@
       "destination": "apps/web/api/src/openapi.spec.ts",
       "action": "adapted",
       "sourceSha256": "97c3c40c2860a9627ab6e870bf880dd8f21203cb921c19a794908b0b59a49778",
-      "destinationSha256": "87a043354b120e512f4f67f13aeecf8adfdaeb202763e310f194e5fc71e54207",
+      "destinationSha256": "82ec418d30bfe58026f4e9d6d5906a14daf8adc9c7e62d11d6f034eb21f9f94b",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3869,7 +3869,7 @@
       "destination": "apps/web/api/src/openapi.ts",
       "action": "adapted",
       "sourceSha256": "5cbaaa55a8bc015e96b94017eaf106ae5c747b2c6d27edbdedae1ae51b6114e8",
-      "destinationSha256": "69912a329795d3177d0cd7cd1b37fccec7d63883449345158877267ffeb96c54",
+      "destinationSha256": "17f11457f95b3cf1ef22e659fd83d4198a07927238a2f1c4084e06e2bbf59ca9",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3877,7 +3877,7 @@
       "destination": "apps/web/api/tests/integration/access-errors.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "39705ce57ac71126c44d7dbc953476d8dcd38e7701822f5d4cb1a1388645fd03",
-      "destinationSha256": "6c7bfac973033fb293f6f8e5aa6e78528038766ca06f6177e55574040ae010a7",
+      "destinationSha256": "927c3705d78656f9d9ae676f42afe110be671df01842f025aa14e1df2bb70645",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3885,7 +3885,7 @@
       "destination": "apps/web/api/tests/integration/access-management.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "d8f10ec0aefe40612d229049c2c89878d33ef50830b4c91c4734a34e581f0de3",
-      "destinationSha256": "1ae3dc749aaa9ac21c0b334b91664a406fc35c2d57f37f74e5935219d507c124",
+      "destinationSha256": "2ba805a26905c49d8a9d315cf6e4a5d7c0ec471de10c6c7e7a1f4f851f1cb222",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3893,7 +3893,7 @@
       "destination": "apps/web/api/tests/integration/account-flows.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "75f20fefb5c2ff2ba0bcbe111a32131e057f020575d87510eed45abf76dd2b82",
-      "destinationSha256": "8a7312b44e38b7d1f56f572a5b2bee812938b191beca8de7f782a797d47627dc",
+      "destinationSha256": "2416c6c29b0a8534f4631123071b2bb0f39df7dece1add99f745f58eff2570be",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3901,7 +3901,7 @@
       "destination": "apps/web/api/tests/integration/auth-persistence.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "d7f56679bb934a9b896711bb16d259460eaaf39d1d04047f8243e2eb93a1ec40",
-      "destinationSha256": "61fbe6f16337b3ba701c22a0ba525ac02d4e95f10e2dbf83765124aedc0c806b",
+      "destinationSha256": "ed77a5a4a630032c4aacea937874081d1d7e2a33af3dc4e1f694cc5bc24cdd37",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3909,7 +3909,7 @@
       "destination": "apps/web/api/tests/integration/auth-review-regressions.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "5532d2276e925cd0c7bb8856e26f6d86497e3a6299c5f9e3b122e9bb06cafbbe",
-      "destinationSha256": "1802dbccf35c7e6890d62e4fb932be0401d1c7d9f9decac0836a281f00bc1f8a",
+      "destinationSha256": "6cb73fddff0e0a5a8841bdd5e96a4c24bfbf5d96ac0b0f52c5a3700c258b16af",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3917,7 +3917,7 @@
       "destination": "apps/web/api/tests/integration/compiled.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "329dcf817fa4d5d48b4d79bb63299015fc5aaef7a1366fc4464053eed2f74491",
-      "destinationSha256": "35e29c89054bddba00e08d73cab18930c9c4ef827288a5972883f8cee9c00a17",
+      "destinationSha256": "bb796d300d5b09bb3f933af2d2c59048ba0dedb4b77aead67a599b64a3b42216",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3925,7 +3925,7 @@
       "destination": "apps/web/api/tests/integration/google-accounts.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "9cfd6c27ea156ac6e33d82085279d1110a827d2d77a2fb85a9f435df573abbda",
-      "destinationSha256": "d08223d0e553df63cfc7151bacce2c63802b61b53804e13f39ef51fa87aeffcb",
+      "destinationSha256": "cbaf2589bb82ceaf0636db92f1d79cba9fd9b60942fd9ff387204412aa7c0a2b",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3933,7 +3933,7 @@
       "destination": "apps/web/api/tests/integration/observability.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "8dcb64ef75e53ae93dc91707d8a1232108d5535e245ea5c035181523dcc0c3f9",
-      "destinationSha256": "da82a3f6a7201397b2a5d331edaa98744f0e2efc7a5d1d3bda23309472c9a9f7",
+      "destinationSha256": "5a37add6782acf796d6d97d57d2877a6ad185662f17194541dc71d11e0aea143",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3941,7 +3941,7 @@
       "destination": "apps/web/api/tests/integration/passkeys-decisions.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "1a0716b7f661e5218dc92128920d96d471ee53c239bfe25f260a57e84e26ac10",
-      "destinationSha256": "f810412421856ec0f8075fdb68b8b4b9bf362f3c52169007a43f0cd510db32f8",
+      "destinationSha256": "94533d3ca8e67f0f1fc8a150c202300134c8baec814fbdc9f5abace0fa8637a2",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3949,7 +3949,7 @@
       "destination": "apps/web/api/tests/integration/support/auth.ts",
       "action": "adapted",
       "sourceSha256": "ff478317e0b9ac8d4679a97921ae2ffa403c70d0084071d44a874cd4f84c0faf",
-      "destinationSha256": "13a53049baa27cee02c8fa6e571766bfd28c8d1f52552fcd94bb0940b018330f",
+      "destinationSha256": "0d326c7a78e3fead1ddd8538efdf47ab20693127cceed5b4c7a8978802a23859",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3957,7 +3957,7 @@
       "destination": "apps/web/api/tests/support/auth-state.ts",
       "action": "adapted",
       "sourceSha256": "0551817e2e380efc47d4e84b024bd76ca5110d54259843c39cea2cae03b55cdd",
-      "destinationSha256": "865387842d212885c600c875c6afc52691798739aad7687794570f842491d34c",
+      "destinationSha256": "33826fc56378bd9214dc0ff8d25fa53e0d1397e05245dd57155b1236c573169c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3965,7 +3965,7 @@
       "destination": "apps/web/api/tests/support/injection.ts",
       "action": "adapted",
       "sourceSha256": "2f7e16109c23434d36e2533e83792a49c259a1725951be9a7fdc979599a4e088",
-      "destinationSha256": "fc5aca660164c911a039769a1e990959c594aae996f4ae59407fa8a8a32a2010",
+      "destinationSha256": "909dc1f64567cd4a9ce0e1c71fbeb1179fa39f8ebc3f4d88ef69bb4e6942af95",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5575,7 +5575,7 @@
       "destination": "apps/web/gateway/src/api-module.ts",
       "action": "adapted",
       "sourceSha256": "f4e6cf9ef8235f954179f056b2ce1ce0306343b63f43e50da4387ffa2609f49f",
-      "destinationSha256": "31304113600ad954511d93dfcbf397e253bc5ed8271f0dba1b02078413c47aa1",
+      "destinationSha256": "9c035c74d2266c1353ae319ef7c1cdba095716212d970d12f492814fb33557dc",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5583,7 +5583,7 @@
       "destination": "apps/web/gateway/src/app.spec.ts",
       "action": "adapted",
       "sourceSha256": "171e4a08de63826dfce52e2f7019df5679af8351a02f2e5b5242bf157660ffa7",
-      "destinationSha256": "522c4ed4b6fa5df1109f0feddcd55c1f89e8ce56193a5426cfde33b1fd2d2ed5",
+      "destinationSha256": "8e4f0ed3d1da802b0907f858df60d6062dc5aad9209bf1e1575f8c608164f25c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5591,7 +5591,7 @@
       "destination": "apps/web/gateway/src/app.ts",
       "action": "adapted",
       "sourceSha256": "e1fd09abd62e97fc1b8a0344bad73084ca6f21293b0304088d603f2aad30b41c",
-      "destinationSha256": "f16ec96e3c7275570696562aeda4ed0a4af10e1154172a26da8f73e08836539b",
+      "destinationSha256": "f71be855368e8572bd035bb47a51bd369f4e2c379b9eb86c71f3ba9d72e1b4d3",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5606,7 +5606,7 @@
       "destination": "apps/web/gateway/src/application-module.ts",
       "action": "adapted",
       "sourceSha256": "840c340264d03fc3080dde83483d52e9e814330b46bee9072466d5bb76a781de",
-      "destinationSha256": "6b84936161e49a320e14fa7facd2e3c2085e29e65f5acacc6c10bc980055e194",
+      "destinationSha256": "16d86b1ddd1e20082f478f3c6b38e9c0b1df3364308b4271b787ea07922060c5",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5637,7 +5637,7 @@
       "destination": "apps/web/gateway/src/page-errors.spec.ts",
       "action": "adapted",
       "sourceSha256": "3d6306c5861d18f36ec52d4bcba29300c35ad7e7f2ca526bc2552529ef0d59c8",
-      "destinationSha256": "fb5614f07f619b024c729df5d4622f5e93d6c4ab16456f949a12022315e42ac0",
+      "destinationSha256": "f17140b545e4a7a6ce393d5ff1b0434b1c28c7de715d1d3a9dec09faef4fadca",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5645,7 +5645,7 @@
       "destination": "apps/web/gateway/src/page-errors.ts",
       "action": "adapted",
       "sourceSha256": "c64f06d946d2a6573328878a3680a63744d8d1c6bd489919a8cfb6bb667b6c5d",
-      "destinationSha256": "1a25b055685d68fb39d75460579f1371342215e9ff5a1efa57ac12797377ae34",
+      "destinationSha256": "e25645862e09fe905585a26a49a9c08b480282fb19112908760c48055314356c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5696,7 +5696,7 @@
       "destination": "apps/web/gateway/tests/integration/compiled.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "4acdf013b5c84920154faf4bb056b3f0845d261a3b9bb043bfb99e0803053d32",
-      "destinationSha256": "14d0b2d8f0f343cf86f208fe9afbdd1adc8929b1fcf961d01172b9c696320ff4",
+      "destinationSha256": "e5b721c4a97109be46a3ec08a093c3193f8b2b15fc1f7106e111051f4bb0e507",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5768,7 +5768,7 @@
       "destination": "apps/web/realtime/src/app.ts",
       "action": "adapted",
       "sourceSha256": "a0485092779059efb777325bffb0b679382f0d112f2cf0e7faa1399534c5d544",
-      "destinationSha256": "b8da623e2e909aa2dd3017d11393d87636deb6b0a6585d8c86859465f33eb848",
+      "destinationSha256": "b66b5f343ac9cd49a20d5f654bda27d75d17d76f0e84feae62e0fa5f24dd2897",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5783,7 +5783,7 @@
       "destination": "apps/web/realtime/src/main.ts",
       "action": "adapted",
       "sourceSha256": "b9feb483d524b8d475779f5f452e569ca78e7790382e548348536ffe4532b7a4",
-      "destinationSha256": "c2aabdf2aa16e739ae0dcbdd01633a087f723141a5ca8321de9bf59f5a39578d",
+      "destinationSha256": "b423e68bbe03a3e48fddcc78cec8de217567af39551469777d5203246f3677c3",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -6569,7 +6569,7 @@
       "action": "adapted",
       "sourceSha256": "cc8ccca5941c8eb9dc289885fbb1a772a14a839983e868a0430b8ff93bd2f2a2",
       "destination": "eslint.config.mjs",
-      "destinationSha256": "18b95e9a3453f721cbcefd631d77883c56e8a1c512765fce5319d02f354d652d",
+      "destinationSha256": "385d1f098a18d7d41b0ca6fc06940e4e3da3bd51b0ffe5189ada0e3de7e9900c",
       "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {

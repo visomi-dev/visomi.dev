@@ -1,5 +1,6 @@
-import { createApiDocument, defineRoute } from '@visomi-stack/web-backend-shared/lib/http/contracts';
 import { z } from 'zod';
+
+import { createApiDocument, defineRoute } from '@visomi-stack/web-backend-shared/lib/http/contracts';
 
 import { contactContracts } from './contact/contracts';
 import { passwordContracts } from './auth/password/contract';

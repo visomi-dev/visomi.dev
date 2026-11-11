@@ -1,8 +1,9 @@
 import type { Server as HttpServer } from 'node:http';
 
-import type { RealtimeRuntime } from '@visomi-stack/backend-shared/lib/realtime';
 import type { Request, RequestHandler, Response, NextFunction } from 'express';
 import { Server } from 'socket.io';
+
+import type { RealtimeRuntime } from '@visomi-stack/backend-shared/lib/realtime';
 
 import { attachDeviceApprovals, type DeviceApprovalAccess } from './devices/approval';
 import { attachSessionChannel, type ReadSessionUser } from './session/channel';

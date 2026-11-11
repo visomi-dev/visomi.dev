@@ -9,11 +9,12 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 
-import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
 import { SMTPServer } from 'smtp-server';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { hashPassword } from '@visomi-stack/dev-testing/lib/password';
+
+import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 
 import { loadApi } from '../../src/api-module';
 import { loadSite } from '../../src/site-module';

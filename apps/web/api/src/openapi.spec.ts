@@ -1,11 +1,12 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { Socket } from 'node:net';
 
-import { createInjector } from '@visomi-stack/backend-shared/lib/injection';
-import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 import express, { json, type Request, type RequestHandler, type Response } from 'express';
 import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 import type { z } from 'zod';
+
+import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
+import { createInjector } from '@visomi-stack/backend-shared/lib/injection';
 
 import { createApp } from './app';
 import { devicesContracts, type RequestApprovalInput } from './auth/devices/contract';

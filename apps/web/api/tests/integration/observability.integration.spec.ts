@@ -13,6 +13,7 @@ import {
 import { InMemorySpanExporter } from '@opentelemetry/sdk-trace';
 import express, { json } from 'express';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 import {

@@ -1,7 +1,8 @@
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
+
 import { inject, InjectionToken } from '@visomi-stack/backend-shared/lib/injection';
 import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import type { NextFunction, Request, RequestHandler, Response } from 'express';
 
 import { requireAnonymousSession, requirePrincipal } from './http';
 import { requireFull, type Principal } from './identity';

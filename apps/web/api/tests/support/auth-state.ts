@@ -1,8 +1,9 @@
+import { vi } from 'vitest';
+
 import { AuthMail } from '@visomi-stack/backend-shared/lib/mail/messages';
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import { createInjector } from '@visomi-stack/backend-shared/lib/injection';
 import { MAIL_TRANSPORT } from '@visomi-stack/backend-shared/lib/mail/smtp';
-import { vi } from 'vitest';
 
 import { authConfig } from '../../src/auth/shared/config';
 import { type Flow } from '../../src/auth/shared/flows';

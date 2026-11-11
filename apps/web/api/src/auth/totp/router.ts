@@ -1,5 +1,6 @@
-import { routes } from '@visomi-stack/web-backend-shared/lib/http/contracts';
 import { Router } from 'express';
+
+import { routes } from '@visomi-stack/web-backend-shared/lib/http/contracts';
 
 import { type Authorization } from '../shared/authorization';
 

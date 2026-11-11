@@ -1,3 +1,8 @@
+import type { Request, RequestHandler } from 'express';
+import session from 'express-session';
+import { Passport } from 'passport';
+import type { Pool } from 'pg';
+
 import { AuthMail } from '@visomi-stack/backend-shared/lib/mail/messages';
 import { createInjector } from '@visomi-stack/backend-shared/lib/injection';
 import { DATABASE, DATABASE_POOL } from '@visomi-stack/backend-shared/lib/database/tokens';
@@ -7,10 +12,6 @@ import type { Database } from '@visomi-stack/backend-shared/lib/database/databas
 import type { MailTransport } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import type { RealtimePublisher } from '@visomi-stack/backend-shared/lib/realtime';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import type { Request, RequestHandler } from 'express';
-import session from 'express-session';
-import { Passport } from 'passport';
-import type { Pool } from 'pg';
 
 import { DevicesController } from './devices/controller';
 import { Devices } from './devices/service';

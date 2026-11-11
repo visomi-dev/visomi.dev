@@ -1,12 +1,13 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { Socket } from 'node:net';
 
-import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import type { Request, Response } from 'express';
 import express from 'express';
 import { Passport } from 'passport';
 import type { Pool } from 'pg';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 
 import { createAuthentication } from './runtime';
 import type { AuthorizationPolicy } from './shared/authorization';

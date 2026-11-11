@@ -1,7 +1,8 @@
+import type { Request, Response } from 'express';
+
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import type { Request, Response } from 'express';
 
 import type { IdentifiedRequest } from '../shared/http';
 import { EmailIdentity } from '../email/service';

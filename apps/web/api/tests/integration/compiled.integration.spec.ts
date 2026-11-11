@@ -5,8 +5,9 @@ import { createServer } from 'node:http';
 import { join, resolve } from 'node:path';
 import { promisify } from 'node:util';
 
-import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 import { describe, expect, it } from 'vitest';
+
+import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 
 const execute = promisify(execFile);
 const root = resolve(import.meta.dirname, '../../../../..');

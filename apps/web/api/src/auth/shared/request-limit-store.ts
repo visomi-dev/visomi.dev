@@ -1,8 +1,9 @@
+import { sql } from 'drizzle-orm';
+import type { Store } from 'express-rate-limit';
+
 import { DATABASE } from '@visomi-stack/backend-shared/lib/database/tokens';
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
-import { sql } from 'drizzle-orm';
-import type { Store } from 'express-rate-limit';
 
 export class RequestLimitStore implements Store {
   private readonly database = inject<Database>(DATABASE);

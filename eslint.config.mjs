@@ -112,7 +112,7 @@ export default [
       'import-x/ignore': ['^astro:'],
       // Keep workspace alias grouping independent of the lint cwd and generated resolver paths.
       'import-x/internal-regex':
-        '^(?:@visomi-stack/(?:web-frontend-ui|web-shared-observability)|web-shared|web-shared-common|web-frontend-shared|web-backend-shared)(?:/|$)',
+        '^(?:@visomi-stack|@visomi\\.dev|web-shared|web-shared-common|web-frontend-shared|web-backend-shared)(?:/|$)',
     },
     rules: {
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
@@ -222,6 +222,7 @@ export default [
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           // Keep workspace packages consistent from root hooks and project-level Nx tasks.
           pathGroups: [
+            { pattern: 'astro:*', group: 'external' },
             { pattern: '@visomi-stack/dev-testing{,/**}', group: 'external' },
             { pattern: '@visomi.dev/shared-social-images{,/**}', group: 'internal' },
           ],

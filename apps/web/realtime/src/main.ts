@@ -1,11 +1,12 @@
 import { createServer } from 'node:http';
 
+import type { Pool } from 'pg';
+
 import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import { createRedisRealtimeTransport } from '@visomi-stack/backend-shared/lib/realtime-redis';
 import { subscribeRealtime } from '@visomi-stack/backend-shared/lib/realtime';
 import type { Database, DatabaseResource } from '@visomi-stack/backend-shared/lib/database/database';
 import type { RealtimeRuntime, RealtimeTransport } from '@visomi-stack/backend-shared/lib/realtime';
-import type { Pool } from 'pg';
 
 import { attachRealtimeServer, type RealtimeAccess } from './app';
 

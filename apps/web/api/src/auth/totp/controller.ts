@@ -1,5 +1,6 @@
-import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import type { Response } from 'express';
+
+import { inject } from '@visomi-stack/backend-shared/lib/injection';
 
 import type { IdentifiedRequest } from '../shared/http';
 import { SessionResponses } from '../sessions/response';

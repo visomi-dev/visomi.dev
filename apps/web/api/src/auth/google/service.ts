@@ -1,13 +1,14 @@
 import { randomBytes, randomUUID } from 'node:crypto';
 
+import { and, eq, isNotNull, isNull, sql } from 'drizzle-orm';
+import { OAuth2Client, type TokenPayload } from 'google-auth-library';
+
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { DATABASE } from '@visomi-stack/backend-shared/lib/database/tokens';
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import { and, eq, isNotNull, isNull, sql } from 'drizzle-orm';
-import { OAuth2Client, type TokenPayload } from 'google-auth-library';
 
 import { normalizeEmail } from '../email/normalization';
 import { AUTH_CONFIG, type AuthConfig } from '../shared/config';

@@ -2,6 +2,7 @@ import { createReadStream, statSync, readFileSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 
 import { type NextFunction, type Request, type RequestHandler, type Response } from 'express';
+
 import { documentPolicy } from '@visomi-stack/web-backend-shared/lib/http/document-policy';
 
 const MANY_TRAILING_SLASHES = /\/{2,}$/g;

@@ -11,13 +11,14 @@ import {
   verifyAuthenticationResponse,
   verifyRegistrationResponse,
 } from '@simplewebauthn/server';
+import { and, eq, gt, isNull, sql } from 'drizzle-orm';
+
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { DATABASE } from '@visomi-stack/backend-shared/lib/database/tokens';
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import { and, eq, gt, isNull, sql } from 'drizzle-orm';
 
 import { completeEnrollment } from '../recovery/service';
 import { AUTH_CONFIG, type AuthConfig } from '../shared/config';

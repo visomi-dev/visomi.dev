@@ -1,9 +1,10 @@
 import { createHash, randomUUID } from 'node:crypto';
 
 import { verifyAuthenticationResponse } from '@simplewebauthn/server';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { storage, config as trusted, user, session, flow } from '../../../tests/support/auth-state';
 import { authService } from '../../../tests/support/injection';

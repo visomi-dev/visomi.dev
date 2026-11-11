@@ -1,5 +1,6 @@
-import { REALTIME_PUBLISHER } from '@visomi-stack/backend-shared/lib/realtime';
 import { expect, it, vi } from 'vitest';
+
+import { REALTIME_PUBLISHER } from '@visomi-stack/backend-shared/lib/realtime';
 
 import { config, current, session, storage, user } from '../../../tests/support/auth-state';
 import { authService } from '../../../tests/support/injection';

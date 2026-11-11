@@ -1,8 +1,9 @@
 import { randomBytes } from 'node:crypto';
 
+import type { Request, Response } from 'express';
+
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import type { Request, Response } from 'express';
 
 import { Recovery } from '../recovery/service';
 import { AUTH_CONFIG, type AuthConfig } from '../shared/config';

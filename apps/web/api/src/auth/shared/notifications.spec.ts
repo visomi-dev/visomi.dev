@@ -1,5 +1,6 @@
-import { AuthMail } from '@visomi-stack/backend-shared/lib/mail/messages';
 import { expect, it } from 'vitest';
+
+import { AuthMail } from '@visomi-stack/backend-shared/lib/mail/messages';
 
 import { config, quietMail, storage } from '../../../tests/support/auth-state';
 import { authService } from '../../../tests/support/injection';

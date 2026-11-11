@@ -1,12 +1,13 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { Socket } from 'node:net';
 
-import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
-import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 import type { Request, Response } from 'express';
 import express from 'express';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
+import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
+import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 
 import { storage } from '../../tests/support/auth-state';
 import { authInjector } from '../../tests/support/injection';

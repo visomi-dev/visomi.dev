@@ -1,9 +1,10 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import type { ErrorRequestHandler } from 'express';
+
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
-import type { ErrorRequestHandler } from 'express';
 
 async function loadDocuments(clientDirectory?: string) {
   const documents = new Map<string, Buffer>();

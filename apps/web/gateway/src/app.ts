@@ -1,8 +1,3 @@
-import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import type { createBrowserTelemetry } from '@visomi-stack/web-backend-shared/lib/observability/browser/intake';
-import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
-import { securityHeaders } from '@visomi-stack/web-backend-shared/lib/http/security-headers';
-import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 import type { Pool } from 'pg';
 import express, {
   Router,
@@ -12,6 +7,12 @@ import express, {
   type NextFunction,
   type RequestHandler,
 } from 'express';
+
+import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
+import type { createBrowserTelemetry } from '@visomi-stack/web-backend-shared/lib/observability/browser/intake';
+import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
+import { securityHeaders } from '@visomi-stack/web-backend-shared/lib/http/security-headers';
+import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 
 import type { ApiModule, EmbeddedAuthentication } from './api-module';
 import type { SiteModule } from './site-module';

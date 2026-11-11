@@ -1,4 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
+
 import { documentPolicy } from '@visomi-stack/web-backend-shared/lib/http/document-policy';
 
 const SECURITY_HEADERS = {

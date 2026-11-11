@@ -1,6 +1,10 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { Socket } from 'node:net';
 
+import type { Request, Response } from 'express';
+import express, { Router } from 'express';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import type * as MockModule0 from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 import type * as MockModule1 from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
 import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
@@ -8,9 +12,6 @@ import { currentObservability } from '@visomi-stack/web-backend-shared/lib/obser
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
-import type { Request, Response } from 'express';
-import express, { Router } from 'express';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type * as ImportedModule1 from './auth/router';
 import { createApp } from './app';

@@ -1,8 +1,9 @@
+import { and, eq, isNull } from 'drizzle-orm';
+
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { DATABASE } from '@visomi-stack/backend-shared/lib/database/tokens';
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
-import { and, eq, isNull } from 'drizzle-orm';
 
 import { requireFull } from '../shared/identity';
 import { Factors } from '../totp/service';

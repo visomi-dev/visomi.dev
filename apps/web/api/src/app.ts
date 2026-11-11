@@ -1,3 +1,6 @@
+import express, { type Request, type Response, type NextFunction } from 'express';
+import type { Pool } from 'pg';
+
 import { currentObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
@@ -5,8 +8,6 @@ import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observab
 import { routes } from '@visomi-stack/web-backend-shared/lib/http/contracts';
 import { securityHeaders } from '@visomi-stack/web-backend-shared/lib/http/security-headers';
 import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
-import express, { type Request, type Response, type NextFunction } from 'express';
-import type { Pool } from 'pg';
 
 import { authErrorHandler, createAuthRouter } from './auth/router';
 import { createContactRouter } from './contact/router';

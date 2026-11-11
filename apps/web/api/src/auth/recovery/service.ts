@@ -1,10 +1,11 @@
 import { randomUUID } from 'node:crypto';
 
+import { and, eq, isNotNull, isNull } from 'drizzle-orm';
+
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { DATABASE } from '@visomi-stack/backend-shared/lib/database/tokens';
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
-import { and, eq, isNotNull, isNull } from 'drizzle-orm';
 
 import { validateApproval } from '../devices/service';
 import { normalizeEmail } from '../email/normalization';

@@ -1,10 +1,11 @@
 import { randomUUID } from 'node:crypto';
 
-import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { authenticator } from '@visomi-stack/dev-testing/lib/authenticator';
 import { and, eq, isNull } from 'drizzle-orm';
 import { generate } from 'otplib';
 import { expect, it, vi } from 'vitest';
+
+import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 
 import { authenticationFixture, password } from './support/auth';
 

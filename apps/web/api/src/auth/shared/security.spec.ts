@@ -1,8 +1,9 @@
+import type { Request, RequestHandler, Response } from 'express';
+import { describe, expect, it, vi } from 'vitest';
+
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
-import type { Request, RequestHandler, Response } from 'express';
-import { describe, expect, it, vi } from 'vitest';
 
 import { authService } from '../../../tests/support/injection';
 

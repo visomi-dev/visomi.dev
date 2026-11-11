@@ -1,5 +1,6 @@
-import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 import type { Request, RequestHandler } from 'express';
+
+import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 
 export type AuthSnapshot = {
   authenticated: boolean;

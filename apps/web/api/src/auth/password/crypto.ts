@@ -1,7 +1,8 @@
 import { randomBytes } from 'node:crypto';
 
-import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import { argon2id } from 'hash-wasm';
+
+import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 
 import { matches } from '../shared/secrets';
 

@@ -2,13 +2,14 @@ import { IncomingMessage, ServerResponse } from 'node:http';
 import { once } from 'node:events';
 import { Socket, type AddressInfo } from 'node:net';
 
+import type { Request, RequestHandler, Response } from 'express';
+import express, { Router } from 'express';
+import { describe, expect, it, vi } from 'vitest';
+
 import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-http-error';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
-import type { Request, RequestHandler, Response } from 'express';
-import express, { Router } from 'express';
-import { describe, expect, it, vi } from 'vitest';
 
 import type { ApiModule, EmbeddedAuthentication } from './api-module';
 import { createGatewayApp } from './app';

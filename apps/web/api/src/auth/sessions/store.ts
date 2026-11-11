@@ -1,8 +1,9 @@
-import { DATABASE_POOL } from '@visomi-stack/backend-shared/lib/database/tokens';
-import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import connectPgSimple from 'connect-pg-simple';
 import session from 'express-session';
 import type { Pool } from 'pg';
+
+import { inject } from '@visomi-stack/backend-shared/lib/injection';
+import { DATABASE_POOL } from '@visomi-stack/backend-shared/lib/database/tokens';
 
 const PgStore = connectPgSimple(session);
 

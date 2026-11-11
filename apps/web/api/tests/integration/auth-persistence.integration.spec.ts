@@ -3,8 +3,6 @@ import { resolve } from 'node:path';
 import { promisify } from 'node:util';
 import { randomUUID } from 'node:crypto';
 
-import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
-import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import { eq, sql } from 'drizzle-orm';
 import type { Request, Response } from 'express';
 import { Cookie } from 'express-session';
@@ -12,6 +10,9 @@ import type { SessionData } from 'express-session';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { authenticator } from '@visomi-stack/dev-testing/lib/authenticator';
 import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
+
+import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
+import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 
 import { authService, sessionStore } from '../support/injection';
 import { authConfig } from '../../src/auth/shared/config';

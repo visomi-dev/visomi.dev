@@ -1,9 +1,10 @@
+import type { Pool } from 'pg';
+
 import { AuthMail } from '@visomi-stack/backend-shared/lib/mail/messages';
 import { createInjector } from '@visomi-stack/backend-shared/lib/injection';
 import { DATABASE, DATABASE_POOL } from '@visomi-stack/backend-shared/lib/database/tokens';
 import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
 import type { Provider, Type } from '@visomi-stack/backend-shared/lib/injection';
-import type { Pool } from 'pg';
 
 import { DevicesController } from '../../src/auth/devices/controller';
 import { Devices } from '../../src/auth/devices/service';
