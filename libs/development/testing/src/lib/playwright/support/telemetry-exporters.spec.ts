@@ -4,11 +4,11 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { createTelemetryOptions } from './telemetry-exporters';
-import { readTelemetry } from './telemetry';
-
 import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
+
+import { createTelemetryOptions } from './telemetry-exporters';
+import { readTelemetry } from './telemetry';
 
 let directory: string | undefined;
 let runtime: Observability | undefined;

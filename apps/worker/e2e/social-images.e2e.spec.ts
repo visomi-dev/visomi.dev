@@ -6,6 +6,7 @@ import { expect, test } from '@playwright/test';
 import { runTestCompose, type TestCompose } from '@visomi-stack/dev-testing/lib/compose';
 import { Queue, QueueEvents } from 'bullmq';
 import sharp from 'sharp';
+
 import { socialImageRedisOptions } from '@visomi.dev/shared-social-images/redis';
 
 test('compiled gateway and worker validate, generate, deduplicate and recover after Redis interruption', async ({

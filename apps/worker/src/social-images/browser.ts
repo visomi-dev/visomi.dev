@@ -1,6 +1,7 @@
 import { access } from 'node:fs/promises';
 
 import { launch, type Browser } from 'puppeteer-core';
+
 import { SOCIAL_IMAGE_HEIGHT, SOCIAL_IMAGE_WIDTH } from '@visomi.dev/shared-social-images/types';
 
 const chromiumPathCandidates = [

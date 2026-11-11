@@ -11,6 +11,14 @@ import type { SpanExporter } from '@opentelemetry/sdk-trace';
 import pino from 'pino';
 import type { DestinationStream, Logger } from 'pino';
 
+import { browserPerformanceMetrics } from '@visomi-stack/web-shared-observability/lib/contract';
+import type {
+  BrowserErrorReport,
+  BrowserPerformanceMetric,
+  BrowserPerformanceReport,
+} from '@visomi-stack/web-shared-observability/lib/contract';
+import { createInjector, inject, InjectionToken } from '@visomi-stack/backend-shared/lib/injection';
+
 import {
   environment,
   errorCode,
@@ -24,14 +32,6 @@ import {
 } from './policy';
 import type { Correlation, Environment, ErrorCode, Operation, Outcome, RuntimeEvent, Service } from './policy';
 import { otlpSpanProcessors } from './otlp';
-
-import { browserPerformanceMetrics } from '@visomi-stack/web-shared-observability/lib/contract';
-import type {
-  BrowserErrorReport,
-  BrowserPerformanceMetric,
-  BrowserPerformanceReport,
-} from '@visomi-stack/web-shared-observability/lib/contract';
-import { createInjector, inject, InjectionToken } from '@visomi-stack/backend-shared/lib/injection';
 
 export type ObservabilityOptions = {
   service: Service;

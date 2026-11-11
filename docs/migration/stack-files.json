@@ -686,7 +686,7 @@
       "destination": ".agents/skills/monitor-ci/scripts/ci-poll-decide.mjs",
       "action": "adapted",
       "sourceSha256": "a1306d8e2bbea74fd80218fd187b47600db17132ca4168be74062eed9362ec9f",
-      "destinationSha256": "98dfd0f80ec3e2b2e71620ec42c191d1600ec8fc2ebe3da701a4fa86afe7fa33",
+      "destinationSha256": "6556ecc249cc05b41b80f66b2ae1ed8c75df688683a0a86d79ff052aee7cd3c2",
       "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
@@ -694,7 +694,7 @@
       "destination": ".agents/skills/monitor-ci/scripts/ci-state-update.mjs",
       "action": "adapted",
       "sourceSha256": "2809eb76e68a73fb039970412a30f2d2cf6df83bd8201455fad12c1df44416c8",
-      "destinationSha256": "f8a62f6a6ac95f7de4a4531c6b472be959f8cf338d48b43c7ac0d108de039db9",
+      "destinationSha256": "3b689f689feb5e390709c78a81f843e07470a26e84db5f42696b87f656e5a1cf",
       "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
@@ -2602,7 +2602,7 @@
       "action": "adapted",
       "sourceSha256": "a1306d8e2bbea74fd80218fd187b47600db17132ca4168be74062eed9362ec9f",
       "destination": ".github/skills/monitor-ci/scripts/ci-poll-decide.mjs",
-      "destinationSha256": "98dfd0f80ec3e2b2e71620ec42c191d1600ec8fc2ebe3da701a4fa86afe7fa33",
+      "destinationSha256": "6556ecc249cc05b41b80f66b2ae1ed8c75df688683a0a86d79ff052aee7cd3c2",
       "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
@@ -2610,7 +2610,7 @@
       "action": "adapted",
       "sourceSha256": "2809eb76e68a73fb039970412a30f2d2cf6df83bd8201455fad12c1df44416c8",
       "destination": ".github/skills/monitor-ci/scripts/ci-state-update.mjs",
-      "destinationSha256": "f8a62f6a6ac95f7de4a4531c6b472be959f8cf338d48b43c7ac0d108de039db9",
+      "destinationSha256": "3b689f689feb5e390709c78a81f843e07470a26e84db5f42696b87f656e5a1cf",
       "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
@@ -2999,7 +2999,7 @@
       "reason": "Retain the existing repository agreement/portfolio documentation and formatter needs while adopting compatible stack tooling/configuration.",
       "sourceSha256": "ef4df57737bea8b975937557c89f5f7bd387a62226f6cbdecfac9cfb7f11b0a2",
       "destination": ".prettierrc.json",
-      "destinationSha256": "ab35daaa6de65b17e5f223b18d6723391d8d3a5326807da3b15ab6269fb5c080"
+      "destinationSha256": "3b5fc6e4b033e1c0df3524ab3649e75a2473a306dad5053ee777a5256d9367ec"
     },
     {
       "source": ".qmd/index.yml",
@@ -6566,10 +6566,11 @@
     },
     {
       "source": "eslint.config.mjs",
-      "action": "copied",
+      "action": "adapted",
       "sourceSha256": "cc8ccca5941c8eb9dc289885fbb1a772a14a839983e868a0430b8ff93bd2f2a2",
       "destination": "eslint.config.mjs",
-      "destinationSha256": "cc8ccca5941c8eb9dc289885fbb1a772a14a839983e868a0430b8ff93bd2f2a2"
+      "destinationSha256": "18b95e9a3453f721cbcefd631d77883c56e8a1c512765fce5319d02f354d652d",
+      "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
       "source": "libs/backend/shared/README.md",
@@ -6757,16 +6758,18 @@
     {
       "source": "libs/backend/shared/src/lib/mail/templates/security.mjml",
       "destination": "libs/backend/shared/src/lib/mail/templates/security.mjml",
-      "action": "copied",
+      "action": "adapted",
       "sourceSha256": "85b95627ba35057ee1672d1b9a6d291d6d7f48f73f8d48f56f42da1f2b6a3bf6",
-      "destinationSha256": "85b95627ba35057ee1672d1b9a6d291d6d7f48f73f8d48f56f42da1f2b6a3bf6"
+      "destinationSha256": "dc247cdb407c286b825d976b857f7d84cf0a3c31acb05106b6fe166654178a86",
+      "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
       "source": "libs/backend/shared/src/lib/mail/templates/verification.mjml",
       "destination": "libs/backend/shared/src/lib/mail/templates/verification.mjml",
-      "action": "copied",
+      "action": "adapted",
       "sourceSha256": "42b937cfa52019462657538f26a96cf371deecf6a9a23649ef1769241b242988",
-      "destinationSha256": "42b937cfa52019462657538f26a96cf371deecf6a9a23649ef1769241b242988"
+      "destinationSha256": "049bec98486ba113955a77dd9c11df7c08b2c8c7c3954bf5894ec5200103fc71",
+      "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
       "source": "libs/backend/shared/src/lib/realtime-redis.spec.ts",
@@ -6994,7 +6997,7 @@
       "destination": "libs/development/testing/src/lib/playwright/support/telemetry-exporters.spec.ts",
       "action": "adapted",
       "sourceSha256": "baa78019020a3b6e06e565e0f014913249491ee2163bba5dcd68b7efc35df349",
-      "destinationSha256": "94f74c679a490cb04ccc46aad978ff2b33b32a640aba7cae89251f0355ac11ec",
+      "destinationSha256": "3261a066ece43e675ff2e34c29ffa15ece5f3857e0ff0983f1fdb8c25ef3eb7d",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -7206,7 +7209,7 @@
       "destination": "libs/web/backend/shared/src/lib/observability/browser/intake.ts",
       "action": "adapted",
       "sourceSha256": "0e54334cab0cfa3b83b8ab48b72cd0bdca25682825d274ed6d92d17f1be8f846",
-      "destinationSha256": "19dab543f07b434900c45aa71eab28b64c46e6f222d4e4972170c7b9f618491e",
+      "destinationSha256": "dd5c1d5c76156ead821dff1ea485e811b1e1da1847f559df66d742bede435f75",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -7242,7 +7245,7 @@
       "destination": "libs/web/backend/shared/src/lib/observability/lib/observability.ts",
       "action": "adapted",
       "sourceSha256": "86d547441c916029f9e5144fe1dfc1ca6ea2ddba62f999179be6f02ff8d242ad",
-      "destinationSha256": "c2642313702f97413ec2581927841933bda4c8131355d65d708a67659792421e",
+      "destinationSha256": "e981aaf21e83442a9a843dbdcfca622ba3f7cd2aba8e177ae5eb6c68592a08d4",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -7749,8 +7752,8 @@
     }
   ],
   "counts": {
-    "copied": 566,
-    "adapted": 233,
+    "copied": 563,
+    "adapted": 236,
     "excluded": 320
   }
 }

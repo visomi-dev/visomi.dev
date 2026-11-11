@@ -1,9 +1,10 @@
 import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 
-import { socialImageRedisOptions } from '@visomi.dev/shared-social-images/redis';
 import { Queue, QueueEvents } from 'bullmq';
 import { Router, json, type RequestHandler, type Request, type Response } from 'express';
 import { rateLimit } from 'express-rate-limit';
+
+import { socialImageRedisOptions } from '@visomi.dev/shared-social-images/redis';
 import {
   socialImageRunId as runId,
   socialImagePageInput as pageInput,

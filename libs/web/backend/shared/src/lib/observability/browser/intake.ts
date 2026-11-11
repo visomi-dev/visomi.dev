@@ -5,11 +5,6 @@ import type { RequestHandler, ErrorRequestHandler } from 'express';
 import { z } from 'zod';
 import { rateLimit, MemoryStore } from 'express-rate-limit';
 
-import type { Observability } from '../lib/observability';
-import type { Correlation } from '../lib/policy';
-
-import type { BrowserAssets } from './assets';
-
 import {
   applications,
   browserErrorCodes,
@@ -18,6 +13,11 @@ import {
   screens,
 } from '@visomi-stack/web-shared-observability/lib/contract';
 import type { BrowserErrorReport } from '@visomi-stack/web-shared-observability/lib/contract';
+
+import type { Observability } from '../lib/observability';
+import type { Correlation } from '../lib/policy';
+
+import type { BrowserAssets } from './assets';
 
 const reportSchema = z.strictObject({
   application: z.enum(applications),

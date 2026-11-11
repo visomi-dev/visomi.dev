@@ -219,8 +219,12 @@ export default [
         'error',
         {
           'newlines-between': 'always',
-          // Treat the testing package consistently from root hooks and project-level Nx tasks.
-          pathGroups: [{ pattern: '@visomi-stack/dev-testing{,/**}', group: 'external' }],
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          // Keep workspace packages consistent from root hooks and project-level Nx tasks.
+          pathGroups: [
+            { pattern: '@visomi-stack/dev-testing{,/**}', group: 'external' },
+            { pattern: '@visomi.dev/shared-social-images{,/**}', group: 'internal' },
+          ],
           pathGroupsExcludedImportTypes: ['builtin'],
         },
       ],

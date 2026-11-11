@@ -1,4 +1,5 @@
 import { UnrecoverableError } from 'bullmq';
+
 import { socialImagePageInput, socialImageWebsiteInput } from '@visomi.dev/shared-social-images/validation';
 import {
   GENERATE_PAGE_SOCIAL_IMAGE_JOB_NAME,
@@ -12,8 +13,8 @@ import { normalizeSocialImageCard } from '@visomi.dev/shared-social-images/rules
 import { renderSocialImageHtml } from '@visomi.dev/shared-social-images/template';
 import type { SocialImageBatchResult, SocialImageTarget } from '@visomi.dev/shared-social-images/types';
 
-import { createLocalSocialImageStorage, resolveRunId } from './storage';
 import { renderPng } from './browser';
+import { createLocalSocialImageStorage, resolveRunId } from './storage';
 
 const storage = createLocalSocialImageStorage();
 
