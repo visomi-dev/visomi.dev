@@ -32,7 +32,12 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
   const headers = { authorization: 'Bearer synthetic-internal-social-image-token-32-bytes' };
   const data = { runId: 'synthetic-run', target: { locale: 'es', page: 'home' } };
 
+  console.info('worker_e2e_phase: connections');
+  const queueClient = await queue.client;
+  const eventsClient = await events.client;
+
   try {
+    console.info('worker_e2e_phase: validation');
     const denied = await request.post(endpoint, { data });
 
     expect(denied.status()).toBe(403);
@@ -58,6 +63,7 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
 
     await expect(unknown.waitUntilFinished(events, 10000)).rejects.toThrow('social_image_job_invalid');
 
+    console.info('worker_e2e_phase: generation');
     const generated = await request.post(endpoint, { headers, data });
 
     expect(generated.status()).toBe(200);
@@ -81,9 +87,13 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
     expect(job?.attemptsMade).toBe(1);
     const recoveryData = { ...data, runId: 'synthetic-recovery' };
 
+    console.info('worker_e2e_phase: redis-stop');
+
     await runTestCompose(fixture.compose, ['stop', 'redis']);
 
     const started = Date.now();
+
+    console.info('worker_e2e_phase: unavailable-request');
     const unavailable = await request.post(endpoint, { headers, data: recoveryData });
 
     expect(unavailable.status()).toBe(503);
@@ -92,12 +102,17 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
 
     expect(awaitedResult3).toEqual({ error: 'social_images_unavailable' });
 
+    console.info('worker_e2e_phase: redis-start');
+
     await runTestCompose(fixture.compose, ['start', 'redis']);
 
     const binding = await runTestCompose(fixture.compose, ['port', 'redis', '6379']);
     const restoredPort = /(?:127\.0\.0\.1:)?(\d+)\s*$/.exec(binding.stdout)?.[1];
 
+    console.info('worker_e2e_phase: stable-address');
     expect(restoredPort).toBe(new URL(fixture.redisUrl).port);
+
+    console.info('worker_e2e_phase: redis-readiness');
 
     // Observe Redis readiness without consuming the production HTTP rate-limit budget.
     await expect
@@ -111,6 +126,8 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
       )
       .toBe('PONG');
 
+    console.info('worker_e2e_phase: recovery');
+
     await expect
       .poll(
         async () => {
@@ -122,11 +139,10 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
       )
       .toBe(200);
   } finally {
-    await runTestCompose(fixture.compose, ['start', 'redis']);
-
-    await queue.disconnect();
-
-    await queue.close();
+    console.info('worker_e2e_phase: cleanup');
+    // These clients belong only to this test. Do not wait for QUIT on an offline service.
+    queueClient.disconnect();
+    eventsClient.disconnect();
 
     await events.close();
   }

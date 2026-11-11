@@ -6,6 +6,8 @@ export default defineConfig({
   ...nxE2EPreset(import.meta.dirname, { testDir: './e2e' }),
   testMatch: '**/*.e2e.spec.ts',
   workers: 1,
+  // This scenario restarts its owned Redis service; retries need a fresh fixture, not stale connections.
+  retries: 0,
   timeout: 120000,
   use: { baseURL: 'http://127.0.0.1:8187', trace: 'off' },
   webServer: {
