@@ -8,12 +8,13 @@ export default defineConfig({
   workers: 1,
   use: { baseURL: 'http://127.0.0.1:8186', trace: 'off' },
   webServer: {
-    command: 'pnpm exec tsx --tsconfig tsconfig.base.json tools/testing/browser-server.ts',
+    command: 'exec node --import tsx tools/testing/browser-server.ts',
     url: 'http://127.0.0.1:8186/api/ready',
     timeout: 120000,
     reuseExistingServer: false,
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 15000 },
     cwd: workspaceRoot,
-    env: { VISOMI_E2E_PORT: '8186', VISOMI_E2E_RUNTIME: 'web-gateway' },
+    env: { VISOMI_E2E_PORT: '8186', VISOMI_E2E_RUNTIME: 'web-gateway', TSX_TSCONFIG_PATH: 'tsconfig.base.json' },
   },
   projects: [{ name: 'web-gateway' }],
 });

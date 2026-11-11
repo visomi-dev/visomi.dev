@@ -137,3 +137,5 @@ The worker fixture first allocates an isolated Redis port, then makes that same 
 starting the gateway/worker. This preserves the endpoint across Docker and Podman stop/start rehearsals.
 Owned browser/worker fixtures receive SIGTERM with a bounded shutdown window so they remove their
 synthetic Compose resources before the test runner exits.
+The coordinator runs directly under Node so the runner waits for resource cleanup rather than an
+intermediate package-manager process.

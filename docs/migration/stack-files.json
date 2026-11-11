@@ -3191,7 +3191,7 @@
       "destination": "apps/web/api/playwright.config.mts",
       "action": "adapted",
       "sourceSha256": "560dfdaf32b7011603093e10d15274c74357934acd21e55f974b2663f5da6049",
-      "destinationSha256": "6064b888377540f5ea74442e4e52de4a7aa8f2ac35d251cbf514da64d80835f5",
+      "destinationSha256": "2ef2ccdf0dc140851bd8a9d8e24f81b0dfa78909a6c945382501f271166771b7",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5545,7 +5545,7 @@
       "destination": "apps/web/gateway/playwright.config.mts",
       "action": "adapted",
       "sourceSha256": "46594d46b7bcacb01c1daad2bc340217d1031e325543df7fc1f06c0d194ce3f0",
-      "destinationSha256": "b48d69e195e8cb4a66dbb7330fac8e826e9bdc4d99bad17d9238c48c0be72bfc",
+      "destinationSha256": "83f88040c33156649eeb3c890ca2ceb957d37ae968533dcbbdaa2048c21f79ee",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {

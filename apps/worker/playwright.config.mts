@@ -11,7 +11,8 @@ export default defineConfig({
   timeout: 120000,
   use: { baseURL: 'http://127.0.0.1:8187', trace: 'off' },
   webServer: {
-    command: 'pnpm exec tsx --tsconfig tsconfig.base.json tools/testing/worker-server.ts',
+    command: 'exec node --import tsx tools/testing/worker-server.ts',
+    env: { TSX_TSCONFIG_PATH: 'tsconfig.base.json' },
     url: 'http://127.0.0.1:8187/api/health',
     timeout: 120000,
     reuseExistingServer: false,

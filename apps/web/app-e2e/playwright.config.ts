@@ -25,9 +25,9 @@ export default defineConfig({
   },
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm exec tsx --tsconfig tsconfig.base.json tools/testing/browser-server.ts',
+    command: 'exec node --import tsx tools/testing/browser-server.ts',
     url: 'http://127.0.0.1:8184/api/ready',
-    env: { VISOMI_E2E_PORT: '8184' },
+    env: { VISOMI_E2E_PORT: '8184', TSX_TSCONFIG_PATH: 'tsconfig.base.json' },
     reuseExistingServer: false,
     gracefulShutdown: { signal: 'SIGTERM', timeout: 15000 },
     timeout: 120000,
