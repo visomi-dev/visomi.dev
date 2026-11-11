@@ -29,6 +29,7 @@ export default defineConfig({
     url: 'http://127.0.0.1:8184/api/ready',
     env: { VISOMI_E2E_PORT: '8184' },
     reuseExistingServer: false,
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 15000 },
     timeout: 120000,
     cwd: workspaceRoot,
   },
