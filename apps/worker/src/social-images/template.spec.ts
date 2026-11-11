@@ -1,4 +1,5 @@
-import { normalizeSocialImageCard, renderSocialImageHtml } from '@visomi.dev/shared-social-images';
+import { normalizeSocialImageCard } from '@visomi.dev/shared-social-images/rules';
+import { renderSocialImageHtml } from '@visomi.dev/shared-social-images/template';
 
 describe('renderSocialImageHtml', () => {
   it('renders a standalone HTML document for a social image card', () => {

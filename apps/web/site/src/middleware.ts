@@ -1,4 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
+import { documentPolicy } from '@visomi-stack/web-backend-shared/lib/http/document-policy';
 
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
@@ -14,7 +15,14 @@ const applySecurityHeaders = (response: Response) => {
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const response = await next();
+  let response = await next();
+
+  if (response.headers.get('content-type')?.includes('text/html')) {
+    const html = await response.text();
+
+    response = new Response(html, response);
+    response.headers.set('Content-Security-Policy', documentPolicy(html));
+  }
 
   if (context.url.pathname.startsWith('/api/')) {
     return response;

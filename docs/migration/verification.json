@@ -1,0 +1,45 @@
+{
+  "sourceStack": "c7e362b6fe4dc14ede081ba9090a5345ba5b7bcb",
+  "websiteMain": "9511109c233f2a6a7604c80fa1597aa338e9135d",
+  "integrationBaseline": "f2cfa9cfd6f7b13eb2858dc5d1761e9b2e49afe1",
+  "scope": "Implementation and isolated synthetic verification; no merge, deployment, provisioning or real-data operations.",
+  "publicBrowserCases": 111,
+  "privateBrowserCases": 8,
+  "apiBrowserCases": 3,
+  "gatewayBrowserCases": 3,
+  "workerBrowserCases": 1,
+  "pixelComparisons": 40,
+  "changedPixelsAgainstContrastReference": 0,
+  "maximumRawBaselineDifference": 0.002502775145525924,
+  "requiredCoverage": {
+    "web-api": 100,
+    "web-gateway": 100,
+    "backend-shared": 100,
+    "web-backend-shared": 100,
+    "dev-testing": 100,
+    "web-edge": 100
+  },
+  "commands": [
+    "pnpm install --frozen-lockfile",
+    "pnpm nx run-many -t lint typecheck typecheck-tests emails-check deployment-check build --parallel=2",
+    "pnpm nx run-many -t test --parallel=2",
+    "pnpm nx run-many -t e2e --parallel=1",
+    "pnpm nx run web-gateway:container-check",
+    "pnpm nx run web-gateway:jaeger-check"
+  ],
+  "cases": [
+    "Owner session and second factor",
+    "Anonymous/non-owner and direct-ID denial",
+    "Private no-store and escaped message content",
+    "Original public form through Astro/API/PostgreSQL in both locales",
+    "Read-only dry-run, exclusive backup and complete reconciliation",
+    "Partial SQL failure, concurrent cutovers, frozen writes and idempotent retries",
+    "Rollback and recovery-artifact restoration preserving new requests",
+    "Real Redis/Chromium PNG generation, idempotent queue jobs and outage recovery",
+    "Production module import safety, shutdown and telemetry privacy",
+    "AXE across public routes/themes/viewports and private views",
+    "No-root runtime image without build tools; private trace policy rehearsal"
+  ],
+  "releaseRunbook": "docs/migration/contact-cutover.md",
+  "unitCases": 839
+}

@@ -1,47 +1,55 @@
 {
-  "name": "api",
+  "name": "web-api",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/web/api/src",
   "projectType": "application",
   "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "platform": "node",
-        "outputPath": "dist/apps/web/api",
-        "format": ["esm"],
-        "bundle": false,
-        "main": "apps/web/api/src/main.ts",
-        "tsConfig": "apps/web/api/tsconfig.app.json",
-        "assets": ["apps/web/api/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
+    "test": {
+      "dependsOn": ["build"],
+      "inputs": [
+        "default",
+        "^production",
+        {
+          "fileset": "{projectRoot}/tsconfig.spec.json",
+          "dependencies": true
+        },
+        {
+          "fileset": "{projectRoot}/tsconfig.storybook.json",
+          "dependencies": true
+        },
+        {
+          "externalDependencies": ["vitest"]
+        },
+        {
+          "env": "CI"
+        },
+        {
+          "dependentTasksOutputFiles": "**/*",
+          "transitive": true
         }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
-      }
+      ]
     },
     "prune-lockfile": {
       "dependsOn": ["build"],
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
-      "outputs": ["{workspaceRoot}/dist/apps/web/api/package.json", "{workspaceRoot}/dist/apps/web/api/pnpm-lock.yaml"],
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/pnpm-workspace.yaml",
+        "{workspaceRoot}/package.json",
+        {
+          "runtime": "node -e \"try{console.log('pnpm major '+require('child_process').execSync('pnpm --version',{stdio:['ignore','pipe','ignore']}).toString().trim().split('.')[0])}catch{console.log('pnpm major unavailable')}\""
+        }
+      ],
+      "outputs": [
+        "{workspaceRoot}/dist/apps/web/api/package.json",
+        "{workspaceRoot}/dist/apps/web/api/pnpm-lock.yaml",
+        "{workspaceRoot}/dist/apps/web/api/pnpm-workspace.yaml",
+        "{workspaceRoot}/dist/apps/web/api/patches",
+        "{workspaceRoot}/dist/apps/web/api/local_path_modules"
+      ],
       "options": {
         "buildTarget": "build"
       }
@@ -61,25 +69,63 @@
     },
     "serve": {
       "continuous": true,
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "dependsOn": ["build"],
-      "options": {
-        "buildTarget": "api:build",
-        "runBuildTargetDependencies": false
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "api:build:development"
-        },
-        "production": {
-          "buildTarget": "api:build:production"
-        }
+      "dependsOn": ["^build"],
+      "readyWhen": {
+        "signal": true
       }
     },
-    "test": {
+    "typecheck-tests": {
+      "executor": "nx:run-commands",
       "options": {
-        "passWithNoTests": true
+        "cwd": "apps/web/api",
+        "command": "tsc -p tsconfig.spec.json --noEmit"
+      }
+    },
+    "e2e": {
+      "dependsOn": ["build"],
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/tools/testing/**/*",
+        "{workspaceRoot}/compose*.yaml",
+        "{workspaceRoot}/pnpm-workspace.yaml",
+        "{workspaceRoot}/package.json",
+        "{workspaceRoot}/pnpm-lock.yaml"
+      ]
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/apps/web/api/eslint.config.mjs",
+        "{workspaceRoot}/tools/lint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
+      "options": {
+        "command": "eslint ."
+      }
+    },
+    "test-ci": {
+      "executor": "nx:noop",
+      "dependsOn": ["test"]
+    },
+    "build": {
+      "dependsOn": [
+        {
+          "projects": ["backend-shared"],
+          "target": "emails-build"
+        }
+      ]
+    },
+    "contacts-migrate": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "pnpm exec tsx --tsconfig tsconfig.base.json apps/web/api/src/contact/migrate.ts",
+        "cwd": "."
       }
     }
   }

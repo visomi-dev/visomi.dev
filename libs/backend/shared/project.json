@@ -1,0 +1,67 @@
+{
+  "name": "backend-shared",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/shared/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project backend-shared --web",
+  "targets": {
+    "db-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/backend/shared",
+        "command": "drizzle-kit generate --config drizzle.config.ts"
+      }
+    },
+    "db-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/backend/shared",
+        "command": "node tools/database/migrate.mjs"
+      }
+    },
+    "typecheck-tests": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/backend/shared",
+        "command": "tsc -p tsconfig.spec.json --noEmit"
+      }
+    },
+    "test-ci": {
+      "executor": "nx:noop",
+      "dependsOn": ["test"]
+    },
+    "emails-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node --import tsx libs/backend/shared/tools/mail/build-templates.ts"
+      },
+      "cache": true,
+      "inputs": [
+        "{projectRoot}/src/lib/mail/templates/*.mjml",
+        "{projectRoot}/tools/mail/build-templates.ts",
+        {
+          "externalDependencies": ["mjml", "prettier"]
+        },
+        "{workspaceRoot}/.prettierrc.json"
+      ],
+      "outputs": ["{projectRoot}/src/lib/mail/templates.generated.ts"]
+    },
+    "emails-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node --import tsx libs/backend/shared/tools/mail/build-templates.ts --check"
+      },
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.prettierrc.json",
+        {
+          "externalDependencies": ["mjml", "prettier"]
+        }
+      ]
+    },
+    "test": {
+      "dependsOn": ["emails-build"]
+    }
+  }
+}

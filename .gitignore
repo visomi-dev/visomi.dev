@@ -62,3 +62,5 @@ debug/
 .env
 artifacts
 
+# Local search databases are machine state; only .qmd/index.yml is portable.
+.qmd/*.sqlite*

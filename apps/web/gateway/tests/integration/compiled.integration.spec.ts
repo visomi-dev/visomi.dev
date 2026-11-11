@@ -1,0 +1,511 @@
+import { execFile, spawn } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
+import { once } from 'node:events';
+import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { request as nodeRequest } from 'node:http';
+import type { AddressInfo } from 'node:net';
+import { createServer } from 'node:net';
+import { join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { promisify } from 'node:util';
+
+import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
+import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
+import { SMTPServer } from 'smtp-server';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { hashPassword } from '@visomi-stack/dev-testing/lib/password';
+
+import { loadApi } from '../../src/api-module';
+import { loadSite } from '../../src/site-module';
+
+const execute = promisify(execFile);
+const root = resolve(import.meta.dirname, '../../../../..');
+const output = join(root, 'dist/apps/web/gateway');
+let directory: string;
+let postgres: Awaited<ReturnType<typeof testPostgres>>;
+let probe: ReturnType<typeof createDatabase>;
+let smtp: SMTPServer;
+let smtpPort: number;
+const messages: string[] = [];
+
+beforeAll(async () => {
+  await mkdir(join(root, 'tmp/api-e2e'), { recursive: true });
+
+  const temporary = await mkdtemp(join(root, 'tmp/api-e2e/gateway-'));
+  const cluster = await testPostgres(join(temporary, 'postgres.json'));
+
+  directory = temporary;
+  postgres = cluster;
+  probe = createDatabase(postgres.url);
+  smtp = new SMTPServer({
+    disabledCommands: ['AUTH', 'STARTTLS'],
+    logger: false,
+    onData(stream, _session, callback) {
+      let raw = '';
+
+      stream.on('data', (chunk) => {
+        raw += String(chunk);
+      });
+      stream.on('end', () => {
+        messages.push(raw);
+        callback();
+      });
+    },
+  });
+
+  await new Promise<void>((ready) => smtp.listen(0, '127.0.0.1', ready));
+
+  smtpPort = ((smtp as unknown as { server: ReturnType<typeof createServer> }).server.address() as AddressInfo).port;
+}, 120000);
+
+afterAll(async () => {
+  if (smtp) {
+    await new Promise<void>((ready) => smtp.close(ready));
+  }
+
+  await probe?.close();
+
+  await postgres?.stop();
+
+  if (directory) {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+async function launch(databaseUrl?: string, trustProxy?: string) {
+  const portProbe = createServer();
+
+  await new Promise<void>((ready) => portProbe.listen(0, '127.0.0.1', ready));
+
+  const address = portProbe.address();
+
+  if (!address || typeof address === 'string') {
+    throw new Error('gateway_test_port_unavailable');
+  }
+
+  await new Promise<void>((closed) => portProbe.close(() => closed()));
+
+  const url = `http://127.0.0.1:${address.port}`;
+  const child = spawn(process.execPath, [join(output, 'main.js')], {
+    cwd: directory,
+    env: {
+      HOST: '127.0.0.1',
+      PORT: String(address.port),
+      NODE_ENV: 'test',
+      DISABLE_WORKER: 'true',
+      OWNER_EMAIL: 'owner@example.test',
+      ...(trustProxy ? { AUTH_TRUST_PROXY: trustProxy } : {}),
+      ...(databaseUrl
+        ? {
+            SMTP_HOST: '127.0.0.1',
+            SMTP_PORT: String(smtpPort),
+            SMTP_FROM: 'auth@example.test',
+            SMTP_ALLOW_INSECURE_LOCAL: 'true',
+            DATABASE_URL: databaseUrl,
+            AUTH_ORIGIN: url,
+            AUTH_RP_ID: '127.0.0.1',
+            SESSION_SECRET: 'synthetic-gateway-session-secret-32-bytes',
+          }
+        : {}),
+    },
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  const exit = once(child, 'exit');
+  let logs = '';
+  let diagnostics = '';
+
+  child.stdout.on('data', (chunk) => {
+    logs += String(chunk);
+  });
+  // Synthetic subprocess diagnostics are captured for privacy regression assertions only.
+  child.stderr.on('data', (chunk) => {
+    diagnostics += String(chunk);
+  });
+  const cleanup = async () => {
+    if (child.exitCode === null && child.signalCode === null) {
+      child.kill('SIGKILL');
+
+      await exit;
+    }
+  };
+
+  try {
+    await new Promise<void>((ready, reject) => {
+      const deadline = setTimeout(() => reject(new Error('gateway_test_startup_timeout')), 5000);
+
+      child.once('error', reject);
+      child.once('exit', () => {
+        clearTimeout(deadline);
+        reject(new Error('gateway_test_startup_failed'));
+      });
+      child.stdout.on('data', () => {
+        if (logs.includes('"event":"runtime.started"')) {
+          clearTimeout(deadline);
+          ready();
+        }
+      });
+    });
+  } catch (error) {
+    await cleanup();
+
+    throw error;
+  }
+
+  return {
+    url,
+    cleanup,
+    async stop(signal: NodeJS.Signals) {
+      child.kill(signal);
+      const [code] = await exit;
+
+      return {
+        code,
+        diagnostics,
+        events: logs
+          .trim()
+          .split('\n')
+          .filter(Boolean)
+          .map((line) => JSON.parse(line)),
+      };
+    },
+  };
+}
+
+describe('compiled ESM gateway and embedded API', () => {
+  it('loads the compiled Astro handler and resolves its public assets without listening', async () => {
+    const site = await loadSite(pathToFileURL(join(root, 'dist/apps/web/site/server/entry.mjs')));
+
+    expect(site.handler).toBeTypeOf('function');
+    expect(site.clientDirectory).toBe(join(root, 'dist/apps/web/site/client/'));
+    const script = `
+      import net from 'node:net';
+      net.Server.prototype.listen = () => { throw new Error('unexpected listener'); };
+      net.Socket.prototype.connect = () => { throw new Error('unexpected connection'); };
+      const rejections = process.listenerCount('unhandledRejection');
+      const site = await import(${JSON.stringify(pathToFileURL(join(root, 'dist/apps/web/site/server/entry.mjs')).href)});
+      console.log(JSON.stringify({ handler: typeof site.handler,
+        rejectionListeners: process.listenerCount('unhandledRejection') - rejections }));
+    `;
+    const result = await execute(process.execPath, ['--input-type=module', '-e', script], {
+      cwd: directory,
+      timeout: 5000,
+    });
+
+    expect(JSON.parse(result.stdout)).toEqual({ handler: 'function', rejectionListeners: 0 });
+  });
+  it('preserves Node failure behavior for unhandled rejections outside SSR', async () => {
+    const script = `
+      await import(${JSON.stringify(pathToFileURL(join(root, 'dist/apps/web/site/server/entry.mjs')).href)});
+      Promise.reject(new Error('synthetic_unhandled_failure'));
+      setTimeout(() => console.log('unexpected_continuation'), 20);
+    `;
+
+    await expect(
+      execute(process.execPath, ['--input-type=module', '-e', script], {
+        cwd: directory,
+        timeout: 5000,
+      }),
+    ).rejects.toMatchObject({ code: 1 });
+  });
+  it('delegates real Astro conversion errors without recording the query or exception', async () => {
+    const gateway = await launch();
+
+    try {
+      const response = await new Promise<{ status: number; body: string }>((resolve, reject) => {
+        const request = nodeRequest(
+          gateway.url + '/?reviewMarker=synthetic_private_query',
+          {
+            method: 'TRACE',
+          },
+          (response) => {
+            let body = '';
+
+            response.on('data', (chunk) => {
+              body += String(chunk);
+            });
+            response.on('end', () => resolve({ status: response.statusCode!, body }));
+          },
+        );
+
+        request.on('error', reject);
+        request.end();
+      });
+
+      expect(response).toEqual({ status: 500, body: JSON.stringify({ error: 'internal_error' }) });
+      const result = await gateway.stop('SIGTERM');
+
+      expect(result.code).toBe(0);
+      const logs = JSON.stringify(result.events);
+
+      expect(logs).not.toContain('synthetic_private_query');
+      expect(logs).not.toContain('TypeError');
+      expect(result.diagnostics).not.toContain('synthetic_private_query');
+      expect(result.diagnostics).not.toContain('TypeError');
+      expect(result.events).toContainEqual(expect.objectContaining({ event: 'http.request', status: 500 }));
+    } finally {
+      await gateway.cleanup();
+    }
+  });
+  it('limits Angular rendering by client and globally while continuing to serve its static assets', async () => {
+    const gateway = await launch(undefined, '127.0.0.1');
+
+    try {
+      const headers = { 'x-forwarded-for': '192.0.2.1' };
+      const document = await fetch(gateway.url + '/app/en/access', { headers });
+      const html = await document.text();
+      const stylesheet = html.match(/href="([^"]+\.css)"/)?.[1];
+
+      expect(document.status).toBe(200);
+      expect(stylesheet).toBeTruthy();
+
+      for (let count = 0; count < 60; count++) {
+        const response = await fetch(gateway.url + '/app/en/ssr-limit-probe', { headers, method: 'OPTIONS' });
+
+        await response.arrayBuffer();
+
+        expect(response.status).toBe(405);
+        expect(response.headers.get('allow')).toBe('GET, HEAD');
+      }
+
+      const unsupported = await fetch(gateway.url + '/app/unsupported/ssr-limit-probe', { headers });
+
+      expect(unsupported.status).toBe(404);
+      expect(unsupported.headers.has('ratelimit')).toBe(false);
+
+      await unsupported.arrayBuffer();
+
+      for (let client = 1; client <= 10; client++) {
+        for (let count = client === 1 ? 1 : 0; count < 60; count++) {
+          const response = await fetch(gateway.url + '/app/en/ssr-limit-probe', {
+            headers: { 'x-forwarded-for': '192.0.2.' + client },
+            redirect: 'manual',
+          });
+
+          await response.arrayBuffer();
+
+          expect(response.status).not.toBe(429);
+        }
+
+        if (client === 1) {
+          const limited = await fetch(gateway.url + '/app/en/access', {
+            headers: { ...headers, accept: 'text/html' },
+          });
+
+          expect(limited.status).toBe(429);
+          expect(limited.headers.get('retry-after')).toBeTruthy();
+
+          await expect(limited.json()).resolves.toEqual({ error: 'rate_limited' });
+        }
+      }
+
+      const rejected = await fetch(gateway.url + '/app/en/access', {
+        headers: { 'x-forwarded-for': '192.0.2.11' },
+        redirect: 'manual',
+      });
+
+      expect(rejected.status).toBe(429);
+      expect(rejected.headers.get('retry-after')).toBeTruthy();
+
+      await expect(rejected.json()).resolves.toEqual({ error: 'rate_limited' });
+
+      const asset = await fetch(new URL(stylesheet!, gateway.url + '/app/en/'), { headers });
+
+      expect(asset.status).toBe(200);
+      expect(asset.headers.get('content-type')).toContain('text/css');
+
+      await asset.arrayBuffer();
+    } finally {
+      await gateway.cleanup();
+    }
+  }, 30_000);
+
+  it('loads the actual compiled API through the gateway module boundary without starting it', async () => {
+    const api = await loadApi(pathToFileURL(join(root, 'dist/apps/web/api/app.js')));
+
+    expect(api.createApp).toBeTypeOf('function');
+    expect(api.authConfig).toBeTypeOf('function');
+    expect(api.createAuthentication).toBeTypeOf('function');
+  });
+  it('exports an import-safe ESM app with runtime metadata and no bundled API source', async () => {
+    const script = `
+      import net from 'node:net';
+      let listens = 0, connections = 0, intervals = 0;
+      const signals = process.listenerCount('SIGTERM') + process.listenerCount('SIGINT');
+      net.Server.prototype.listen = () => { listens++; throw new Error('unexpected listener'); };
+      net.Socket.prototype.connect = () => { connections++; throw new Error('unexpected connection'); };
+      global.setInterval = () => { intervals++; throw new Error('unexpected interval'); };
+      const app = await import(${JSON.stringify(pathToFileURL(join(output, 'app.js')).href)});
+      app.createGatewayApp({ api: { createApp: () => (_request, _response, next) => next() } });
+      console.log(JSON.stringify({ listens, connections, intervals,
+        signals: process.listenerCount('SIGTERM') + process.listenerCount('SIGINT') - signals,
+        exports: Object.keys(app).sort() }));
+    `;
+    const result = await execute(process.execPath, ['--input-type=module', '-e', script], {
+      cwd: directory,
+      timeout: 5000,
+    });
+
+    expect(JSON.parse(result.stdout)).toEqual({
+      listens: 0,
+      connections: 0,
+      intervals: 0,
+      signals: 0,
+      exports: ['createGatewayApp'],
+    });
+    const metadataFile = await readFile(join(output, 'package.json'), 'utf8');
+    const metadata = JSON.parse(metadataFile);
+
+    expect(metadata.type).toBe('module');
+    expect(metadata.exports).toEqual({ '.': './app.js', './app': './app.js' });
+    expect(metadata.dependencies.pg).toBe('8.23.1');
+    expect(metadata.dependencies['drizzle-orm']).toBe('1.0.0-rc.5');
+    expect(metadata.dependencies['injection-js']).toBe('2.6.1');
+    expect(metadata.dependencies['express-rate-limit']).toBe('8.5.2');
+    expect(metadata.dependencies.zod).toBe('4.6.6');
+    expect(metadata.dependencies['zod-openapi']).toBe('6.0.2');
+    expect(metadata.dependencies.helmet).toBe('8.3.0');
+    const mapFile = await readFile(join(output, 'main.js.map'), 'utf8');
+    const map = JSON.parse(mapFile);
+
+    expect(map.sources.some((source: string) => /api\/src\//.test(source))).toBe(false);
+    expect(map.sources.some((source: string) => /\.(spec|test)\./.test(source))).toBe(false);
+  });
+
+  it.each(['SIGTERM', 'SIGINT'] as const)('mounts /api from its sibling artifact and drains on %s', async (signal) => {
+    const gateway = await launch();
+
+    try {
+      const specification = await fetch(gateway.url + '/api/openapi.json');
+      const document = await specification.json();
+
+      expect(specification.status).toBe(200);
+      expect(document.servers).toEqual([{ url: '/api' }]);
+      expect(document.paths['/auth/session'].get.operationId).toBe('sessions_getSession');
+      const paths = ['/api/', '/api/auth/session', '/api/missing', '/'];
+      const responses = await Promise.all(paths.map((path) => fetch(gateway.url + path, { redirect: 'manual' })));
+
+      expect(responses.map((response) => response.status)).toEqual([200, 503, 404, 200]);
+      for (const response of responses) {
+        expect(response.headers.get('x-content-type-options')).toBe('nosniff');
+        expect(response.headers.get('content-security-policy')).toContain("script-src 'self'");
+        expect(response.headers.has('strict-transport-security')).toBe(false);
+      }
+      const ids = responses.map((response) => response.headers.get('x-request-id'));
+
+      expect(new Set(ids).size).toBe(paths.length);
+      const greeting = await responses[0].json();
+
+      expect(greeting).toEqual({ message: 'Hello API' });
+      const result = await gateway.stop(signal);
+      const requests = result.events.filter((event) => event.event === 'http.request');
+
+      expect(result.code).toBe(0);
+      expect(requests).toHaveLength(paths.length + 1);
+      expect(result.events.every((event) => event.service === 'web-gateway')).toBe(true);
+      expect(result.events.filter((event) => event.event === 'runtime.started')).toHaveLength(1);
+      expect(result.events.filter((event) => event.event === 'runtime.stopped')).toHaveLength(1);
+    } finally {
+      await gateway.cleanup();
+    }
+  });
+
+  it('uses one inherited owner auth chain with real PostgreSQL, second factor and owned-pool cleanup', async () => {
+    const name = 'gateway_' + randomUUID();
+    const connection = new URL(postgres.url);
+
+    connection.searchParams.set('application_name', name);
+    const gateway = await launch(connection.toString());
+    const ownerId = randomUUID();
+    const password = 'Synthetic password 42!';
+    const passwordHash = await hashPassword(password);
+
+    await probe.pool.query(
+      'INSERT INTO auth_users (id,email,email_verified_at,password_hash) VALUES ($1,$2,now(),$3)',
+      [ownerId, 'owner@example.test', passwordHash],
+    );
+
+    let cookie = '';
+    let token = '';
+    let requests = 0;
+    const request = async (method: string, path: string, body?: unknown) => {
+      const response = await fetch(gateway.url + '/api/auth' + path, {
+        method,
+        headers: {
+          origin: gateway.url,
+          cookie,
+          'x-csrf-token': token,
+          ...(body ? { 'content-type': 'application/json' } : {}),
+        },
+        ...(body ? { body: JSON.stringify(body) } : {}),
+      });
+      const updated = response.headers.getSetCookie()[0];
+
+      if (updated) {
+        cookie = updated.split(';')[0];
+      }
+
+      requests++;
+      const responseBody = await (response.status === 204 ? undefined : response.json());
+
+      return { status: response.status, body: responseBody };
+    };
+
+    try {
+      const anonymous = await request('GET', '/session');
+
+      token = anonymous.body.csrfToken;
+      expect(anonymous.status).toBe(200);
+      expect(anonymous.body.authenticated).toBe(false);
+      const denied = await request('POST', '/password/sign-up', {});
+
+      expect(denied.status).toBe(404);
+      const csrfToken = token;
+
+      token = 'synthetic_invalid_csrf';
+      const forbidden = await request('POST', '/password/sign-in', { email: 'owner@example.test', password });
+
+      token = csrfToken;
+      expect(forbidden.status).toBe(403);
+      expect(forbidden.body).toEqual({ error: 'csrf_invalid' });
+      const pending = await request('POST', '/password/sign-in', { email: 'owner@example.test', password });
+
+      expect(pending.status).toBe(202);
+      const originalCookie = cookie;
+      const code = messages[messages.length - 1].match(/\b\d{6}\b/)![0];
+      const verified = await request('POST', '/password/verify', {
+        flowId: pending.body.flowId,
+        factor: { kind: 'email', code },
+      });
+
+      expect(verified.status).toBe(200);
+      expect(verified.body.user.id).toBe(ownerId);
+      expect(cookie).not.toBe(originalCookie);
+      token = verified.body.csrfToken;
+      const session = await request('GET', '/session');
+
+      expect(session.body.authenticated).toBe(true);
+      const logout = await request('POST', '/logout', {});
+
+      expect(logout.status).toBe(204);
+      const revoked = await request('GET', '/session');
+
+      expect(revoked.body.authenticated).toBe(false);
+      const active = await probe.pool.query('SELECT count(*) FROM pg_stat_activity WHERE application_name = $1', [
+        name,
+      ]);
+
+      expect(Number(active.rows[0].count)).toBeGreaterThan(0);
+      const result = await gateway.stop('SIGTERM');
+      const closed = await probe.pool.query('SELECT count(*) FROM pg_stat_activity WHERE application_name = $1', [
+        name,
+      ]);
+
+      expect(result.code).toBe(0);
+      expect(Number(closed.rows[0].count)).toBe(0);
+      expect(result.events.filter((event) => event.event === 'http.request')).toHaveLength(requests);
+      expect(result.events.every((event) => event.service === 'web-gateway')).toBe(true);
+    } finally {
+      await gateway.cleanup();
+    }
+  });
+});

@@ -1,5 +1,9 @@
 .git
 .github
+.agents
+.claude
+.codex
+.opencode
 .idea
 .nx
 .vscode
@@ -9,3 +13,16 @@ node_modules
 tmp
 
 *.log
+core
+core.*
+**/core.*
+
+# Never include private environment files in an image layer or build cache.
+.env
+.env.*
+**/.env
+**/.env.*
+**/*.env
+**/*.env.*
+!.env.example
+!**/*.env.example

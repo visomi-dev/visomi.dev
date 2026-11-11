@@ -1,8 +1,3 @@
-import IORedis from 'ioredis';
+import { socialImageRedisOptions } from '@visomi.dev/shared-social-images/redis';
 
-const createRedisConnection = (redisUrl: string) =>
-  new IORedis(redisUrl, {
-    maxRetriesPerRequest: null,
-  });
-
-export { createRedisConnection };
+export const createRedisConnection = socialImageRedisOptions;

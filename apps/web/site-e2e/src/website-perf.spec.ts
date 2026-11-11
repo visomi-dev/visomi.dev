@@ -1,8 +1,9 @@
+import type * as PlaywrightTypes from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
 const publicPaths = ['/', '/journey/', '/projects/', '/resume/', '/contact/'] as const;
 
-const observeConsoleErrors = (page: import('@playwright/test').Page) => {
+const observeConsoleErrors = (page: PlaywrightTypes.Page) => {
   const errors: string[] = [];
 
   page.on('console', (message) => {
@@ -70,24 +71,20 @@ test.describe('ClientRouter navigation', () => {
   });
 
   test('SPA navigation fetches the destination page from the server', async ({ page, request }) => {
-    const responses: string[] = [];
-
-    page.on('response', async (response) => {
-      if (response.url().includes('/journey/') && response.request().method() === 'GET') {
-        const body = await response.text();
-
-        if (body.includes('Engineering Journey')) {
-          responses.push(body);
-        }
-      }
-    });
-
     await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    const destination = page.waitForResponse(
+      (response) => response.url().endsWith('/journey/') && response.request().method() === 'GET',
+    );
+
     await page.locator('nav a[href="/journey/"]').first().click();
+
+    const response = await destination;
+    const body = await response.text();
+
     await expect(page).toHaveURL(/\/journey\/$/);
 
-    expect(responses.length).toBeGreaterThanOrEqual(1);
-    expect(responses[0]).toContain('Engineering Journey');
+    expect(body).toContain('Engineering Journey');
 
     const directResponse = await request.get('/journey/');
     const directBody = await directResponse.text();
@@ -98,24 +95,20 @@ test.describe('ClientRouter navigation', () => {
   });
 
   test('SPA navigation to /contact/ hits the SSR middleware', async ({ page, request }) => {
-    const responses: string[] = [];
-
-    page.on('response', async (response) => {
-      if (response.url().endsWith('/contact/') && response.request().method() === 'GET') {
-        const body = await response.text();
-
-        if (body.includes('name="email"')) {
-          responses.push(body);
-        }
-      }
-    });
-
     await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    const destination = page.waitForResponse(
+      (response) => response.url().endsWith('/contact/') && response.request().method() === 'GET',
+    );
+
     await page.locator('nav a[href="/contact/"]').first().click();
+
+    const response = await destination;
+    const body = await response.text();
+
     await expect(page).toHaveURL(/\/contact\/$/);
 
-    expect(responses.length).toBeGreaterThanOrEqual(1);
-    expect(responses[0]).toContain('name="email"');
+    expect(body).toContain('name="email"');
 
     const directResponse = await request.get('/contact/');
     const directBody = await directResponse.text();
@@ -139,9 +132,7 @@ test.describe('background webgl renderer', () => {
   test('canvas is appended inside #dark-bg', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    await page.waitForFunction(() => {
-      return Boolean(document.querySelector('#dark-bg canvas'));
-    });
+    await expect(page.locator('#dark-bg canvas').first()).toBeAttached();
   });
 
   test('no js errors are logged while interacting with the home page', async ({ page }) => {
@@ -150,9 +141,14 @@ test.describe('background webgl renderer', () => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     await page.mouse.wheel(0, 1200);
-    await page.waitForTimeout(300);
+
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+
     await page.mouse.wheel(0, -600);
-    await page.waitForTimeout(300);
+
+    await page.evaluate(
+      () => new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done()))),
+    );
 
     const filteredErrors = errors.filter((error) => !error.includes('Failed to load resource'));
 
@@ -161,12 +157,15 @@ test.describe('background webgl renderer', () => {
 
   test('canvas is re-created after SPA navigation away and back', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
+
     await page.waitForFunction(() => Boolean(document.querySelector('#dark-bg canvas')));
 
     await page.locator('nav a[href="/journey/"]').first().click();
+
     await expect(page).toHaveURL(/\/journey\/$/);
 
     await page.locator('nav a[href="/"]').first().click();
+
     await expect(page).toHaveURL(/\/$/);
 
     await page.waitForFunction(() => Boolean(document.querySelector('#dark-bg canvas')));
@@ -186,6 +185,7 @@ test.describe('theme persistence across SPA navigation', () => {
     });
 
     await page.locator('nav a[href="/journey/"]').first().click();
+
     await expect(page).toHaveURL(/\/journey\/$/);
 
     const htmlClass = await page.evaluate(() => document.documentElement.className);
@@ -201,6 +201,7 @@ test.describe('theme persistence across SPA navigation', () => {
     });
 
     await page.locator('nav a[href="/journey/"]').first().click();
+
     await expect(page).toHaveURL(/\/journey\/$/);
 
     const htmlClass = await page.evaluate(() => document.documentElement.className);
@@ -210,13 +211,16 @@ test.describe('theme persistence across SPA navigation', () => {
 
   test('theme switcher is interactive after SPA navigation', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
+
     await page.evaluate(() => window.localStorage.setItem('theme', 'dark'));
 
     await page.locator('nav a[href="/journey/"]').first().click();
+
     await expect(page).toHaveURL(/\/journey\/$/);
 
     await page.locator('label.theme-switch-label').first().click();
-    await page.waitForTimeout(500);
+
+    await expect.poll(() => page.evaluate(() => window.localStorage.getItem('theme'))).toBe('light');
 
     const storedTheme = await page.evaluate(() => window.localStorage.getItem('theme'));
 

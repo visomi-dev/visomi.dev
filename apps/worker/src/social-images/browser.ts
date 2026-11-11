@@ -1,8 +1,7 @@
 import { access } from 'node:fs/promises';
 
 import { launch, type Browser } from 'puppeteer-core';
-
-import { SOCIAL_IMAGE_HEIGHT, SOCIAL_IMAGE_WIDTH } from '@visomi.dev/shared-social-images';
+import { SOCIAL_IMAGE_HEIGHT, SOCIAL_IMAGE_WIDTH } from '@visomi.dev/shared-social-images/types';
 
 const chromiumPathCandidates = [
   '/usr/bin/chromium',
@@ -16,12 +15,14 @@ let browserPromise: Promise<Browser> | null = null;
 const findExecutablePath = async (configuredPath?: string) => {
   if (configuredPath) {
     await access(configuredPath);
+
     return configuredPath;
   }
 
   for (const candidate of chromiumPathCandidates) {
     try {
       await access(candidate);
+
       return candidate;
     } catch {
       continue;
@@ -42,6 +43,7 @@ const getBrowser = async (configuredPath?: string) => {
     )
     .catch((error) => {
       browserPromise = null;
+
       throw error;
     });
 
@@ -56,6 +58,7 @@ const closeBrowser = async () => {
   const browser = await browserPromise;
 
   browserPromise = null;
+
   await browser.close();
 };
 
@@ -69,7 +72,11 @@ const renderPng = async (html: string, filePath: string, configuredPath?: string
       height: SOCIAL_IMAGE_HEIGHT,
       width: SOCIAL_IMAGE_WIDTH,
     });
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+
+    await page.setContent(html, { waitUntil: 'load' });
+
+    await page.waitForNetworkIdle({ idleTime: 500, timeout: 10000 });
+
     await page.screenshot({ path: filePath, type: 'png' });
   } finally {
     await page.close();

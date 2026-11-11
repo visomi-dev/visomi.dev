@@ -1,13 +1,16 @@
 import { Worker } from 'bullmq';
+import { SOCIAL_IMAGE_QUEUE_NAME } from '@visomi.dev/shared-social-images/types';
+import type {
+  GeneratePageSocialImageJob,
+  GenerateWebsiteSocialImagesJob,
+} from '@visomi.dev/shared-social-images/types';
 
-import { workerConfig } from '../config.js';
-import { createRedisConnection } from '../redis.js';
+import { workerConfig } from '../config';
+import { createRedisConnection } from '../redis';
 
-import { closeBrowser } from './browser.js';
-import { processSocialImageJob } from './processor.js';
+import { closeBrowser } from './browser';
+import { processSocialImageJob } from './processor';
 
-import { SOCIAL_IMAGE_QUEUE_NAME } from '@visomi.dev/shared-social-images';
-import type { GeneratePageSocialImageJob, GenerateWebsiteSocialImagesJob } from '@visomi.dev/shared-social-images';
 
 const startSocialImageWorker = () => {
   const connection = createRedisConnection(workerConfig.redisUrl);
@@ -20,18 +23,21 @@ const startSocialImageWorker = () => {
     },
   );
 
-  worker.on('completed', (job) => {
-    console.log(`[ worker ] completed ${job.name} (${job.id ?? 'unknown'})`);
+  worker.on('completed', () => {
+    console.log('[ worker ] social image job completed');
+  });
+  worker.on('error', () => {
+    console.error('[ worker ] queue unavailable');
   });
 
-  worker.on('failed', (job, error) => {
-    console.error(`[ worker ] failed ${job?.name ?? 'unknown'} (${job?.id ?? 'unknown'})`, error);
+  worker.on('failed', () => {
+    console.error('[ worker ] social image job failed');
   });
 
   const close = async () => {
     await worker.close();
+
     await closeBrowser();
-    await connection.quit();
   };
 
   return { close, worker };

@@ -1,1 +1,5 @@
-pnpm nx affected -t lint
+set -eu
+
+
+# Format and lint staged files; tests run before pushing.
+pnpm exec lint-staged

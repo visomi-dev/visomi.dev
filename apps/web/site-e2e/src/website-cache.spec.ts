@@ -67,9 +67,11 @@ test.describe('ssr-only contact page', () => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     await page.locator('nav a[href="/contact/"]').first().click();
+
     await expect(page).toHaveURL(/\/contact\/$/);
 
     await expect(page.locator('form')).toBeVisible();
+
     await expect(page.locator('input[name="name"]')).toBeVisible();
   });
 });

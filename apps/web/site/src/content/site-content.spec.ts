@@ -31,7 +31,7 @@ describe('site content', () => {
     const content = getSiteContent('es');
 
     expect(content.home.heroTitleLine1).toBe('Software pensado para');
-    expect(content.resume.languagesLabel).toBe('06 // Idiomas');
+    expect(content.resume.languagesLabel).toBe('Idiomas');
     expect(content.projectsList.length).toBeGreaterThan(0);
     expect(content.featuredProjects).toHaveLength(3);
   });

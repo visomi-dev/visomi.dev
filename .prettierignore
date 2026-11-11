@@ -4,3 +4,12 @@
 /.nx/cache
 /.nx/workspace-data
 .angular
+
+# Preserve package-manager output and vendored/generated resources as in the source stack.
+pnpm-lock.yaml
+resources
+/Dockerfile
+.opencode
+**/.astro/
+**/.cloudflare/
+**/.wrangler/

@@ -33,7 +33,9 @@ const promoteSocialImageRun = async (runId: string): Promise<PromotionResult> =>
       const destinationPath = getWebsitePublicAssetPath(artifact);
 
       await ensureParentDirectory(destinationPath);
+
       await copyFile(artifact.tempFilePath, destinationPath);
+
       copied.push({ destinationPath, kind: 'source', publicRelativePath: artifact.publicRelativePath });
     }
 
@@ -41,7 +43,9 @@ const promoteSocialImageRun = async (runId: string): Promise<PromotionResult> =>
       const destinationPath = getWebsiteBuiltAssetPath(artifact);
 
       await ensureParentDirectory(destinationPath);
+
       await copyFile(artifact.tempFilePath, destinationPath);
+
       copied.push({ destinationPath, kind: 'build', publicRelativePath: artifact.publicRelativePath });
     }
   }

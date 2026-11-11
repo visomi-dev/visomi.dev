@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="appNavigationLoading" datatype="html">
+        <source>Loading…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/app.html</context>
+          <context context-type="linenumber">1,3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardHeroTitle" datatype="html">
+        <source>Contact requests</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">2,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessLanguage" datatype="html">
+        <source>Language</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessSignOut" datatype="html">
+        <source>Sign out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessDenied" datatype="html">
+        <source>Owner access required.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">9,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessError" datatype="html">
+        <source>Access could not be verified. Please try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">11,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessCode" datatype="html">
+        <source>Verification code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">15,17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessVerify" datatype="html">
+        <source>Verify access</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">19,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessEmail" datatype="html">
+        <source>Verified email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">23,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessPassword" datatype="html">
+        <source>Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">27,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessSignIn" datatype="html">
+        <source>Access dashboard</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">31,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardAccessLoading" datatype="html">
+        <source>Verifying access…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardRequestsError" datatype="html">
+        <source>Requests could not be loaded.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">37,39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardRequestsRetry" datatype="html">
+        <source>Return to requests</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardRequestsBack" datatype="html">
+        <source>All requests</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">41,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardRequestsEmpty" datatype="html">
+        <source>No contact requests yet.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">61,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dashboardRequestsNext" datatype="html">
+        <source>Older requests</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">64,68</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

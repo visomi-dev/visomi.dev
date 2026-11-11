@@ -19,8 +19,11 @@ test.describe('gateway public screens', () => {
       const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
 
       expect(response?.ok()).toBe(true);
+
       await expect(page.locator('main, section').first()).toBeVisible();
+
       await expect(page.locator('h1').first()).toBeVisible();
+
       await page.screenshot({
         path: `artifacts/apps/web/site-e2e/gateway${route.replaceAll('/', '-') ?? 'root'}.png`,
         fullPage: true,

@@ -1,8 +1,8 @@
-import { copyFile, mkdir, readFile } from 'node:fs/promises';
+import { access, copyFile, mkdir, readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import puppeteer from 'puppeteer-core';
+import { launch } from 'puppeteer-core';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, '..');
@@ -19,21 +19,29 @@ const chromiumPathCandidates = ['/usr/bin/chromium', '/usr/bin/chromium-browser'
 const findChromium = async () => {
   for (const candidate of chromiumPathCandidates) {
     try {
-      const { access } = await import('node:fs/promises');
       await access(candidate);
+
       return candidate;
     } catch {
       continue;
     }
   }
+
   throw new Error('Chromium not found');
 };
 
 const generateImages = async () => {
-  const executablePath = process.env['PUPPETEER_EXECUTABLE_PATH'] ?? (await findChromium());
+  let executablePath = process.env['PUPPETEER_EXECUTABLE_PATH'];
+
+  if (!executablePath) {
+    const detectedPath = await findChromium();
+
+    executablePath = detectedPath;
+  }
+
   console.log(`[ generate ] using Chromium at ${executablePath}`);
 
-  const browser = await puppeteer.launch({
+  const browser = await launch({
     executablePath,
     args: ['--disable-dev-shm-usage', '--no-sandbox', '--disable-setuid-sandbox'],
     headless: true,
@@ -41,33 +49,41 @@ const generateImages = async () => {
 
   try {
     let count = 0;
+
     for (const locale of locales) {
       for (const page of pages) {
-        const previewDir = resolve(rootDir, 'apps', 'app', 'public', 'social-image-previews', locale);
+        const previewDir = resolve(rootDir, 'apps', 'web', 'app', 'public', 'social-image-previews', locale);
         const previewPath = resolve(previewDir, `${page}.html`);
         const html = await readFile(previewPath, 'utf8');
         const outDir = resolve(tmpDir, locale);
         const outPath = resolve(outDir, `${page}.png`);
-        const publicDir = resolve(rootDir, 'apps', 'website', 'public', 'images', 'seo', locale);
+        const publicDir = resolve(rootDir, 'apps', 'web', 'site', 'public', 'images', 'seo', locale);
         const publicPath = resolve(publicDir, `${page}.png`);
-        const distDir = resolve(rootDir, 'dist', 'apps', 'website', 'client', 'images', 'seo', locale);
+        const distDir = resolve(rootDir, 'dist', 'apps', 'web', 'site', 'client', 'images', 'seo', locale);
         const distPath = resolve(distDir, `${page}.png`);
 
         await mkdir(outDir, { recursive: true });
+
         await mkdir(publicDir, { recursive: true });
+
         await mkdir(distDir, { recursive: true });
 
         const page2 = await browser.newPage();
+
         try {
           await page2.setViewport({ deviceScaleFactor: 1, width: SOCIAL_IMAGE_WIDTH, height: SOCIAL_IMAGE_HEIGHT });
+
           await page2.setContent(html, { waitUntil: 'networkidle0' });
+
           await page2.screenshot({ path: outPath, type: 'png' });
         } finally {
           await page2.close();
         }
 
         await copyFile(outPath, publicPath);
+
         await copyFile(outPath, distPath);
+
         count++;
         console.log(`[ generate ] ${locale}/${page} -> ${publicPath}`);
       }

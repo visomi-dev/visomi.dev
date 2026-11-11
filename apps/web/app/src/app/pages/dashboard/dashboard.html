@@ -1,0 +1,132 @@
+<main class="mx-auto min-h-screen max-w-5xl space-y-6 p-6 text-slate-900 sm:p-10">
+  <h1 class="text-2xl font-semibold" i18n="@@dashboardHeroTitle">Contact requests</h1>
+
+  <nav aria-label="Language" i18n-aria-label="@@dashboardAccessLanguage">
+    <a href="/app/en/dashboard" class="underline" lang="en">English</a> ·
+    <a href="/app/es/dashboard" class="underline" lang="es">Español</a>
+  </nav>
+
+  @if (data().state !== 'denied') {
+    <button
+      class="rounded border px-4 py-2"
+      type="button"
+      [disabled]="busy()"
+      (click)="signOut()"
+      i18n="@@dashboardAccessSignOut"
+    >
+      Sign out
+    </button>
+  }
+
+  @if (data().state === 'denied') {
+    <p role="status" i18n="@@dashboardAccessDenied">Owner access required.</p>
+
+    @if (failed()) {
+      <p role="alert" i18n="@@dashboardAccessError">Access could not be verified. Please try again.</p>
+    }
+
+    @if (challenge()) {
+      <form class="max-w-sm space-y-4" (ngSubmit)="verify()">
+        <label class="block" for="code" i18n="@@dashboardAccessCode">Verification code</label>
+
+        <input
+          class="w-full rounded border p-3"
+          id="code"
+          name="code"
+          autocomplete="one-time-code"
+          [ngModel]="code()"
+          (ngModelChange)="code.set($event)"
+          required
+        />
+
+        <button
+          class="rounded bg-slate-900 px-5 py-3 text-white disabled:opacity-50"
+          [disabled]="busy()"
+          type="submit"
+          i18n="@@dashboardAccessVerify"
+        >
+          Verify access
+        </button>
+      </form>
+    } @else {
+      <form class="max-w-sm space-y-4" (ngSubmit)="signIn()">
+        <label class="block" for="email" i18n="@@dashboardAccessEmail">Verified email</label>
+
+        <input
+          class="w-full rounded border p-3"
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="username"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+          required
+        />
+
+        <label class="block" for="password" i18n="@@dashboardAccessPassword">Password</label>
+
+        <input
+          class="w-full rounded border p-3"
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          required
+        />
+
+        <button
+          class="rounded bg-slate-900 px-5 py-3 text-white disabled:opacity-50"
+          [disabled]="busy()"
+          type="submit"
+          i18n="@@dashboardAccessSignIn"
+        >
+          Access dashboard
+        </button>
+      </form>
+    }
+
+    @if (busy()) {
+      <p role="status" i18n="@@dashboardAccessLoading">Verifying access…</p>
+    }
+  } @else if (data().state === 'error') {
+    <p role="alert" i18n="@@dashboardRequestsError">Requests could not be loaded.</p>
+
+    <a routerLink="/dashboard" class="underline" i18n="@@dashboardRequestsRetry">Return to requests</a>
+  } @else if (data().item; as item) {
+    <a routerLink="/dashboard" class="underline" i18n="@@dashboardRequestsBack">All requests</a>
+
+    <article class="space-y-4 rounded border p-5">
+      <h2 class="text-xl font-semibold">{{ item.name }}</h2>
+
+      <p>{{ item.email }}</p>
+
+      <p>
+        <time [attr.datetime]="item.createdAt">{{ item.createdAt }}</time> · {{ item.type }} · {{ item.locale }}
+      </p>
+
+      <p class="break-words whitespace-pre-wrap">{{ item.message }}</p>
+    </article>
+  } @else {
+    @for (item of data().items; track item.id) {
+      <article class="rounded border p-5">
+        <h2 class="text-lg font-semibold">
+          <a class="underline" [routerLink]="['/dashboard', item.id]">{{ item.name }}</a>
+        </h2>
+
+        <p>{{ item.email }}</p>
+
+        <time [attr.datetime]="item.createdAt">{{ item.createdAt }}</time>
+      </article>
+    } @empty {
+      <p role="status" i18n="@@dashboardRequestsEmpty">No contact requests yet.</p>
+    }
+
+    @if (data().next; as next) {
+      <a routerLink="/dashboard" [queryParams]="{ before: next }" class="underline" i18n="@@dashboardRequestsNext"
+        >Older requests</a
+      >
+    }
+  }
+</main>

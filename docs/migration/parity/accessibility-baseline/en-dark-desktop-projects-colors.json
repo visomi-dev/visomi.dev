@@ -1,0 +1,9 @@
+{
+  "mutedDark": "#919191",
+  "colors": [
+    {
+      "before": ["dark:text-neutral-500", "text-muted-light"],
+      "color": null
+    }
+  ]
+}

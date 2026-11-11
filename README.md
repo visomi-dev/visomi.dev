@@ -1,201 +1,68 @@
 # visomi.dev
 
-Personal engineering portfolio monorepo built with Nx.
+Personal engineering portfolio built with Nx, Astro and Angular, using the runtime and tooling from
+[visomi-stack](https://github.com/visomi-dev/visomi-stack).
 
-This workspace currently combines:
+The public portfolio keeps its original content, design, WebGL background, printable CV, brand assets
+and English/Spanish URLs. The Angular app is a blank private shell with an owner-only contact dashboard.
+Contact submissions use PostgreSQL; social images use the existing BullMQ/Redis worker.
 
-- `apps/website` - Astro website for the public portfolio, localized in English and Spanish
-- `apps/server` - Node composition server that mounts the Astro website and the API behind one runtime
-- `apps/api` - Express API for backend endpoints and future application services
-- `apps/ng-website` - Angular application kept in the repo as a parallel/legacy surface
-- `apps/website-e2e` - Playwright smoke and screenshot coverage for the Astro website
-- `apps/api-e2e` - Jest-based API e2e coverage
+## Projects and routes
 
-## Architecture
+| Project        | Responsibility                                                                                    | Routes                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `web-gateway`  | Owns HTTP, shared authentication, PostgreSQL, telemetry and worker lifecycle                      | Single entrypoint                                                               |
+| `web-site`     | Original Astro portfolio and contact form                                                         | `/`, `/journey/`, `/projects/`, `/resume/`, `/contact/`, and `/es/` equivalents |
+| `web-app`      | Private Angular shell, access screen and protected list/detail                                    | `/app/en/`, `/app/es/`                                                          |
+| `web-api`      | Import-safe Express composition, health/readiness, contact API and minimal private authentication | `/api` when embedded                                                            |
+| `web-realtime` | Stack transport infrastructure; no product/business routes                                        | Owned by gateway when authentication is configured                              |
+| `web-edge`     | Optional, undeployed Cloudflare path guard; local build/tests only                                | Prepared route configuration                                                    |
+| `worker`       | Social-image validation, Chromium rendering and artifact promotion                                | Protected `/api/internal/social-images`                                         |
 
-The current production direction is a monolith-style deployment with modern tooling:
+`apps/ng-website` is retained as an archived reference and excluded from active Nx projects.
+The old composition server and unsafe shared-environment Jest E2E harnesses have been replaced.
 
-- Astro handles the public website
-- Astro Actions + Astro DB handle the contact form workflow
-- Turso backs Astro DB for contact submissions
-- Express remains available for API routes under `/api`
-- `apps/server` is the single Node entry point used by Docker and Railway
+## Development and verification
 
-This keeps the repo modular inside Nx while preserving the operational feel of a single deployable app.
+Use the Node version in `.node-version` and pnpm 12.15.0. Configuration names/placeholders are in
+`.env.example`; never commit environment values. Local Compose creates only development PostgreSQL
+and Redis; it does not provision or change the existing external services.
 
-## Workspace Projects
-
-```text
-apps/
-├── api/           Express API
-├── api-e2e/       API end-to-end tests
-├── ng-website/    Angular website/app surface
-├── server/        Node gateway/composition server
-├── website/       Astro portfolio website
-└── website-e2e/   Playwright smoke and screenshot tests
+```sh
+pnpm install --frozen-lockfile
+pnpm nx build web-gateway
+pnpm nx run web-gateway:serve
+pnpm nx run web-api:serve
+pnpm nx run web-site:serve
+pnpm nx run-many -t lint typecheck typecheck-tests deployment-check --parallel=2
+pnpm nx run-many -t test --parallel=2
+pnpm nx run-many -t e2e --parallel=1
+pnpm nx run web-gateway:container-check
+pnpm nx run web-gateway:jaeger-check
 ```
 
-## Requirements
+Builds/startup never migrate a database. Use an explicitly approved destination when running
+`pnpm nx run backend-shared:db-migrate`. Isolated tests create unique local Compose projects and
+synthetic identities; they never reuse ambient database credentials or an already-running application.
+Production runtime startup is `node dist/apps/web/gateway/main.js`, normally on port 8080.
+For public-site inspection without configured dependencies, explicitly set `DISABLE_WORKER=true`;
+contact readiness remains unavailable until the PostgreSQL schema is present.
 
-- Node.js
-- pnpm
+## Private owner access
 
-Install dependencies:
+Reuse the existing stack identity with a verified email. Set `AUTH_ORIGIN`, `AUTH_RP_ID`, `SESSION_SECRET`
+and `OWNER_EMAIL`, optionally pinning `OWNER_USER_ID`. SMTP and/or the configured TOTP factor supplies
+the stack's second-factor proof. No public signup, password reset, OAuth enrollment or account-management
+routes are exposed. Missing owner/auth configuration denies access. The owner enters through
+`/app/en/access` or `/app/es/access`; authorization is enforced again on every contact API request.
+Private responses are `no-store`, list/detail data never enter SSR/transfer state, and message content
+is rendered as escaped text. Telemetry export is disabled unless explicitly enabled by an operator.
 
-```bash
-pnpm install
-```
+## Migration and release
 
-## Local Development
+[Migration provenance, parity and source inventory](docs/migration/README.md) describe the integration.
+[Contact cutover and rollback](docs/migration/contact-cutover.md) cover dry-run, freeze/drain, exclusive
+backups, reconciliation, idempotency and preservation of post-cutover submissions during rollback.
 
-### Astro website only
-
-```bash
-pnpm nx run website:serve
-```
-
-### Full composed server
-
-```bash
-pnpm nx run server:serve
-```
-
-### API only
-
-```bash
-pnpm nx run api:serve
-```
-
-### Angular app
-
-```bash
-pnpm nx run ng-website:serve
-```
-
-## Build Targets
-
-### CI/server build
-
-Used for Docker and server deployments. Expects Astro DB env vars from the environment.
-
-```bash
-pnpm nx run website:build
-pnpm nx run server:build
-```
-
-### Local website build
-
-Uses `apps/website/.env` through Nx `envFile`.
-
-```bash
-pnpm nx run website:build-local
-pnpm nx run website:preview-local
-```
-
-### Angular production build
-
-```bash
-pnpm nx run ng-website:build:production
-```
-
-## Testing and Verification
-
-### Lint
-
-```bash
-pnpm nx run website:lint
-pnpm nx run ng-website:lint
-pnpm nx affected -t lint
-```
-
-### Unit and integration tests
-
-```bash
-pnpm nx run website:test
-pnpm nx run api-e2e:e2e
-```
-
-### Astro typecheck
-
-```bash
-pnpm nx run website:typecheck
-```
-
-### Visual regression and screenshots
-
-```bash
-pnpm nx run website-e2e:screenshots
-pnpm nx run website-e2e:screenshots-home
-pnpm nx run website-e2e:screenshots-projects
-pnpm nx run website-e2e:screenshots-contact
-```
-
-## Contact Form
-
-The contact page uses:
-
-- Astro Actions for form handling
-- Zod validation
-- Astro DB for persistence
-- Turso as the remote database
-
-Relevant files:
-
-- `apps/website/src/actions/index.ts`
-- `apps/website/db/config.ts`
-- `apps/website/src/pages/contact/index.astro`
-- `apps/website/src/pages/es/contact/index.astro`
-
-## Environment Variables
-
-For the Astro website server build and runtime:
-
-```bash
-ASTRO_DB_REMOTE_URL=https://visomi-dev-visomi-dev.aws-us-east-1.turso.io
-ASTRO_DB_APP_TOKEN=<turso-token>
-```
-
-Important:
-
-- Astro DB bakes the remote URL into the server bundle at build time
-- Docker/Railway must provide these variables during build and runtime
-- local development can use `apps/website/.env`
-
-See also:
-
-- `docs/turso-env.md`
-- `docs/monolith-contact-architecture.md`
-
-## Deployment Model
-
-Current deployment direction:
-
-- `main` -> Docker/Railway style server deployment
-- GitHub Pages deployment is disabled for the Astro site because the contact workflow depends on server features
-
-The Docker build compiles the composed Node server in `apps/server`, which depends on:
-
-- `apps/website`
-- `apps/api`
-
-## Useful Nx Commands
-
-```bash
-pnpm nx show projects
-pnpm nx show project website --json
-pnpm nx graph
-pnpm nx run-many -t build
-pnpm nx affected -t build,test,lint
-```
-
-## Documentation
-
-- `docs/monolith-contact-architecture.md`
-- `docs/turso-env.md`
-- `docs/redesign/projects.md`
-
-## Notes
-
-- `.husky/pre-commit` runs `pnpm nx affected -t lint`
-- SEO/social preview images are sourced from page-specific preview assets under `apps/website/src/assets/seo/`
-- The repo still contains the Angular site while Astro is the public production surface
+The integration prepares one PR into main. Merge, deployment, provisioning, DNS/credential changes,
+and reading or migrating real contact data require separate authorization.

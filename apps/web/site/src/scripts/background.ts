@@ -26,6 +26,7 @@ let fragmentShaderText: string | null = null;
 
 const stopLoop = () => {
   isRunning = false;
+
   if (frameId !== null) {
     window.cancelAnimationFrame(frameId);
     frameId = null;
@@ -61,6 +62,7 @@ const syncLoop = () => {
 
   if (shouldRender) {
     startLoop();
+
     return;
   }
 
@@ -72,6 +74,7 @@ const teardown = () => {
 
   while (cleanups.length > 0) {
     const cleanup = cleanups.pop();
+
     cleanup?.();
   }
 
@@ -99,6 +102,7 @@ const loadShaders = async (): Promise<[string, string] | null> => {
     return [vertex, fragment];
   } catch (error) {
     console.error('Failed to load background shaders:', error);
+
     return null;
   }
 };
@@ -144,6 +148,7 @@ export const initBackground = async () => {
         lightBackground.classList.add('hidden');
         syncLoop();
       }, 700);
+
       return;
     }
 
@@ -193,6 +198,7 @@ export const initBackground = async () => {
     alpha: true,
     powerPreference: 'low-power',
   });
+
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
   renderer.setSize(resolution.x, resolution.y);
   darkBackground.appendChild(renderer.domElement);
@@ -225,6 +231,7 @@ export const initBackground = async () => {
 
       if (entry?.isIntersecting === false) {
         stopLoop();
+
         return;
       }
 
@@ -232,6 +239,7 @@ export const initBackground = async () => {
     },
     { threshold: 0 },
   );
+
   io.observe(darkBackground);
   cleanups.push(() => io.disconnect());
 
