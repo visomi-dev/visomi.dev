@@ -94,6 +94,18 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
 
     await runTestCompose(fixture.compose, ['start', 'redis']);
 
+    // Observe Redis readiness without consuming the production HTTP rate-limit budget.
+    await expect
+      .poll(
+        async () => {
+          const client = await queue.client;
+
+          return client.ping();
+        },
+        { timeout: 30000, intervals: [1000, 2000, 3000] },
+      )
+      .toBe('PONG');
+
     await expect
       .poll(
         async () => {
@@ -101,7 +113,7 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
 
           return retried.status();
         },
-        { timeout: 30000, intervals: [1000, 2000, 3000] },
+        { timeout: 30000, intervals: [10000] },
       )
       .toBe(200);
   } finally {

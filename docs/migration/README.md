@@ -35,6 +35,8 @@ The capture hides only canvas pixels because procedural WebGL output varies betw
 WebGL behavior is verified separately. All other content, layout, fonts and metadata are compared.
 A per-channel tolerance of 20 and maximum changed-pixel ratio of 0.2% permits rasterization noise;
 page dimensions and normalized body text/SEO must match exactly.
+Captures disable LCD text antialiasing so host Fontconfig cannot add colored subpixels.
+The same 40 stored references match with zero changed pixels on both the developer host and Ubuntu Playwright image.
 Run the `website-parity` Nx target against the current artifact on loopback; keep both recorded reference sets intact.
 
 ## Runtime and configuration inventory

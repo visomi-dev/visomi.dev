@@ -91,6 +91,13 @@ jobs:
         env:
           E2E_PROJECT: ${{ matrix.project }}
         run: pnpm nx run "$E2E_PROJECT:e2e"
+      - name: Preserve public visual comparison diagnostics
+        if: failure() && matrix.project == 'site-e2e'
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: public-website-parity
+          path: artifacts/migration/parity
+          retention-days: 7
 
   container:
     needs: verify

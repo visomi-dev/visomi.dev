@@ -23,7 +23,8 @@ const output = mode === 'baseline' ? baseline : 'artifacts/migration/parity';
 
 await mkdir(output, { recursive: true });
 
-const browser = await chromium.launch();
+// Fontconfig differs between developer hosts and CI; capture grayscale text on both.
+const browser = await chromium.launch({ args: ['--disable-lcd-text'] });
 const results = [];
 
 try {
