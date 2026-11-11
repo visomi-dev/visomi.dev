@@ -80,6 +80,7 @@ describe('test Compose command ownership', () => {
     vi.stubEnv('APP_DATABASE_URL', 'postgresql://synthetic-development/never-use');
     vi.stubEnv('POSTGRES_DB', 'synthetic-development');
     vi.stubEnv('HOST_BINDING', '0.0.0.0:');
+    vi.stubEnv('REDIS_PORT', '6379');
 
     await runTestCompose({ ...owner, app }, ['up', '-d', '--build', 'app']);
 
@@ -110,6 +111,7 @@ describe('test Compose command ownership', () => {
       APP_PORT: app === 'web-api' ? '3307' : '3317',
       POSTGRES_DB: 'visomi_auth_test',
       POSTGRES_PORT: '',
+      REDIS_PORT: '',
       HOST_BINDING: '127.0.0.1:',
       APP_DATABASE_URL: 'postgresql://visomi_test:synthetic-test-password@postgres:5432/visomi_auth_test',
       VISOMI_TEST_TELEMETRY_DIR: owner.telemetryDirectory,
@@ -126,6 +128,19 @@ describe('test Compose command ownership', () => {
     expect(args).toEqual(expect.arrayContaining(['-p', owner.project, 'down', '--volumes']));
   });
 
+  it('keeps an allocated Redis binding stable instead of using an ambient development port', async () => {
+    vi.stubEnv('REDIS_PORT', '6379');
+
+    await runTestCompose({ ...owner, redisPort: 46479 }, ['up', '-d', 'redis']);
+
+    expect(execFile).toHaveBeenCalledWith(
+      'docker',
+      expect.any(Array),
+      expect.objectContaining({ env: expect.objectContaining({ REDIS_PORT: '46479' }) }),
+      expect.any(Function),
+    );
+  });
+
   it.each([
     { directory: '/synthetic/developer-data' },
     { project: 'visomi-local' },
@@ -133,6 +148,9 @@ describe('test Compose command ownership', () => {
     { app: 'synthetic-app' },
     { app: 'api' },
     { app: 'gateway' },
+    { redisPort: 0 },
+    { redisPort: 65536 },
+    { redisPort: 1.5 },
   ])('refuses an unowned or unsupported descriptor: %j', (change) => {
     expect(() => runTestCompose({ ...owner, ...change } as TestCompose, ['down', '--volumes'])).toThrow(
       'isolated_compose_owner_invalid',

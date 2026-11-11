@@ -12,6 +12,7 @@ export type TestCompose = {
   directory: string;
   telemetryDirectory: string;
   app: 'web-api' | 'web-gateway';
+  redisPort?: number;
 };
 
 export async function createTestCompose(
@@ -50,7 +51,9 @@ export function runTestCompose(
     !basename(owner.directory).startsWith('visomi-auth-test-') ||
     owner.project !== basename(owner.directory).toLowerCase() ||
     !['docker', 'podman-compose'].includes(owner.provider) ||
-    !['web-api', 'web-gateway'].includes(owner.app)
+    !['web-api', 'web-gateway'].includes(owner.app) ||
+    (owner.redisPort !== undefined &&
+      (!Number.isInteger(owner.redisPort) || owner.redisPort < 1 || owner.redisPort > 65535))
   ) {
     throw new Error('isolated_compose_owner_invalid');
   }
@@ -87,7 +90,7 @@ export function runTestCompose(
         POSTGRES_USER: 'visomi_test',
         POSTGRES_PASSWORD: 'synthetic-test-password',
         POSTGRES_PORT: '',
-        REDIS_PORT: '',
+        REDIS_PORT: owner.redisPort?.toString() ?? '',
         DISABLE_WORKER: 'true',
         OWNER_EMAIL: 'owner@example.test',
         HOST_BINDING: '127.0.0.1:',

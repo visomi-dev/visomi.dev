@@ -6908,16 +6908,17 @@
     {
       "source": "libs/development/testing/src/lib/compose.spec.ts",
       "destination": "libs/development/testing/src/lib/compose.spec.ts",
-      "action": "copied",
+      "action": "adapted",
       "sourceSha256": "0e30527dd905b514cff610a212ff412e0e68cc1668d20ca042859a2de2746f7d",
-      "destinationSha256": "0e30527dd905b514cff610a212ff412e0e68cc1668d20ca042859a2de2746f7d"
+      "destinationSha256": "0c628b3ad848ce82db9059ff24966d64a4f5a7bdb7b6aa8778a473f19217b872",
+      "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
       "source": "libs/development/testing/src/lib/compose.ts",
       "destination": "libs/development/testing/src/lib/compose.ts",
       "action": "adapted",
       "sourceSha256": "c3d510a32e284d224f01409438fffe0c48a208c9c18b9382c7a4525ec7da89a8",
-      "destinationSha256": "6977e7340939b2ee774ac88755b77312e5c35586b8dbacc2f09a5730e080d3fe",
+      "destinationSha256": "9610bf6eef16937281769b4183da0be8df93681aa851a7b5b4c0af413d7c88d1",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -7752,8 +7753,8 @@
     }
   ],
   "counts": {
-    "copied": 563,
-    "adapted": 236,
+    "copied": 562,
+    "adapted": 237,
     "excluded": 320
   }
 }

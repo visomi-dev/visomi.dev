@@ -50,6 +50,11 @@ async function main() {
       throw new Error('isolated_redis_port_invalid');
     }
 
+    // Docker reallocates anonymous published ports on start; make this owned binding explicit first.
+    database.compose.redisPort = Number(port);
+
+    await runTestCompose(database.compose, ['up', '-d', '--force-recreate', 'redis']);
+
     const redisUrl = `redis://127.0.0.1:${port}`;
 
     await mkdir(resolve(root, 'apps/web/site/public'), { recursive: true });

@@ -41,5 +41,5 @@
     "No-root runtime image without build tools; private trace policy rehearsal"
   ],
   "releaseRunbook": "docs/migration/contact-cutover.md",
-  "unitCases": 839
+  "unitCases": 843
 }

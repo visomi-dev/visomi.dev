@@ -133,3 +133,5 @@ Browser E2Es pin hosted Ubuntu 24.04, which already includes Chromium's native l
 only the lockfile's browser build. Removing the optional CJK/X11 font packages in an isolated Ubuntu
 image still passed all 40 captures with zero changed pixels; en/es uses self-hosted website fonts.
 The browser setup has a bounded timeout and all browser/E2E gates remain required.
+The worker fixture first allocates an isolated Redis port, then makes that same binding explicit before
+starting the gateway/worker. This preserves the endpoint across Docker and Podman stop/start rehearsals.
