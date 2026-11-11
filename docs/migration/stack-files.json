@@ -2744,7 +2744,7 @@
       "destination": ".github/workflows/ci.yml",
       "action": "adapted",
       "sourceSha256": "e286988402d9b89d970c0ce82e41fa003eb2d67fddb666747a3a17e697bc53a2",
-      "destinationSha256": "ff5bb21be4f71427f3c6fd57b912c1b16ced94ff76abc31fd818e1a224fdefec",
+      "destinationSha256": "8800722b10c0fdab4e023460f085cc50004c6faef441e53c479872a7ce644cda",
       "reason": "Retain the existing repository agreement/portfolio documentation and formatter needs while adopting compatible stack tooling/configuration."
     },
     {

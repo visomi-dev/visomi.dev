@@ -129,3 +129,5 @@ loopback origin, and its deployment target is outside this implementation's auth
 
 The public E2E suite also runs the 40-view pixel/content/SEO comparison against its owned compiled
 gateway fixture, so CI enforces the recorded reference rather than relying only on manual captures.
+Browser preparation uses Ubuntu's official HTTPS mirrors and bounded APT acquisition to avoid
+the hosted runner's degraded Azure mirror. Signature checks and browser/E2E gates remain required.
