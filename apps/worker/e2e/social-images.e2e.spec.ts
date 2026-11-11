@@ -94,13 +94,18 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
 
     await runTestCompose(fixture.compose, ['start', 'redis']);
 
+    const binding = await runTestCompose(fixture.compose, ['port', 'redis', '6379']);
+    const restoredPort = /(?:127\.0\.0\.1:)?(\d+)\s*$/.exec(binding.stdout)?.[1];
+
+    expect(restoredPort).toBe(new URL(fixture.redisUrl).port);
+
     // Observe Redis readiness without consuming the production HTTP rate-limit budget.
     await expect
       .poll(
         async () => {
-          const client = await queue.client;
+          const result = await runTestCompose(fixture.compose, ['exec', '-T', 'redis', 'redis-cli', 'ping']);
 
-          return client.ping();
+          return result.stdout.trim();
         },
         { timeout: 30000, intervals: [1000, 2000, 3000] },
       )
@@ -118,6 +123,8 @@ test('compiled gateway and worker validate, generate, deduplicate and recover af
       .toBe(200);
   } finally {
     await runTestCompose(fixture.compose, ['start', 'redis']);
+
+    await queue.disconnect();
 
     await queue.close();
 
