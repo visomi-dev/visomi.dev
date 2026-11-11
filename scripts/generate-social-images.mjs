@@ -30,7 +30,7 @@ const findChromium = async () => {
 };
 
 const generateImages = async () => {
-  const executablePath = process.env['PUPPETEER_EXECUTABLE_PATH'] || (await findChromium());
+  const executablePath = process.env['PUPPETEER_EXECUTABLE_PATH'] ?? (await findChromium());
   console.log(`[ generate ] using Chromium at ${executablePath}`);
 
   const browser = await puppeteer.launch({

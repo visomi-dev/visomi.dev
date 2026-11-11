@@ -15,5 +15,5 @@ export class Input {
   readonly id = input<string>();
   readonly required = input(false, { transform: booleanAttribute });
 
-  readonly inputId = computed(() => this.id() || Math.random().toString(36).substring(2, 9));
+  readonly inputId = computed(() => this.id() ?? Math.random().toString(36).substring(2, 9));
 }

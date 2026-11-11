@@ -6,59 +6,114 @@
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4200/",
-      "runtimeArgs": ["--auto-open-devtools-for-tabs"]
+      "runtimeArgs": [
+        "--auto-open-devtools-for-tabs"
+      ]
     },
     {
       "name": "Launch Chrome against localhost:1313",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:1313/",
-      "runtimeArgs": ["--auto-open-devtools-for-tabs"]
+      "runtimeArgs": [
+        "--auto-open-devtools-for-tabs"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Debug api with Nx",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["nx", "serve", "api"],
+      "runtimeArgs": [
+        "nx",
+        "serve",
+        "api"
+      ],
       "env": {
         "NODE_OPTIONS": "--inspect=9229"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
       "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/apps/api/dist/**/*.(m|c|)js", "!**/node_modules/**"]
+      "outFiles": [
+        "${workspaceFolder}/apps/api/dist/**/*.(m|c|)js",
+        "!**/node_modules/**"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Debug server with Nx",
       "runtimeExecutable": "pnpm exec",
-      "runtimeArgs": ["nx", "serve", "server"],
+      "runtimeArgs": [
+        "nx",
+        "serve",
+        "server"
+      ],
       "env": {
         "NODE_OPTIONS": "--inspect=9230"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
       "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/apps/server/dist/**/*.(m|c|)js", "!**/node_modules/**"]
+      "outFiles": [
+        "${workspaceFolder}/apps/server/dist/**/*.(m|c|)js",
+        "!**/node_modules/**"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Debug worker with Nx",
       "runtimeExecutable": "pnpm exec",
-      "runtimeArgs": ["nx", "serve", "worker"],
+      "runtimeArgs": [
+        "nx",
+        "serve",
+        "worker"
+      ],
       "env": {
         "NODE_OPTIONS": "--inspect=9231"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
       "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/apps/worker/dist/**/*.(m|c|)js", "!**/node_modules/**"]
+      "outFiles": [
+        "${workspaceFolder}/apps/worker/dist/**/*.(m|c|)js",
+        "!**/node_modules/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug realtime with Nx",
+      "runtimeExecutable": "pnpm exec",
+      "runtimeArgs": [
+        "nx",
+        "serve",
+        "realtime"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--inspect=9232"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/apps/web/realtime/dist/**/*.(m|c|)js",
+        "!**/node_modules/**"
+      ]
     }
   ]
 }

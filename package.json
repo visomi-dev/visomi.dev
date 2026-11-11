@@ -30,6 +30,7 @@
     "@angular/ssr": "21.2.6",
     "@astrojs/db": "^0.20.1",
     "@astrojs/node": "^10.0.4",
+    "@catppuccin/palette": "^1.8.0",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
     "axios": "^1.14.0",

@@ -2,14 +2,15 @@ FROM node:24-bookworm-slim AS base
 
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
+ENV NX_DAEMON=false
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
 
 FROM base AS deps
 
 WORKDIR /workspace
 
-COPY package.json pnpm-lock.yaml nx.json tsconfig.base.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json ./
 
 RUN pnpm install --frozen-lockfile
 
@@ -31,18 +32,24 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 RUN pnpm install --frozen-lockfile --prod
 
+RUN apt-get update \
+  && apt-get install --yes --no-install-recommends chromium ca-certificates fonts-liberation \
+  && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /workspace/dist ./dist
 COPY --from=build /workspace/dist/libs/shared/social-images ./node_modules/@visomi.dev/shared-social-images
+
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 FROM runtime-base AS server-runtime
 
 EXPOSE 8080
 
-CMD ["node", "dist/apps/server/main.js"]
+CMD ["node", "dist/apps/web/server/main.js"]
 
 FROM runtime-base AS worker-runtime
 
@@ -55,3 +62,7 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 CMD ["node", "dist/apps/worker/main.js"]
 
 FROM server-runtime AS runtime
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 CMD ["node", "-e", "fetch('http://127.0.0.1:8080/healthz').then((response) => { if (!response.ok) process.exit(1); }).catch(() => process.exit(1));"]
