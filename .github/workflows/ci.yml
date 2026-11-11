@@ -68,7 +68,7 @@ jobs:
   e2e:
     needs: verify
     if: needs.verify.outputs.has-e2e == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -86,14 +86,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Install Chromium
         if: contains(fromJSON('["site-e2e","app-e2e","worker"]'), matrix.project)
-        timeout-minutes: 8
-        run: |
-          # Avoid the degraded Azure mirror; keep Ubuntu's signed archive and security mirrors.
-          printf '%s\n' 'https://archive.ubuntu.com/ubuntu/ priority:1' 'https://security.ubuntu.com/ubuntu/ priority:2' \
-            | sudo tee /etc/apt/apt-mirrors.txt > /dev/null
-          printf '%s\n' 'Acquire::Retries "1";' 'Acquire::http::Timeout "15";' 'Acquire::https::Timeout "15";' \
-            | sudo tee /etc/apt/apt.conf.d/zz-visomi-ci > /dev/null
-          pnpm exec playwright install --with-deps chromium
+        timeout-minutes: 5
+        # Hosted Ubuntu includes native Chromium libraries; en/es uses the website's own fonts.
+        run: pnpm exec playwright install chromium
       - name: Run end-to-end tests
         env:
           E2E_PROJECT: ${{ matrix.project }}

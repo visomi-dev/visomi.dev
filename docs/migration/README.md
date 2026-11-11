@@ -129,5 +129,7 @@ loopback origin, and its deployment target is outside this implementation's auth
 
 The public E2E suite also runs the 40-view pixel/content/SEO comparison against its owned compiled
 gateway fixture, so CI enforces the recorded reference rather than relying only on manual captures.
-Browser preparation uses Ubuntu's official HTTPS mirrors and bounded APT acquisition to avoid
-the hosted runner's degraded Azure mirror. Signature checks and browser/E2E gates remain required.
+Browser E2Es pin hosted Ubuntu 24.04, which already includes Chromium's native libraries, and download
+only the lockfile's browser build. Removing the optional CJK/X11 font packages in an isolated Ubuntu
+image still passed all 40 captures with zero changed pixels; en/es uses self-hosted website fonts.
+The browser setup has a bounded timeout and all browser/E2E gates remain required.
