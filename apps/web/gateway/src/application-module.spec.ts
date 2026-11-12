@@ -5,6 +5,8 @@ import type { AddressInfo } from 'node:net';
 import express from 'express';
 import { describe, expect, it, vi } from 'vitest';
 
+import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
+
 import { loadApplication, resolveApplicationModule } from './application-module';
 
 // Cold compiled SSR imports and bootstrap run under coverage on shared CI CPUs.
@@ -125,7 +127,12 @@ describe('compiled Angular boundary', () => {
       const application = await loadApplication(
         new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
       );
-      const server = createServer(application.createApp({ trustProxy }));
+      const parent = express();
+
+      parent.use(application.createApp({ trustProxy, errorMode: 'inherited', helmetMode: 'inherited' }));
+      parent.use(httpErrorHandler);
+
+      const server = createServer(parent);
       const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
       server.listen(0, '127.0.0.1');
@@ -167,7 +174,14 @@ describe('compiled Angular boundary', () => {
       const application = await loadApplication(
         new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
       );
-      const server = createServer(application.createApp({ trustProxy: ['loopback'] }));
+      const parent = express();
+
+      parent.use(
+        application.createApp({ trustProxy: ['loopback'], errorMode: 'inherited', helmetMode: 'inherited' }),
+      );
+      parent.use(httpErrorHandler);
+
+      const server = createServer(parent);
       const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
       server.listen(0, '127.0.0.1');
