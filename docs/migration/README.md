@@ -127,6 +127,9 @@ the surrounding navigation, page layout, content and SEO at the existing toleran
 is checked separately in `website-branding.spec.ts`: both themes, both locales, mobile/desktop,
 production SVG responses, delayed navigation, reduced motion and screenshot evidence. Those screenshots
 are taken before parity normalization and do not replace the original baseline.
+The targeted branding captures pause/hide the procedural WebGL background to avoid software-rendering
+contention on hosted CI. They retain the real theme, SVG animation, ClientRouter and network delay;
+the existing WebGL lifecycle tests run separately with the real background enabled.
 
 ```sh
 # Original f2cfa9c artifact on loopback 8181; current artifact on loopback 8182.

@@ -24,6 +24,13 @@ for (const theme of ['light', 'dark'] as const) {
 
         await page.goto(home);
 
+        await page.evaluate(() => {
+          // Software WebGL rendering on hosted CI competes with screenshot/navigation work.
+          // Pause only the procedural background; the existing WebGL suite tests its real lifecycle.
+          document.getElementById('dark-bg')?.classList.add('hidden');
+          document.dispatchEvent(new Event('visibilitychange'));
+        });
+
         const brand = page.locator('[data-brand-home]');
         const logo = brand.locator(logoSelector);
 
