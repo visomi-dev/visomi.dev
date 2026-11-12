@@ -6804,7 +6804,7 @@
       "destination": "libs/backend/shared/src/lib/mail/templates.generated.ts",
       "action": "adapted",
       "sourceSha256": "8e55a11c72182793f8ed7092d20016c86bf0f20f1beaf5e18c57f42ca77284e3",
-      "destinationSha256": "95458249f7027b54b1696b4dce1b2ccbff6bb7852bcbda97700781232cb0ee89",
+      "destinationSha256": "45bbf20c2c7b0bd209a00c79e63b9e3c6f42e5422a81301799daab5ec514354a",
       "reason": "Adapt the current stack to the portfolio runtime, privacy, operator tools and approved branding."
     },
     {
@@ -6813,21 +6813,23 @@
       "action": "adapted",
       "reason": "Use the portfolio identity in the shared PR #17 email frame.",
       "sourceSha256": "314465ef16d31900d5db03b10af86cc32ee1f508544ecb1c0d5125075194b1e8",
-      "destinationSha256": "bb661c37b897827a1b09f690d12e56054545d33222511d2ba1bbb6aca57b1f3c"
+      "destinationSha256": "15efa10de322977fde84f29d97ac0a79fba23baad50da3a10b516960ff71f333"
     },
     {
       "source": "libs/backend/shared/src/lib/mail/templates/security.mjml",
       "destination": "libs/backend/shared/src/lib/mail/templates/security.mjml",
-      "action": "copied",
+      "action": "adapted",
       "sourceSha256": "2ae36b566346157c232ec21f024bf7562343290d355ca758245d38eb32364c50",
-      "destinationSha256": "2ae36b566346157c232ec21f024bf7562343290d355ca758245d38eb32364c50"
+      "destinationSha256": "31226fae37926b820de50beb471ce97f466e8f1407e674f6f7715508a6c66222",
+      "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
       "source": "libs/backend/shared/src/lib/mail/templates/verification.mjml",
       "destination": "libs/backend/shared/src/lib/mail/templates/verification.mjml",
-      "action": "copied",
+      "action": "adapted",
       "sourceSha256": "33a1e8c55248f127e43b26776cb45c106861c1aed1782245fa6a1a1a43ce095a",
-      "destinationSha256": "33a1e8c55248f127e43b26776cb45c106861c1aed1782245fa6a1a1a43ce095a"
+      "destinationSha256": "e64ee57cf8b4f88439f72975f2e00a071705b635321894f4f8dac7bee48040a6",
+      "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
     },
     {
       "source": "libs/backend/shared/src/lib/realtime-redis.spec.ts",
