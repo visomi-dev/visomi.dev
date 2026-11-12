@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { Router, type CanActivateFn } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
 
-export const dashboardGuard: CanActivateFn = () => {
+export const ownerGuard: CanActivateFn = () => {
   const http = inject(HttpClient);
   const router = inject(Router);
 

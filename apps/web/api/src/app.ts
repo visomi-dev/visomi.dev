@@ -2,6 +2,10 @@ import express, { type Request, type Response, type NextFunction } from 'express
 import type { Pool } from 'pg';
 
 import { currentObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
+import {
+  createPrivateMetrics,
+  type PrivateMetrics,
+} from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
@@ -12,7 +16,7 @@ import type { Observability } from '@visomi-stack/web-backend-shared/lib/observa
 import { authErrorHandler, createAuthRouter } from './auth/router';
 import { createContactRouter } from './contact/router';
 import { createContactRepository, type ContactRepository } from './contact/repository';
-import type { OwnerConfig } from './contact/owner';
+import { requireOwner, type OwnerConfig } from './contact/owner';
 import type { AuthRuntime } from './auth/runtime';
 import { createOpenApiDocument, documentationContract, homeContract } from './openapi';
 
@@ -23,6 +27,7 @@ export { authConfig } from './auth/shared/config';
 
 export type AppOptions = {
   observability?: Observability;
+  privateMetrics?: PrivateMetrics;
   pool?: Pool;
   contact?: ContactRepository;
   owner?: OwnerConfig;
@@ -38,8 +43,16 @@ export function createApp(options: AppOptions = {}) {
   const app = express();
   const document = createOpenApiDocument(options.basePath);
   const observability = options.observability ?? currentObservability();
+  const privateMetrics =
+    options.privateMetrics ??
+    createPrivateMetrics({
+      scope: 'web-api',
+      enabled: process.env['VISOMI_PRIVATE_METRICS'] === 'true',
+      traceExportEnabled: process.env['VISOMI_OTLP_TRACING'] === 'true',
+    });
 
   app.disable('x-powered-by');
+  app.use(privateMetrics.middleware);
 
   if (options.trustProxy) {
     app.set('trust proxy', options.trustProxy);
@@ -81,6 +94,17 @@ export function createApp(options: AppOptions = {}) {
       next(new HttpError(503, 'authentication_unavailable')),
     );
   }
+
+  app.get(
+    '/private/metrics',
+    requireOwner(
+      options.owner ?? {
+        email: process.env['OWNER_EMAIL'],
+        userId: process.env['OWNER_USER_ID'],
+      },
+    ),
+    (_request, response) => response.json(privateMetrics.snapshot()),
+  );
 
   app.use(
     '/contact',

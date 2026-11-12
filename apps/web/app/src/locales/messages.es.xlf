@@ -138,6 +138,158 @@
           <context context-type="linenumber">64,68</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="dashboardMetricsLink" datatype="html">
+        <source>Technical metrics</source>
+        <target>Métricas técnicas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="linenumber">10,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsHeroTitle" datatype="html">
+        <source>Technical metrics</source>
+        <target>Métricas técnicas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">3,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsNavigationLabel" datatype="html">
+        <source>Private navigation</source>
+        <target>Navegación privada</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsContactLink" datatype="html">
+        <source>Contact requests</source>
+        <target>Solicitudes de contacto</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsScopeDescription" datatype="html">
+        <source> HTTP measurements from this process over the last 15 minutes. Local counters reset on restart. Latency is capped at 60 seconds. </source>
+        <target>Mediciones HTTP de este proceso durante los últimos 15 minutos. Los contadores locales se reinician con el proceso. La latencia está limitada a 60 segundos.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">14,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsRefreshButton" datatype="html">
+        <source> Refresh metrics </source>
+        <target>Actualizar métricas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">25,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsRefreshLoading" datatype="html">
+        <source>Refreshing metrics…</source>
+        <target>Actualizando métricas…</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">29,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsProcessLabel" datatype="html">
+        <source>Process:</source>
+        <target>Proceso:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">33,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsExportEnabled" datatype="html">
+        <source>External trace export is enabled in the configuration.</source>
+        <target>La exportación externa de trazas está activada en la configuración.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">36,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsExportDisabled" datatype="html">
+        <source>External trace export is disabled in the configuration.</source>
+        <target>La exportación externa de trazas está desactivada en la configuración.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">38,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsEmptyState" datatype="html">
+        <source>Waiting for HTTP measurements.</source>
+        <target>Esperando mediciones HTTP.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">43,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsRequestsLabel" datatype="html">
+        <source>HTTP requests</source>
+        <target>Solicitudes HTTP</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">48,50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsClientErrorsLabel" datatype="html">
+        <source>Client errors</source>
+        <target>Errores del cliente</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">54,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsServerErrorsLabel" datatype="html">
+        <source>Server errors</source>
+        <target>Errores del servidor</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">60,62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsAbortedLabel" datatype="html">
+        <source>Aborted requests</source>
+        <target>Solicitudes interrumpidas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">66,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsMeanLatencyLabel" datatype="html">
+        <source>Mean latency</source>
+        <target>Latencia media</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">72,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsMaxLatencyLabel" datatype="html">
+        <source>Maximum latency</source>
+        <target>Latencia máxima</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">78,80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsDisabledState" datatype="html">
+        <source> Local metrics collection is disabled. Enable it in the service configuration before collecting measurements. </source>
+        <target>La recopilación local de métricas está desactivada. Actívala en la configuración del servicio antes de recopilar mediciones.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">85,88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="metricsErrorState" datatype="html">
+        <source>Metrics could not be loaded. Please try again.</source>
+        <target>No se pudieron cargar las métricas. Inténtalo de nuevo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">89,93</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

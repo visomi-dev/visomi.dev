@@ -10,6 +10,7 @@ import { AuthHttpError } from '@visomi-stack/web-backend-shared/lib/http/auth-ht
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
+import { createPrivateMetrics } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 
 import type { ApiModule, EmbeddedAuthentication } from './api-module';
 import { createGatewayApp } from './app';
@@ -45,6 +46,18 @@ function apiFixture(handler: RequestHandler = (request, response) => response.js
 }
 
 describe('gateway composition', () => {
+  it('shares one opted-in collector with the embedded API without double-counting a response', async () => {
+    const privateMetrics = createPrivateMetrics({ scope: 'web-gateway', enabled: true });
+    const api = apiFixture((request, response) =>
+      privateMetrics.middleware(request, response, () => response.json({ ok: true })),
+    );
+    const gateway = createGatewayApp({ api, privateMetrics });
+    const result = await dispatch(gateway, '/api/synthetic');
+
+    expect(result.status).toBe(200);
+    expect(privateMetrics.snapshot().metrics?.requests).toBe(1);
+    expect(api.createApp).toHaveBeenCalledWith(expect.objectContaining({ privateMetrics }));
+  });
   it.each([undefined, { middleware: [(_request: Request, _response: Response, next: () => void) => next()] }])(
     'renders an unavailable context when the host has no snapshot integration',
     async (auth) => {
@@ -283,6 +296,8 @@ describe('gateway composition', () => {
       helmetMode: 'inherited',
       auth,
       observability: undefined,
+      pool: undefined,
+      privateMetrics: { middleware: expect.any(Function), snapshot: expect.any(Function) },
     });
     expect(api.createAuthentication).not.toHaveBeenCalled();
   });

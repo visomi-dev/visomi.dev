@@ -13,6 +13,10 @@ import type { createBrowserTelemetry } from '@visomi-stack/web-backend-shared/li
 import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
 import { securityHeaders } from '@visomi-stack/web-backend-shared/lib/http/security-headers';
 import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
+import {
+  createPrivateMetrics,
+  type PrivateMetrics,
+} from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 
 import type { ApiModule, EmbeddedAuthentication } from './api-module';
 import type { SiteModule } from './site-module';
@@ -28,6 +32,7 @@ export function createGatewayApp(options: {
   application?: ApplicationModule;
   auth?: EmbeddedAuthentication;
   observability?: Observability;
+  privateMetrics?: PrivateMetrics;
   browserTelemetry?: Pick<ReturnType<typeof createBrowserTelemetry>, 'context' | 'router'>;
   trustProxy?: string[];
   helmetMode?: 'managed' | 'inherited';
@@ -35,8 +40,16 @@ export function createGatewayApp(options: {
 }) {
   const app = express();
   const errors = pageErrors(options.site?.clientDirectory);
+  const privateMetrics =
+    options.privateMetrics ??
+    createPrivateMetrics({
+      scope: 'web-gateway',
+      enabled: process.env['VISOMI_PRIVATE_METRICS'] === 'true',
+      traceExportEnabled: process.env['VISOMI_OTLP_TRACING'] === 'true',
+    });
 
   app.disable('x-powered-by');
+  app.use(privateMetrics.middleware);
 
   if (options.trustProxy) {
     app.set('trust proxy', options.trustProxy);
@@ -121,6 +134,7 @@ export function createGatewayApp(options: {
       helmetMode: 'inherited',
       auth: options.auth,
       observability: options.observability,
+      privateMetrics,
     }),
   );
 

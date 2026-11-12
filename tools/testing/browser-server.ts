@@ -8,8 +8,9 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 import { SMTPServer } from 'smtp-server';
 import { hashPassword } from '@visomi-stack/dev-testing/lib/password';
-import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
+
+import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 
 // Test-only executable. Owns an isolated Compose project; never reads ambient DATABASE_URL or .env.
 async function main(): Promise<void> {
@@ -127,6 +128,7 @@ async function main(): Promise<void> {
         env: {
           PATH: process.env['PATH'],
           NODE_ENV: 'production',
+          VISOMI_PRIVATE_METRICS: process.env['VISOMI_E2E_PRIVATE_METRICS'] ?? 'false',
           HOST: '127.0.0.1',
           PORT: String(port),
           DATABASE_URL: postgres.url,

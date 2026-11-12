@@ -11,6 +11,7 @@ import { createSmtp } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
+import type { PrivateMetrics } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 
 import { createApp, createAuthentication, authConfig } from '../../../src/app';
 
@@ -18,7 +19,7 @@ import { createAuthRouter } from './stack-auth-router';
 
 export const password = 'Synthetic password 42!';
 
-export function authenticationFixture() {
+export function authenticationFixture(options: { privateMetrics?: PrivateMetrics } = {}) {
   let postgres: Awaited<ReturnType<typeof testPostgres>>;
   let resource: ReturnType<typeof createDatabase>;
   let server: Server;
@@ -88,7 +89,13 @@ export function authenticationFixture() {
     app.use('/auth', createAuthRouter(runtime));
     app.use(
       '/api',
-      createApp({ auth: runtime, authMode: 'inherited', pool: resource.pool, owner: { email: 'owner@example.test' } }),
+      createApp({
+        auth: runtime,
+        authMode: 'inherited',
+        pool: resource.pool,
+        owner: { email: 'owner@example.test' },
+        privateMetrics: options.privateMetrics,
+      }),
     );
     app.use(httpErrorHandler);
     server.on('request', app);
