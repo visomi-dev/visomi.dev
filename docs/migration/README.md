@@ -6,13 +6,24 @@ The integration branch starts at website main `9511109c233f2a6a7604c80fa1597aa33
 It incorporates PR #41 head `ad095e9bf51276201c5a39330575b686c9f51f47` and PR #42 head
 `051ef523cc5208154e88376e65cabc1815899b08`, without conflicts, at `f2cfa9c`.
 The PRs remain closed; neither is reopened or merged on GitHub.
-The source stack was revalidated after the owner's update at
-`c7e362b6fe4dc14ede081ba9090a5345ba5b7bcb`. Both source checkouts were clean.
+The initial source stack was revalidated after the owner's update at
+`c7e362b6fe4dc14ede081ba9090a5345ba5b7bcb`. Both source checkouts were clean at that baseline.
+The follow-up incorporates the applicable changes from stack PR #17, merged as
+`07f03a567f994aa4c2abdd22346b2f8e6b09c786`. The sibling working tree was left untouched.
+The current inventory targets that exact merged ref; this is an explicit adaptation, not an
+automatic inclusion of subsequent stack changes.
 
 `baseline.json` records source hashes before migration. `stack-files.json` inventories
 all tracked source-stack files, including hidden files, with copy destinations and exclusions.
 Only tracked files were read/copied; no local env files, credentials, sessions or database
 contents were imported. MCP configuration is versioned without starting its connections.
+
+PR #17 adaptations include the responsive shared shell helpers, composed MJML verification/security
+frame, formatted-placeholder support and Google/passkey account-continuity regressions. The private
+owner controls also show busy feedback on the initiating buttons. Public registration/account-management
+screens and their full auth navigation are excluded because this app remains a private contact/metrics
+surface. The source stack's live-account/Railway review evidence is not copied or asserted for this
+project. Each new/changed source file remains accounted for in `stack-files.json`.
 
 The owner's decision is to reuse stack authentication. Authorization requires an explicitly
 configured owner with a verified email; no default identity or first-user enrollment is used.
@@ -56,7 +67,8 @@ Configuration is listed by name only: `HOST`, `PORT`, `SITE_URL`, `DATABASE_URL`
 `AUTH_ORIGIN`, `AUTH_RP_ID`, `SESSION_SECRET`, `OWNER_EMAIL`, `OWNER_USER_ID`,
 `AUTH_TOTP_ENCRYPTION_KEY`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_FROM`, `SMTP_USER`, `SMTP_PASSWORD`,
 `SOCIAL_IMAGE_INTERNAL_TOKEN`, `DISABLE_WORKER`, `VISOMI_OTLP_TRACING`,
-`VISOMI_BROWSER_TELEMETRY`, `VISOMI_BROWSER_PERFORMANCE`.
+`VISOMI_PRIVATE_METRICS`, `VISOMI_BROWSER_TELEMETRY`, `VISOMI_BROWSER_PERFORMANCE`,
+`CONTACT_LEGACY_DATABASE_URL`, `CONTACT_LEGACY_DATABASE_AUTH_TOKEN`.
 Legacy migration input is an explicit offline export; the application no longer requires
 `ASTRO_DB_REMOTE_URL` or `ASTRO_DB_APP_TOKEN`.
 
@@ -65,7 +77,7 @@ Legacy migration input is an explicit offline export; the application no longer 
 - Keep original Astro components, CSS, fonts, content, scripts, assets, unprefixed English URLs,
   prerender/cache/CV improvements and identity. Template public pages are excluded.
 - Keep existing social-image generation, BullMQ/Redis worker, contracts and public artifact URLs.
-- Angular is a blank shell plus owner contact list/detail and private authentication integration;
+- Angular is a blank shell plus owner contact list/detail, technical metrics and private authentication integration;
   template public login/signup and account-management screens are excluded.
 - Adapt source package/repository/domain names and commands; remove developer-specific PATH values.
 - PostgreSQL/Redis infrastructure from VIS-16 is reused; no second database/broker or Jaeger service
@@ -157,3 +169,43 @@ Owned browser/worker fixtures receive SIGTERM with a bounded shutdown window so 
 synthetic Compose resources before the test runner exits.
 The coordinator runs directly under Node so the runner waits for resource cleanup rather than an
 intermediate package-manager process.
+
+## Private technical metrics
+
+`/app/en/metrics` and `/app/es/metrics` are linked from the contact dashboard. A route guard and
+resolver load `/api/private/metrics`; every API request independently requires a full verified owner
+session and returns private/no-store responses. The route is rendered only in the client.
+
+`VISOMI_PRIVATE_METRICS=true` explicitly opts into local HTTP aggregates. The default is false,
+including the Railway template. A disabled view reports that state instead of presenting fabricated
+zero measurements. Capture keeps 15 one-minute buckets per running process: request count,
+client/server errors, aborted requests, mean latency and maximum latency. Durations are clipped to
+0–60 seconds. No request body, URL/query, email, IP, user agent, identifier, token or raw exception is
+read into these counters. They reset on restart and are not a durable/global view across replicas.
+The gateway passes the same collector to its embedded API, counting each response only once.
+
+The trace-export indicator describes the process's `VISOMI_OTLP_TRACING` configuration, not collector
+availability or confirmed delivery. Local aggregate capture does not enable trace/browser export.
+Existing exporter/browser opt-ins and owner authorization remain separate and disabled by default,
+as required by VIS-25/VIS-27. Enabling any of them in a real environment is a release/configuration gate.
+The private browser suite covers the real enabled response, anonymous/non-owner denial, no-store,
+empty/disabled/error views, English/Spanish, mobile overflow and AXE.
+
+## Deployment selection and remaining release gates
+
+Railway IaC and the legacy `railway.json` now share watch selection for `/assets/**`, `styles.base.css`,
+`.postcssrc.json`, application/library code, dependency patches and configuration/build inputs.
+`watch-patterns.spec.mjs` checks logo/favicon/loader-only and shared-style-only changes with Git's
+actual gitignore matching in an owned isolated repository, including root anchoring and unrelated
+documentation. A drift assertion keeps both source configuration forms aligned. The application
+build already declares shared styles/PostCSS and canonical brand SVGs as Nx inputs.
+
+These source checks do not apply or observe hosted Railway settings. Before relying on a logo/style
+commit to trigger deployment, the authorized operator must reconcile the intended service's watch
+selection, apply the approved configuration and observe an approved source-trigger event.
+
+The owner account/configuration must also pass the read-only `web-api:owner-preflight` and subsequent
+interactive email/second-factor acceptance before enabling access. See [the cutover runbook](contact-cutover.md).
+No real account was created/modified, no real contact data was read/replayed, no exporter was enabled
+and no Railway setting, merge or deployment was applied by these implementation checks. Code/test
+completion and release/real-account acceptance are separate; VIS-26 tracks the remaining operator gates.

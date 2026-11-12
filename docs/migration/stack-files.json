@@ -1,5 +1,5 @@
 {
-  "stackRef": "c7e362b6fe4dc14ede081ba9090a5345ba5b7bcb",
+  "stackRef": "07f03a567f994aa4c2abdd22346b2f8e6b09c786",
   "files": [
     {
       "source": ".agents/skills/README.md",
@@ -2560,7 +2560,7 @@
       "reason": "Retain the existing repository agreement/portfolio documentation and formatter needs while adopting compatible stack tooling/configuration.",
       "sourceSha256": "0c6739f893864a708f2b6ea63cd2b439a1bf58eaf8edf7a0dd96200d0727f51d",
       "destination": ".env.example",
-      "destinationSha256": "30eebc94f46a159523db44b9c14ba56d2a9e14e4f3da04305721099be50ddd5f"
+      "destinationSha256": "3f29e95df4d4843c7a7c4b5ecc417a302c4be6d17253296ed9e2c015e7a967ce"
     },
     {
       "source": ".github/agents/ci-monitor-subagent.agent.md",
@@ -3021,7 +3021,7 @@
       "reason": "Retain the existing repository agreement/portfolio documentation and formatter needs while adopting compatible stack tooling/configuration.",
       "sourceSha256": "7fd13a3ca0b94eee7ed5b3f2e560bebe14c23fdbc267745dd4f44345ce983adb",
       "destination": ".railway/railway.ts",
-      "destinationSha256": "20153d7d2cce9377df1fdae3e356283cc3d1b49facfed5b7cc298cb318b2bb3d"
+      "destinationSha256": "008df02dc3a8b6d534cc61d2bb3c8a23c97f39a92940174525496e2dc9e43af0"
     },
     {
       "source": ".vscode/extensions.json",
@@ -3199,7 +3199,7 @@
       "destination": "apps/web/api/project.json",
       "action": "adapted",
       "sourceSha256": "e1320771b30904ef72e6fe40bfc0fa110e960220b525ab23212d32ed6f8f4568",
-      "destinationSha256": "826997b3ef20a87ec6237a35509e6d764620117ac2c324249425bf8ec2000e9d",
+      "destinationSha256": "d7b5c499faaa5158d86b94252de280f22cc2442f1e760c2cd48089f90558f0b2",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3222,7 +3222,7 @@
       "destination": "apps/web/api/src/app.ts",
       "action": "adapted",
       "sourceSha256": "818391853948009991e388fbd5c11681a61a0daa172ea52a57ef2721bbe17044",
-      "destinationSha256": "c1c1ca16ea94099b093e7646de0179c5465cf2ef72b7aff737e63ff43dc4a5cd",
+      "destinationSha256": "b1f099e2e9b4edf924606eef3ca04350b77b0b60601c4ef69be7b21b403af96b",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3924,8 +3924,8 @@
       "source": "apps/web/api/tests/integration/google-accounts.integration.spec.ts",
       "destination": "apps/web/api/tests/integration/google-accounts.integration.spec.ts",
       "action": "adapted",
-      "sourceSha256": "9cfd6c27ea156ac6e33d82085279d1110a827d2d77a2fb85a9f435df573abbda",
-      "destinationSha256": "cbaf2589bb82ceaf0636db92f1d79cba9fd9b60942fd9ff387204412aa7c0a2b",
+      "sourceSha256": "86c52e55dab420e5d05bf8c8d9d0dc8b26a038f1187bc2b640ded23ae9697d5d",
+      "destinationSha256": "06432aed17575850ec96cdbdfda6a0629ac53a648f1c52e407faeaf4df815354",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3949,7 +3949,7 @@
       "destination": "apps/web/api/tests/integration/support/auth.ts",
       "action": "adapted",
       "sourceSha256": "ff478317e0b9ac8d4679a97921ae2ffa403c70d0084071d44a874cd4f84c0faf",
-      "destinationSha256": "0d326c7a78e3fead1ddd8538efdf47ab20693127cceed5b4c7a8978802a23859",
+      "destinationSha256": "54ba5c8e8f4a1a862e6dd6df5f21585fa965de29f7288aee76dea871c359a69c",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -3985,9 +3985,10 @@
     {
       "source": "apps/web/api/tsconfig.spec.json",
       "destination": "apps/web/api/tsconfig.spec.json",
-      "action": "copied",
+      "action": "adapted",
       "sourceSha256": "d41a9298a47017b2285d61f42f881147ef08eb6e1c6198077125e1e8acdde0ff",
-      "destinationSha256": "d41a9298a47017b2285d61f42f881147ef08eb6e1c6198077125e1e8acdde0ff"
+      "destinationSha256": "179f3d3eb55639c1c6c8dbf1905638f019629ee28390281eb5c3165d9ac08043",
+      "reason": "Adapt the current stack to the portfolio runtime, privacy, operator tools and approved branding."
     },
     {
       "source": "apps/web/api/vitest.config.mts",
@@ -4004,6 +4005,13 @@
       "sourceSha256": "2403818d6cf4f0e5d368fd0f7137f5fd95932d416dbe7ece92eb6bb6a3b9627f"
     },
     {
+      "source": "apps/web/app-e2e/auth/busy-forms.auth.spec.ts",
+      "destination": null,
+      "action": "excluded",
+      "reason": "Source public-auth UI/tests or separate stack release evidence; not part of this private portfolio surface or its acceptance evidence.",
+      "sourceSha256": "7ae4bc2b727db6e772d651c2169573a88eed17106ef0bdfb247e30bb89fc81c4"
+    },
+    {
       "source": "apps/web/app-e2e/auth/entry.auth.spec.ts",
       "action": "excluded",
       "reason": "Replace template public registration and showcase E2Es with isolated owner/contact, lifecycle/privacy, public parity and queue recovery tests.",
@@ -4013,7 +4021,7 @@
       "source": "apps/web/app-e2e/auth/google.auth.spec.ts",
       "action": "excluded",
       "reason": "Replace template public registration and showcase E2Es with isolated owner/contact, lifecycle/privacy, public parity and queue recovery tests.",
-      "sourceSha256": "c8ec9bb70e371ffcd32fa90e36e766dc291cb4639fc64fcda514e4da6edf8b07"
+      "sourceSha256": "7848693de239b517bc4a951abdb523b623793a295310e4f1e2a79f4ed931321c"
     },
     {
       "source": "apps/web/app-e2e/auth/loading.auth.spec.ts",
@@ -4037,7 +4045,7 @@
       "source": "apps/web/app-e2e/auth/presentation.auth.spec.ts",
       "action": "excluded",
       "reason": "Replace template public registration and showcase E2Es with isolated owner/contact, lifecycle/privacy, public parity and queue recovery tests.",
-      "sourceSha256": "4cdf50ee463ad904d8ffccb5ad230bef9440eb3c8b55827e492e2069e28611af"
+      "sourceSha256": "b3d44bbe924c87b45a75743c753f30c6f86b1ab6d39280a85adb868329e57954"
     },
     {
       "source": "apps/web/app-e2e/auth/recovery.auth.spec.ts",
@@ -4052,10 +4060,17 @@
       "sourceSha256": "dfdb5a380a8f7ca63d7a8666ab6d21a5ff66fff648f40e38fbad8332e836524d"
     },
     {
+      "source": "apps/web/app-e2e/auth/shell.auth.spec.ts",
+      "destination": null,
+      "action": "excluded",
+      "reason": "Source public-auth UI/tests or separate stack release evidence; not part of this private portfolio surface or its acceptance evidence.",
+      "sourceSha256": "44d4e8b5a1b8e486c7421cf75e577738143b61827213df4074e139e913aa6915"
+    },
+    {
       "source": "apps/web/app-e2e/auth/support/fixtures.ts",
       "action": "excluded",
       "reason": "Replace template public registration and showcase E2Es with isolated owner/contact, lifecycle/privacy, public parity and queue recovery tests.",
-      "sourceSha256": "9a157b0870829bca3cc81020fc1ceebfd183ebaddc951de18a42a805daa0de39"
+      "sourceSha256": "a3330bfad9b3155072bdf5c76ca5d1d5b397060ed97ddbc4fdd833b1c6651108"
     },
     {
       "source": "apps/web/app-e2e/auth/support/serve.ts",
@@ -4205,7 +4220,7 @@
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
       "sourceSha256": "9c688ff6411cf77d5b060a26543c03f3e53e6d8a7b044ac006741aa4140386a5",
       "destination": "apps/web/app/src/app/app.routes.ts",
-      "destinationSha256": "a2d42c16b4077de6f0450d327795e76f69e4b9f79c6d1b1c61abaa90ff38c637"
+      "destinationSha256": "fc9fa00e199e185aa4cf9deaa074fe00ee23fa296f0f1cfadc4c242d5b76117e"
     },
     {
       "source": "apps/web/app/src/app/app.spec.ts",
@@ -4233,7 +4248,7 @@
       "source": "apps/web/app/src/app/auth/devices/request.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "5e6dd163eaf5194317d8ea95d8ed9a407c16b38407c01bbcd707e4e352591fa7"
+      "sourceSha256": "6a63b945a43488757cce37f631958f5a85d0036d16828bbacdcbe566b11abb68"
     },
     {
       "source": "apps/web/app/src/app/auth/devices/request.spec.ts",
@@ -4245,13 +4260,13 @@
       "source": "apps/web/app/src/app/auth/devices/request.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "4e7d723c18ad092cc117d95c199f6dc876b39ef6acac7ab88f66d7a1754126b4"
+      "sourceSha256": "bc2620b1b49c05f942da943925ce4e4f6bbd36e9fc83c4276bb56370a5e8f172"
     },
     {
       "source": "apps/web/app/src/app/auth/devices/review.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "bc9fb49f804f5089bc94329323708137b3fcdbe5ec3373cacf8d75182cd215de"
+      "sourceSha256": "850f58bb303bd12af874700321295f6ce4d14dc59e979cc3ee99c3c80be2242b"
     },
     {
       "source": "apps/web/app/src/app/auth/devices/review.spec.ts",
@@ -4263,19 +4278,19 @@
       "source": "apps/web/app/src/app/auth/devices/review.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "6df28552014c3e7a1806b4acb2a8d8a8ba34ed8b6d207abb477584bf3a3b9cd3"
+      "sourceSha256": "0d45e135da1e8581e48262eae312d54de15a9e304d6b016687735e8ad005f4de"
     },
     {
       "source": "apps/web/app/src/app/auth/email/account.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "775c56ae78ed79de0112eb831098b38f8a13f5d6c62c5e7744a8927ed68af978"
+      "sourceSha256": "857523b41a7fbc57bf4a4956a1800f04154a1cde46949df669e72088997385db"
     },
     {
       "source": "apps/web/app/src/app/auth/email/account.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "4ab351dea6b94b6b63a5aeb202c24224dc4ec6d14fcbc2af3fb414b243617c24"
+      "sourceSha256": "31e4fddd43da53090f5ecb7ff45811f862d51a2d662cf00a8eaec22413258faa"
     },
     {
       "source": "apps/web/app/src/app/auth/email/email.ts",
@@ -4287,61 +4302,61 @@
       "source": "apps/web/app/src/app/auth/email/verify.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "46499f0fab3f51e8354d6c23c25afadb28757c8dd2efab65ace9e5d4e4c7b29f"
+      "sourceSha256": "56cc6da620c8ee3d94b889457f8ef2136a935e3f4887644e96984de24e6e6713"
     },
     {
       "source": "apps/web/app/src/app/auth/email/verify.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "4b611231344455150073e655e3ab57b966c8aa68f951a8218cf9ad4ec31c5cc7"
+      "sourceSha256": "1c4275dfe63999f243e9f462c10662da9e47c37ef1fb1aeb5dce5d5418f19d53"
     },
     {
       "source": "apps/web/app/src/app/auth/google/google-button.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "a8ca9290848cbbe7b5b6a518ecad46d6b990aa4aaa02dbd15054cb920c1bbb72"
+      "sourceSha256": "03ef2dc04a5217bc44afa76a50e443ec5f2cd89a21ac290a252890a0ef45e09a"
     },
     {
       "source": "apps/web/app/src/app/auth/google/google-button.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "bb7da939de30cadd2e3ec9589ff3f67090ad19110fe3a96267be98593500eb2d"
+      "sourceSha256": "b1790e8535047eebc0be2d8c7e802551cb3742fbcb1d5e76986ee240b8184b4c"
     },
     {
       "source": "apps/web/app/src/app/auth/google/google.spec.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "8e702ac67dabcc387dd77f1bf9408ffd02be9076b0feac8d591d15ea5e1e21da"
+      "sourceSha256": "e03f4f36d53f94efe73f6613c0347c2862b76f490046d777058e6eb666efebbb"
     },
     {
       "source": "apps/web/app/src/app/auth/google/google.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "4254457499275f8e4ce985ffa1e2b7bb900ddaa127438918e6149d02fa1eed26"
+      "sourceSha256": "0fd47243641a2dad173cc47c4a5f18ba6430f24e1da6455e4e6680db4d338c04"
     },
     {
       "source": "apps/web/app/src/app/auth/google/manage.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "42f1a3b3e455812d4914f5bb824eb3d35bdc2c4fef5598c0779afe31bb178646"
+      "sourceSha256": "46f03664e651f35261405ac68a0dfd661b1d13089e9311eb62bec99657e64e71"
     },
     {
       "source": "apps/web/app/src/app/auth/google/manage.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "02ad789576ef144693c5a89036a4b99826f409395a1a1b2c011a3edb059dbb74"
+      "sourceSha256": "f93c8975a5ab7c6108fbbbf021e106549d3723bddbb8ce26aef899c4077a16da"
     },
     {
       "source": "apps/web/app/src/app/auth/google/verify.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "028a564dd56631a6448ecdbe63cac7bb33208786731f79ad88772a813bfebb7a"
+      "sourceSha256": "a547fb425de4996699122748747b0befd84e208b866cbd54724d06878e099102"
     },
     {
       "source": "apps/web/app/src/app/auth/google/verify.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "c25f77dcc067eca4fb435b59003af25dcb057bfe40ac9fa1feeaf226840545c9"
+      "sourceSha256": "2d5e483e451db5e81dda5dee98e855140b43fc4516afcd2cba33255ae0210ae2"
     },
     {
       "source": "apps/web/app/src/app/auth/layouts/auth-layout.html",
@@ -4359,13 +4374,13 @@
       "source": "apps/web/app/src/app/auth/passkeys/manage.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "e14690e9eb173c898811ad98ce382fdfde30ffa6526cd43ed05fbbdc31d338d7"
+      "sourceSha256": "3e71adaea964d0005c918073ff8d8bda19c5f2fa32e7b0a24830b1560deea6e1"
     },
     {
       "source": "apps/web/app/src/app/auth/passkeys/manage.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "97b40289f65d5ff2f7c06203d19334130658c6b6556022d5f531ed8af8f1a272"
+      "sourceSha256": "a3bb7c3ea505477cea0d4a3615b1f0390ce438c5b71aaf1382782c52c24140e1"
     },
     {
       "source": "apps/web/app/src/app/auth/passkeys/passkeys.spec.ts",
@@ -4389,19 +4404,19 @@
       "source": "apps/web/app/src/app/auth/passkeys/sign-in.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "fad94c9a7d923076dcab3bed1336e39631918af90a5d7f9586aabb47c5fe3851"
+      "sourceSha256": "23386deabc446199d024943f6e3a836e96b05b83a357a7907f7f9b00151ad4a1"
     },
     {
       "source": "apps/web/app/src/app/auth/passkeys/sign-up.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "0814ae47f1e3e36dcc7f0fcfe25264f50c7fd4f3859818ccff7a8332ba08a430"
+      "sourceSha256": "e6b39455a397c182930bf25802f333e57a2dcf71806cdb71c442f0432bb4c597"
     },
     {
       "source": "apps/web/app/src/app/auth/passkeys/sign-up.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "a967c13d1d80fbb3f4f81ba1042566217d1274a6e5e8d59938455c27223e7b24"
+      "sourceSha256": "f6c58a3f80d452ccf930b438be9d64a0e4af4a784bc8d995f40da199f9de8f7d"
     },
     {
       "source": "apps/web/app/src/app/auth/password/credentials.html",
@@ -4413,19 +4428,19 @@
       "source": "apps/web/app/src/app/auth/password/credentials.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "521cb50821c246bb346459e03a65d1476b146ee28ba1b87f5ca852930223e1f6"
+      "sourceSha256": "9f71e70a59388a7af3050c65dc9e4082049a254d6119fcc84a8c7c06eb940aa5"
     },
     {
       "source": "apps/web/app/src/app/auth/password/manage.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "1931ef2349024cbcb54f4d32c24aba1dfd3c19ad48ce22361b9e6a26d2932102"
+      "sourceSha256": "93aeda181c974477c761b148f1c6ac9f25c41dc75b5c5e3ffc9209f6ae24bdce"
     },
     {
       "source": "apps/web/app/src/app/auth/password/manage.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "d27c866eeac14b09f8a13872c42c6d100a49c05859bfdd567573688fb734a870"
+      "sourceSha256": "cbe784fb3080f11aff21c5d31c776b75bd700734baaee9750ca3bec8559bd332"
     },
     {
       "source": "apps/web/app/src/app/auth/password/passwords.ts",
@@ -4437,25 +4452,25 @@
       "source": "apps/web/app/src/app/auth/password/reset-request.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "e1fe05c53f04eeca8c23361518dc74423cca36d958131f563a06edd45bc1801b"
+      "sourceSha256": "78fa84c3ed5ba40596fdf9df9c92a5f593c688271fffe0a5d820445dbb78347b"
     },
     {
       "source": "apps/web/app/src/app/auth/password/reset-request.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "dc4b7d2cccef0c905be52f8edb7bcf144983f897aad2373245f31a1c31b7cd04"
+      "sourceSha256": "ab0bfea751ea2ea345a1f9d5d52ff429c2834a9392cd36eb301a400a0f7aa09b"
     },
     {
       "source": "apps/web/app/src/app/auth/password/reset.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "c3c3e64423d356208cb61e53489ee029a99b7c7cde36a7f59948919e2f64a427"
+      "sourceSha256": "a7de915fc9c62f19a5016bb9ee5edd82f72ca3dfb6363984bcf681fcbffb0ef2"
     },
     {
       "source": "apps/web/app/src/app/auth/password/reset.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "0b398c414fb942a621d3e9d355eab14c16cad23c745e5669cc72603aaaab47bd"
+      "sourceSha256": "ad7d6cd5aad7e68a630d98bc8fe25a510c3ca9599cdfed02de288f20029d01f5"
     },
     {
       "source": "apps/web/app/src/app/auth/password/validation.spec.ts",
@@ -4473,25 +4488,25 @@
       "source": "apps/web/app/src/app/auth/password/verify.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "747a2755347a9121e52b761cd1233b1b081ff95ba4a9df27e0492bc628ab6886"
+      "sourceSha256": "b8f6902ac743be3494c327f43796d88904a4abace51ed77e17d27539f3937781"
     },
     {
       "source": "apps/web/app/src/app/auth/password/verify.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "e9cf42847e2de45963691a67b63009c2f6f3a46a4a43f5e04abb69b726686d01"
+      "sourceSha256": "d5f8a0ee34db3bcef659a10edd6fa77fcb0ba67a45a94bca8ad65b4e98ca72ea"
     },
     {
       "source": "apps/web/app/src/app/auth/recovery/enroll.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "9f9fc8ab186316520db727719e2a75e6a044d14b913233fe06e8ccc1e6a138c3"
+      "sourceSha256": "895ab09638c2a1702abfa427a33cb4440a8f47e617b89177b92ab937a8a54e2a"
     },
     {
       "source": "apps/web/app/src/app/auth/recovery/enroll.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "ff33b3bcdbbf37359cdd034b03ff5f51619e93d35c45c4e7abe4e3d65e5fa887"
+      "sourceSha256": "3aa876624dd998fa7c4c922347d2bb5f64408245766cb6ea7686df08d2aa0c21"
     },
     {
       "source": "apps/web/app/src/app/auth/recovery/recovery.ts",
@@ -4503,25 +4518,25 @@
       "source": "apps/web/app/src/app/auth/recovery/request.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "610a83385f179c8c984461d6d839a3e933c596acab0f0245b1b19cea529c1dbe"
+      "sourceSha256": "84c79a7d8c5e65242908164a2c2af525c416f40a3802b83bd46c58d256663020"
     },
     {
       "source": "apps/web/app/src/app/auth/recovery/request.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "b1ea7508cc1dc4f125369ab8b871058aca18ed465c64f656ce2c02c834482d0f"
+      "sourceSha256": "fb3cab7859247abece8066508f0bfaabb3b53f6d1f4240de78901eb7ce87a718"
     },
     {
       "source": "apps/web/app/src/app/auth/recovery/verify.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "7ee1819a455a0155ace185df00716ff363ba83155776894c1d16acbfcfe6c0ac"
+      "sourceSha256": "f1b583766ae759a2b669223427a4d8629f7bf8b6ecce3271232a44546a41a34d"
     },
     {
       "source": "apps/web/app/src/app/auth/recovery/verify.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "0c68ac33b2a3a2c1091025a1ef1c463993c089743a30d9cdeadf61cadcbed24d"
+      "sourceSha256": "cb9b44ff425500f564efbc310e5d8a1772f117c4876cb9c250efbee42019b388"
     },
     {
       "source": "apps/web/app/src/app/auth/session/browser-realtime-session.ts",
@@ -4563,7 +4578,7 @@
       "source": "apps/web/app/src/app/auth/session/logout.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "0bec46e675b6a942578669af946c5640b80e4039ae3d3a108270f5769a46d83f"
+      "sourceSha256": "9145cf1aea709a90b17fb3df10bc100759136e330e706d6869f8bc2d238d8d57"
     },
     {
       "source": "apps/web/app/src/app/auth/session/methods.ts",
@@ -4593,7 +4608,7 @@
       "source": "apps/web/app/src/app/auth/session/reauthenticate.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "753a493ac1e70667d190f5b6b27eb93b3f176673e75c1ea9d7e4d0a54fc892c9"
+      "sourceSha256": "121a6ffcf51b8eb0c9ad7b5ec0bc57b1b266b0865c0d7ae6e9c023c01d0acc69"
     },
     {
       "source": "apps/web/app/src/app/auth/session/reauthenticate.spec.ts",
@@ -4605,7 +4620,7 @@
       "source": "apps/web/app/src/app/auth/session/reauthenticate.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "afc65678eb121d339d48a10e7f932f7067e278fe236052a22b8ae74b98153022"
+      "sourceSha256": "4056435eede998f975edd0731629f7c05eb8259e7893b3b2c84916d3135e414e"
     },
     {
       "source": "apps/web/app/src/app/auth/session/security.html",
@@ -4641,13 +4656,13 @@
       "source": "apps/web/app/src/app/auth/session/sessions.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "d42b8d2eacfd79a2c2de3952bc340fc15192696b8826d28b526c68802cf84c85"
+      "sourceSha256": "f148b79ec698d25df3c90f3beb01ca8fd546d71469c85b1324c6d96e9972c4f8"
     },
     {
       "source": "apps/web/app/src/app/auth/session/sessions.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "e6c551e155b570942c67599c14758367bb74bfe6f96af154ebd2293452988c1b"
+      "sourceSha256": "303cdf1d2083d60c9a5dc038c3cd399b0b6c51d266405cfe16701a363d011ae3"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/action.spec.ts",
@@ -4659,13 +4674,13 @@
       "source": "apps/web/app/src/app/auth/shared/action.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "0c224ec638b1fe0b8c50b7793cf1101e0676f8993e48e5c08e6fc70b86b69729"
+      "sourceSha256": "43f8467073b2dd0c6acaa2112f62ac5d41b13f0b33cdd210ded5a2e6d6510410"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/code-entry.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "8654ae82872d1fa29138347c2edebb616f6e92bfecc9fd6d30852d867f6ea0a0"
+      "sourceSha256": "959c01df6509cc447b279b83a446a2d152013478859b89aab48d8e537100b58e"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/code-entry.spec.ts",
@@ -4677,25 +4692,25 @@
       "source": "apps/web/app/src/app/auth/shared/code-entry.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "c232519f7bb7ce3dd32947c500972414ed2527c754062a113a7061d0abd921c5"
+      "sourceSha256": "dbf115e70744606884316d9c2ecb8992a8ae00500192cb50a7c391b400c3ef8e"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/email-entry.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "acc9473c4adb26d30d69f4cd3674ba7ab7df6abca30f6856699ea654446cd18d"
+      "sourceSha256": "1f1cb3050f10fbe297ea839a8731f471720717b08983d543237cc6d0f5764d1c"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/email-entry.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "086364c2c62a3267b2dc325506987d55030873a0b3e32db301d8e26ae235c9c0"
+      "sourceSha256": "f04cfea5d85da065d7e6c3e1bb7edfe8d9b1889107a7e31a6e4e2f2dd45404be"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/feedback.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "01a8b08d55338bd0ee90f5dc33eb7846009059adef0cc8c06e6394b4ed2a2f05"
+      "sourceSha256": "664e1af64f39f0ce0868d48e557f8018bf2be29cf3eefd5b76d720effbb32f96"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/feedback.spec.ts",
@@ -4707,7 +4722,7 @@
       "source": "apps/web/app/src/app/auth/shared/feedback.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "b42946f6123f2ef62517c07df7e2b79e38eda9c4cd4905a5224bdee76440506e"
+      "sourceSha256": "fa9fbd2fd0fb05d0e5bee251a5d91dbfb9ea8394f40c07ce2f1381bfac0b7e0b"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/form-errors.ts",
@@ -4743,31 +4758,31 @@
       "source": "apps/web/app/src/app/auth/shared/resend.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "a2f98952ea132508351bb2d918f66e3c3e86b393a15f31a79cc4b3d1c5dd8d1f"
+      "sourceSha256": "921ed93704554767632928224dae1496dea502d790650ae0fb46436f2a7f624d"
     },
     {
       "source": "apps/web/app/src/app/auth/shared/resend.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "b831100483ac810099842b8d0a39a92c654a5b34c293e9068eaabd435c2c389e"
+      "sourceSha256": "9ec668afef93752f2f3b7f76d46ac65522a8170be29df31a0bf4da053f2bfee0"
     },
     {
       "source": "apps/web/app/src/app/auth/totp/backup-codes.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "ae684bf111aee49e18011e039a0cc75bfbe5a8ee4e3c77e28b76842bb6ded4bf"
+      "sourceSha256": "d7e297f843201c5f86f66fea759b6a0190b3c51ca85b5edec545e2482063e914"
     },
     {
       "source": "apps/web/app/src/app/auth/totp/backup-codes.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "2543877b11ac4d1b19ae9a61d387960cb8dc03bae046ffbec73cc812a40c61b0"
+      "sourceSha256": "20b6c7e05dad4bb06c8e8dcbbf13085d8e8044b6b8be65f65a81d517496e971f"
     },
     {
       "source": "apps/web/app/src/app/auth/totp/backup-display.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "3e0440c7546879bbf3c0f89507f0dfb2c8a17fc3ab536cc102b4db602ed149ce"
+      "sourceSha256": "4e89e486967565a0f8207b5b64a6ad916c0a2b157d29ffa21c2ebec3f13d245c"
     },
     {
       "source": "apps/web/app/src/app/auth/totp/backup-display.spec.ts",
@@ -4779,19 +4794,19 @@
       "source": "apps/web/app/src/app/auth/totp/backup-display.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "d79cf81aaf4119ddd6e7e60552e27a2f9fa622c0f3a2031eab2bab5aa03dc9e1"
+      "sourceSha256": "0d15c88fb055ce8e5ad1fe9400be90db11f1bd65a88dfc7664ebc51dbeb1fbfd"
     },
     {
       "source": "apps/web/app/src/app/auth/totp/manage.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "8fe444823140dd9fcfbfbdb4117d7efdb80f00de38b583b11f5977a12667d718"
+      "sourceSha256": "ae0351baf24c2d8c97d1608f07c8e77eb94505849de23e7d41aff17a259769f2"
     },
     {
       "source": "apps/web/app/src/app/auth/totp/manage.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "6d1115c24fe48af4526215b2cffeded557024d6328aa64d2f42a81d091477e54"
+      "sourceSha256": "f008c7bd41e34cc332eb676fe5fa2c4ab05a6f58b18f4d95975d8a359a9e47db"
     },
     {
       "source": "apps/web/app/src/app/auth/totp/qr-code.html",
@@ -4821,13 +4836,13 @@
       "source": "apps/web/app/src/app/foundations/foundations.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "da1c88e5119aa1398a08e895849b92725a645cf10be27c90d7c18b128235ec1c"
+      "sourceSha256": "14a98bcb6cd4b869b78e33b239679ed6972ac6dc2c4b669cb3c8d1c172e34a5b"
     },
     {
       "source": "apps/web/app/src/app/foundations/foundations.spec.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "a1a8f5cca4567f97ed0a6a24edfdcf0c924d480fd55ad8053d7289e7b0f3ac5c"
+      "sourceSha256": "6e327dcae9d11cbdb207cadc8a87cf8b242f421612fe137b7090a897d6dc5f45"
     },
     {
       "source": "apps/web/app/src/app/foundations/foundations.ts",
@@ -4851,19 +4866,33 @@
       "source": "apps/web/app/src/app/i18n/language-switcher.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "8f6eef45eeb6cc17591de4e9e105477c7455ca15606ceb54a6688febd0ed4788"
+      "sourceSha256": "d179f7eeac730fce688af40ced646e57c2cf26eefe2c1f83589cea121cc63f5d"
+    },
+    {
+      "source": "apps/web/app/src/app/i18n/language-switcher.spec.ts",
+      "destination": null,
+      "action": "excluded",
+      "reason": "Source public-auth UI/tests or separate stack release evidence; not part of this private portfolio surface or its acceptance evidence.",
+      "sourceSha256": "fc697202c472224bbba5f94fab5be0f3872d5b3627e08781ecc04e9f700593ed"
     },
     {
       "source": "apps/web/app/src/app/i18n/language-switcher.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "e3cc92e6cb67a9419bb8ed1e76183406b87904aa95d911b3f33b14c6a1dfcf61"
+      "sourceSha256": "43f134b2a08716cfac30ea6894d743286f2c5e148dc4e14b2432fd3fa52bb343"
+    },
+    {
+      "source": "apps/web/app/src/app/layouts/authenticated-layout.css",
+      "destination": null,
+      "action": "excluded",
+      "reason": "Source public-auth UI/tests or separate stack release evidence; not part of this private portfolio surface or its acceptance evidence.",
+      "sourceSha256": "38ae49c50c052d9708a11c0672d823fd99ccb683e0577fc19ed0802ceeb8a434"
     },
     {
       "source": "apps/web/app/src/app/layouts/authenticated-layout.html",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "8e3cc7248df808597ffcbd46fd71c11f546f0374f044d92ff1b799f19e3ed228"
+      "sourceSha256": "2deceff1ebb426c90df828ee0bf57ef7de92052731a5f89c0297837af2117c3c"
     },
     {
       "source": "apps/web/app/src/app/layouts/authenticated-layout.spec.ts",
@@ -4875,7 +4904,7 @@
       "source": "apps/web/app/src/app/layouts/authenticated-layout.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "fe1d49329f276fb1ad9aacb6e2ad6ff11d9282a8899658b8ee29b7dad8ad05e9"
+      "sourceSha256": "9f4c90dec86230ed3b62a8bdac730a48c9374aa382f07633c74935aad6582856"
     },
     {
       "source": "apps/web/app/src/app/layouts/not-found-layout.html",
@@ -5127,7 +5156,7 @@
       "source": "apps/web/app/src/app/ui/layout/app-shell.ts",
       "action": "excluded",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "e3e2258532c9997ff3cd03c7122da8ac3f598f41e142f7a975360a9364208a1f"
+      "sourceSha256": "46ca27f69d991b87bad6500971261ba91356314b7126487460f73269307f3aa5"
     },
     {
       "source": "apps/web/app/src/app/ui/layout/card.ts",
@@ -5291,17 +5320,17 @@
       "source": "apps/web/app/src/locales/messages.es.xlf",
       "action": "adapted",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "fa86e6bb213a25375e55a5f7c98ff16ed36657f602fc977564fc79939ed274f3",
+      "sourceSha256": "29ea45fc1fb336e41e438ecb8dcc6885e8313888c900504ae56fb13efe67f580",
       "destination": "apps/web/app/src/locales/messages.es.xlf",
-      "destinationSha256": "f69a36284f950351678440ce79ebe683d18d05843c053f67e490400d29263bc4"
+      "destinationSha256": "a55fb7289584af8cca8b9f4625a3ae038046d67608aaf32026ad00414b7b5449"
     },
     {
       "source": "apps/web/app/src/locales/messages.xlf",
       "action": "adapted",
       "reason": "Replace template product/auth/catalog screens with the blank private owner-only contact dashboard and locale entrypoints.",
-      "sourceSha256": "9f83df1824e9788dba372fdedb7370de94665b70b4186403d8445a1d21c75359",
+      "sourceSha256": "2fd9bbeb0cd1bc29d3bba855359d3f0d4e57830e682e6c8deda80d4ce27a1584",
       "destination": "apps/web/app/src/locales/messages.xlf",
-      "destinationSha256": "4682d99e6816fa0cb4b0ad26748a9160d58c0cdba76e4fde74a5b412a9b26357"
+      "destinationSha256": "e34d62b6e3ea8c5b866e877ec077e9aee8ad51a52ec25b6ad365318928e67caa"
     },
     {
       "source": "apps/web/app/src/main.server.ts",
@@ -5553,7 +5582,7 @@
       "destination": "apps/web/gateway/project.json",
       "action": "adapted",
       "sourceSha256": "34467e9cb4fc09c4a5154afe7af27b8821e6a125f7caa6a14fc713de05d28a68",
-      "destinationSha256": "04b69a49f28ac74016e3fb2807834d2e3af677d1951bb041cd31d2bba66513d8",
+      "destinationSha256": "21356645d368bdd8088e419abab5fb01fb557861e5d5ec18ae1feafa7b5db9b7",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5575,7 +5604,7 @@
       "destination": "apps/web/gateway/src/api-module.ts",
       "action": "adapted",
       "sourceSha256": "f4e6cf9ef8235f954179f056b2ce1ce0306343b63f43e50da4387ffa2609f49f",
-      "destinationSha256": "9c035c74d2266c1353ae319ef7c1cdba095716212d970d12f492814fb33557dc",
+      "destinationSha256": "94a3a91683b457880d0896c7ffa4c2a4f4a0ab451a5372eed431e0b9558d101a",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5583,7 +5612,7 @@
       "destination": "apps/web/gateway/src/app.spec.ts",
       "action": "adapted",
       "sourceSha256": "171e4a08de63826dfce52e2f7019df5679af8351a02f2e5b5242bf157660ffa7",
-      "destinationSha256": "8e4f0ed3d1da802b0907f858df60d6062dc5aad9209bf1e1575f8c608164f25c",
+      "destinationSha256": "ba26a0b4deeb67e3969b44bfa4d367e7895eac31773fe8f0c0a36d8df6a6f8f5",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5591,7 +5620,7 @@
       "destination": "apps/web/gateway/src/app.ts",
       "action": "adapted",
       "sourceSha256": "e1fd09abd62e97fc1b8a0344bad73084ca6f21293b0304088d603f2aad30b41c",
-      "destinationSha256": "f71be855368e8572bd035bb47a51bd369f4e2c379b9eb86c71f3ba9d72e1b4d3",
+      "destinationSha256": "76127dbf73d3103e1c5be68785a13d75885ee2469d4b37cb0c6bef9755bccd30",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
     },
     {
@@ -5859,7 +5888,7 @@
       "source": "apps/web/site/e2e/language-switcher.spec.ts",
       "action": "excluded",
       "reason": "Retain the original portfolio, brand, public URLs and presentation; only runtime/contact/CSP/accessibility integration is adapted.",
-      "sourceSha256": "825230efa21baeba33e23a87e4240d05cecc953bd8497c480b4c3a2ee3d839d0"
+      "sourceSha256": "ccd4f7ae4fdac099cc253a9b63f56ab647f2ed7d51387ce83d9d516aa9cdf874"
     },
     {
       "source": "apps/web/site/e2e/shared-button.spec.ts",
@@ -5941,7 +5970,7 @@
       "source": "apps/web/site/src/components/app-shell.astro",
       "action": "excluded",
       "reason": "Retain the original portfolio, brand, public URLs and presentation; only runtime/contact/CSP/accessibility integration is adapted.",
-      "sourceSha256": "117b155fd805576b06e4a4fcf288fcffb5cd5e2f8427f81146651d8a63ad892d"
+      "sourceSha256": "1eb9b563e85832f27bd0ed8d006cedfdd657ac55819c387d39f187f95c320175"
     },
     {
       "source": "apps/web/site/src/components/avatar.astro",
@@ -6147,13 +6176,13 @@
       "source": "apps/web/site/src/components/site/header.astro",
       "action": "excluded",
       "reason": "Retain the original portfolio, brand, public URLs and presentation; only runtime/contact/CSP/accessibility integration is adapted.",
-      "sourceSha256": "cc4255c640f1b1d9dfac9d314b9a7de902be64038728231e3dabbeba5102df95"
+      "sourceSha256": "7f4db49c2e43d5d3cf79b9a0f160b28ddaf3928d1b98d6f773ef25cf56594e2c"
     },
     {
       "source": "apps/web/site/src/components/site/icon.astro",
       "action": "excluded",
       "reason": "Retain the original portfolio, brand, public URLs and presentation; only runtime/contact/CSP/accessibility integration is adapted.",
-      "sourceSha256": "656ccf77f7cde75b9027947e57e9847db23b2007727fd93d3fe89a39f8b268c0"
+      "sourceSha256": "ef4afe20b7003efb440990317889e97a9af3b10f933fb7a261494e3112b999d5"
     },
     {
       "source": "apps/web/site/src/components/site/product-preview.astro",
@@ -6554,6 +6583,27 @@
       "sourceSha256": "3d04aa25b6d6a7eb4f190a4b80a271d54f6b899ff4557cb36dd6c6a10163dcc1"
     },
     {
+      "source": "docs/reviews/google-sign-in-options.md",
+      "destination": null,
+      "action": "excluded",
+      "reason": "Source public-auth UI/tests or separate stack release evidence; not part of this private portfolio surface or its acceptance evidence.",
+      "sourceSha256": "c27be77049e137a7aa2e5c4520570ae3ee34fd0a052d5015829dfeebf79fb7fb"
+    },
+    {
+      "source": "docs/reviews/linear-implementation-status.md",
+      "destination": null,
+      "action": "excluded",
+      "reason": "Source public-auth UI/tests or separate stack release evidence; not part of this private portfolio surface or its acceptance evidence.",
+      "sourceSha256": "2cebbeebe7ecec921d997e4bce61cb3b8c0f72b39e84d0ebb335d8cf61fd6465"
+    },
+    {
+      "source": "docs/reviews/railway-reconciliation.md",
+      "destination": null,
+      "action": "excluded",
+      "reason": "Source public-auth UI/tests or separate stack release evidence; not part of this private portfolio surface or its acceptance evidence.",
+      "sourceSha256": "2565c28f388a8110f4f2168bd42e55b91345956e17c70691404a5d7e6ba1b61e"
+    },
+    {
       "source": "docs/web-foundations.md",
       "action": "excluded",
       "reason": "Stack-specific handbook/showcase documentation is replaced by repository-specific README, migration evidence and release/cutover runbooks.",
@@ -6732,8 +6782,8 @@
       "source": "libs/backend/shared/src/lib/mail/messages.ts",
       "destination": "libs/backend/shared/src/lib/mail/messages.ts",
       "action": "copied",
-      "sourceSha256": "8cd9b3ab87d02cf0f61d03e3d91a6cc8480a7da62e1eb4daf821ae9761e025c7",
-      "destinationSha256": "8cd9b3ab87d02cf0f61d03e3d91a6cc8480a7da62e1eb4daf821ae9761e025c7"
+      "sourceSha256": "4a237bed4ed7d244896b1735de1732b2db3e9c2291c2a7c7aaa05a2415736bdf",
+      "destinationSha256": "4a237bed4ed7d244896b1735de1732b2db3e9c2291c2a7c7aaa05a2415736bdf"
     },
     {
       "source": "libs/backend/shared/src/lib/mail/smtp.spec.ts",
@@ -6752,25 +6802,32 @@
     {
       "source": "libs/backend/shared/src/lib/mail/templates.generated.ts",
       "destination": "libs/backend/shared/src/lib/mail/templates.generated.ts",
-      "action": "copied",
-      "sourceSha256": "abc315dde4eb66c8f73ff7f6fbe9726901e05f927e1852d6ed06071c6544c45c",
-      "destinationSha256": "abc315dde4eb66c8f73ff7f6fbe9726901e05f927e1852d6ed06071c6544c45c"
+      "action": "adapted",
+      "sourceSha256": "8e55a11c72182793f8ed7092d20016c86bf0f20f1beaf5e18c57f42ca77284e3",
+      "destinationSha256": "95458249f7027b54b1696b4dce1b2ccbff6bb7852bcbda97700781232cb0ee89",
+      "reason": "Adapt the current stack to the portfolio runtime, privacy, operator tools and approved branding."
+    },
+    {
+      "source": "libs/backend/shared/src/lib/mail/templates/layout.mjml",
+      "destination": "libs/backend/shared/src/lib/mail/templates/layout.mjml",
+      "action": "adapted",
+      "reason": "Use the portfolio identity in the shared PR #17 email frame.",
+      "sourceSha256": "314465ef16d31900d5db03b10af86cc32ee1f508544ecb1c0d5125075194b1e8",
+      "destinationSha256": "bb661c37b897827a1b09f690d12e56054545d33222511d2ba1bbb6aca57b1f3c"
     },
     {
       "source": "libs/backend/shared/src/lib/mail/templates/security.mjml",
       "destination": "libs/backend/shared/src/lib/mail/templates/security.mjml",
-      "action": "adapted",
-      "sourceSha256": "85b95627ba35057ee1672d1b9a6d291d6d7f48f73f8d48f56f42da1f2b6a3bf6",
-      "destinationSha256": "dc247cdb407c286b825d976b857f7d84cf0a3c31acb05106b6fe166654178a86",
-      "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
+      "action": "copied",
+      "sourceSha256": "2ae36b566346157c232ec21f024bf7562343290d355ca758245d38eb32364c50",
+      "destinationSha256": "2ae36b566346157c232ec21f024bf7562343290d355ca758245d38eb32364c50"
     },
     {
       "source": "libs/backend/shared/src/lib/mail/templates/verification.mjml",
       "destination": "libs/backend/shared/src/lib/mail/templates/verification.mjml",
-      "action": "adapted",
-      "sourceSha256": "42b937cfa52019462657538f26a96cf371deecf6a9a23649ef1769241b242988",
-      "destinationSha256": "049bec98486ba113955a77dd9c11df7c08b2c8c7c3954bf5894ec5200103fc71",
-      "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary."
+      "action": "copied",
+      "sourceSha256": "33a1e8c55248f127e43b26776cb45c106861c1aed1782245fa6a1a1a43ce095a",
+      "destinationSha256": "33a1e8c55248f127e43b26776cb45c106861c1aed1782245fa6a1a1a43ce095a"
     },
     {
       "source": "libs/backend/shared/src/lib/realtime-redis.spec.ts",
@@ -6818,8 +6875,8 @@
       "source": "libs/backend/shared/tools/mail/build-templates.ts",
       "destination": "libs/backend/shared/tools/mail/build-templates.ts",
       "action": "copied",
-      "sourceSha256": "557e5a877463e670d2bbd51f6626f4b395b4351895ecc72fde21d974bbda893b",
-      "destinationSha256": "557e5a877463e670d2bbd51f6626f4b395b4351895ecc72fde21d974bbda893b"
+      "sourceSha256": "348a0632d36e51293ae676f4d130d20a91410d06a535de9accee8b5d32895d21",
+      "destinationSha256": "348a0632d36e51293ae676f4d130d20a91410d06a535de9accee8b5d32895d21"
     },
     {
       "source": "libs/backend/shared/tsconfig.json",
@@ -7409,8 +7466,8 @@
       "source": "libs/web/frontend/ui/src/lib/shell.ts",
       "destination": "libs/web/frontend/ui/src/lib/shell.ts",
       "action": "copied",
-      "sourceSha256": "2ca3f10c6548e3a4173cd59fe0840918881317da2b9536e46a48463ffe0adfc7",
-      "destinationSha256": "2ca3f10c6548e3a4173cd59fe0840918881317da2b9536e46a48463ffe0adfc7"
+      "sourceSha256": "5f1a9cd85ca1f588c26723f9043bae98016152f9ad4a5d69edd1636483419c2c",
+      "destinationSha256": "5f1a9cd85ca1f588c26723f9043bae98016152f9ad4a5d69edd1636483419c2c"
     },
     {
       "source": "libs/web/frontend/ui/src/lib/theme-switcher.ts",
@@ -7580,7 +7637,7 @@
       "reason": "Retain the existing repository agreement/portfolio documentation and formatter needs while adopting compatible stack tooling/configuration.",
       "sourceSha256": "0d2b324fd9fc52046b43b05f2d719a8da890c6f5741f0d80f059b172c71afd20",
       "destination": "package.json",
-      "destinationSha256": "c65da6e89c21cb63b4f9a2753f0dcd2b5d9932e3d205102fa06263d2a71b821a"
+      "destinationSha256": "5cdbe46a77bbdc3c8c554bed0eebbd5b7d26d6e92afe5a699ec6d186e064e1dd"
     },
     {
       "source": "patches/@angular__build@22.2.4.patch",
@@ -7622,7 +7679,7 @@
       "destination": "pnpm-lock.yaml",
       "action": "adapted",
       "sourceSha256": "fd392fc37e7d1b61de0b4de00da61b43b470267f7f882a42e58bd812f24a7c0b",
-      "destinationSha256": "1266aa3b7d9f68097f64d4328835994a5881d3e05c4ce2494f55b8a5570341ea",
+      "destinationSha256": "18f5cd40a657d59585b49900effc2f3757f60ec7d7a9eecbc29491fff31aaf16",
       "reason": "Retain the existing repository agreement/portfolio documentation and formatter needs while adopting compatible stack tooling/configuration."
     },
     {

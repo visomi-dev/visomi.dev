@@ -1,10 +1,10 @@
 {
-  "sourceStack": "c7e362b6fe4dc14ede081ba9090a5345ba5b7bcb",
+  "sourceStack": "07f03a567f994aa4c2abdd22346b2f8e6b09c786",
   "websiteMain": "9511109c233f2a6a7604c80fa1597aa338e9135d",
   "integrationBaseline": "f2cfa9cfd6f7b13eb2858dc5d1761e9b2e49afe1",
   "scope": "Implementation and isolated synthetic verification; no merge, deployment, provisioning or real-data operations.",
   "publicBrowserCases": 121,
-  "privateBrowserCases": 8,
+  "privateBrowserCases": 14,
   "apiBrowserCases": 3,
   "gatewayBrowserCases": 3,
   "workerBrowserCases": 1,
@@ -39,10 +39,14 @@
     "Production module import safety, shutdown and telemetry privacy",
     "AXE across public routes/themes/viewports and private views",
     "No-root runtime image without build tools; private trace policy rehearsal",
-    "Approved logotype/isotype/favicon/loader in both locales/themes/viewports; compiled SVG assets, ClientRouter loading and reduced motion"
+    "Approved logotype/isotype/favicon/loader in both locales/themes/viewports; compiled SVG assets, ClientRouter loading and reduced motion",
+    "Private process metrics opt-in, bounded aggregation, owner denial, disabled/empty/error states and no-store",
+    "PostgreSQL recovery artifact through real libSQL replay, legacy writer continuation and actual CLI",
+    "Read-only owner configuration/existing-account preflight without credential changes or delivery claims",
+    "Railway watch selection for brand/shared-style-only changes with real gitignore semantics"
   ],
   "releaseRunbook": "docs/migration/contact-cutover.md",
-  "unitCases": 844,
+  "unitCases": 861,
   "brandingBrowserCases": 10,
   "parityNormalization": "VIS-34 restores only the approved home-link artwork/text in the comparison DOM; original reference PNGs/manifests are unchanged."
 }

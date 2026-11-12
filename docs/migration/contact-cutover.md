@@ -79,16 +79,63 @@ pnpm nx run web-api:contacts-migrate --rollback --apply --batch=approved-cutover
    unchanged rows inserted by that batch. Preexisting rows and newly created requests remain in
    PostgreSQL. Modified imported rows stop rollback; reconcile them manually instead of overwriting.
    Repeated rollback removes zero additional rows. The old Turso backup remains recoverable.
-4. Reconcile/replay post-cutover destination requests into a restored isolated Turso copy using the
-   legacy seven-field contract and conflict checks. Validate counts/content before approving the
-   real replay. Keep the recovery file and PostgreSQL copy until retention approval; never drop
-   either database. This offline replay step requires the data custodian's approval and tool.
-5. Restore the previous approved application artifact/configuration, smoke test all public URLs,
-   CV, themes, contact and images, then unfreeze only the chosen writer. Confirm there is exactly
-   one active writer. Observe fixed status/count metrics only; no message/email/path data in telemetry.
+4. Reconcile/replay the complete recovery artifact into a restored isolated libSQL/Turso copy with
+   the operator tool below. It uses the original Astro DB `ContactSubmission` schema: integer ID,
+   TEXT timestamp, and the five remaining text fields. It preserves all fields and post-cutover
+   requests, rejects conflicting IDs, and keeps existing legacy-only rows. IDs outside JavaScript's
+   safe integer range stop recovery instead of being rounded or renumbered.
+
+```sh
+# CONTACT_LEGACY_DATABASE_URL and CONTACT_LEGACY_DATABASE_AUTH_TOKEN are supplied privately.
+# Remote URLs require TLS; a local file URL must be absolute and already exist.
+# Default: read-only transaction, validation/reconciliation, no backup or data writes.
+pnpm nx run web-api:contacts-restore-legacy --input=/approved/rollback-recovery.json
+# Apply only after both writers/ingress are frozen and replay is approved:
+pnpm nx run web-api:contacts-restore-legacy --input=/approved/rollback-recovery.json --apply --writes-frozen --backup=/approved/legacy-before-replay.json
+```
+
+Apply takes a libSQL write transaction, saves an exclusive 0600 before-state/source backup,
+inserts missing IDs only, reconciles complete content and counts, and commits atomically.
+Partial SQL failures or reconciliation failures roll back. Replays are idempotent; each apply
+needs a new backup filename. `--writes-frozen` is the operator's acknowledgement of the external
+ingress/writer freeze; the tool does not configure an ingress or start/stop either application.
+Keep the recovery file and PostgreSQL copy until retention approval; never drop either database.
+The real replay still requires the data custodian's explicit approval. 5. Restore the previous approved application artifact/configuration, smoke test all public URLs,
+CV, themes, contact and images, then unfreeze only the chosen writer. Confirm there is exactly
+one active writer. Observe fixed status/count metrics only; no message/email/path data in telemetry.
 
 ## Release gates
 
 Application build/test approval, owner identity configuration, data custodian backup/replay approval,
 operator readiness/cutover approval, and deployment/DNS/credential authorization are independent.
 Preparing this code or marking an implementation task done does not authorize those operations.
+
+## Owner preparation before enabling private access
+
+Run `pnpm nx run web-api:owner-preflight` in the approved operator environment with the intended
+`DATABASE_URL`, `OWNER_EMAIL`, optional `OWNER_USER_ID`, `AUTH_ORIGIN`, `AUTH_RP_ID`, `SESSION_SECRET`,
+SMTP configuration and, for an active TOTP enrollment, `AUTH_TOTP_ENCRYPTION_KEY`.
+This command validates auth/mail configuration without sending mail. A PostgreSQL READ ONLY
+transaction checks exactly one verified existing account, a configured password, the optional
+immutable identity and TOTP key availability. It emits fixed status/configuration booleans only,
+without email, user ID, password hash, session, code or secret. It creates no account and changes
+no credential or configuration. An unavailable/unverified account is a failed gate, never an
+instruction to choose the first account or enable public signup.
+
+Successful preflight reports `interactiveAcceptanceRequired: true`. The authorized operator must
+still verify actual delivery and owner password/second-factor sign-in, denial for another account,
+logout/revocation, and the private no-store responses before enabling access. Use the existing
+stack's approved account/onboarding process if the identity is absent; keep private access closed
+until that process, email verification and the configuration checks pass. No real account was
+provisioned or validated by the synthetic implementation checks.
+
+## Synthetic recovery evidence and limits
+
+`legacy-restore.spec.ts` rehearses the full data recovery path using owned PostgreSQL and the real
+`@libsql/client` against an isolated SQLite file: original rows → PostgreSQL import → new API
+submission → rollback artifact → read-only replay → atomic libSQL replay → original-style writer
+insertion with the next ID → idempotent replay preserving that new row. It checks all seven fields,
+Unicode/HTML payload preservation, backup permissions, conflicts, failure rollback and the real CLI.
+The owner preflight CLI is also exercised against a synthetic verified account and failed gates.
+These checks do not establish a production Turso restore, production application rollback, live
+SMTP/client acceptance, or an actual Railway deployment/source-trigger event.
