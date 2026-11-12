@@ -115,4 +115,80 @@ describe('compiled Angular boundary', () => {
     },
     compiledSsrTimeout,
   );
+  it.each([
+    { trustProxy: undefined, status: 200 },
+    { trustProxy: ['192.0.2.0/24'], status: 200 },
+    { trustProxy: ['loopback'], status: 400 },
+  ])(
+    'uses the peer trust policy before considering a forwarded host: $trustProxy',
+    async ({ trustProxy, status }) => {
+      const application = await loadApplication(
+        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
+      );
+      const server = createServer(application.createApp({ trustProxy }));
+      const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      server.listen(0, '127.0.0.1');
+
+      await once(server, 'listening');
+
+      try {
+        const response = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/app/en/`, {
+          headers: {
+            forwarded: 'host=attacker.invalid;proto=https',
+            'x-forwarded-host': 'attacker.invalid',
+            'x-forwarded-proto': 'https',
+            'x-forwarded-for': '198.51.100.23',
+            'x-forwarded-prefix': '/attacker',
+          },
+        });
+
+        await response.text();
+
+        expect(response.status).toBe(status);
+        expect(warnings).not.toHaveBeenCalled();
+      } finally {
+        warnings.mockRestore();
+
+        await new Promise<void>((resolve) => server.close(() => resolve()));
+      }
+    },
+    compiledSsrTimeout,
+  );
+
+  it.each([
+    { host: 'visomi.dev', protocol: 'https', status: 200 },
+    { host: 'visomi.dev', protocol: 'javascript', status: 400 },
+    { host: 'user@visomi.dev', protocol: 'https', status: 400 },
+    { host: 'visomi.dev/path', protocol: 'https', status: 400 },
+  ])(
+    'validates the effective origin even for trusted peers: $host $protocol',
+    async ({ host, protocol, status }) => {
+      const application = await loadApplication(
+        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
+      );
+      const server = createServer(application.createApp({ trustProxy: ['loopback'] }));
+      const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      server.listen(0, '127.0.0.1');
+
+      await once(server, 'listening');
+
+      try {
+        const response = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/app/es/`, {
+          headers: { 'x-forwarded-host': host, 'x-forwarded-proto': protocol },
+        });
+
+        await response.text();
+
+        expect(response.status).toBe(status);
+        expect(warnings).not.toHaveBeenCalled();
+      } finally {
+        warnings.mockRestore();
+
+        await new Promise<void>((resolve) => server.close(() => resolve()));
+      }
+    },
+    compiledSsrTimeout,
+  );
 });
