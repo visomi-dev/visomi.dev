@@ -41,7 +41,8 @@ for (const locale of ['en', 'es']) {
 
     assert.ok(nonce);
     assert.ok(response.headers.get('content-security-policy').includes(`'nonce-${nonce}'`));
-    assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.equal(response.headers.get('cache-control'), 'private, no-store');
+    assert.equal(response.headers.get('etag'), null);
     const stylesheet = html.match(/href="([^"]+\.css)"/);
     const base = html.match(/<base href="([^"]+)"/);
 
