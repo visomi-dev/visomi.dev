@@ -69,7 +69,9 @@ for (const locale of ['en', 'es']) {
     assert.equal(response.headers.get('location'), `/app/${locale}/access`);
     assert.equal(response.headers.get('cache-control'), 'private, no-store');
     assert.equal(response.headers.get('etag'), null);
-    assert.equal(await response.text(), '', 'Private redirects must not contain rendered data');
+    const body = await response.text();
+
+    assert.equal(body, '', 'Private redirects must not contain rendered data');
   }
 }
 
