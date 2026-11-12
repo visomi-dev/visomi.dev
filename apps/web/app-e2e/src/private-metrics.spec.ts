@@ -8,12 +8,12 @@ import { expect, test, type Page } from '@playwright/test';
 async function owner(page: Page, baseURL: string, role: 'owner' | 'other' = 'owner') {
   const file = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL).port}`, 'session.json');
   const content = await readFile(file, 'utf8');
-  const data = JSON.parse(content) as { cookies: Record<'owner' | 'other', string> };
+  const data = JSON.parse(content) as { cookies: Record<'metricsOwner' | 'other', string> };
 
   await page.context().addCookies([
     {
       name: 'visomi.sid',
-      value: encodeURIComponent(data.cookies[role]),
+      value: encodeURIComponent(data.cookies[role === 'owner' ? 'metricsOwner' : 'other']),
       url: baseURL,
       httpOnly: true,
       sameSite: 'Strict',

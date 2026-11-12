@@ -88,28 +88,31 @@ async function main(): Promise<void> {
         [id, `${role}@example.test`, password],
       );
 
-      const sid = randomUUID();
-      const expire = new Date(Date.now() + 8 * 60 * 60_000);
-      const session = {
-        cookie: {
-          originalMaxAge: 8 * 60 * 60_000,
-          expires: expire.toISOString(),
-          httpOnly: true,
-          path: '/',
-          sameSite: 'strict',
-        },
-        passport: { user: { id, method: 'password', authenticatedAt: Date.now(), version: 1, level: 'full' } },
-      };
+      // Inbox tests revoke their session; metrics keep an independent session for the same synthetic owner.
+      for (const sessionRole of role === 'owner' ? ['owner', 'metricsOwner'] : ['other']) {
+        const sid = randomUUID();
+        const expire = new Date(Date.now() + 8 * 60 * 60_000);
+        const session = {
+          cookie: {
+            originalMaxAge: 8 * 60 * 60_000,
+            expires: expire.toISOString(),
+            httpOnly: true,
+            path: '/',
+            sameSite: 'strict',
+          },
+          passport: { user: { id, method: 'password', authenticatedAt: Date.now(), version: 1, level: 'full' } },
+        };
 
-      await database.pool.query('INSERT INTO auth_sessions (sid,sess,expire) VALUES ($1,$2,$3)', [
-        sid,
-        session,
-        expire,
-      ]);
+        await database.pool.query('INSERT INTO auth_sessions (sid,sess,expire) VALUES ($1,$2,$3)', [
+          sid,
+          session,
+          expire,
+        ]);
 
-      const signature = createHmac('sha256', secret).update(sid).digest('base64').replace(/=+$/, '');
+        const signature = createHmac('sha256', secret).update(sid).digest('base64').replace(/=+$/, '');
 
-      cookies[role] = `s:${sid}.${signature}`;
+        cookies[sessionRole] = `s:${sid}.${signature}`;
+      }
     }
     for (let index = 1; index <= 26; index++) {
       await database.pool.query(
