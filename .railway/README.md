@@ -77,3 +77,29 @@ policy enabled, missing or mismatched ingress headers return HTTP 400 for SSR.
 Test both the legitimate public route and forged/duplicate headers, including
 private-network access. Synthetic local tests are not proof of Railway ingress
 behavior. No additional environment variable or proxy CIDR trust is introduced.
+
+## Server rendering and temporary ingress observations
+
+App routes default to server rendering, including private owner screens. Server-only
+API forwarding is restricted to the current request's same origin and allowlisted
+read-only GET endpoints. Cookies remain request-scoped; concurrent requests must not
+share authentication. HTTP transfer caching is disabled and rendered HTML is
+`private, no-store`, without an ETag. Hydration supports localized content.
+
+The optional ingress diagnostic is disabled unless both
+`VISOMI_PROXY_DIAGNOSTIC_TOKEN` and `VISOMI_PROXY_DIAGNOSTIC_EXPIRES_AT` are set.
+Do not add these temporary values to IaC or commit them. For an authorized probe,
+generate a fresh random 32-byte base64url token and set a UTC expiry no more than
+ten minutes after process startup. Send the token only in `x-visomi-proxy-probe`
+on an exact `GET /app/en/access`, without query, Cookie or Authorization headers.
+Use a baseline probe and a synthetic `X-Forwarded-For: 192.0.2.123` probe; do not
+use real visitor identity data. At most three accepted probes per process emit
+`proxy.synthetic_probe` with booleans only. No IP, token, cookie, raw header value,
+path or query is logged by this diagnostic. It adds no diagnostic endpoint and
+does not alter responses, trust settings or Angular warnings.
+
+Inspect the booleans to compare the baseline and synthetic request. A result is
+an observation of those requests, not a guaranteed Railway ingress contract.
+Remove both temporary variables after the checks and verify the diagnostic is
+inactive; expiry already disables observations even if cleanup is delayed.
+Normal infrastructure logs have their own policies and are not changed here.
