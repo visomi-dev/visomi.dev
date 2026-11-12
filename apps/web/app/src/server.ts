@@ -1,12 +1,7 @@
 import { createHmac, randomBytes } from 'node:crypto';
 import { resolve } from 'node:path';
 
-import {
-  AngularNodeAppEngine,
-  createNodeRequestHandler,
-  createWebRequestFromNodeRequest,
-  writeResponseToNodeResponse,
-} from '@angular/ssr/node';
+import { AngularNodeAppEngine, createNodeRequestHandler, writeResponseToNodeResponse } from '@angular/ssr/node';
 import express, { Router, static as serveStatic } from 'express';
 import type { Request } from 'express';
 import { ipKeyGenerator, rateLimit } from 'express-rate-limit';
@@ -19,52 +14,6 @@ import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error'
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
 import { securityHeaders } from '@visomi-stack/web-backend-shared/lib/http/security-headers';
-
-/**
- * Express resolves the external origin using its IP-based trust-proxy policy.
- * Angular's header-name allowlist does not validate the peer's address, so do not
- * forward raw proxy headers to the rendering engine or enable its global trust.
- * This boundary is used only for the GET/HEAD document routes.
- */
-function createSsrRequest(request: Request): globalThis.Request {
-  const protocol = request.protocol;
-  const host = request.host;
-
-  if (!['http', 'https'].includes(protocol) || !host || /[\s\\]/.test(host)) {
-    throw new HttpError(400, 'request_invalid');
-  }
-
-  let origin: URL;
-
-  try {
-    origin = new URL(`${protocol}://${host}`);
-  } catch {
-    throw new HttpError(400, 'request_invalid');
-  }
-
-  if (origin.username || origin.password || origin.pathname !== '/' || origin.search || origin.hash) {
-    throw new HttpError(400, 'request_invalid');
-  }
-
-  const source = createWebRequestFromNodeRequest(request, false);
-  const headers = new Headers(source.headers);
-
-  for (const name of Array.from(headers.keys())) {
-    if (name === 'forwarded' || name.startsWith('x-forwarded-')) {
-      headers.delete(name);
-    }
-  }
-
-  // Keep Angular's allowedHosts validation on the effective host, including for
-  // trusted peers: trusting a proxy is not permission to render arbitrary hosts.
-  headers.set('host', origin.host);
-
-  return new globalThis.Request(`${origin.origin}${request.originalUrl || request.url}`, {
-    method: source.method,
-    headers,
-    signal: source.signal,
-  });
-}
 
 export const clientDirectory = resolve(import.meta.dirname, '../browser');
 let engine: AngularNodeAppEngine | undefined;
@@ -187,12 +136,10 @@ export function createApp(
   );
 
   documents.use((request, response, next) => {
-    engine ??= new AngularNodeAppEngine({ trustProxyHeaders: false });
+    engine ??= new AngularNodeAppEngine();
 
     engine
-      .handle(createSsrRequest(request), {
-        auth: options.authContext?.(request) ?? { available: false, session: null },
-      })
+      .handle(request, { auth: options.authContext?.(request) ?? { available: false, session: null } })
       .then(async (rendered) => {
         if (!rendered) {
           next();
