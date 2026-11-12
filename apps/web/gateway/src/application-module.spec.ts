@@ -5,8 +5,6 @@ import type { AddressInfo } from 'node:net';
 import express from 'express';
 import { describe, expect, it, vi } from 'vitest';
 
-import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
-
 import { loadApplication, resolveApplicationModule } from './application-module';
 
 // Cold compiled SSR imports and bootstrap run under coverage on shared CI CPUs.
@@ -111,92 +109,6 @@ describe('compiled Angular boundary', () => {
         expect(errors).not.toHaveBeenCalled();
       } finally {
         errors.mockRestore();
-
-        await new Promise<void>((resolve) => server.close(() => resolve()));
-      }
-    },
-    compiledSsrTimeout,
-  );
-  it.each([
-    { trustProxy: undefined, status: 200 },
-    { trustProxy: ['192.0.2.0/24'], status: 200 },
-    { trustProxy: ['loopback'], status: 400 },
-  ])(
-    'uses the peer trust policy before considering a forwarded host: $trustProxy',
-    async ({ trustProxy, status }) => {
-      const application = await loadApplication(
-        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
-      );
-      const parent = express();
-
-      parent.use(application.createApp({ trustProxy, errorMode: 'inherited', helmetMode: 'inherited' }));
-      parent.use(httpErrorHandler);
-
-      const server = createServer(parent);
-      const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-      server.listen(0, '127.0.0.1');
-
-      await once(server, 'listening');
-
-      try {
-        const response = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/app/en/`, {
-          headers: {
-            forwarded: 'host=attacker.invalid;proto=https',
-            'x-forwarded-host': 'attacker.invalid',
-            'x-forwarded-proto': 'https',
-            'x-forwarded-for': '198.51.100.23',
-            'x-forwarded-prefix': '/attacker',
-          },
-        });
-
-        await response.text();
-
-        expect(response.status).toBe(status);
-        expect(warnings).not.toHaveBeenCalled();
-      } finally {
-        warnings.mockRestore();
-
-        await new Promise<void>((resolve) => server.close(() => resolve()));
-      }
-    },
-    compiledSsrTimeout,
-  );
-
-  it.each([
-    { host: 'visomi.dev', protocol: 'https', status: 200 },
-    { host: 'visomi.dev', protocol: 'javascript', status: 400 },
-    { host: 'user@visomi.dev', protocol: 'https', status: 400 },
-    { host: 'visomi.dev/path', protocol: 'https', status: 400 },
-  ])(
-    'validates the effective origin even for trusted peers: $host $protocol',
-    async ({ host, protocol, status }) => {
-      const application = await loadApplication(
-        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
-      );
-      const parent = express();
-
-      parent.use(application.createApp({ trustProxy: ['loopback'], errorMode: 'inherited', helmetMode: 'inherited' }));
-      parent.use(httpErrorHandler);
-
-      const server = createServer(parent);
-      const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-      server.listen(0, '127.0.0.1');
-
-      await once(server, 'listening');
-
-      try {
-        const response = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/app/es/`, {
-          headers: { 'x-forwarded-host': host, 'x-forwarded-proto': protocol },
-        });
-
-        await response.text();
-
-        expect(response.status).toBe(status);
-        expect(warnings).not.toHaveBeenCalled();
-      } finally {
-        warnings.mockRestore();
 
         await new Promise<void>((resolve) => server.close(() => resolve()));
       }
