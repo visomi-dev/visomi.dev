@@ -5,6 +5,8 @@ import type { AddressInfo } from 'node:net';
 import express from 'express';
 import { describe, expect, it, vi } from 'vitest';
 
+import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
+
 import { loadApplication, resolveApplicationModule } from './application-module';
 
 // Cold compiled SSR imports and bootstrap run under coverage on shared CI CPUs.
@@ -109,6 +111,148 @@ describe('compiled Angular boundary', () => {
         expect(errors).not.toHaveBeenCalled();
       } finally {
         errors.mockRestore();
+
+        await new Promise<void>((resolve) => server.close(() => resolve()));
+      }
+    },
+    compiledSsrTimeout,
+  );
+  it.each([
+    ['valid Railway origin', {}, 200],
+    ['missing proto', { 'x-forwarded-proto': undefined }, 400],
+    ['missing forwarded host', { 'x-forwarded-host': undefined }, 400],
+    ['foreign host', { 'x-forwarded-host': 'attacker.invalid' }, 400],
+    ['loopback', { 'x-forwarded-host': '127.0.0.1' }, 400],
+    ['HTTP scheme', { 'x-forwarded-proto': 'http' }, 400],
+    ['invalid scheme', { 'x-forwarded-proto': 'javascript' }, 400],
+    ['host list', { 'x-forwarded-host': 'visomi.dev,attacker.invalid' }, 400],
+    ['duplicate host', { 'x-forwarded-host': ['visomi.dev', 'visomi.dev'] }, 400],
+    ['foreign port', { 'x-forwarded-host': 'visomi.dev:8080' }, 400],
+    ['userinfo', { 'x-forwarded-host': 'user@visomi.dev' }, 400],
+    ['foreign raw host', { host: 'localhost' }, 400],
+    ['untrusted Forwarded cannot override origin', { forwarded: 'host=attacker.invalid;proto=http' }, 200],
+    ['XFF is not trusted', { 'x-forwarded-for': '192.0.2.123' }, 200],
+  ])(
+    'configures compiled SSR safely: %s',
+    async (_name, overrides, expected) => {
+      const application = await loadApplication(
+        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
+      );
+
+      vi.stubEnv('NODE_ENV', 'production');
+      vi.stubEnv('AUTH_ORIGIN', 'https://visomi.dev');
+      const parent = express();
+
+      try {
+        parent.use(application.createApp({ errorMode: 'inherited', helmetMode: 'inherited' }));
+      } finally {
+        vi.unstubAllEnvs();
+      }
+      parent.use(httpErrorHandler);
+      const server = createServer(parent);
+      const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      server.listen(0, '127.0.0.1');
+
+      await once(server, 'listening');
+
+      try {
+        const status = await new Promise<number>((resolve, reject) => {
+          const request = nodeRequest(
+            {
+              host: '127.0.0.1',
+              port: (server.address() as AddressInfo).port,
+              path: '/app/en/',
+              headers: Object.fromEntries(
+                Object.entries({
+                  host: 'visomi.dev',
+                  'x-forwarded-host': 'visomi.dev',
+                  'x-forwarded-proto': 'https',
+                  ...overrides,
+                }).filter(([, value]) => value !== undefined),
+              ),
+            },
+            (response) => {
+              response.resume();
+              response.on('end', () => resolve(response.statusCode!));
+            },
+          );
+
+          request.on('error', reject);
+          request.end();
+        });
+
+        expect(status).toBe(expected);
+
+        if ('x-forwarded-for' in overrides || 'forwarded' in overrides) {
+          expect(warnings).toHaveBeenCalled();
+        } else {
+          expect(warnings).not.toHaveBeenCalled();
+        }
+      } finally {
+        warnings.mockRestore();
+
+        await new Promise<void>((resolve) => server.close(() => resolve()));
+      }
+    },
+    compiledSsrTimeout,
+  );
+
+  it.each(['not-a-url', 'http://visomi.dev', 'https://localhost', 'https://visomi.dev/other'])(
+    'rejects invalid production SSR origin %s',
+    async (origin) => {
+      const application = await loadApplication(
+        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
+      );
+
+      vi.stubEnv('NODE_ENV', 'production');
+      vi.stubEnv('AUTH_ORIGIN', origin);
+
+      try {
+        expect(() => application.createApp({ errorMode: 'inherited', helmetMode: 'inherited' })).toThrow(
+          'ssr_public_origin_invalid',
+        );
+      } finally {
+        vi.unstubAllEnvs();
+      }
+    },
+    compiledSsrTimeout,
+  );
+  it.each([undefined, 'http://127.0.0.1:8186'])(
+    'keeps standalone production/local HTTP untrusted with origin %s',
+    async (origin) => {
+      const application = await loadApplication(
+        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
+      );
+
+      vi.stubEnv('NODE_ENV', 'production');
+      vi.stubEnv('AUTH_ORIGIN', origin);
+      const parent = express();
+
+      try {
+        parent.use(application.createApp({ errorMode: 'inherited', helmetMode: 'inherited' }));
+      } finally {
+        vi.unstubAllEnvs();
+      }
+      parent.use(httpErrorHandler);
+      const server = createServer(parent);
+      const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      server.listen(0, '127.0.0.1');
+
+      await once(server, 'listening');
+
+      try {
+        const result = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/app/en/`, {
+          headers: { 'x-forwarded-host': 'attacker.invalid', 'x-forwarded-proto': 'https' },
+        });
+
+        await result.text();
+
+        expect(result.status).toBe(200);
+        expect(warnings).toHaveBeenCalled();
+      } finally {
+        warnings.mockRestore();
 
         await new Promise<void>((resolve) => server.close(() => resolve()));
       }
