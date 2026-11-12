@@ -52,11 +52,25 @@ export remain `none`; local dashboard metrics are process-local, not Jaeger hist
 The contact cutover/rollback and owner acceptance gates are documented in
 [`docs/migration/contact-cutover.md`](../docs/migration/contact-cutover.md).
 
-## SSR proxy configuration pending
+## SSR proxy configuration and release gate
 
-This change does not alter Angular SSR proxy handling. The earlier header-stripping
-workaround and its tests have been removed. Correct forwarding configuration is
-pending verification of Railway's ingress trust boundary and which headers it
-replaces. Do not enable unconditional proxy trust or silence warnings as a substitute
-for that verification. Preserve Angular's host allowlist and validate trusted and
-untrusted ingress paths before a separate SSR change.
+Production SSR uses Angular's official `trustProxyHeaders` allowlist for
+`x-forwarded-host` and `x-forwarded-proto` only. Before rendering, a guard requires
+exactly one `Host` and `X-Forwarded-Host` matching the HTTPS `AUTH_ORIGIN` host,
+and exactly one `X-Forwarded-Proto: https`. It rejects duplicate fields, comma
+lists, foreign hosts/ports and insecure schemes rather than rewriting headers.
+The existing Angular host allowlist remains in force. Development is unchanged.
+
+This does not authenticate the immediate network peer and does not grant trust
+to client IP claims. Express IP trust remains independent and unchanged.
+`Forwarded`, `X-Forwarded-For` and other unsupported headers are not stripped or
+silenced: Angular may still warn about them. Do not promise warning-free logs.
+
+Before merging or deploying this change, verify the live `AUTH_ORIGIN` is the
+canonical public HTTPS origin and verify Railway delivers the required unique
+Host/X-Forwarded-Host/X-Forwarded-Proto combination through every supported
+public ingress path. Missing or invalid production AUTH_ORIGIN fails application
+initialization; missing or mismatched ingress headers return HTTP 400 for SSR.
+Test both the legitimate public route and forged/duplicate headers, including
+private-network access. Synthetic local tests are not proof of Railway ingress
+behavior. No additional environment variable or proxy CIDR trust is introduced.

@@ -15,8 +15,9 @@ import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http
 import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
 import { securityHeaders } from '@visomi-stack/web-backend-shared/lib/http/security-headers';
 
+import { createSsrProxyPolicy } from './ssr-proxy-policy';
+
 export const clientDirectory = resolve(import.meta.dirname, '../browser');
-let engine: AngularNodeAppEngine | undefined;
 
 export function createApp(
   options: {
@@ -29,6 +30,8 @@ export function createApp(
   } = {},
 ) {
   const app = express();
+  const proxyPolicy = createSsrProxyPolicy(process.env);
+  let engine: AngularNodeAppEngine | undefined;
 
   app.disable('x-powered-by');
 
@@ -136,7 +139,13 @@ export function createApp(
   );
 
   documents.use((request, response, next) => {
-    engine ??= new AngularNodeAppEngine();
+    if (proxyPolicy && !proxyPolicy.accepts(request)) {
+      next(new HttpError(400, 'request_invalid'));
+
+      return;
+    }
+
+    engine ??= new AngularNodeAppEngine(proxyPolicy?.engineOptions);
 
     engine
       .handle(request, { auth: options.authContext?.(request) ?? { available: false, session: null } })
