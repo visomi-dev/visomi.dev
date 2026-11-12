@@ -65,7 +65,7 @@
           "tsc --noEmit --module esnext --moduleResolution bundler --allowImportingTsExtensions --target es2022 --types node --skipLibCheck .railway/railway.ts",
           "eslint .railway tools/deployment/*.mjs",
           "bash -n tools/deployment/container.sh",
-          "node --test tools/deployment/affected.spec.mjs tools/deployment/resolve-browser-error.spec.mjs"
+          "node --import tsx --test tools/deployment/affected.spec.mjs tools/deployment/resolve-browser-error.spec.mjs tools/deployment/watch-patterns.spec.mjs"
         ],
         "parallel": false
       },
