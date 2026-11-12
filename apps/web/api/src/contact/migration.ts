@@ -41,7 +41,7 @@ export function parseContactExport(value: unknown): ContactSubmission[] {
   return [...unique.values()].sort((left, right) => (BigInt(left.id) < BigInt(right.id) ? -1 : 1));
 }
 
-function digest(row: ContactSubmission): string {
+export function digest(row: ContactSubmission): string {
   return createHash('sha256')
     .update(
       JSON.stringify([

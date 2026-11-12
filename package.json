@@ -96,6 +96,7 @@
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@eslint/js": "^10.0.1",
+    "@libsql/client": "0.18.0",
     "@nx/angular": "24.0.1",
     "@nx/devkit": "24.0.1",
     "@nx/esbuild": "24.0.1",

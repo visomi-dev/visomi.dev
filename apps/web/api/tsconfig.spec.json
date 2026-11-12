@@ -21,6 +21,7 @@
     "src/**/*.spec.jsx",
     "src/**/*.d.ts",
     "tests/**/*.ts",
+    "tools/**/*.ts",
     "e2e/**/*.ts",
     "playwright.config.mts"
   ]

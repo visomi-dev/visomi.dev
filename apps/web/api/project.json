@@ -127,6 +127,22 @@
         "command": "pnpm exec tsx --tsconfig tsconfig.base.json apps/web/api/src/contact/migrate.ts",
         "cwd": "."
       }
+    },
+    "contacts-restore-legacy": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "pnpm exec tsx --tsconfig tsconfig.base.json apps/web/api/tools/contact/restore-legacy.ts",
+        "cwd": "."
+      }
+    },
+    "owner-preflight": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "pnpm exec tsx --tsconfig tsconfig.base.json apps/web/api/tools/owner/preflight.ts",
+        "cwd": "."
+      }
     }
   }
 }
