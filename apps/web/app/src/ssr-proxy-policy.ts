@@ -11,12 +11,33 @@ export function createSsrProxyPolicy(environment: NodeJS.ProcessEnv) {
   }
 
   const configuredOrigin = environment['AUTH_ORIGIN'];
+
+  // Production builds also run standalone and in local browser/container tests.
+  // No public origin means no proxy trust, not an invented Railway boundary.
+  if (!configuredOrigin) {
+    return undefined;
+  }
+
   let origin: URL;
 
   try {
-    origin = new URL(configuredOrigin ?? '');
+    origin = new URL(configuredOrigin);
   } catch {
     throw new Error('ssr_public_origin_invalid');
+  }
+
+  const loopback = ['localhost', '127.0.0.1', '[::1]'].includes(origin.hostname);
+
+  if (
+    loopback &&
+    origin.protocol === 'http:' &&
+    !origin.username &&
+    !origin.password &&
+    origin.pathname === '/' &&
+    !origin.search &&
+    !origin.hash
+  ) {
+    return undefined;
   }
 
   if (
@@ -26,7 +47,7 @@ export function createSsrProxyPolicy(environment: NodeJS.ProcessEnv) {
     origin.pathname !== '/' ||
     origin.search ||
     origin.hash ||
-    ['localhost', '127.0.0.1', '[::1]'].includes(origin.hostname)
+    loopback
   ) {
     throw new Error('ssr_public_origin_invalid');
   }

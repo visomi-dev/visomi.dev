@@ -54,7 +54,8 @@ The contact cutover/rollback and owner acceptance gates are documented in
 
 ## SSR proxy configuration and release gate
 
-Production SSR uses Angular's official `trustProxyHeaders` allowlist for
+With a public HTTPS `AUTH_ORIGIN`, production SSR uses Angular's official
+`trustProxyHeaders` allowlist for
 `x-forwarded-host` and `x-forwarded-proto` only. Before rendering, a guard requires
 exactly one `Host` and `X-Forwarded-Host` matching the HTTPS `AUTH_ORIGIN` host,
 and exactly one `X-Forwarded-Proto: https`. It rejects duplicate fields, comma
@@ -69,8 +70,10 @@ silenced: Angular may still warn about them. Do not promise warning-free logs.
 Before merging or deploying this change, verify the live `AUTH_ORIGIN` is the
 canonical public HTTPS origin and verify Railway delivers the required unique
 Host/X-Forwarded-Host/X-Forwarded-Proto combination through every supported
-public ingress path. Missing or invalid production AUTH_ORIGIN fails application
-initialization; missing or mismatched ingress headers return HTTP 400 for SSR.
+public ingress path. An absent AUTH_ORIGIN or an HTTP loopback origin preserves the default Angular
+adapter without adding proxy trust, supporting standalone/local production builds.
+An invalid configured public origin fails initialization. With the public HTTPS
+policy enabled, missing or mismatched ingress headers return HTTP 400 for SSR.
 Test both the legitimate public route and forged/duplicate headers, including
 private-network access. Synthetic local tests are not proof of Railway ingress
 behavior. No additional environment variable or proxy CIDR trust is introduced.

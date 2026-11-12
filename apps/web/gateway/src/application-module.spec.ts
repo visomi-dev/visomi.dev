@@ -198,7 +198,7 @@ describe('compiled Angular boundary', () => {
     compiledSsrTimeout,
   );
 
-  it.each([undefined, 'http://visomi.dev', 'https://localhost', 'https://visomi.dev/other'])(
+  it.each(['not-a-url', 'http://visomi.dev', 'https://localhost', 'https://visomi.dev/other'])(
     'rejects invalid production SSR origin %s',
     async (origin) => {
       const application = await loadApplication(
@@ -214,6 +214,47 @@ describe('compiled Angular boundary', () => {
         );
       } finally {
         vi.unstubAllEnvs();
+      }
+    },
+    compiledSsrTimeout,
+  );
+  it.each([undefined, 'http://127.0.0.1:8186'])(
+    'keeps standalone production/local HTTP untrusted with origin %s',
+    async (origin) => {
+      const application = await loadApplication(
+        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
+      );
+
+      vi.stubEnv('NODE_ENV', 'production');
+      vi.stubEnv('AUTH_ORIGIN', origin);
+      const parent = express();
+
+      try {
+        parent.use(application.createApp({ errorMode: 'inherited', helmetMode: 'inherited' }));
+      } finally {
+        vi.unstubAllEnvs();
+      }
+      parent.use(httpErrorHandler);
+      const server = createServer(parent);
+      const warnings = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      server.listen(0, '127.0.0.1');
+
+      await once(server, 'listening');
+
+      try {
+        const result = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/app/en/`, {
+          headers: { 'x-forwarded-host': 'attacker.invalid', 'x-forwarded-proto': 'https' },
+        });
+
+        await result.text();
+
+        expect(result.status).toBe(200);
+        expect(warnings).toHaveBeenCalled();
+      } finally {
+        warnings.mockRestore();
+
+        await new Promise<void>((resolve) => server.close(() => resolve()));
       }
     },
     compiledSsrTimeout,
