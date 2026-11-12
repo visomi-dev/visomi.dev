@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
 
-const baseURL = process.env['BASE_URL'] ?? 'http://localhost:8080';
+const baseURL = process.env['BASE_URL'] ?? 'http://127.0.0.1:8183';
 
 export default defineConfig({
   ...nxE2EPreset(__filename, {
@@ -17,9 +17,11 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: `set -a; . ${workspaceRoot}/.env; set +a; DISABLE_WORKER=true pnpm exec nx run server:serve`,
-    url: 'http://localhost:8080/healthz',
-    reuseExistingServer: true,
+    command: 'pnpm exec tsx --tsconfig tsconfig.base.json tools/testing/browser-server.ts',
+    url: 'http://127.0.0.1:8183/api/ready',
+    env: { VISOMI_E2E_PORT: '8183' },
+    reuseExistingServer: false,
+    timeout: 120000,
     cwd: workspaceRoot,
   },
   projects: [

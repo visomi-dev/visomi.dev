@@ -1,0 +1,312 @@
+import { IncomingMessage, ServerResponse } from 'node:http';
+import { Socket } from 'node:net';
+
+import type { Request, Response } from 'express';
+import express from 'express';
+import { Passport } from 'passport';
+import type { Pool } from 'pg';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import type { Database } from '@visomi-stack/backend-shared/lib/database/database';
+
+import { createAuthentication } from './runtime';
+import type { AuthorizationPolicy } from './shared/authorization';
+import { authConfig } from './shared/config';
+
+afterEach(() => vi.restoreAllMocks());
+
+function fixture(authorize?: AuthorizationPolicy) {
+  const pool = { query: vi.fn(), end: vi.fn() } as unknown as Pool;
+  const database = { select: vi.fn() } as unknown as Database;
+  const runtime = createAuthentication({
+    authorize,
+    pool,
+    database,
+    config: authConfig({
+      origin: 'http://localhost',
+      rpId: 'localhost',
+      secret: 'synthetic-session-secret-with-32-bytes',
+    }),
+  });
+
+  return { runtime, pool, database };
+}
+
+async function initializedRequest(first: ReturnType<typeof fixture>, second = first) {
+  const app = express();
+
+  app.use(first.runtime.middleware);
+  app.use(second.runtime.requireInitialized);
+  app.get('/', (request, response) => response.json({ anonymous: !request.isAuthenticated() }));
+  app.use((error: { code: string; status: number }, _request: Request, response: Response, _next: unknown) => {
+    response.status(error.status).json({ error: error.code });
+  });
+  const request = new IncomingMessage(new Socket());
+  const response = new ServerResponse(request);
+
+  request.method = 'GET';
+  request.url = '/';
+
+  return new Promise<{ status: number; body: unknown }>((resolve, reject) => {
+    vi.spyOn(response, 'end').mockImplementation((chunk?: unknown) => {
+      resolve({ status: response.statusCode, body: JSON.parse(String(chunk)) });
+
+      return response;
+    });
+    app(request as Request, response as Response, reject);
+  });
+}
+
+describe('explicit session and Passport initialization', () => {
+  it('identifies only verified full sessions for realtime', async () => {
+    const { runtime, database } = fixture();
+    const identity = { id: 'synthetic-user', method: 'password', level: 'full', version: 1, authenticatedAt: 123 };
+    const where = vi
+      .fn()
+      .mockResolvedValue([
+        { id: identity.id, authVersion: 1, emailVerifiedAt: new Date(), passwordHash: 'synthetic-hash' },
+      ]);
+
+    vi.mocked(database.select).mockReturnValue({ from: () => ({ where }) } as never);
+
+    await expect(runtime.realtime.readUser(identity)).resolves.toBe(identity.id);
+
+    await expect(runtime.realtime.readUser({ ...identity, level: 'unverified' })).resolves.toBeNull();
+
+    await expect(runtime.realtime.readUser(undefined)).resolves.toBeNull();
+  });
+
+  it('limits realtime access to the session-owned approval and exposes only its expiry', async () => {
+    const { runtime } = fixture();
+    const expiresAt = new Date(Date.now() + 60_000);
+    const status = vi
+      .spyOn(runtime.devices, 'status')
+      .mockResolvedValue({ requestId: 'request', status: 'pending', expiresAt });
+
+    await expect(runtime.realtime.watchExpiration('requester', 'request')).resolves.toBe(expiresAt.getTime());
+
+    expect(status).toHaveBeenCalledExactlyOnceWith('requester', 'request');
+    expect(runtime.realtime.readSession).toBe(runtime.middleware[0]);
+  });
+
+  it('exposes only public session state for request-scoped rendering', () => {
+    const { runtime } = fixture();
+    const request = {
+      isAuthenticated: () => true,
+      session: { csrf: 'synthetic-private-csrf' },
+      sessionID: 'synthetic-private-sid',
+      user: {
+        id: 'synthetic-user',
+        email: 'demo@example.test',
+        emailVerified: true,
+        level: 'full',
+        method: 'passkey',
+        authenticatedAt: 123,
+        version: 2,
+      },
+    } as unknown as Request;
+    const snapshot = runtime.snapshot(request);
+
+    expect(snapshot).toEqual({
+      authenticated: true,
+      user: { id: 'synthetic-user', email: 'demo@example.test', emailVerified: true },
+      access: 'full',
+      method: 'passkey',
+      nextStep: null,
+    });
+    expect(JSON.stringify(snapshot)).not.toContain('synthetic-private');
+    expect(snapshot).not.toHaveProperty('authenticatedAt');
+  });
+  it('creates an isolated service graph for every runtime', () => {
+    const first = fixture();
+    const second = fixture();
+
+    for (const capability of [
+      'password',
+      'email',
+      'sessions',
+      'methods',
+      'notifications',
+      'flows',
+      'factors',
+    ] as const) {
+      expect(first.runtime[capability]).not.toBe(second.runtime[capability]);
+    }
+    for (const capability of Object.keys(first.runtime.controllers) as (keyof typeof first.runtime.controllers)[]) {
+      expect(first.runtime.controllers[capability]).not.toBe(second.runtime.controllers[capability]);
+    }
+    expect(first.runtime.password.flows).toBe(first.runtime.flows);
+    expect(first.runtime.email.flows).toBe(first.runtime.flows);
+    expect(first.runtime.password.factors).toBe(first.runtime.factors);
+    expect(first.runtime.passkeys).not.toBe(second.runtime.passkeys);
+    expect(first.runtime.google).not.toBe(second.runtime.google);
+    expect(first.pool.query).not.toHaveBeenCalled();
+    expect(second.pool.query).not.toHaveBeenCalled();
+  });
+
+  it('serializes only the authentication identity and timestamp', () => {
+    const serialize = vi.spyOn(Passport.prototype, 'serializeUser');
+
+    fixture();
+    const callback = serialize.mock.calls[0][0] as (user: Express.User, done: (...args: unknown[]) => void) => void;
+    const done = vi.fn();
+    const user = {
+      id: 'synthetic-user',
+      credentialId: 'synthetic-credential',
+      authenticatedAt: 123,
+      privateField: 'SYNTHETIC_PRIVATE',
+    };
+
+    callback(user, done);
+    expect(done).toHaveBeenCalledExactlyOnceWith(null, {
+      id: user.id,
+      credentialId: user.credentialId,
+      authenticatedAt: 123,
+    });
+  });
+
+  it.each([null, {}, { id: 'synthetic' }, { id: 'synthetic', credentialId: 'synthetic' }])(
+    'rejects malformed serialized identities before querying storage',
+    async (serialized) => {
+      const deserialize = vi.spyOn(Passport.prototype, 'deserializeUser');
+      const f = fixture();
+      const callback = deserialize.mock.calls[0][0] as (
+        user: unknown,
+        done: (...args: unknown[]) => void,
+      ) => Promise<void>;
+      const done = vi.fn();
+
+      await callback(serialized, done);
+
+      expect(done).toHaveBeenCalledExactlyOnceWith(null, false);
+      expect(f.database.select).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(['active', 'revoked', 'unavailable'])(
+    'deserializes %s credentials without exposing database failures',
+    async (state) => {
+      const deserialize = vi.spyOn(Passport.prototype, 'deserializeUser');
+      const f = fixture();
+      const where = vi.fn();
+
+      vi.mocked(f.database.select).mockReturnValue({ from: () => ({ where }) } as never);
+
+      if (state === 'unavailable') {
+        where.mockRejectedValue(new Error('SYNTHETIC_PRIVATE_DATABASE_ERROR'));
+      } else {
+        where
+          .mockResolvedValueOnce([
+            { id: 'synthetic-user', authVersion: 1, email: 'synthetic@example.test', emailVerifiedAt: new Date() },
+          ])
+          .mockResolvedValueOnce(state === 'active' ? [{ id: 'synthetic-credential' }] : []);
+      }
+
+      const callback = deserialize.mock.calls[0][0] as (
+        user: unknown,
+        done: (...args: unknown[]) => void,
+      ) => Promise<void>;
+      const done = vi.fn();
+      const user = {
+        id: 'synthetic-user',
+        credentialId: 'synthetic-credential',
+        method: 'passkey',
+        methodId: 'synthetic-credential',
+        version: 1,
+        level: 'full',
+        email: 'synthetic@example.test',
+        emailVerified: true,
+        authenticatedAt: 123,
+      };
+
+      await callback(user, done);
+
+      if (state === 'unavailable') {
+        expect(done).toHaveBeenCalledExactlyOnceWith(new Error('authentication_unavailable'));
+      } else {
+        expect(done).toHaveBeenCalledExactlyOnceWith(null, state === 'active' ? user : false);
+      }
+    },
+  );
+  it('does not open a connection, migrate or close caller-owned resources during composition', () => {
+    const f = fixture();
+
+    expect(f.pool.query).not.toHaveBeenCalled();
+    expect(f.pool.end).not.toHaveBeenCalled();
+    expect(f.database.select).not.toHaveBeenCalled();
+  });
+
+  it('rejects inherited requests that merely have req.user or session-looking fields', () => {
+    const f = fixture();
+    const next = vi.fn();
+
+    f.runtime.requireInitialized(
+      { user: { id: 'synthetic' }, session: {}, logIn: vi.fn() } as unknown as Request,
+      {} as Response,
+      next,
+    );
+    expect(next.mock.calls[0][0]).toMatchObject({ code: 'auth_initialization_missing', status: 503 });
+  });
+
+  it('accepts legitimate anonymous requests after the full explicit chain completes', async () => {
+    const f = fixture();
+    const result = await initializedRequest(f);
+
+    expect(result).toEqual({ status: 200, body: { anonymous: true } });
+    expect(f.pool.query).not.toHaveBeenCalled();
+  });
+
+  it('rejects a chain installed by a different runtime instance', async () => {
+    const result = await initializedRequest(fixture(), fixture());
+
+    expect(result).toEqual({ status: 503, body: { error: 'auth_initialization_missing' } });
+  });
+});
+
+it('exposes a full-session guard that rejects anonymous and unverified sessions', () => {
+  const runtime = fixture().runtime;
+  const full = {
+    id: 'synthetic',
+    version: 1,
+    authenticatedAt: Date.now(),
+    method: 'password' as const,
+    level: 'full' as const,
+    emailVerified: true,
+  };
+
+  for (const user of [undefined, { ...full, level: 'unverified' as const }, full]) {
+    const next = vi.fn();
+
+    runtime.requireVerifiedSession({ user } as Request, {} as Response, next);
+
+    if (user?.level === 'full') {
+      expect(next).toHaveBeenCalledWith();
+    } else {
+      expect(next.mock.calls[0][0]).toBeInstanceOf(Error);
+    }
+  }
+});
+
+it('keeps injected authorization policies isolated between runtimes', async () => {
+  const first = fixture(() => true).runtime;
+  const second = fixture(() => false).runtime;
+  const request = {
+    user: {
+      id: 'synthetic',
+      version: 1,
+      authenticatedAt: Date.now(),
+      method: 'password',
+      level: 'full',
+      emailVerified: true,
+    },
+  } as Request;
+  const allowed = vi.fn();
+  const denied = vi.fn();
+
+  await first.authenticated(['documents.read'])(request, {} as Response, allowed);
+
+  await second.authorized(['documents.read'])(request, {} as Response, denied);
+
+  expect(allowed).toHaveBeenCalledWith();
+  expect(denied.mock.calls[0][0]).toMatchObject({ status: 403, code: 'permission_denied' });
+});

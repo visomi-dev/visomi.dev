@@ -1,0 +1,30 @@
+{
+  "name": "@visomi-stack/web-api",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "helmet": "8.3.0",
+    "@opentelemetry/api": "1.10.0",
+    "@opentelemetry/context-async-hooks": "3.0.0",
+    "@opentelemetry/resources": "3.0.0",
+    "@opentelemetry/sdk-metrics": "3.0.0",
+    "@opentelemetry/sdk-trace": "3.0.0",
+    "express": "^5.1.0",
+    "pino": "10.4.0",
+    "drizzle-orm": "1.0.0-rc.5",
+    "pg": "8.23.1",
+    "@simplewebauthn/server": "14.0.3",
+    "passport": "0.7.0",
+    "express-session": "1.19.0",
+    "connect-pg-simple": "10.0.0",
+    "nodemailer": "10.2.1",
+    "google-auth-library": "11.3.1",
+    "hash-wasm": "4.12.0",
+    "otplib": "13.5.0",
+    "injection-js": "2.6.1",
+    "express-rate-limit": "8.5.2",
+    "zod": "4.6.6",
+    "zod-openapi": "6.0.2",
+    "ioredis": "6.0.0"
+  }
+}

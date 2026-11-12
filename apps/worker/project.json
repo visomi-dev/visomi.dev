@@ -9,19 +9,12 @@
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
-      "dependsOn": [
-        "^build",
-        {
-          "projects": ["api", "app", "site", "social-images"],
-          "target": "build",
-          "params": "forward"
-        }
-      ],
+      "dependsOn": ["^build"],
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/worker",
         "format": ["cjs"],
-        "bundle": false,
+        "bundle": true,
         "main": "apps/worker/src/main.ts",
         "tsConfig": "apps/worker/tsconfig.app.json",
         "assets": ["apps/worker/src/assets"],
@@ -85,10 +78,26 @@
         }
       }
     },
-    "test": {
-      "options": {
-        "passWithNoTests": true
-      }
+    "e2e": {
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": ["web-gateway"]
+        }
+      ],
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/tools/testing/**/*",
+        "{workspaceRoot}/compose*.yaml",
+        "{workspaceRoot}/apps/web/**/*",
+        "{workspaceRoot}/libs/backend/**/*",
+        "{workspaceRoot}/libs/web/backend/**/*",
+        {
+          "dependentTasksOutputFiles": "**/*",
+          "transitive": true
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,322 @@
+[
+  {
+    "name": "en-light-mobile-home",
+    "path": "/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 4685,
+    "originalRatio": 0.002059227514971705
+  },
+  {
+    "name": "en-light-mobile-journey",
+    "path": "/journey/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 2323,
+    "originalRatio": 0.0008385903163214656
+  },
+  {
+    "name": "en-light-mobile-projects",
+    "path": "/projects/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-light-mobile-resume",
+    "path": "/resume/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-light-mobile-contact",
+    "path": "/contact/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-light-desktop-home",
+    "path": "/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 4696,
+    "originalRatio": 0.0008761717117439847
+  },
+  {
+    "name": "en-light-desktop-journey",
+    "path": "/journey/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 9307,
+    "originalRatio": 0.0014142657427668368
+  },
+  {
+    "name": "en-light-desktop-projects",
+    "path": "/projects/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-light-desktop-resume",
+    "path": "/resume/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-light-desktop-contact",
+    "path": "/contact/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 339,
+    "originalRatio": 0.00020488830867420945
+  },
+  {
+    "name": "en-dark-mobile-home",
+    "path": "/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 4258,
+    "originalRatio": 0.0018715455194769518
+  },
+  {
+    "name": "en-dark-mobile-journey",
+    "path": "/journey/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 6933,
+    "originalRatio": 0.002502775145525924
+  },
+  {
+    "name": "en-dark-mobile-projects",
+    "path": "/projects/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-dark-mobile-resume",
+    "path": "/resume/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-dark-mobile-contact",
+    "path": "/contact/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-dark-desktop-home",
+    "path": "/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 4258,
+    "originalRatio": 0.0007944504149501463
+  },
+  {
+    "name": "en-dark-desktop-journey",
+    "path": "/journey/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 13791,
+    "originalRatio": 0.0020956418672501823
+  },
+  {
+    "name": "en-dark-desktop-projects",
+    "path": "/projects/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-dark-desktop-resume",
+    "path": "/resume/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "en-dark-desktop-contact",
+    "path": "/contact/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 343,
+    "originalRatio": 0.0002073058698385069
+  },
+  {
+    "name": "es-light-mobile-home",
+    "path": "/es/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 4722,
+    "originalRatio": 0.0020028630507396214
+  },
+  {
+    "name": "es-light-mobile-journey",
+    "path": "/es/journey/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 2221,
+    "originalRatio": 0.0007904266204012635
+  },
+  {
+    "name": "es-light-mobile-projects",
+    "path": "/es/projects/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-light-mobile-resume",
+    "path": "/es/resume/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-light-mobile-contact",
+    "path": "/es/contact/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-light-desktop-home",
+    "path": "/es/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 4733,
+    "originalRatio": 0.0008892872174122175
+  },
+  {
+    "name": "es-light-desktop-journey",
+    "path": "/es/journey/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 9244,
+    "originalRatio": 0.0013754969883103588
+  },
+  {
+    "name": "es-light-desktop-projects",
+    "path": "/es/projects/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-light-desktop-resume",
+    "path": "/es/resume/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-light-desktop-contact",
+    "path": "/es/contact/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 320,
+    "originalRatio": 0.00019340489314379654
+  },
+  {
+    "name": "es-dark-mobile-home",
+    "path": "/es/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 4258,
+    "originalRatio": 0.0018060548221197179
+  },
+  {
+    "name": "es-dark-mobile-journey",
+    "path": "/es/journey/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 6841,
+    "originalRatio": 0.0024346278749054675
+  },
+  {
+    "name": "es-dark-mobile-projects",
+    "path": "/es/projects/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-dark-mobile-resume",
+    "path": "/es/resume/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-dark-mobile-contact",
+    "path": "/es/contact/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-dark-desktop-home",
+    "path": "/es/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 4258,
+    "originalRatio": 0.0008000390812890813
+  },
+  {
+    "name": "es-dark-desktop-journey",
+    "path": "/es/journey/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 13681,
+    "originalRatio": 0.002035717686831893
+  },
+  {
+    "name": "es-dark-desktop-projects",
+    "path": "/es/projects/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-dark-desktop-resume",
+    "path": "/es/resume/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 0,
+    "originalRatio": 0
+  },
+  {
+    "name": "es-dark-desktop-contact",
+    "path": "/es/contact/",
+    "changedPixels": 0,
+    "ratio": 0,
+    "originalChangedPixels": 322,
+    "originalRatio": 0.00019461367372594526
+  }
+]

@@ -8,7 +8,9 @@ test.describe('gateway application screens', () => {
       const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
 
       expect(response?.ok()).toBe(true);
-      await expect(page.locator('app-root, main').first()).toBeVisible();
+
+      await expect(page.locator('app-root')).toHaveCount(1);
+
       await page.screenshot({
         path: `artifacts/apps/web/app-e2e/gateway${route.replaceAll('/', '-') ?? 'root'}.png`,
         fullPage: true,

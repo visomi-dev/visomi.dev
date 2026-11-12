@@ -1,0 +1,9 @@
+{
+  "mutedDark": "#919191",
+  "colors": [
+    {
+      "before": ["text-muted-light/60", "dark:text-muted-dark/40"],
+      "color": "rgb(145, 145, 145)"
+    }
+  ]
+}

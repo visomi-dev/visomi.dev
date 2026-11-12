@@ -1,11 +1,13 @@
-import { startSocialImageWorker } from './social-images/worker.js';
+import { startSocialImageWorker } from './social-images/worker';
 
 const bootstrap = async () => {
   const { close } = startSocialImageWorker();
 
   const shutdown = async (signal: string) => {
     console.log(`[ worker ] shutting down after ${signal}`);
+
     await close();
+
     process.exit(0);
   };
 
@@ -20,7 +22,7 @@ const bootstrap = async () => {
   console.log('[ worker ] social image worker ready');
 };
 
-bootstrap().catch((error: unknown) => {
-  console.error('[ worker ] failed to bootstrap worker', error);
+bootstrap().catch(() => {
+  console.error('[ worker ] failed to bootstrap worker');
   process.exit(1);
 });

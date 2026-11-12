@@ -1,0 +1,202 @@
+[
+  {
+    "name": "en-light-mobile-home",
+    "path": "/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-mobile-journey",
+    "path": "/journey/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-mobile-projects",
+    "path": "/projects/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-mobile-resume",
+    "path": "/resume/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-mobile-contact",
+    "path": "/contact/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-desktop-home",
+    "path": "/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-desktop-journey",
+    "path": "/journey/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-desktop-projects",
+    "path": "/projects/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-desktop-resume",
+    "path": "/resume/",
+    "status": "captured"
+  },
+  {
+    "name": "en-light-desktop-contact",
+    "path": "/contact/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-mobile-home",
+    "path": "/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-mobile-journey",
+    "path": "/journey/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-mobile-projects",
+    "path": "/projects/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-mobile-resume",
+    "path": "/resume/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-mobile-contact",
+    "path": "/contact/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-desktop-home",
+    "path": "/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-desktop-journey",
+    "path": "/journey/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-desktop-projects",
+    "path": "/projects/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-desktop-resume",
+    "path": "/resume/",
+    "status": "captured"
+  },
+  {
+    "name": "en-dark-desktop-contact",
+    "path": "/contact/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-mobile-home",
+    "path": "/es/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-mobile-journey",
+    "path": "/es/journey/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-mobile-projects",
+    "path": "/es/projects/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-mobile-resume",
+    "path": "/es/resume/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-mobile-contact",
+    "path": "/es/contact/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-desktop-home",
+    "path": "/es/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-desktop-journey",
+    "path": "/es/journey/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-desktop-projects",
+    "path": "/es/projects/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-desktop-resume",
+    "path": "/es/resume/",
+    "status": "captured"
+  },
+  {
+    "name": "es-light-desktop-contact",
+    "path": "/es/contact/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-mobile-home",
+    "path": "/es/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-mobile-journey",
+    "path": "/es/journey/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-mobile-projects",
+    "path": "/es/projects/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-mobile-resume",
+    "path": "/es/resume/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-mobile-contact",
+    "path": "/es/contact/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-desktop-home",
+    "path": "/es/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-desktop-journey",
+    "path": "/es/journey/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-desktop-projects",
+    "path": "/es/projects/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-desktop-resume",
+    "path": "/es/resume/",
+    "status": "captured"
+  },
+  {
+    "name": "es-dark-desktop-contact",
+    "path": "/es/contact/",
+    "status": "captured"
+  }
+]

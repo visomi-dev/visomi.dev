@@ -1,14 +1,17 @@
 {
-  "name": "site",
+  "name": "web-site",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/web/site/src",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals", "{workspaceRoot}/assets/brand/*.svg"]
+  },
   "targets": {
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist/apps/web/site"],
       "options": {
-        "command": "pnpm exec astro build --root apps/web/site --remote",
+        "command": "pnpm exec astro build --root apps/web/site",
         "cwd": "."
       }
     },
@@ -16,16 +19,15 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist/apps/web/site"],
       "options": {
-        "command": "pnpm exec astro build --root apps/web/site --remote",
-        "cwd": ".",
-        "envFile": "./apps/web/site/.env"
+        "command": "pnpm exec astro build --root apps/web/site",
+        "cwd": "."
       }
     },
     "build-static": {
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist/apps/web/site"],
       "options": {
-        "command": "WEBSITE_OUTPUT_MODE=static pnpm exec astro build --root apps/web/site --remote",
+        "command": "WEBSITE_OUTPUT_MODE=static pnpm exec astro build --root apps/web/site",
         "cwd": ".",
         "env": {
           "WEBSITE_OUTPUT_MODE": "static"
@@ -44,7 +46,7 @@
       "executor": "nx:run-commands",
       "continuous": true,
       "options": {
-        "command": "pnpm exec astro build --root apps/web/site --remote && pnpm exec astro preview --root apps/web/site --host 0.0.0.0 --port 4300",
+        "command": "pnpm exec astro build --root apps/web/site && pnpm exec astro preview --root apps/web/site --host 0.0.0.0 --port 4300",
         "cwd": "."
       }
     },
@@ -52,9 +54,8 @@
       "executor": "nx:run-commands",
       "continuous": true,
       "options": {
-        "command": "pnpm exec astro build --root apps/web/site --remote && pnpm exec astro preview --root apps/web/site --host 0.0.0.0 --port 4300",
-        "cwd": ".",
-        "envFile": "./apps/web/site/.env"
+        "command": "pnpm exec astro build --root apps/web/site && pnpm exec astro preview --root apps/web/site --host 0.0.0.0 --port 4300",
+        "cwd": "."
       }
     },
     "typecheck": {

@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 
+import faviconUrl from '../../../../../assets/brand/favicon.svg?url';
+
 import type { Locale, PageId } from '../i18n/translations';
 import { getSeoImage } from '../content/seo-images';
 import { getPagePath, locales } from '../i18n/translations';
@@ -25,6 +27,7 @@ const canonicalUrl = new URL(getPagePath(locale, page), baseUrl).toString();
 const defaultUrl = new URL(getPagePath('en', page), baseUrl).toString();
 const seoImage = getSeoImage(page, locale);
 const socialImageUrl = new URL(seoImage.image, baseUrl).toString();
+const ContentElement = page === 'home' ? 'main' : 'div';
 const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'];
 ---
 
@@ -32,8 +35,11 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
 <html lang={locale} class="dark">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <meta name="generator" content={Astro.generator} />
+
     <script is:inline data-astro-rerun>
       (() => {
         const html = document.documentElement;
@@ -41,6 +47,7 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
           try {
             const savedTheme = window.localStorage.getItem('theme');
             const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
             return savedTheme === 'dark' || (!savedTheme && systemDark);
           } catch {
             return true;
@@ -50,46 +57,74 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
         html.classList.toggle('dark', isDark);
       })();
     </script>
+
     <title>{documentTitle}</title>
+
     <meta name="description" content={description} />
+
     <meta property="og:type" content="website" />
+
     <meta property="og:site_name" content={siteTitle} />
+
     <meta property="og:locale" content={locale === 'es' ? 'es_ES' : 'en_US'} />
+
     <meta property="og:title" content={documentTitle} />
+
     <meta property="og:description" content={description} />
+
     <meta property="og:url" content={canonicalUrl} />
+
     <meta property="og:image" content={socialImageUrl} />
+
     <meta property="og:image:width" content="1200" />
+
     <meta property="og:image:height" content="630" />
+
     <meta property="og:image:alt" content={seoImage.alt} />
+
     <meta name="twitter:card" content="summary_large_image" />
+
     <meta name="twitter:title" content={documentTitle} />
+
     <meta name="twitter:description" content={description} />
+
     <meta name="twitter:image" content={socialImageUrl} />
+
     <meta name="twitter:image:alt" content={seoImage.alt} />
+
     <link rel="canonical" href={canonicalUrl} />
+
     <link rel="alternate" hreflang="x-default" href={defaultUrl} />
-    {
-      locales.map((itemLocale) => (
-        <link rel="alternate" hreflang={itemLocale} href={new URL(getPagePath(itemLocale, page), baseUrl).toString()} />
-      ))
-    }
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+
+    {locales.map((itemLocale) => (
+      <link rel="alternate" hreflang={itemLocale} href={new URL(getPagePath(itemLocale, page), baseUrl).toString()} />
+    ))}
+
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
+
     <link rel="prefetch" href={prefetchTargets[0]} />
+
     <link rel="prefetch" href={prefetchTargets[1]} />
+
     <link rel="prefetch" href={prefetchTargets[2]} />
+
     <link rel="prefetch" href={prefetchTargets[3]} />
+
     <link rel="prefetch" href={prefetchTargets[4]} />
+
     <ClientRouter />
   </head>
+
   <body class="min-h-full">
-    <PageNavigationLoader />
+    <PageNavigationLoader locale={locale} />
+
     <Background />
+
     <Navbar locale={locale} currentPage={page} />
 
-    <div class="relative z-10 min-h-screen">
+    <ContentElement class="relative z-10 min-h-screen">
       <slot />
-    </div>
+    </ContentElement>
 
     <div class="site-footer relative z-10" data-print-hidden>
       <Footer locale={locale} />

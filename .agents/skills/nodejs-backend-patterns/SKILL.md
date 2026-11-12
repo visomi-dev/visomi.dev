@@ -1,0 +1,603 @@
+---
+name: nodejs-backend-patterns
+description: 'Optional Node.js pattern reference. Load only when explicitly requested or when the canonical nodejs-express-server skill identifies a specific missing pattern. Do not trigger as a second general backend workflow or reselect the repository stack.'
+---
+
+# Node.js Backend Patterns
+
+Comprehensive guidance for building scalable, maintainable, and production-ready Node.js backend applications with modern frameworks, architectural patterns, and best practices.
+
+## Repository Scope
+
+The canonical backend skill is `nodejs-express-server`; follow it and applicable repository instructions first. Read only the section needed for the current question. Alternatives below are reference material, not recommendations to add a framework, database, cache, DI container, APM service, or authentication system. New dependencies and infrastructure require a demonstrated need and user approval.
+
+Use business-capability-first organization and existing DDD boundaries. Keep domain logic independent of HTTP and storage. Prefer direct composition to containers and extra abstractions. Never log client/business data, payloads, identifiers, raw URLs, IP addresses, user agents, tokens, raw exception messages, or stacks. Use fixed public error codes and an allowlist of technical telemetry fields.
+
+## Optional Reference Topics
+
+- Building REST APIs or GraphQL servers
+- Creating microservices with Node.js
+- Implementing authentication and authorization
+- Designing scalable backend architectures
+- Setting up middleware and error handling
+- Integrating databases (SQL and NoSQL)
+- Building real-time applications with WebSockets
+- Implementing background job processing
+
+## Core Frameworks
+
+### Express.js - Minimalist Framework
+
+**Basic Setup:**
+
+```typescript
+import express, { Request, Response, NextFunction } from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import compression from 'compression';
+
+const app = express();
+
+// Security middleware
+app.use(helmet());
+app.use(cors({ origin: process.env.ALLOWED_ORIGINS?.split(',') }));
+app.use(compression());
+
+// Body parsing
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Request logging
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log({ event: 'request_received' });
+  next();
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+### Fastify - High Performance Framework
+
+**Basic Setup:**
+
+```typescript
+import Fastify from 'fastify';
+import helmet from '@fastify/helmet';
+import cors from '@fastify/cors';
+import compress from '@fastify/compress';
+
+const fastify = Fastify({
+  // Automatic request logging can capture client data. Keep it disabled.
+  logger: false,
+});
+
+// Plugins
+await fastify.register(helmet);
+await fastify.register(cors, { origin: true });
+await fastify.register(compress);
+
+// Type-safe routes with schema validation
+fastify.post<{
+  Body: { name: string; email: string };
+  Reply: { id: string; name: string };
+}>(
+  '/users',
+  {
+    schema: {
+      body: {
+        type: 'object',
+        required: ['name', 'email'],
+        properties: {
+          name: { type: 'string', minLength: 1 },
+          email: { type: 'string', format: 'email' },
+        },
+      },
+    },
+  },
+  async (request, reply) => {
+    const { name, email } = request.body;
+    return { id: '123', name };
+  },
+);
+
+await fastify.listen({ port: 3000, host: '0.0.0.0' });
+```
+
+## Architectural Patterns
+
+### Pattern 1: Domain-First Responsibility Boundaries
+
+**Structure:**
+
+```
+src/
+└── users/                   # Business capability first
+    ├── domain/              # Business rules and domain types
+    ├── application/         # Use cases, only where needed
+    ├── infrastructure/      # Persistence adapters, only where needed
+    └── interfaces/          # HTTP routes and boundary validation
+```
+
+The snippets below illustrate responsibilities, not mandatory files or a complete architecture. Their shorthand paths are relative to a capability; adapt them to the existing domain/application/infrastructure/interfaces boundaries. Do not create every layer for a small operation.
+
+**HTTP Boundary:**
+
+```typescript
+// controllers/user.controller.ts
+import { Request, Response, NextFunction } from 'express';
+import { UserService } from '../services/user.service';
+import { CreateUserDTO, UpdateUserDTO } from '../types/user.types';
+
+export class UserController {
+  constructor(private userService: UserService) {}
+
+  async createUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userData: CreateUserDTO = res.locals.validated.body;
+      const user = await this.userService.createUser(userData);
+      res.status(201).json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const user = await this.userService.getUserById(id);
+      res.json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const updates: UpdateUserDTO = res.locals.validated.body;
+      const user = await this.userService.updateUser(id, updates);
+      res.json(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await this.userService.deleteUser(id);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+```
+
+**Service Layer:**
+
+```typescript
+// services/user.service.ts
+import { UserRepository } from '../repositories/user.repository';
+import { CreateUserDTO, UpdateUserDTO, User } from '../types/user.types';
+import { NotFoundError, ValidationError } from '../utils/errors';
+import bcrypt from 'bcrypt';
+
+export class UserService {
+  constructor(private userRepository: UserRepository) {}
+
+  async createUser(userData: CreateUserDTO): Promise<User> {
+    // Validation
+    const existingUser = await this.userRepository.findByEmail(userData.email);
+    if (existingUser) {
+      throw new ValidationError('Email already exists');
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+    // Create user
+    const user = await this.userRepository.create({
+      ...userData,
+      password: hashedPassword,
+    });
+
+    // Remove password from response
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword as User;
+  }
+
+  async getUserById(id: string): Promise<User> {
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword as User;
+  }
+
+  async updateUser(id: string, updates: UpdateUserDTO): Promise<User> {
+    const user = await this.userRepository.update(id, updates);
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword as User;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    const deleted = await this.userRepository.delete(id);
+    if (!deleted) {
+      throw new NotFoundError('User not found');
+    }
+  }
+}
+```
+
+**Repository Layer:**
+
+```typescript
+// repositories/user.repository.ts
+import { Pool } from 'pg';
+import { CreateUserDTO, UpdateUserDTO, UserEntity } from '../types/user.types';
+
+export class UserRepository {
+  constructor(private db: Pool) {}
+
+  async create(userData: CreateUserDTO & { password: string }): Promise<UserEntity> {
+    const query = `
+      INSERT INTO users (name, email, password)
+      VALUES ($1, $2, $3)
+      RETURNING id, name, email, password, created_at, updated_at
+    `;
+    const { rows } = await this.db.query(query, [userData.name, userData.email, userData.password]);
+    return rows[0];
+  }
+
+  async findById(id: string): Promise<UserEntity | null> {
+    const query = 'SELECT * FROM users WHERE id = $1';
+    const { rows } = await this.db.query(query, [id]);
+    return rows[0] || null;
+  }
+
+  async findByEmail(email: string): Promise<UserEntity | null> {
+    const query = 'SELECT * FROM users WHERE email = $1';
+    const { rows } = await this.db.query(query, [email]);
+    return rows[0] || null;
+  }
+
+  async update(id: string, updates: UpdateUserDTO): Promise<UserEntity | null> {
+    const fields = Object.keys(updates);
+    const values = Object.values(updates);
+
+    const setClause = fields.map((field, idx) => `${field} = $${idx + 2}`).join(', ');
+
+    const query = `
+      UPDATE users
+      SET ${setClause}, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1
+      RETURNING *
+    `;
+
+    const { rows } = await this.db.query(query, [id, ...values]);
+    return rows[0] || null;
+  }
+
+  async delete(id: string): Promise<boolean> {
+    const query = 'DELETE FROM users WHERE id = $1';
+    const { rowCount } = await this.db.query(query, [id]);
+    return rowCount > 0;
+  }
+}
+```
+
+### Pattern 2: Dependency Injection
+
+Prefer ordinary constructor/function injection and a small composition root. A container is optional, only for an approved requirement; see [references/advanced-patterns.md](references/advanced-patterns.md) if needed.
+
+## Middleware Patterns
+
+### Authentication Middleware
+
+```typescript
+// middleware/auth.middleware.ts
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import { UnauthorizedError } from '../utils/errors';
+
+interface JWTPayload {
+  userId: string;
+  email: string;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JWTPayload;
+    }
+  }
+}
+
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+
+    if (!token) {
+      throw new UnauthorizedError('No token provided');
+    }
+
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as JWTPayload;
+
+    req.user = payload;
+    next();
+  } catch (error) {
+    next(new UnauthorizedError('Invalid token'));
+  }
+};
+
+export const authorize = (...roles: string[]) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return next(new UnauthorizedError('Not authenticated'));
+    }
+
+    // Check if user has required role
+    const hasRole = roles.some((role) => req.user?.roles?.includes(role));
+
+    if (!hasRole) {
+      return next(new UnauthorizedError('Insufficient permissions'));
+    }
+
+    next();
+  };
+};
+```
+
+### Validation Middleware
+
+```typescript
+// middleware/validation.middleware.ts
+import { Request, Response, NextFunction } from 'express';
+import { AnyZodObject, ZodError } from 'zod';
+import { ValidationError } from '../utils/errors';
+
+export const validate = (schema: AnyZodObject) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const validated = await schema.parseAsync({
+        body: req.body,
+        query: req.query,
+        params: req.params,
+      });
+      // Preserve stripping/transforms; handlers consume this, not raw request data.
+      res.locals.validated = validated;
+      next();
+    } catch (error) {
+      if (error instanceof ZodError) {
+        next(new ValidationError('VALIDATION_FAILED'));
+      } else {
+        next(error);
+      }
+    }
+  };
+};
+
+// Usage with Zod
+import { z } from 'zod';
+
+const createUserSchema = z.object({
+  body: z.object({
+    name: z.string().min(1),
+    email: z.string().email(),
+    password: z.string().min(8),
+  }),
+});
+
+// Define corresponding schemas for every route using validated body/params.
+router.post('/users', validate(createUserSchema), (req, res, next) => userController.createUser(req, res, next));
+```
+
+### Rate Limiting Middleware
+
+```typescript
+// middleware/rate-limit.middleware.ts
+import rateLimit from 'express-rate-limit';
+import RedisStore from 'rate-limit-redis';
+import Redis from 'ioredis';
+
+const redis = new Redis({
+  host: process.env.REDIS_HOST,
+  port: parseInt(process.env.REDIS_PORT || '6379'),
+});
+
+export const apiLimiter = rateLimit({
+  store: new RedisStore({
+    client: redis,
+    prefix: 'rl:',
+  }),
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+export const authLimiter = rateLimit({
+  store: new RedisStore({
+    client: redis,
+    prefix: 'rl:auth:',
+  }),
+  windowMs: 15 * 60 * 1000,
+  max: 5, // Stricter limit for auth endpoints
+  skipSuccessfulRequests: true,
+});
+```
+
+### Request Logging Middleware
+
+```typescript
+// middleware/logger.middleware.ts
+import { Request, Response, NextFunction } from 'express';
+import pino from 'pino';
+
+const logger = pino({
+  level: process.env.LOG_LEVEL || 'info',
+  transport: {
+    target: 'pino-pretty',
+    options: { colorize: true },
+  },
+});
+
+export const requestLogger = (req: Request, res: Response, next: NextFunction) => {
+  const start = Date.now();
+
+  // Log response when finished
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    logger.info({
+      event: 'request_completed',
+      status: res.statusCode,
+      durationMs: duration,
+    });
+  });
+
+  next();
+};
+
+export { logger };
+```
+
+## Error Handling
+
+### Custom Error Classes
+
+```typescript
+// utils/errors.ts
+export class AppError extends Error {
+  constructor(
+    public message: string,
+    public statusCode: number = 500,
+    public isOperational: boolean = true,
+  ) {
+    super(message);
+    Object.setPrototypeOf(this, AppError.prototype);
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+export class ValidationError extends AppError {
+  constructor(
+    message: string,
+    public errors?: any[],
+  ) {
+    super(message, 400);
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(message: string = 'Resource not found') {
+    super(message, 404);
+  }
+}
+
+export class UnauthorizedError extends AppError {
+  constructor(message: string = 'Unauthorized') {
+    super(message, 401);
+  }
+}
+
+export class ForbiddenError extends AppError {
+  constructor(message: string = 'Forbidden') {
+    super(message, 403);
+  }
+}
+
+export class ConflictError extends AppError {
+  constructor(message: string) {
+    super(message, 409);
+  }
+}
+```
+
+### Global Error Handler
+
+```typescript
+// middleware/error-handler.ts
+import { Request, Response, NextFunction } from 'express';
+import { AppError, ValidationError } from '../utils/errors';
+import { logger } from './logger.middleware';
+
+export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      status: 'error',
+      error: err instanceof ValidationError ? 'VALIDATION_FAILED' : 'REQUEST_FAILED',
+    });
+  }
+
+  // Log unexpected errors
+  logger.error({
+    event: 'request_failed',
+  });
+
+  // Never expose internal errors or request data in any environment.
+  res.status(500).json({
+    status: 'error',
+    error: 'INTERNAL_ERROR',
+  });
+};
+
+// Async error wrapper
+export const asyncHandler = (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+};
+```
+
+## Database Patterns
+
+Node.js supports both SQL and NoSQL databases. Use connection pooling for all production databases.
+
+Key patterns covered in [references/advanced-patterns.md](references/advanced-patterns.md):
+
+- **PostgreSQL with connection pool** — `pg` Pool configuration and graceful shutdown
+- **MongoDB with Mongoose** — connection management and schema definition
+- **Transaction pattern** — `BEGIN`/`COMMIT`/`ROLLBACK` with `pg` client
+
+## Authentication & Authorization
+
+JWT-based auth with access tokens (short-lived, 15m) and refresh tokens (7d). Full `AuthService` implementation with `bcrypt` password comparison in [references/advanced-patterns.md](references/advanced-patterns.md).
+
+## Caching Strategies
+
+Redis-backed `CacheService` with get/set/delete/invalidatePattern, plus a `@Cacheable` decorator for method-level caching. See [references/advanced-patterns.md](references/advanced-patterns.md).
+
+## API Response Format
+
+Standardized `ApiResponse` helper with `success`, `error`, and `paginated` static methods. See [references/advanced-patterns.md](references/advanced-patterns.md).
+
+## Best Practices
+
+1. **Use TypeScript**: Type safety prevents runtime errors
+2. **Implement proper error handling**: Use custom error classes
+3. **Validate input**: Use libraries like Zod or Joi
+4. **Use environment variables**: Never hardcode secrets
+5. **Implement safe logging**: Use only approved technical fields, never client data or raw errors
+6. **Add rate limiting**: Prevent abuse
+7. **Use HTTPS**: Always in production
+8. **Implement CORS properly**: Don't use `*` in production
+9. **Compose dependencies simply**: Prefer constructor/function injection; containers are optional
+10. **Write tests**: Unit, integration, and E2E tests
+11. **Handle graceful shutdown**: Clean up resources
+12. **Use connection pooling**: For databases
+13. **Implement health checks**: For monitoring
+14. **Use compression**: Reduce response size
+15. **Monitor only when needed**: Use existing approved, privacy-safe observability; do not add APM automatically
+
+## Testing Patterns
+
+See `javascript-testing-patterns` skill for comprehensive testing guidance.

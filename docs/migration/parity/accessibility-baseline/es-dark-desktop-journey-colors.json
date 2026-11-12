@@ -1,0 +1,21 @@
+{
+  "mutedDark": "#919191",
+  "colors": [
+    {
+      "before": ["text-neutral-300", "dark:text-neutral-800", "text-2xl"],
+      "color": "oklch(0.556 0 none)"
+    },
+    {
+      "before": ["text-neutral-400", "dark:text-neutral-700"],
+      "color": "oklch(0.708 0 none)"
+    },
+    {
+      "before": ["text-neutral-400", "dark:text-neutral-600", "pi-arrow-right"],
+      "color": "oklch(0.439 0 none)"
+    },
+    {
+      "before": ["dark:text-neutral-500", "text-muted-light"],
+      "color": "oklch(0.708 0 none)"
+    }
+  ]
+}

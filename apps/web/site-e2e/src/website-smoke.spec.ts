@@ -19,7 +19,9 @@ test.describe('website smoke', () => {
           const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
 
           expect(response?.ok()).toBeTruthy();
+
           await expect(page.locator('main, section').first()).toBeVisible();
+
           await expect(page.locator('h1').first()).toBeVisible();
         });
       }

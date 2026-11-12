@@ -1,18 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { App } from './app';
 
-describe('App', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App],
-    }).compileComponents();
-  });
+describe('private application shell', () => {
+  it('renders an empty outlet without exposing contacts or template business UI', async () => {
+    await TestBed.configureTestingModule({ imports: [App], providers: [provideRouter([])] }).compileComponents();
 
-  it('should render the preview heading', async () => {
     const fixture = TestBed.createComponent(App);
+
     await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Debug the HTML cards before turning them into PNGs.');
+
+    const element = fixture.nativeElement as HTMLElement;
+
+    expect(element.querySelector('router-outlet')).toBeTruthy();
+    expect(element.textContent?.trim()).toBe('');
+    expect(element.querySelector('form, table, h1')).toBeNull();
   });
 });

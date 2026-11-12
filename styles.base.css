@@ -1,0 +1,117 @@
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/manrope/latin-600.css';
+@import '@fontsource/manrope/latin-700.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import 'tailwindcss' source(none);
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Manrope', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html {
+    min-height: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-blue-700);
+    color: var(--color-white);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* An external image keeps SVG mask IDs isolated across simultaneous indicators. */
+@utility ui-loader {
+  background-color: currentColor;
+  mask-image: url('./assets/brand/visomi-loader-smil.svg');
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-mode: alpha;
+
+  @media (prefers-reduced-motion: reduce) {
+    mask-image: url('./assets/brand/isotype.svg');
+  }
+}
+
+@utility ui-focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+
+  &:focus-visible {
+    outline-color: var(--color-blue-600);
+  }
+
+  .dark &:focus-visible {
+    outline-color: var(--color-blue-400);
+  }
+}
+
+@keyframes ui-theme-enter {
+  from {
+    translate: 0 4rem;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes ui-theme-leave {
+  from {
+    translate: 0 0;
+    opacity: 1;
+  }
+  to {
+    translate: 0 -4rem;
+    opacity: 0;
+  }
+}
+
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    .ui-theme-switcher[data-theme-animated] {
+      .ui-theme-sun {
+        animation: ui-theme-enter 400ms ease-in-out;
+      }
+
+      .ui-theme-moon {
+        animation: ui-theme-leave 400ms ease-in-out;
+      }
+
+      .dark & .ui-theme-sun {
+        animation-name: ui-theme-leave;
+      }
+
+      .dark & .ui-theme-moon {
+        animation-name: ui-theme-enter;
+      }
+    }
+  }
+}

@@ -1,90 +1,42 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "tui": {
-    "enabled": false
-  },
+  "analytics": true,
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
-      "!{projectRoot}/.eslintrc.json",
-      "!{projectRoot}/eslint.config.mjs",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/test-setup.[jt]s"
+      "!{projectRoot}/tsconfig.spec.json"
     ],
-    "sharedGlobals": []
-  },
-  "targetDefaults": {
-    "@angular/build:application": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
-    },
-    "@nx/eslint:lint": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs"
-      ]
-    },
-    "@nx/esbuild:esbuild": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
-    },
-    "@nx/js:tsc": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
-    },
-    "@nx/vitest:test": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "^production"
-      ]
-    }
-  },
-  "release": {
-    "projects": [
-      "api"
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/ci.yml",
+      "{workspaceRoot}/nx.json",
+      "{workspaceRoot}/tsconfig.base.json",
+      "{workspaceRoot}/tsconfig.json",
+      "{workspaceRoot}/package.json",
+      "{workspaceRoot}/pnpm-lock.yaml",
+      "{workspaceRoot}/pnpm-workspace.yaml",
+      "{workspaceRoot}/.node-version",
+      "{workspaceRoot}/patches/**/*"
     ],
-    "projectsRelationship": "independent",
-    "docker": {
-      "skipVersionActions": true
-    }
+    "webStyles": ["{workspaceRoot}/styles.base.css", "{workspaceRoot}/.postcssrc.json"]
   },
   "plugins": [
     {
-      "plugin": "@nx/playwright/plugin",
+      "plugin": "@nx/rolldown/plugin",
       "options": {
-        "targetName": "e2e",
-        "ciTargetName": "e2e-ci"
+        "buildTargetName": "build"
       }
     },
+    {
+      "plugin": "@nx/js/typescript",
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
+      }
+    },
+    "@nx/js/tsx",
     {
       "plugin": "@nx/eslint/plugin",
       "options": {
@@ -92,56 +44,64 @@
       }
     },
     {
-      "plugin": "@nx/docker",
-      "options": {
-        "buildTarget": "docker:build",
-        "runTarget": "docker:run"
-      }
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "serveTargetName": "serve",
-        "devTargetName": "dev",
-        "previewTargetName": "preview",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
-      }
-    },
-    {
       "plugin": "@nx/vitest",
       "options": {
-        "testTargetName": "vite:test"
+        "testTargetName": "test",
+        "testMode": "watch"
       }
     },
     {
-      "plugin": "@nx/jest/plugin",
+      "plugin": "@nx/playwright/plugin",
       "options": {
-        "targetName": "test"
-      },
-      "exclude": [
-        "apps/api-e2e/**/*",
-        "apps/worker-e2e/**/*"
-      ]
+        "targetName": "e2e"
+      }
     }
   ],
+  "targetDefaults": {
+    "lint": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{projectRoot}/eslint.config.mjs",
+        "{workspaceRoot}/tools/lint-rules/**/*",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ]
+    },
+    "@angular/build:application": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "@angular/build:unit-test": {
+      "cache": true,
+      "inputs": ["default", "^production"]
+    }
+  },
   "generators": {
+    "@nx/angular:component": {
+      "style": "css",
+      "inlineTemplate": false,
+      "inlineStyle": false
+    },
+    "@schematics/angular:component": {
+      "inlineTemplate": false,
+      "inlineStyle": false,
+      "style": "css"
+    },
+    "@nx/angular:service": {
+      "injectable": false
+    },
+    "@schematics/angular:service": {
+      "injectable": false
+    },
     "@nx/angular:application": {
       "e2eTestRunner": "playwright",
       "linter": "eslint",
       "style": "css",
-      "unitTestRunner": "vitest-analog"
-    },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "vitest-analog"
-    },
-    "@nx/angular:component": {
-      "style": "css"
+      "unitTestRunner": "vitest-angular"
     }
-  },
-  "analytics": true
+  }
 }

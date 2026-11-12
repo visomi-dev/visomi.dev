@@ -1,4 +1,4 @@
-import { normalizeSocialImageCard, SOCIAL_IMAGE_RULES } from '@visomi.dev/shared-social-images';
+import { normalizeSocialImageCard, SOCIAL_IMAGE_RULES } from '@visomi.dev/shared-social-images/rules';
 
 describe('social image rules', () => {
   it('caps supporting highlights and keeps the dominant message compact', () => {

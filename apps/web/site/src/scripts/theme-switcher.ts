@@ -58,6 +58,7 @@ const toggleTheme = (html: HTMLElement) => {
         darkIcon.classList.remove('hidden', 'upward-leave');
         darkIcon.classList.add('upward-enter');
       }, 350);
+
       return;
     }
 

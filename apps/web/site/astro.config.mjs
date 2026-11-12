@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import db from '@astrojs/db';
 import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -18,12 +17,12 @@ export default defineConfig({
     mode: 'middleware',
   }),
   base,
-  integrations: [db()],
   output,
   outDir: '../../../dist/apps/web/site',
   publicDir: './public',
   srcDir: './src',
   site,
+  build: { inlineStylesheets: 'never' },
   trailingSlash: 'always',
   i18n: {
     defaultLocale: 'en',
@@ -33,6 +32,8 @@ export default defineConfig({
     },
   },
   vite: {
+    resolve: { tsconfigPaths: true },
+    build: { assetsInlineLimit: 0 },
     plugins: [tailwindcss()],
   },
 });

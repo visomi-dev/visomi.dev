@@ -8,9 +8,15 @@ const getRequiredEnv = (name: string) => {
   return value;
 };
 
+const concurrency = Number(process.env['WORKER_CONCURRENCY'] ?? '1');
+
+if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 8) {
+  throw new Error('worker_concurrency_invalid');
+}
+
 const workerConfig = {
   chromiumExecutablePath: process.env['PUPPETEER_EXECUTABLE_PATH']?.trim(),
-  concurrency: Number(process.env['WORKER_CONCURRENCY'] ?? '1'),
+  concurrency,
   redisUrl: getRequiredEnv('REDIS_URL'),
 };
 

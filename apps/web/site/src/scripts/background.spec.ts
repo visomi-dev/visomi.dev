@@ -34,6 +34,7 @@ vi.mock('three', () => {
   }
 
   class PlaneGeometry {}
+
   class Mesh {}
 
   class WebGLRenderer {
@@ -91,7 +92,9 @@ describe('initBackground', () => {
     expect(darkBackground?.querySelector('canvas')).not.toBeNull();
 
     document.documentElement.classList.add('dark');
+
     await Promise.resolve();
+
     vi.advanceTimersByTime(700);
 
     expect(lightBackground?.classList.contains('hidden')).toBe(true);
@@ -108,6 +111,7 @@ describe('initBackground', () => {
 
   it('handles shader loading failures without throwing', async () => {
     const { __resetBackgroundForTesting } = await import('./background');
+
     __resetBackgroundForTesting();
 
     document.body.innerHTML = `
@@ -202,11 +206,13 @@ describe('initBackground', () => {
 
   it('registers DOMContentLoaded listener when document is still loading', async () => {
     const originalReadyState = document.readyState;
+
     Object.defineProperty(document, 'readyState', { configurable: true, value: 'loading' });
 
     const addEventListenerSpy = vi.spyOn(document, 'addEventListener');
 
     vi.resetModules();
+
     await import('./background');
 
     expect(addEventListenerSpy).toHaveBeenCalledWith('DOMContentLoaded', expect.any(Function), expect.anything());

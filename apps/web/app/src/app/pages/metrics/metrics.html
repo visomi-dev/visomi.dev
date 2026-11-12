@@ -1,0 +1,92 @@
+<main class="min-h-screen bg-white p-6 text-slate-900 sm:p-10 dark:bg-slate-950 dark:text-slate-100">
+  <div class="mx-auto max-w-5xl space-y-6">
+    <h1 class="text-2xl font-semibold" i18n="@@metricsHeroTitle">Technical metrics</h1>
+
+    <nav class="flex flex-wrap gap-4" aria-label="Private navigation" i18n-aria-label="@@metricsNavigationLabel">
+      <a routerLink="/dashboard" class="underline" i18n="@@metricsContactLink">Contact requests</a>
+
+      <a href="/app/en/metrics" class="underline" lang="en">English</a>
+
+      <a href="/app/es/metrics" class="underline" lang="es">Español</a>
+    </nav>
+
+    <p i18n="@@metricsScopeDescription">
+      HTTP measurements from this process over the last 15 minutes. Local counters reset on restart. Latency is capped
+      at 60 seconds.
+    </p>
+
+    <button
+      class="rounded border px-4 py-2 disabled:opacity-50"
+      type="button"
+      [disabled]="refreshing()"
+      (click)="refresh()"
+      i18n="@@metricsRefreshButton"
+    >
+      Refresh metrics
+    </button>
+
+    @if (refreshing()) {
+      <p role="status" i18n="@@metricsRefreshLoading">Refreshing metrics…</p>
+    }
+
+    @if (snapshot(); as snapshot) {
+      <p><span i18n="@@metricsProcessLabel">Process:</span> {{ snapshot.scope }}</p>
+
+      @if (snapshot.traceExportEnabled) {
+        <p i18n="@@metricsExportEnabled">External trace export is enabled in the configuration.</p>
+      } @else {
+        <p i18n="@@metricsExportDisabled">External trace export is disabled in the configuration.</p>
+      }
+
+      @if (snapshot.metrics; as metrics) {
+        @if (metrics.requests === 0) {
+          <p role="status" i18n="@@metricsEmptyState">Waiting for HTTP measurements.</p>
+        }
+
+        <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="rounded border p-5">
+            <dt i18n="@@metricsRequestsLabel">HTTP requests</dt>
+
+            <dd class="mt-2 text-3xl" data-metric="requests">{{ metrics.requests | number }}</dd>
+          </div>
+
+          <div class="rounded border p-5">
+            <dt i18n="@@metricsClientErrorsLabel">Client errors</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.clientErrors | number }}</dd>
+          </div>
+
+          <div class="rounded border p-5">
+            <dt i18n="@@metricsServerErrorsLabel">Server errors</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.serverErrors | number }}</dd>
+          </div>
+
+          <div class="rounded border p-5">
+            <dt i18n="@@metricsAbortedLabel">Aborted requests</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.aborted | number }}</dd>
+          </div>
+
+          <div class="rounded border p-5">
+            <dt i18n="@@metricsMeanLatencyLabel">Mean latency</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.meanLatencyMs | number: '1.0-1' }} ms</dd>
+          </div>
+
+          <div class="rounded border p-5">
+            <dt i18n="@@metricsMaxLatencyLabel">Maximum latency</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.maxLatencyMs | number: '1.0-1' }} ms</dd>
+          </div>
+        </dl>
+      } @else {
+        <p role="status" i18n="@@metricsDisabledState">
+          Local metrics collection is disabled. Enable it in the service configuration before collecting measurements.
+        </p>
+      }
+    } @else {
+      <p role="alert" i18n="@@metricsErrorState">Metrics could not be loaded. Please try again.</p>
+    }
+  </div>
+</main>

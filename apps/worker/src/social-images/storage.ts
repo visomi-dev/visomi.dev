@@ -4,10 +4,14 @@ import {
   createArtifactRecord,
   createSocialImageRunId,
   ensureParentDirectory,
-  SOCIAL_IMAGE_RULES,
   writeSocialImageManifest,
-} from '@visomi.dev/shared-social-images';
-import type { SocialImageArtifact, SocialImageBatchResult, SocialImageTarget } from '@visomi.dev/shared-social-images';
+} from '@visomi.dev/shared-social-images/paths';
+import { SOCIAL_IMAGE_RULES } from '@visomi.dev/shared-social-images/rules';
+import type {
+  SocialImageArtifact,
+  SocialImageBatchResult,
+  SocialImageTarget,
+} from '@visomi.dev/shared-social-images/types';
 
 type SocialImageStorage = {
   finalizeRun: (runId: string, artifacts: SocialImageArtifact[]) => Promise<SocialImageBatchResult>;
@@ -34,6 +38,7 @@ const createLocalSocialImageStorage = (): SocialImageStorage => ({
     const artifact = createArtifactRecord(runId, target);
 
     await ensureParentDirectory(artifact.tempFilePath);
+
     await writeFile(artifact.tempFilePath, '');
 
     return artifact;

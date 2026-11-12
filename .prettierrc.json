@@ -8,6 +8,13 @@
   "tabWidth": 2,
   "overrides": [
     {
+      "files": "*.mjml",
+      "options": {
+        "parser": "html",
+        "htmlWhitespaceSensitivity": "ignore"
+      }
+    },
+    {
       "files": "*.html",
       "options": {
         "parser": "angular"

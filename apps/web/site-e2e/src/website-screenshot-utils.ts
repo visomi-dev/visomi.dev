@@ -104,6 +104,7 @@ const screenshotsRoot = join(process.cwd(), 'artifacts/apps/web/site-e2e');
 
 const waitForPageToSettle = async (page: Page) => {
   await page.waitForLoadState('load');
+
   await page.evaluate(async () => {
     try {
       await document.fonts.ready;
@@ -111,7 +112,10 @@ const waitForPageToSettle = async (page: Page) => {
       // Ignore browser-side readiness failures so screenshots can still complete.
     }
   });
-  await page.waitForTimeout(500);
+
+  await page.evaluate(async () => {
+    await Promise.all([...document.images].map((image) => image.decode().catch(() => undefined)));
+  });
 };
 
 export const captureScreenshot = async (browser: Browser, route: ScreenshotRoute, viewport: ScreenshotViewport) => {
@@ -120,17 +124,20 @@ export const captureScreenshot = async (browser: Browser, route: ScreenshotRoute
 
   try {
     await page.goto(route.path, { waitUntil: 'domcontentloaded' });
+
     await waitForPageToSettle(page);
 
     const outputDirectory = join(screenshotsRoot, route.locale, viewport.name);
 
     await mkdir(outputDirectory, { recursive: true });
 
-    await page.screenshot({
+    const screenshot = await page.screenshot({
       path: join(outputDirectory, `${route.name}.png`),
       fullPage: true,
       scale: 'css',
     });
+
+    return screenshot;
   } finally {
     await context.close();
   }

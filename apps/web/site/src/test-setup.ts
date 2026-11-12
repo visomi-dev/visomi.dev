@@ -14,10 +14,11 @@ Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: s
 Object.defineProperty(window, 'localStorage', { configurable: true, value: storage });
 
 class MockIntersectionObserver {
-  callback: IntersectionObserverCallback;
-  options: IntersectionObserverInit | undefined;
   static lastCallback: IntersectionObserverCallback | null = null;
   static lastInstance: MockIntersectionObserver | null = null;
+
+  callback: IntersectionObserverCallback;
+  options: IntersectionObserverInit | undefined;
 
   constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
     this.callback = callback;

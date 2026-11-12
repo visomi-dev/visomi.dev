@@ -29,14 +29,14 @@ const getSocialImageTempFilePath = (runId: string, target: SocialImageTarget) =>
 const getSocialImageManifestPath = (runId: string) => resolve(getSocialImageRunDirectory(runId), 'manifest.json');
 
 const getWebsitePublicAssetPath = (target: SocialImageTarget) =>
-  resolve(getWorkspaceRoot(), 'apps/website/public', getSocialImagePublicRelativePath(target));
+  resolve(getWorkspaceRoot(), 'apps/web/site/public', getSocialImagePublicRelativePath(target));
 
-const getWebsitePublicAssetRoot = () => resolve(getWorkspaceRoot(), 'apps/website/public');
+const getWebsitePublicAssetRoot = () => resolve(getWorkspaceRoot(), 'apps/web/site/public');
 
 const getWebsiteBuiltAssetPath = (target: SocialImageTarget) =>
-  resolve(getWorkspaceRoot(), 'dist/apps/website/client', getSocialImagePublicRelativePath(target));
+  resolve(getWorkspaceRoot(), 'dist/apps/web/site/client', getSocialImagePublicRelativePath(target));
 
-const getWebsiteBuiltAssetRoot = () => resolve(getWorkspaceRoot(), 'dist/apps/website/client');
+const getWebsiteBuiltAssetRoot = () => resolve(getWorkspaceRoot(), 'dist/apps/web/site/client');
 
 const ensureParentDirectory = async (filePath: string) => {
   await mkdir(dirname(filePath), { recursive: true });
@@ -46,6 +46,7 @@ const writeSocialImageManifest = async (result: SocialImageBatchResult) => {
   const manifestPath = getSocialImageManifestPath(result.runId);
 
   await ensureParentDirectory(manifestPath);
+
   await writeFile(manifestPath, JSON.stringify(result, null, 2));
 
   return manifestPath;
@@ -61,6 +62,7 @@ const readSocialImageManifest = async (runId: string) => {
 const pathExists = async (filePath: string) => {
   try {
     await stat(filePath);
+
     return true;
   } catch {
     return false;

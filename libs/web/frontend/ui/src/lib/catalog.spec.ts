@@ -1,0 +1,193 @@
+import { button, linkButton } from './button';
+import { themeSwitcher } from './theme-switcher';
+import { heading, text, link, divider, code } from './typography';
+import { container, card, pageHeader } from './layout';
+import { badge, avatar, table, descriptionList, pagination } from './data';
+import {
+  input,
+  textarea,
+  select,
+  checkbox,
+  radio,
+  toggle,
+  fieldset,
+  field,
+  label,
+  description,
+  errorMessage,
+  inputGroup,
+  radioCard,
+} from './forms';
+import { alert, loader } from './feedback';
+import { appShell, sidebar, topbar, navbar, navItem } from './shell';
+import { disclosure, dialog } from './overlays';
+
+const ui = {
+  button,
+  linkButton,
+  themeSwitcher,
+  heading,
+  text,
+  link,
+  divider,
+  code,
+  container,
+  card,
+  pageHeader,
+  badge,
+  avatar,
+  table,
+  descriptionList,
+  pagination,
+  input,
+  textarea,
+  select,
+  checkbox,
+  radio,
+  toggle,
+  fieldset,
+  field,
+  label,
+  description,
+  errorMessage,
+  inputGroup,
+  radioCard,
+  alert,
+  loader,
+  appShell,
+  sidebar,
+  topbar,
+  navbar,
+  navItem,
+  disclosure,
+  dialog,
+};
+
+describe('portable UI recipes', () => {
+  it('exports 38 recipes without requiring a browser or framework', () => {
+    expect(Object.keys(ui)).toHaveLength(38);
+
+    for (const recipe of Object.values(ui)) {
+      const classes = recipe.classes().split(' ');
+
+      expect(classes.length).toBeGreaterThan(0);
+      expect(classes).not.toContain('');
+      expect(classes).not.toContain('undefined');
+    }
+  });
+
+  it('keeps button and link interaction semantics distinct', () => {
+    expect(ui.button.classes()).toContain('enabled:hover:');
+    expect(ui.linkButton.classes()).toContain(' hover:');
+    expect(ui.linkButton.classes()).not.toContain('enabled:hover:');
+    expect(ui.linkButton.classes()).toContain('aria-[current=page]:');
+  });
+
+  it('keeps inline links configurable without introducing button geometry or disabled semantics', () => {
+    expect(ui.link.classes()).toContain('ui-focus-ring');
+    expect(ui.link.classes().split(' ')).toContain('underline');
+
+    for (const variant of ['default', 'muted', 'inverse'] as const) {
+      for (const underline of ['always', 'hover', 'none'] as const) {
+        const classes = ui.link.classes({ variant, underline });
+
+        expect(classes).not.toContain('undefined');
+        expect(classes).not.toContain('min-h-');
+        expect(classes).not.toContain('disabled:');
+        expect(classes).not.toContain('enabled:');
+      }
+    }
+
+    expect(ui.link.classes({ variant: 'muted', underline: 'hover' })).toContain('focus-visible:underline');
+    expect(ui.link.classes({ variant: 'inverse' })).toContain('focus-visible:outline-white');
+    expect(ui.link.classes({ variant: 'inverse' })).not.toContain('ui-focus-ring');
+    expect(ui.link.classes({ underline: 'none' })).not.toContain('hover:underline');
+  });
+
+  it('keeps tone independent from geometry across feedback and surfaces', () => {
+    for (const tone of ['neutral', 'accent', 'success', 'warning', 'danger'] as const) {
+      expect(ui.badge.classes({ tone })).toContain('rounded-md');
+      expect(ui.alert.classes({ tone })).toContain('rounded-xl');
+      expect(ui.alert.classes({ tone })).toContain('dark:');
+    }
+
+    expect(ui.card.classes({ tone: 'raised', padding: 'sm' })).toContain('p-3');
+    expect(ui.card.classes({ tone: 'ghost', padding: 'lg' })).toContain('p-6');
+    expect(ui.card.classes({ tone: 'ghost' })).not.toContain('shadow-xl');
+  });
+
+  it('supports control sizing without changing native state or value', () => {
+    for (const recipe of [ui.input, ui.textarea, ui.select]) {
+      for (const size of ['xs', 'sm', 'md', 'lg'] as const) {
+        const classes = recipe.classes({ size });
+
+        expect(classes).toContain('ui-focus-ring');
+        expect(classes).toContain('disabled:');
+        expect(classes).toContain('aria-invalid:');
+        expect(classes).not.toContain('undefined');
+      }
+    }
+
+    expect(ui.radio.classes()).not.toContain('appearance-none');
+    expect(ui.checkbox.classes()).not.toContain('appearance-none');
+    expect(ui.toggle.classes()).toContain('checked:');
+    expect(ui.toggle.classes()).toContain('forced-colors:appearance-auto');
+  });
+
+  it('allows composed surfaces and inline controls without competing default geometry', () => {
+    const plainCard = ui.card.classes({ tone: 'inverse', layout: 'plain', padding: 'none' }).split(' ');
+    const inlineSelect = ui.select.classes({ size: 'xs', inline: true }).split(' ');
+
+    expect(plainCard).not.toEqual(expect.arrayContaining(['flex', 'gap-4', 'p-4', 'bg-white']));
+    expect(plainCard).toContain('bg-zinc-950');
+    expect(ui.card.classes().split(' ')).toEqual(expect.arrayContaining(['flex', 'flex-col', 'gap-4', 'p-4']));
+    expect(inlineSelect).toEqual(expect.arrayContaining(['inline-block', 'w-auto', 'min-h-11']));
+    expect(inlineSelect).not.toEqual(expect.arrayContaining(['block', 'w-full']));
+    expect(ui.select.classes().split(' ')).toEqual(expect.arrayContaining(['block', 'w-full']));
+    expect(ui.container.classes({ gutter: 'none' })).not.toContain('px-');
+    expect(ui.text.classes({ size: 'inherit', tone: 'inherit' }).split(' ')).toEqual(['text-pretty', 'text-inherit']);
+    expect(ui.code.classes({ variant: 'plain' })).not.toContain('bg-');
+    expect(ui.heading.classes({ tone: 'inverse' })).not.toContain('dark:text-');
+  });
+
+  it('keeps field spacing and table layout options independent of validation and density', () => {
+    expect(ui.field.classes({ compact: true })).toContain('gap-1.5');
+    expect(ui.field.classes({ compact: true })).not.toContain('gap-2');
+    expect(ui.field.classes()).toContain('data-submitted');
+    expect(ui.errorMessage.classes()).toContain('motion-reduce:transition-none');
+    expect(ui.errorMessage.classes()).not.toContain('max-h-');
+    const cards = ui.table.classes({ mobileCards: true, stickyHeaders: true, density: 'compact', striped: true });
+
+    expect(cards).toContain('grid-cols-1');
+    expect(cards).toContain('md:');
+    expect(cards).toContain('sticky');
+    expect(cards).toContain('[&_td]:py-2');
+    expect(cards).toContain('nth-child(even)');
+    expect(ui.table.classes()).not.toContain('grid-cols-1');
+    expect(ui.table.classes()).not.toContain('sticky');
+  });
+
+  it('retains native dialog visibility and reduced-motion support', () => {
+    for (const size of ['sm', 'md', 'lg'] as const) {
+      expect(ui.dialog.classes({ size }).split(' ')).not.toEqual(expect.arrayContaining(['block']));
+      expect(ui.dialog.classes({ size })).toContain('backdrop:');
+    }
+
+    expect(ui.loader.classes().split(' ')).toContain('ui-loader');
+    expect(ui.loader.classes().split(' ')).not.toContain('animate-spin');
+    expect(ui.disclosure.classes()).toContain('summary:focus-visible');
+  });
+
+  it('varies presentation without mixing incompatible class choices', () => {
+    expect(ui.heading.classes({ size: 'xl' })).toContain('text-4xl');
+    expect(ui.text.classes({ size: 'sm', tone: 'muted' })).toContain('text-zinc-600');
+    expect(ui.code.classes({ block: true })).toContain('overflow-x-auto');
+    expect(ui.code.classes()).not.toContain('overflow-x-auto');
+    expect(ui.divider.classes({ soft: true })).not.toContain('border-zinc-200');
+    expect(ui.avatar.classes({ size: 'lg', shape: 'rounded' })).not.toContain('rounded-full');
+    expect(ui.table.classes({ density: 'compact', striped: true })).toContain('nth-child(even)');
+    expect(ui.table.classes()).not.toContain('nth-child(even)');
+    expect(ui.label.classes({ inline: true })).toContain('min-h-11');
+    expect(ui.container.classes({ width: 'full' })).toContain('max-w-none');
+  });
+});

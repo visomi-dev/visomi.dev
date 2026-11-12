@@ -1,0 +1,13 @@
+{
+  "mutedDark": "#919191",
+  "colors": [
+    {
+      "before": ["text-muted-light/20", "text-4xl"],
+      "color": "oklch(0.556 0 none)"
+    },
+    {
+      "before": ["text-emerald-600", "border-emerald-100"],
+      "color": "oklch(0.765 0.177 163.223)"
+    }
+  ]
+}

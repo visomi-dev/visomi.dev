@@ -3,7 +3,7 @@ import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
 
 // For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env['BASE_URL'] ?? 'http://localhost:8080';
+const baseURL = process.env['BASE_URL'] ?? 'http://127.0.0.1:8183';
 
 /**
  * Read environment variables from file.
@@ -21,6 +21,7 @@ export default defineConfig({
   }),
   testIgnore: ['**/website-screenshots-*.spec.ts'],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  workers: 2,
   use: {
     baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
@@ -28,10 +29,12 @@ export default defineConfig({
   },
   /* Run your local dev server before starting the tests */
   webServer: {
-    command:
-      'DISABLE_WORKER=true REDIS_URL=redis://127.0.0.1:6379 ASTRO_DB_REMOTE_URL=https://127.0.0.1 ASTRO_DB_APP_TOKEN=e2e pnpm exec nx run server:serve',
-    url: 'http://localhost:8080/healthz',
-    reuseExistingServer: true,
+    command: 'exec node --import tsx tools/testing/browser-server.ts',
+    url: 'http://127.0.0.1:8183/api/ready',
+    env: { VISOMI_E2E_PORT: '8183', TSX_TSCONFIG_PATH: 'tsconfig.base.json' },
+    reuseExistingServer: false,
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 15000 },
+    timeout: 120000,
     cwd: workspaceRoot,
   },
   projects:

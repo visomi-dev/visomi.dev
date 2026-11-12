@@ -1,68 +1,100 @@
-FROM node:24-bookworm-slim AS base
+FROM node:24.15.0-bookworm-slim@sha256:4e6b70dd6cbfc88c8157ba19aa3d9f9cce6ba4703576d55459e45efcbc9c5f5d AS node-runtime
+
+FROM node-runtime AS base
 
 ENV PNPM_HOME=/pnpm
 ENV PATH=$PNPM_HOME:$PATH
 ENV NX_DAEMON=false
 
-RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
+RUN corepack enable && corepack prepare pnpm@12.15.0 --activate
 
 FROM base AS deps
 
 WORKDIR /workspace
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml nx.json tsconfig.base.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY patches ./patches
+COPY apps/web/api/package.json ./apps/web/api/package.json
+COPY apps/web/gateway/package.json ./apps/web/gateway/package.json
+COPY apps/web/realtime/package.json ./apps/web/realtime/package.json
+COPY apps/web/edge/package.json ./apps/web/edge/package.json
+COPY libs/shared/social-images/package.json ./libs/shared/social-images/package.json
 
-RUN pnpm install --frozen-lockfile
+RUN HUSKY=0 pnpm install --frozen-lockfile
 
-FROM deps AS build
-
-ARG ASTRO_DB_REMOTE_URL
-ARG ASTRO_DB_APP_TOKEN
-
-ENV ASTRO_DB_REMOTE_URL=$ASTRO_DB_REMOTE_URL
-ENV ASTRO_DB_APP_TOKEN=$ASTRO_DB_APP_TOKEN
+FROM deps AS workspace
 
 COPY . .
 
-RUN pnpm nx run-many -t build --projects server,worker --configuration production
+FROM workspace AS database-init
 
-FROM base AS runtime-base
+CMD ["pnpm", "nx", "run", "backend-shared:db-migrate", "--output-style=static"]
+
+FROM workspace AS development
+
+ENV NODE_ENV=development
+
+CMD ["node", "tools/development/live-reload.mjs"]
+
+FROM workspace AS build
+
+ARG APP_NAME=web-gateway
+
+RUN case "$APP_NAME" in \
+      web-api) printf '%s\n' 'dist/apps/web/api/main.js' > app-entrypoint ;; \
+      web-gateway) printf '%s\n' 'dist/apps/web/gateway/main.js' > app-entrypoint ;; \
+      web-realtime) printf '%s\n' 'dist/apps/web/realtime/main.js' > app-entrypoint ;; \
+      *) exit 1 ;; \
+    esac \
+    && pnpm nx build "$APP_NAME"
+
+# Test-only tooling supplies local exporters; the compiled executable still owns startup.
+FROM build AS test-runtime
+
+ARG APP_NAME=web-gateway
+
+ENV APP_NAME=${APP_NAME}
+
+CMD ["sh", "-c", "exec node \"$(cat app-entrypoint)\""]
+
+FROM base AS production-deps
 
 WORKDIR /app
 
-ENV NODE_ENV=production
-
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY patches ./patches
 
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
-RUN apt-get update \
-  && apt-get install --yes --no-install-recommends chromium ca-certificates fonts-liberation \
-  && rm -rf /var/lib/apt/lists/*
+FROM node-runtime AS runtime
 
-COPY --from=build /workspace/dist ./dist
-COPY --from=build /workspace/dist/libs/shared/social-images ./node_modules/@visomi.dev/shared-social-images
+ARG APP_NAME=web-gateway
 
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
-
-FROM runtime-base AS server-runtime
-
-EXPOSE 8080
-
-CMD ["node", "dist/apps/web/server/main.js"]
-
-FROM runtime-base AS worker-runtime
+WORKDIR /app
 
 RUN apt-get update \
   && apt-get install --yes --no-install-recommends chromium ca-certificates fonts-liberation \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  && mkdir -p /app/tmp \
+  && chown node:node /app/tmp
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+ENV PORT=8080
+ENV APP_NAME=${APP_NAME}
 
-CMD ["node", "dist/apps/worker/main.js"]
+COPY --from=production-deps /app/node_modules ./node_modules
+COPY package.json ./
+COPY --from=build --chown=node:node /workspace/dist/apps ./dist/apps
+COPY --from=build /workspace/app-entrypoint ./app-entrypoint
+COPY --from=build /workspace/libs/backend/shared/tools/database/migrate.mjs ./libs/backend/shared/tools/database/migrate.mjs
+COPY --from=build /workspace/libs/backend/shared/src/lib/database/migrations ./libs/backend/shared/src/lib/database/migrations
 
-FROM server-runtime AS runtime
+USER node
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 CMD ["node", "-e", "fetch('http://127.0.0.1:8080/healthz').then((response) => { if (!response.ok) process.exit(1); }).catch(() => process.exit(1));"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD ["node", "-e", "const path = { 'web-gateway': '/api/ready', 'web-api': '/ready', 'web-realtime': '/health' }; fetch('http://127.0.0.1:' + (process.env.PORT ?? '8080') + (path[process.env.APP_NAME] ?? '/')).then((response) => { if (!response.ok) process.exit(1); }).catch(() => process.exit(1));"]
+
+CMD ["sh", "-c", "exec node \"$(cat app-entrypoint)\""]

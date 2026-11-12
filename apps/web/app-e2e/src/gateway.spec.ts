@@ -5,6 +5,7 @@ test.describe('monolith gateway', () => {
     const response = await request.get('/healthz');
 
     expect(response.ok()).toBe(true);
+
     await expect(response.json()).resolves.toEqual({ status: 'ok' });
   });
 
@@ -12,6 +13,7 @@ test.describe('monolith gateway', () => {
     const response = await request.get('/api/health');
 
     expect(response.ok()).toBe(true);
+
     await expect(response.json()).resolves.toEqual({ status: 'ok' });
   });
 
@@ -19,6 +21,9 @@ test.describe('monolith gateway', () => {
     const response = await page.goto('/app/');
 
     expect(response?.ok()).toBe(true);
-    await expect(page.locator('app-root')).toBeVisible();
+
+    await expect(page.locator('app-root')).toHaveCount(1);
+
+    await expect(page.locator('h1')).toHaveCount(0);
   });
 });
