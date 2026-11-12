@@ -52,11 +52,11 @@ export remain `none`; local dashboard metrics are process-local, not Jaeger hist
 The contact cutover/rollback and owner acceptance gates are documented in
 [`docs/migration/contact-cutover.md`](../docs/migration/contact-cutover.md).
 
-## SSR proxy boundary
+## SSR proxy configuration pending
 
-Angular receives a Fetch Request whose origin is resolved by Express using the
-explicit `AUTH_TRUST_PROXY` IP/CIDR allowlist. Raw `Forwarded` and `X-Forwarded-*`
-headers are removed before rendering. Angular keeps `trustProxyHeaders: false` and
-its `allowedHosts` check; a trusted proxy does not authorize arbitrary hostnames.
-Keep the ingress allowlist verified and narrow. Never use an unconditional trust
-setting merely to suppress SSR warnings.
+This change does not alter Angular SSR proxy handling. The earlier header-stripping
+workaround and its tests have been removed. Correct forwarding configuration is
+pending verification of Railway's ingress trust boundary and which headers it
+replaces. Do not enable unconditional proxy trust or silence warnings as a substitute
+for that verification. Preserve Angular's host allowlist and validate trusted and
+untrusted ingress paths before a separate SSR change.
