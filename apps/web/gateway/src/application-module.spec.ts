@@ -176,9 +176,7 @@ describe('compiled Angular boundary', () => {
       );
       const parent = express();
 
-      parent.use(
-        application.createApp({ trustProxy: ['loopback'], errorMode: 'inherited', helmetMode: 'inherited' }),
-      );
+      parent.use(application.createApp({ trustProxy: ['loopback'], errorMode: 'inherited', helmetMode: 'inherited' }));
       parent.use(httpErrorHandler);
 
       const server = createServer(parent);
