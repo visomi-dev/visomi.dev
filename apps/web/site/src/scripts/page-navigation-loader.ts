@@ -1,59 +1,25 @@
-const hideLoader = () => {
+document.addEventListener('astro:before-preparation', (event) => {
   const loader = document.getElementById('page-navigation-loader');
 
   if (!loader) {
     return;
   }
 
-  loader.classList.remove('in-out-enter');
-  loader.classList.add('in-out-leave');
+  const load = event.loader;
 
-  window.setTimeout(() => {
-    loader.classList.add('hidden');
-  }, 400);
-};
-
-document.addEventListener('astro:before-preparation', hideLoader);
-document.addEventListener('astro:after-swap', hideLoader);
-
-document.addEventListener('click', (event) => {
-  const target = event.target;
-
-  if (!(target instanceof Element)) {
-    return;
-  }
-
-  const link = target.closest<HTMLAnchorElement>('a');
-
-  if (
-    !link ||
-    !link.href ||
-    link.href.startsWith('mailto:') ||
-    link.href.startsWith('tel:') ||
-    link.hasAttribute('target') ||
-    link.hostname !== window.location.hostname ||
-    link.pathname === window.location.pathname ||
-    link.href.includes('#')
-  ) {
-    return;
-  }
-
-  const loader = document.getElementById('page-navigation-loader');
-
-  if (!loader) {
-    return;
-  }
-
-  loader.classList.remove('hidden', 'in-out-leave');
-  loader.classList.add('in-out-enter');
+  loader.classList.remove('hidden');
+  event.loader = async () => {
+    try {
+      await load();
+    } finally {
+      // Finish on both success and failure, before ClientRouter swaps the document.
+      loader.classList.add('hidden');
+    }
+  };
 });
 
-window.addEventListener('pageshow', (event) => {
-  if (!event.persisted) {
-    return;
-  }
-
-  hideLoader();
+window.addEventListener('pageshow', () => {
+  document.getElementById('page-navigation-loader')?.classList.add('hidden');
 });
 
-export const initPageNavigationLoader = () => undefined;
+export {};

@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 
+import faviconUrl from '../../../../../assets/brand/favicon.svg?url';
+
 import type { Locale, PageId } from '../i18n/translations';
 import { getSeoImage } from '../content/seo-images';
 import { getPagePath, locales } from '../i18n/translations';
@@ -98,7 +100,7 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
       <link rel="alternate" hreflang={itemLocale} href={new URL(getPagePath(itemLocale, page), baseUrl).toString()} />
     ))}
 
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
 
     <link rel="prefetch" href={prefetchTargets[0]} />
 
@@ -114,7 +116,7 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
   </head>
 
   <body class="min-h-full">
-    <PageNavigationLoader />
+    <PageNavigationLoader locale={locale} />
 
     <Background />
 

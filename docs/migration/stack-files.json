@@ -5929,7 +5929,7 @@
       "reason": "Retain the original portfolio, brand, public URLs and presentation; only runtime/contact/CSP/accessibility integration is adapted.",
       "sourceSha256": "07e3f3dd8d774e387ceccc6d2c51b925345b72ada6e5b60ec0942be6c019db2d",
       "destination": "apps/web/site/project.json",
-      "destinationSha256": "55cd5738957b3202afeb5b64e8bc45d83641430c8599514d4bf21b47a4978ad7"
+      "destinationSha256": "12a3acd5a5ee4be9fa00aeceb7b341f016cdee74195ff6e50bef9f9906288be5"
     },
     {
       "source": "apps/web/site/src/components/alert.astro",
@@ -6087,7 +6087,7 @@
       "reason": "Retain the original portfolio, brand, public URLs and presentation; only runtime/contact/CSP/accessibility integration is adapted.",
       "sourceSha256": "f8fd399b088829379615c65d1b49e5e63e8ffed7349b1fe2bc6b761be12b1fbf",
       "destination": "apps/web/site/src/components/navbar.astro",
-      "destinationSha256": "813f574e7f06091c0e230111ac2d0e74ce50afbd074a112157821277f294bd3f"
+      "destinationSha256": "1fb2e1eca41093423fc2a0336ab3c81dc0584fdf9e4b22b9f14c03a9c81027a0"
     },
     {
       "source": "apps/web/site/src/components/page-header.astro",
@@ -6423,7 +6423,7 @@
       "reason": "Retain the original portfolio, brand, public URLs and presentation; only runtime/contact/CSP/accessibility integration is adapted.",
       "sourceSha256": "f37a11a033aecad1fb180653f57184e04aa45308bf1c6504a4e59d1c3855d43f",
       "destination": "apps/web/site/src/styles/global.css",
-      "destinationSha256": "15e588c4a239317c6b031ee7b292621768b68409cf7787dc754b5d1a61ac443e"
+      "destinationSha256": "baff5d2e930252aaff9fe695956cb1a8c0289ed16b38f078bd14f5a4aa76b7d1"
     },
     {
       "source": "apps/web/site/src/ui-docs.ts",
@@ -6453,10 +6453,11 @@
     },
     {
       "source": "assets/brand/favicon.svg",
-      "action": "copied",
+      "action": "adapted",
       "sourceSha256": "ae0634977aa2d6ddf736278619dda13a4b3cbc9176c1eeb5284f03c0de1befa1",
       "destination": "assets/brand/favicon.svg",
-      "destinationSha256": "ae0634977aa2d6ddf736278619dda13a4b3cbc9176c1eeb5284f03c0de1befa1"
+      "destinationSha256": "dea7ffc3a7a2bfe379553638674c21bcda48bd9668eb018717a56c22ee9b7cf0",
+      "reason": "Apply the approved portfolio branding and include its canonical SVGs in Nx build inputs (VIS-34)."
     },
     {
       "source": "assets/brand/isotype.svg",

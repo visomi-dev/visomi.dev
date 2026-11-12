@@ -31,8 +31,9 @@ The contact persistence boundary changes; its visible form remains the original.
 The integrated production build passed using only synthetic database configuration.
 `parity/baseline` contains 40 production-browser captures and content/SEO manifests:
 10 destinations × 2 themes × mobile (375×812) / desktop (1440×900).
-The capture hides only canvas pixels because procedural WebGL output varies between frames;
-WebGL behavior is verified separately. All other content, layout, fonts and metadata are compared.
+The capture hides canvas pixels because procedural WebGL output varies between frames;
+WebGL behavior is verified separately. VIS-34 additionally restores only the home-link's original
+artwork/text in the comparison DOM, as described below. Other content, layout, fonts and metadata are compared.
 A per-channel tolerance of 20 and maximum changed-pixel ratio of 0.2% permits rasterization noise;
 page dimensions and normalized body text/SEO must match exactly.
 Captures disable LCD text antialiasing so host Fontconfig cannot add colored subpixels.
@@ -101,9 +102,9 @@ Implementation and verification evidence will be recorded per issue and in the f
 
 The original baseline has AXE contrast, landmark and accessible-name failures (see
 `parity/baseline-accessibility.json`). Minimal corrections make the footer semantic, preserve visible
-link names, and increase secondary text contrast. These are the only intentional visual exceptions.
-No geometry, typography, content or public URL changes are permitted.
-The final 40 comparisons have zero changed pixels against the contrast reference; the largest raw
+link names, and increase secondary text contrast. VIS-34 adds the explicitly requested branding replacement
+described below. Outside these exceptions, geometry, typography, content and public URLs are preserved.
+The 40 comparisons, with the approved brand link normalized, have zero changed pixels against the contrast reference; the largest raw
 difference from the untouched baseline is 0.2503%, entirely explained by the enumerated contrast changes.
 
 `parity/baseline` retains the original integrated artifact captures. `parity/accessibility-baseline`
@@ -112,6 +113,20 @@ manifests; it cannot alter layout, text, assets or fonts. `scripts/parity-access
 those rules. The comparison keeps the original 0.2% rasterization tolerance against this contrast
 reference and records the raw difference against the unmodified baseline too. Canvas pixels are hidden
 and frame callbacks stopped after page readiness; WebGL behavior is tested separately.
+
+VIS-34 applies the approved `assets/brand` logotype to desktop navigation, the isotype to mobile
+navigation, the ribbon animation to ClientRouter loading, and the new favicon to the public website.
+Black artwork is inverted in dark page themes. The favicon also follows the browser color scheme;
+its ribbon geometry is unchanged. `/favicon.svg` is prerendered from the same canonical source, while
+the page links to a fingerprinted URL to avoid the previous icon's cached contents.
+The SVG loader retains its reduced-motion fallback and stops after successful or failed loading.
+
+The original 80 reference PNGs and their manifests remain unchanged. Only the marked home-link's
+children are restored to their original markup during parity comparison, preserving comparisons of
+the surrounding navigation, page layout, content and SEO at the existing tolerance. The real branding
+is checked separately in `website-branding.spec.ts`: both themes, both locales, mobile/desktop,
+production SVG responses, delayed navigation, reduced motion and screenshot evidence. Those screenshots
+are taken before parity normalization and do not replace the original baseline.
 
 ```sh
 # Original f2cfa9c artifact on loopback 8181; current artifact on loopback 8182.

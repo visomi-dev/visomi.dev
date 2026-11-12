@@ -3,6 +3,9 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/web/site/src",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals", "{workspaceRoot}/assets/brand/*.svg"]
+  },
   "targets": {
     "build": {
       "executor": "nx:run-commands",

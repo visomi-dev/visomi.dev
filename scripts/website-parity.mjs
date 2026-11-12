@@ -89,6 +89,22 @@ try {
             });
           }, theme);
 
+          if (mode === 'compare') {
+            // VIS-34 intentionally replaces only the home-link artwork. Restore that link's
+            // original contents for this migration comparison; branding has its own browser checks.
+            await page.evaluate(() => {
+              const brand = document.querySelector('[data-brand-home]');
+
+              if (!brand) {
+                throw new Error('approved_brand_link_missing');
+              }
+
+              brand.innerHTML =
+                '<div class="h-2 w-2 rounded-full bg-black dark:bg-white"></div>' +
+                '<span class="font-mono text-lg font-bold tracking-tight dark:text-white">VISOMI.DEV</span>';
+            });
+          }
+
           let contrastChanges;
 
           if (adjusted) {

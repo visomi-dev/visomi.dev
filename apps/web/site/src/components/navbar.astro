@@ -1,4 +1,7 @@
 ---
+import isotypeUrl from '../../../../../assets/brand/isotype.svg?url';
+import logotypeUrl from '../../../../../assets/brand/logotype.svg?url';
+
 import { createTranslator, getPagePath, locales, type Locale, type PageId } from '../i18n/translations';
 import ThemeSwitcher from './theme-switcher.astro';
 
@@ -23,10 +26,15 @@ const navItems = [
   data-print-hidden
 >
   <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-12">
-    <a href={getPagePath(locale, 'home')} class="flex items-center gap-3">
-      <div class="h-2 w-2 rounded-full bg-black dark:bg-white"></div>
+    <a
+      href={getPagePath(locale, 'home')}
+      class="flex items-center gap-3"
+      aria-label={`Visomi — ${t('navHome')}`}
+      data-brand-home
+    >
+      <img src={isotypeUrl} width="545" height="547" alt="" class="h-9 w-9 md:hidden dark:invert" />
 
-      <span class="font-mono text-lg font-bold tracking-tight dark:text-white">VISOMI.DEV</span>
+      <img src={logotypeUrl} width="700.769" height="190" alt="" class="hidden h-9 w-auto md:block dark:invert" />
     </a>
 
     <div class="hidden items-center gap-8 font-mono tracking-widest text-gray-500 md:flex dark:text-gray-400">

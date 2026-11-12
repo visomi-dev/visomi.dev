@@ -3,7 +3,7 @@
   "websiteMain": "9511109c233f2a6a7604c80fa1597aa338e9135d",
   "integrationBaseline": "f2cfa9cfd6f7b13eb2858dc5d1761e9b2e49afe1",
   "scope": "Implementation and isolated synthetic verification; no merge, deployment, provisioning or real-data operations.",
-  "publicBrowserCases": 111,
+  "publicBrowserCases": 121,
   "privateBrowserCases": 8,
   "apiBrowserCases": 3,
   "gatewayBrowserCases": 3,
@@ -38,8 +38,11 @@
     "Real Redis/Chromium PNG generation, idempotent queue jobs and outage recovery",
     "Production module import safety, shutdown and telemetry privacy",
     "AXE across public routes/themes/viewports and private views",
-    "No-root runtime image without build tools; private trace policy rehearsal"
+    "No-root runtime image without build tools; private trace policy rehearsal",
+    "Approved logotype/isotype/favicon/loader in both locales/themes/viewports; compiled SVG assets, ClientRouter loading and reduced motion"
   ],
   "releaseRunbook": "docs/migration/contact-cutover.md",
-  "unitCases": 843
+  "unitCases": 844,
+  "brandingBrowserCases": 10,
+  "parityNormalization": "VIS-34 restores only the approved home-link artwork/text in the comparison DOM; original reference PNGs/manifests are unchanged."
 }
