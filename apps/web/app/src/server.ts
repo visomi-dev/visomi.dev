@@ -16,6 +16,7 @@ import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observab
 import { securityHeaders } from '@visomi-stack/web-backend-shared/lib/http/security-headers';
 
 import { createSsrProxyPolicy } from './ssr-proxy-policy';
+import { createSsrRequest } from './ssr-request';
 
 export const clientDirectory = resolve(import.meta.dirname, '../browser');
 
@@ -148,7 +149,9 @@ export function createApp(
     engine ??= new AngularNodeAppEngine(proxyPolicy?.engineOptions);
 
     engine
-      .handle(request, { auth: options.authContext?.(request) ?? { available: false, session: null } })
+      .handle(createSsrRequest(request, proxyPolicy?.engineOptions.trustProxyHeaders), {
+        auth: options.authContext?.(request) ?? { available: false, session: null },
+      })
       .then(async (rendered) => {
         if (!rendered) {
           next();

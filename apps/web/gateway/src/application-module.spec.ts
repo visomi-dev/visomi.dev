@@ -184,11 +184,7 @@ describe('compiled Angular boundary', () => {
 
         expect(status).toBe(expected);
 
-        if ('x-forwarded-for' in overrides || 'forwarded' in overrides) {
-          expect(warnings).toHaveBeenCalled();
-        } else {
-          expect(warnings).not.toHaveBeenCalled();
-        }
+        expect(warnings).not.toHaveBeenCalled();
       } finally {
         warnings.mockRestore();
 
@@ -267,6 +263,12 @@ describe('compiled Angular boundary', () => {
       );
       const parent = express();
       const calls: { path: string; cookie?: string }[] = [];
+      const originals: { cookie?: string; xff?: string | string[]; ip?: string }[] = [];
+      const authContext = vi.fn((request: express.Request) => {
+        originals.push({ cookie: request.headers.cookie, xff: request.headers['x-forwarded-for'], ip: request.ip });
+
+        return { available: false, session: null };
+      });
 
       parent.use('/api', (request, response) => {
         calls.push({ path: request.path, cookie: request.headers.cookie });
@@ -298,7 +300,7 @@ describe('compiled Angular boundary', () => {
           next: null,
         });
       });
-      parent.use(application.createApp({ errorMode: 'inherited', helmetMode: 'inherited' }));
+      parent.use(application.createApp({ errorMode: 'inherited', helmetMode: 'inherited', authContext }));
       parent.use(httpErrorHandler);
       const server = createServer(parent);
 
@@ -310,7 +312,9 @@ describe('compiled Angular boundary', () => {
 
       try {
         const [owner, anonymous, other, access] = await Promise.all([
-          fetch(origin + '/app/en/dashboard', { headers: { cookie: 'synthetic=owner' } }),
+          fetch(origin + '/app/en/dashboard', {
+            headers: { cookie: 'synthetic=owner', 'x-forwarded-for': '192.0.2.123' },
+          }),
           fetch(origin + '/app/en/dashboard'),
           fetch(origin + '/app/en/dashboard', { headers: { cookie: 'synthetic=other' } }),
           fetch(origin + '/app/es/access'),
@@ -319,6 +323,8 @@ describe('compiled Angular boundary', () => {
           [owner, anonymous, other, access].map((response) => response.text()),
         );
 
+        expect(authContext).toHaveBeenCalled();
+        expect(originals).toContainEqual({ cookie: 'synthetic=owner', xff: '192.0.2.123', ip: '127.0.0.1' });
         expect(owner.status).toBe(200);
         expect(ownerHtml).toContain('SSR_PRIVATE_OWNER_ONLY');
         expect(ownerHtml).toContain('ng-server-context="ssr"');
