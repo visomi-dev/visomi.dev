@@ -22,6 +22,7 @@ import type { ApiModule, EmbeddedAuthentication } from './api-module';
 import type { SiteModule } from './site-module';
 import type { ApplicationModule } from './application-module';
 import { pageErrors } from './page-errors';
+import { createProxyDiagnosticMiddleware } from './proxy-diagnostic';
 import { websiteAssets, redirectTrailingSlash } from './website';
 
 export function createGatewayApp(options: {
@@ -49,6 +50,7 @@ export function createGatewayApp(options: {
     });
 
   app.disable('x-powered-by');
+  app.use(createProxyDiagnosticMiddleware(process.env));
   app.use(privateMetrics.middleware);
 
   if (options.trustProxy) {

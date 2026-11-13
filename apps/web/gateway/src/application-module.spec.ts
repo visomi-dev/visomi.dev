@@ -259,4 +259,90 @@ describe('compiled Angular boundary', () => {
     },
     compiledSsrTimeout,
   );
+  it(
+    'renders owner HTML per request without leaking cookies or transfer-cache data',
+    async () => {
+      const application = await loadApplication(
+        new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
+      );
+      const parent = express();
+      const calls: { path: string; cookie?: string }[] = [];
+
+      parent.use('/api', (request, response) => {
+        calls.push({ path: request.path, cookie: request.headers.cookie });
+        response.set('cache-control', 'private, no-store');
+
+        if (request.headers.cookie !== 'synthetic=owner') {
+          response.status(403).json({ error: 'owner_required' });
+
+          return;
+        }
+
+        if (request.path === '/contact/session') {
+          response.json({ owner: true });
+
+          return;
+        }
+
+        response.json({
+          items: [
+            {
+              id: 'synthetic-id',
+              name: 'SSR_PRIVATE_OWNER_ONLY',
+              email: 'synthetic@example.test',
+              locale: 'en',
+              type: 'other',
+              createdAt: '2026-01-01T00:00:00Z',
+            },
+          ],
+          next: null,
+        });
+      });
+      parent.use(application.createApp({ errorMode: 'inherited', helmetMode: 'inherited' }));
+      parent.use(httpErrorHandler);
+      const server = createServer(parent);
+
+      server.listen(0, '127.0.0.1');
+
+      await once(server, 'listening');
+
+      const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+
+      try {
+        const [owner, anonymous, other, access] = await Promise.all([
+          fetch(origin + '/app/en/dashboard', { headers: { cookie: 'synthetic=owner' } }),
+          fetch(origin + '/app/en/dashboard'),
+          fetch(origin + '/app/en/dashboard', { headers: { cookie: 'synthetic=other' } }),
+          fetch(origin + '/app/es/access'),
+        ]);
+        const [ownerHtml, anonymousHtml, otherHtml, accessHtml] = await Promise.all(
+          [owner, anonymous, other, access].map((response) => response.text()),
+        );
+
+        expect(owner.status).toBe(200);
+        expect(ownerHtml).toContain('SSR_PRIVATE_OWNER_ONLY');
+        expect(ownerHtml).toContain('ng-server-context="ssr"');
+        expect(ownerHtml).toMatch(/ngh="/);
+        expect(ownerHtml).not.toContain('synthetic=owner');
+        const state = ownerHtml.match(/<script id="ng-state"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+
+        expect(state).toBeDefined();
+        expect(state).not.toContain('SSR_PRIVATE_OWNER_ONLY');
+        expect(state).not.toContain('/api/contact/submissions');
+        expect(anonymousHtml).not.toContain('SSR_PRIVATE_OWNER_ONLY');
+        expect(otherHtml).not.toContain('SSR_PRIVATE_OWNER_ONLY');
+        expect(accessHtml).toContain('ng-server-context="ssr"');
+        expect(accessHtml).toContain('type="password"');
+        for (const response of [owner, anonymous, other, access]) {
+          expect(response.headers.get('cache-control')).toBe('private, no-store');
+          expect(response.headers.get('etag')).toBeNull();
+        }
+        expect(calls).toContainEqual({ path: '/contact/submissions', cookie: 'synthetic=owner' });
+        expect(calls.filter((call) => call.path === '/contact/submissions')).toHaveLength(1);
+      } finally {
+        await new Promise<void>((resolve) => server.close(() => resolve()));
+      }
+    },
+    compiledSsrTimeout,
+  );
 });

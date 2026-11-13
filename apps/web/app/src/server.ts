@@ -156,6 +156,10 @@ export function createApp(
           return;
         }
 
+        // Authenticated HTML must never be shared or stored, even when Helmet is inherited.
+        rendered.headers.set('cache-control', 'private, no-store');
+        rendered.headers.delete('etag');
+
         const nonce = response.locals['cspNonce'] as string | undefined;
 
         if (nonce && rendered.headers.get('content-type')?.includes('text/html')) {
@@ -165,7 +169,7 @@ export function createApp(
 
           headers.delete('content-length');
           headers.delete('etag');
-          headers.set('cache-control', 'no-store');
+          headers.set('cache-control', 'private, no-store');
           rendered = new Response(html.replace(/__VISOMI_CSP_NONCE__/g, nonce), {
             status: rendered.status,
             statusText: rendered.statusText,

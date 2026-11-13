@@ -29,7 +29,7 @@ for (const locale of ['en', 'es']) {
 }
 
 for (const locale of ['en', 'es']) {
-  for (const path of [`/app/${locale}/`, `/app/${locale}/access`, `/app/${locale}/dashboard`]) {
+  for (const path of [`/app/${locale}/`, `/app/${locale}/access`]) {
     const response = await request(path);
     const html = await response.text();
 
@@ -41,7 +41,9 @@ for (const locale of ['en', 'es']) {
 
     assert.ok(nonce);
     assert.ok(response.headers.get('content-security-policy').includes(`'nonce-${nonce}'`));
-    assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.equal(response.headers.get('cache-control'), 'private, no-store');
+    assert.equal(response.headers.get('etag'), null);
+    assert.ok(html.includes('ng-server-context="ssr"'), 'Angular must render on the server');
     const stylesheet = html.match(/href="([^"]+\.css)"/);
     const base = html.match(/<base href="([^"]+)"/);
 
@@ -54,6 +56,22 @@ for (const locale of ['en', 'es']) {
 
     assert.equal(asset.status, 200);
     assert.match(asset.headers.get('content-type'), /text\/css/);
+  }
+}
+
+// SSR evaluates owner guards before sending private documents. Anonymous users
+// must receive an exact localized access redirect, never a 200 client-side shell.
+for (const locale of ['en', 'es']) {
+  for (const route of ['dashboard', 'dashboard/123', 'metrics']) {
+    const response = await request(`/app/${locale}/${route}`);
+
+    assert.equal(response.status, 302);
+    assert.equal(response.headers.get('location'), `/app/${locale}/access`);
+    assert.equal(response.headers.get('cache-control'), 'private, no-store');
+    assert.equal(response.headers.get('etag'), null);
+    const body = await response.text();
+
+    assert.equal(body, '', 'Private redirects must not contain rendered data');
   }
 }
 
