@@ -54,7 +54,7 @@ export function createSsrProxyPolicy(environment: NodeJS.ProcessEnv) {
 
   return {
     // Do not trust Forwarded, arbitrary X-Forwarded-* or client-IP claims.
-    // Angular continues diagnosing unsupported headers (including X-Forwarded-For).
+    // Network identity is removed only from the separate Angular request.
     engineOptions: { trustProxyHeaders: ['x-forwarded-host', 'x-forwarded-proto'] },
     accepts(request: Pick<IncomingMessage, 'headers' | 'rawHeaders'>) {
       for (const [name, expected] of [
