@@ -61,13 +61,13 @@ test.describe('ClientRouter navigation', () => {
 
     const loader = page.locator('#page-navigation-loader');
 
-    await expect(loader).toHaveClass(/hidden/);
+    await expect(loader).toBeHidden();
 
     await page.locator('nav a[href="/projects/"]').first().click();
 
     await expect(page).toHaveURL(/\/projects\/$/);
 
-    await expect(loader).toHaveClass(/hidden/);
+    await expect(loader).toBeHidden();
   });
 
   test('SPA navigation fetches the destination page from the server', async ({ page, request }) => {

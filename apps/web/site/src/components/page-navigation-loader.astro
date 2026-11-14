@@ -1,138 +1,43 @@
 ---
-import loaderSvg from '../../../../../assets/brand/visomi-loader.svg?raw';
-
 import type { Locale } from '../i18n/translations';
 
 type Props = { locale: Locale };
 
 const { locale } = Astro.props;
-// Keep the approved vector paths and masks; stylesheet rules replace inline SVG styles for CSP.
-const loaderMarkup = loaderSvg
-  .replaceAll('ns0:', '')
-  .replace('xmlns:ns0=', 'xmlns=')
-  .replace(/<style>[\s\S]*?<\/style>/, '')
-  .replace(/ style="[^"]*"/g, '');
 ---
 
 <div
   id="page-navigation-loader"
-  class="pointer-events-none fixed inset-0 z-60 grid hidden place-items-center"
-  role="status"
-  aria-live="polite"
-  aria-atomic="true"
+  class="pointer-events-none fixed inset-x-0 top-0 z-60"
+  hidden
+  transition:persist
+  transition:persist-props
+  data-print-hidden
 >
-  <div class="flex size-24 items-center justify-center rounded-2xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black">
-    <div class="brand-loader size-12 dark:invert" aria-hidden="true">
-      <Fragment set:html={loaderMarkup} />
-    </div>
-
-    <span class="sr-only">{locale === 'es' ? 'Cargando página' : 'Loading page'}</span>
+  <div class="h-0.5 overflow-hidden bg-blue-600/15 dark:bg-blue-400/15" aria-hidden="true">
+    <div class="navigation-progress h-full w-2/5 bg-blue-600 dark:bg-blue-400"></div>
   </div>
+
+  <span role="status" aria-live="polite" aria-atomic="true" class="sr-only">
+    {locale === 'es' ? 'Cargando página' : 'Loading page'}
+  </span>
 </div>
 
 <script src="../scripts/page-navigation-loader.ts"></script>
 
-<style is:global>
-  .visomi-loader-draw {
-    fill: none;
-    stroke: white;
-    stroke-width: 104;
-    stroke-linejoin: round;
-    stroke-linecap: square;
-    stroke-dasharray: 100 200;
-    stroke-dashoffset: 0;
-    animation-duration: 1.6s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
-  .visomi-loader-ink {
-    animation: visomi-loader-fade 1.6s linear infinite;
-  }
-  @keyframes visomi-loader-fade {
-    0%,
-    78% {
-      opacity: 1;
-    }
-    78% {
-      animation-timing-function: ease-in-out;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-  @keyframes visomi-loader-draw-0 {
-    0%,
-    0.000000% {
-      stroke-dashoffset: 100;
-      opacity: 0;
-    }
-    1.250000% {
-      opacity: 1;
-    }
-    21.767477%,
-    100% {
-      stroke-dashoffset: 0;
-      opacity: 1;
-    }
-  }
-  @keyframes visomi-loader-draw-1 {
-    0%,
-    21.767477% {
-      stroke-dashoffset: 100;
-      opacity: 0;
-    }
-    23.017477% {
-      opacity: 1;
-    }
-    43.520142%,
-    100% {
-      stroke-dashoffset: 0;
-      opacity: 1;
-    }
-  }
-  @keyframes visomi-loader-draw-2 {
-    0%,
-    43.520142% {
-      stroke-dashoffset: 100;
-      opacity: 0;
-    }
-    44.770142% {
-      opacity: 1;
-    }
-    68.750000%,
-    100% {
-      stroke-dashoffset: 0;
-      opacity: 1;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .visomi-loader-draw {
-      animation: none;
-      stroke-dashoffset: 0;
-      opacity: 1;
-    }
-    .visomi-loader-ink {
-      animation: none;
-      opacity: 1;
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .navigation-progress {
+      animation: navigation-progress-slide 1.2s ease-in-out infinite;
     }
   }
 
-  .brand-loader svg {
-    width: 100%;
-    height: 100%;
-  }
-  :where(#visomi-loader-center-mask-0) .visomi-loader-draw {
-    animation-name: visomi-loader-draw-0;
-  }
-  :where(#visomi-loader-center-mask-1) .visomi-loader-draw {
-    animation-name: visomi-loader-draw-1;
-  }
-  :where(#visomi-loader-center-mask-2) .visomi-loader-draw {
-    animation-name: visomi-loader-draw-2;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .brand-loader .visomi-loader-draw {
-      animation-name: none;
+  @keyframes navigation-progress-slide {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(250%);
     }
   }
 </style>
