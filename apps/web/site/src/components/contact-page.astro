@@ -46,12 +46,15 @@ const invalidFieldIds = [
           <div class="group flex cursor-pointer items-center gap-3">
             <span class="pi pi-envelope text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light text-lg transition-colors"></span>
 
+            {/* Keep this public address usable without Cloudflare's one-shot email decoder. */}
+            <!--email_off-->
             <a
               class="text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light font-mono text-sm transition-colors"
               href="mailto:visomi.dev@gmail.com"
             >
               visomi.dev@gmail.com
             </a>
+            <!--/email_off-->
           </div>
 
           <div class="group flex cursor-pointer items-center gap-3">

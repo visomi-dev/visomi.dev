@@ -16,6 +16,8 @@ const t = createTranslator(locale);
   <div class="text-muted-light dark:text-muted-dark text-sm">{t('homeFooterCopyright')}</div>
 
   <div class="flex space-x-6">
+    {/* Exempt only the public email link, including its mailto target. */}
+    <!--email_off-->
     <a
       class="text-muted-light dark:text-muted-dark transition-colors hover:text-neutral-900 dark:hover:text-white"
       href="mailto:visomi.dev@gmail.com"
@@ -23,6 +25,7 @@ const t = createTranslator(locale);
     >
       <span class="pi pi-envelope text-xl"></span>
     </a>
+    <!--/email_off-->
 
     <a
       class="text-muted-light dark:text-muted-dark transition-colors hover:text-neutral-900 dark:hover:text-white"
