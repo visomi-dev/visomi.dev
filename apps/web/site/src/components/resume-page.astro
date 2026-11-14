@@ -406,12 +406,17 @@ const { resume } = getSiteContent(locale);
           <div>
             <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Email</p>
 
+            {/* Keep the exception scoped to the explicitly public address if resume content changes. */}
+            <Fragment set:html={resume.email === 'visomi.dev@gmail.com' ? '<!--email_off-->' : ''} />
+
             <a
               class="text-surface-dark dark:text-surface-light break-all hover:underline"
               href={`mailto:${resume.email}`}
             >
               {resume.email}
             </a>
+
+            <Fragment set:html={resume.email === 'visomi.dev@gmail.com' ? '<!--/email_off-->' : ''} />
           </div>
 
           <div>
