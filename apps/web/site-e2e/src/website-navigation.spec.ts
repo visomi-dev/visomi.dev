@@ -22,6 +22,8 @@ for (const width of [375, 1440]) {
     const projects = `${prefix}/projects/`;
     const journey = `${prefix}/journey/`;
     const contact = `${prefix}/contact/`;
+    const journeyTitle =
+      locale === 'en' ? 'Engineering Journey | VISOMI.DEV' : 'Trayectoria de Ingenieria | VISOMI.DEV';
     const otherLocale = locale === 'en' ? 'es' : 'en';
     const otherPrefix = otherLocale === 'es' ? '/es' : '';
 
@@ -86,9 +88,9 @@ for (const width of [375, 1440]) {
 
         await expect(page.locator('#page-navigation-loader')).toBeHidden();
 
-        const title = await page.title();
+        await expect(page).toHaveTitle(journeyTitle);
 
-        await expect(page.locator('.astro-route-announcer')).toHaveText(title);
+        await expect(page.locator('.astro-route-announcer')).toHaveText(journeyTitle);
 
         await expect.poll(() => page.evaluate(() => document.activeElement === document.body)).toBe(true);
       });
