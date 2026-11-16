@@ -8,9 +8,20 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { OwnerSession } from './owner-session';
 import { sessionInterceptor } from './interceptor';
 
-vi.mock('socket.io-client', () => ({
-  io: vi.fn(() => ({ active: true, on: vi.fn(), connect: vi.fn(), disconnect: vi.fn(), removeAllListeners: vi.fn() })),
-}));
+const realtime = vi.hoisted(() => {
+  const listeners = new Map<string, (...args: unknown[]) => void>();
+  const socket = {
+    active: true,
+    on: vi.fn((event: string, listener: (...args: unknown[]) => void) => listeners.set(event, listener)),
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    removeAllListeners: vi.fn(() => listeners.clear()),
+  };
+
+  return { listeners, socket, io: vi.fn(() => socket) };
+});
+
+vi.mock('socket.io-client', () => ({ io: realtime.io }));
 
 let session: OwnerSession;
 let http: HttpTestingController;
@@ -18,6 +29,9 @@ const router = { url: '/admin/dashboard', navigate: vi.fn().mockResolvedValue(tr
 const owner = { authenticated: true, csrfToken: 'synthetic-csrf', user: { id: 'synthetic-owner' } };
 
 beforeEach(() => {
+  realtime.listeners.clear();
+  realtime.socket.active = true;
+  vi.clearAllMocks();
   router.url = '/admin/dashboard';
   router.navigate.mockClear();
   TestBed.configureTestingModule({
@@ -33,8 +47,11 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  http.verify();
-  TestBed.resetTestingModule();
+  try {
+    http.verify();
+  } finally {
+    TestBed.resetTestingModule();
+  }
 });
 
 it('drops a late session response after invalidation and refreshes the CSRF token without replaying mutations', async () => {
@@ -103,6 +120,52 @@ async function authorizeOwner() {
 
   await pending;
 }
+
+it.each([true, false])(
+  'preserves authorized pending reads after a socket connection failure (active=%s)',
+  async (active) => {
+    await authorizeOwner();
+
+    const cancelled = vi.fn();
+
+    session.cancelled.subscribe(cancelled);
+    const read = firstValueFrom(TestBed.inject(HttpClient).get('/api/contact/submissions/42')).catch(() => null);
+    const request = http.expectOne('/api/contact/submissions/42');
+
+    realtime.socket.active = active;
+    realtime.listeners.get('connect_error')?.(new Error('synthetic transport failure'));
+
+    expect(request.cancelled).toBe(false);
+    expect(session.valid()).toBe(true);
+    expect(cancelled).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+    http.expectNone('/api/auth/session');
+    expect(realtime.io).toHaveBeenCalledTimes(1);
+
+    request.flush({ item: { id: '42' } });
+
+    await expect(read).resolves.toEqual({ item: { id: '42' } });
+  },
+);
+
+it.each(['session:changed', 'disconnect'])('still revalidates and denies a revoked session on %s', async (event) => {
+  await authorizeOwner();
+
+  const read = firstValueFrom(TestBed.inject(HttpClient).get('/api/contact/submissions/42')).catch(() => null);
+  const request = http.expectOne('/api/contact/submissions/42');
+
+  realtime.listeners.get(event)?.('io server disconnect');
+
+  expect(request.cancelled).toBe(true);
+  expect(session.valid()).toBe(false);
+  http.expectOne('/api/auth/session').flush({ authenticated: false, csrfToken: 'anonymous', user: null });
+
+  await session.revalidate();
+
+  await expect(read).resolves.toBeNull();
+
+  expect(router.navigate).toHaveBeenCalledWith(['/admin/auth/sign-in'], { replaceUrl: true });
+});
 
 it.each(['network', 'server'] as const)(
   'retains access and reports a %s logout failure without announcing success',

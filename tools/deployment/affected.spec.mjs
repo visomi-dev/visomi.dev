@@ -18,6 +18,7 @@ const cases = [
   ['apps/web/gateway/src/app.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   ['apps/web/api/src/app.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-api', 'web-gateway', 'worker']],
   ['.railway/railway.ts', 'deployment-check', ['web-gateway']],
+  ['docs/migration/stack-files.json', 'deployment-check', ['web-gateway']],
   ['.railway/jaeger.yaml', 'container-check', ['web-gateway']],
   ['.railway/jaeger.yaml', 'jaeger-check', ['web-gateway']],
   ['tools/deployment/smoke.mjs', 'deployment-check', ['web-gateway']],

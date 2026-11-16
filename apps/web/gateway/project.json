@@ -75,6 +75,7 @@
         "{workspaceRoot}/.railway/**/*",
         "{workspaceRoot}/tools/deployment/**/*",
         "{workspaceRoot}/tools/development/**/*",
+        "{workspaceRoot}/docs/migration/stack-files.json",
         "{workspaceRoot}/eslint.config.mjs",
         "{workspaceRoot}/tools/lint-rules/**/*",
         {

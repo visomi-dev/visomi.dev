@@ -168,7 +168,8 @@ export class OwnerSession {
     };
 
     this.socket.on('session:changed', refresh);
-    this.socket.on('connect_error', refresh);
+    // A transport/handshake failure is not evidence of HTTP session revocation.
+    // Let Socket.IO retry transient failures; focus, API denial and server notices still revalidate.
     this.socket.on('connect', () => {
       void this.revalidate();
     });

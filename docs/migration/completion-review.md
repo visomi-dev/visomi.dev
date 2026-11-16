@@ -280,3 +280,46 @@ This metadata is provenance tracking only; no source module or URL alias is reta
 Fresh `web-gateway:deployment-check` passed 47 contract tests (including the three
 new relocation regressions) plus its three development-tool checks. The inventory
 check passed with unchanged counts and ten separately reported digest differences.
+
+## Final code and organization review
+
+This review starts at clean local/fetched PR HEAD `022046e` and compares the fixed
+stack baseline `07f03a5`, with later stack HEAD `87f6ebc` inspected separately.
+The review covers auth organization and localized client/SSR routing, owner guards,
+logout/second factor, session/realtime cancellation, error capture and private maps,
+SSR boundaries, telemetry opt-ins, gateway error documents, Docker context,
+fixture ownership, migration inventory and Nx/CI selection.
+
+Two actionable gaps were found and repaired:
+
+- A Socket.IO connection failure invalidated an otherwise authorized HTTP session,
+  cancelling a pending contact read. A rejected handshake could also recreate the
+  socket after each successful HTTP revalidation. The stack's baseline keeps transport
+  failure separate from session invalidation; the adapted owner session now does too.
+  Transient reconnects remain Socket.IO's responsibility, while successful reconnect,
+  focus/online, API denial and explicit server/session notices retain their checks.
+  Four added unit cases cover pending reads for both active/inactive sockets and
+  continued cancellation/redirect on session-change or server-disconnect notices.
+  The two connection-failure cases failed before the repair (44 passed, 2 failed);
+  all 46 Angular tests pass after it. This is controlled HTTP/socket unit evidence,
+  not a claim of a new browser transport-failure reproduction.
+- An inventory-only edit did not select `deployment-check` in Nx. The inventory is
+  now an explicit target input and a new affected-selection case asserts that it
+  selects `web-gateway`. The same command returned `[]` before and
+  `["web-gateway"]` after the repair. All 48 deployment contract tests pass, plus
+  the three development-tool checks.
+
+The auth feature remains under `auth/password/sign-in` and `auth/session`, with no
+obsolete import shims, `/access` aliases or compatibility redirects. Earlier logout,
+contact-expiry and delayed-focus regression tests are retained. Historical inventory
+paths/digests, negative URL tests and unrelated access-control/accessibility names
+remain intentional. The inventory check preserves all 1,127 classifications and
+reports twelve expected destination digest differences separately from provenance.
+
+No additional baseline omission was identified in the reviewed boundaries. Later
+stack account-method management, persistence/product-policy additions and mail
+enhancements do not silently extend the approved owner-only product; the explicit
+post-baseline decisions above still apply. The PR records the final commit's fresh
+browser matrix and CI outcome separately from earlier runs and cache replays.
+VIS-51's habitual-profile comparison and exhaustive historical-image inspection
+remain unconfirmed, as described above.
