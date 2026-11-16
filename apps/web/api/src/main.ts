@@ -11,6 +11,7 @@ import type { MailTransport } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import type { DatabaseResource } from '@visomi-stack/backend-shared/lib/database/database';
 import type { RealtimeTransport } from '@visomi-stack/backend-shared/lib/realtime';
 import { emitReadySignal } from '@visomi-stack/web-backend-shared/lib/http/readiness';
+import { proxyConfiguration } from '@visomi-stack/web-backend-shared/lib/http/proxy-configuration';
 import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 
 import packageJson from '../package.json' with { type: 'json' };
@@ -67,9 +68,7 @@ try {
     pool: database?.pool,
     observability,
     ...(auth ? { auth } : {}),
-    ...(process.env.AUTH_TRUST_PROXY
-      ? { trustProxy: process.env.AUTH_TRUST_PROXY.split(',').map((value) => value.trim()) }
-      : {}),
+    ...proxyConfiguration(process.env.AUTH_TRUST_PROXY),
   });
 } catch {
   startupFailed = true;

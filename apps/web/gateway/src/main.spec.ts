@@ -298,6 +298,14 @@ describe('gateway executable ownership', () => {
     );
   });
 
+  it('passes an explicitly selected single-hop ingress policy to the host', async () => {
+    vi.stubEnv('AUTH_TRUST_PROXY', '1-hop');
+
+    await start();
+
+    expect(boundary.createGatewayApp).toHaveBeenCalledWith(expect.objectContaining({ trustProxy: 1 }));
+  });
+
   it.each(['SIGTERM', 'SIGINT'])('drains and flushes exactly once on repeated %s', async (signal) => {
     await start();
 

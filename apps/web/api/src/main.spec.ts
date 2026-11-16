@@ -181,6 +181,14 @@ describe('API executable lifecycle', () => {
     expect(boundary.observability.event).toHaveBeenCalledWith('runtime.failed');
   });
 
+  it('passes an explicitly selected single-hop ingress policy to the standalone API', async () => {
+    vi.stubEnv('AUTH_TRUST_PROXY', '1-hop');
+
+    await import('./main');
+
+    expect(boundary.createApp).toHaveBeenCalledWith(expect.objectContaining({ trustProxy: 1 }));
+  });
+
   it.each([false, true])('signals Nx readiness after listening; optional failure: %s', async (fails) => {
     vi.stubEnv('NX_READY_SIGNAL_SOCKET', '/synthetic/ready.sock');
 

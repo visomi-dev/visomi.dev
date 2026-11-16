@@ -26,7 +26,7 @@ export function createApp(
     browserTelemetry?: Pick<ReturnType<typeof createBrowserTelemetry>, 'context' | 'router'>;
     errorMode?: 'managed' | 'inherited';
     helmetMode?: 'managed' | 'inherited';
-    trustProxy?: string[];
+    trustProxy?: string[] | 1;
     authContext?: (request: Request) => AuthRenderContext;
   } = {},
 ) {
