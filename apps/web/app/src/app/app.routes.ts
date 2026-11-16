@@ -1,6 +1,6 @@
 import type { Route } from '@angular/router';
 
-import { ownerGuard } from './shared/guards/owner.guard';
+import { ownerGuard } from './auth/session/owner.guard';
 import { dashboardResolver } from './pages/dashboard/dashboard.resolver';
 import { metricsResolver } from './pages/metrics/metrics.resolver';
 
@@ -13,7 +13,7 @@ export const appRoutes: Route[] = [
   {
     path: 'admin/auth/sign-in',
     pathMatch: 'full',
-    loadComponent: () => import('./pages/sign-in/sign-in').then((module) => module.SignIn),
+    loadComponent: () => import('./auth/password/sign-in/sign-in').then((module) => module.SignIn),
   },
   {
     path: 'admin',

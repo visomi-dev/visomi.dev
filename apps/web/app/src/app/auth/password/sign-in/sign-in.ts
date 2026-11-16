@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom, takeUntil } from 'rxjs';
 
-import { Preferences } from '../../shared/layout/preferences/preferences';
-import { OwnerSession } from '../../shared/owner-session';
-import { NavigationHeading } from '../../shared/navigation-heading';
+import { Preferences } from '../../../shared/layout/preferences/preferences';
+import { OwnerSession } from '../../session/owner-session';
+import { NavigationHeading } from '../../../shared/navigation-heading';
 
 @Component({
   selector: 'app-sign-in',

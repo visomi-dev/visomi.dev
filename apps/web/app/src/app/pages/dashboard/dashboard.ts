@@ -2,7 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { OwnerSession } from '../../shared/owner-session';
+import { OwnerSession } from '../../auth/session/owner-session';
 import { NavigationHeading } from '../../shared/navigation-heading';
 
 import type { DashboardData } from './dashboard.resolver';

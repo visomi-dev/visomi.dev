@@ -8,7 +8,7 @@ import {
   withI18nSupport,
 } from '@angular/platform-browser';
 
-import { OwnerSession } from './shared/owner-session';
+import { OwnerSession } from './auth/session/owner-session';
 import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {

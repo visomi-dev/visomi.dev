@@ -236,3 +236,37 @@ running cases while the shared Podman host was also running another repository's
 tests. Neither those attempts nor the earlier concurrent-build failure count as
 acceptance. No test, rate limit or fixture deadline was relaxed. The PR records
 the new HEAD's independent CI outcome and browser matrix evidence.
+
+## Authentication code organization follow-up
+
+The scope correction starts from clean local and fetched PR branches at `24ae06a`.
+An audit of tracked names, source directories and available Git history found no
+current `access/` code directory to rename. The concrete authentication UI was
+`apps/web/app/src/app/pages/sign-in`; its session code was scattered under `shared`.
+The reported `access/` folder cannot be attributed to this HEAD; the concrete
+feature being reorganized is sign-in and its owner-session support.
+
+The stack's pinned migration baseline `07f03a5` groups authentication under
+`apps/web/app/src/app/auth`, including `password` and `session`. The current stack
+checkout retains that organization. The portfolio now follows those boundaries:
+
+- Password/second-factor sign-in moves to `auth/password/sign-in`, retaining the
+  component's matching external template/style names and all behavior.
+- Owner session, its regression suite, private-request interceptor and owner guard
+  move to `auth/session`. All consumers, providers and lazy route imports point
+  directly to the new files; old modules and import compatibility shims are absent.
+- Translation source-location metadata points to the moved template. Stable IDs,
+  translations, canonical routes and SSR route definitions retain their meaning.
+
+Backend authentication already uses `src/auth`. Its baseline
+`access-errors.integration.spec.ts` and `access-management.integration.spec.ts`
+exercise access levels and method/session lifecycle; those names are retained.
+Accessibility, owner authorization wording, negative route cases and historical
+inventory paths/digests remain intentional. No route alias, compatibility redirect,
+new authentication method or publicly exposed account-management route is added.
+
+The owner-session implementation is byte-identical to `24ae06a`; its moved tests
+change only the interceptor import. All 42 Angular tests, lint and types passed
+fresh after relocation, alongside the localized production build. The existing browser matrix continues to cover canonical
+localized SSR/client routing, second factor, isolation, logout and all three session
+review regressions. The PR records final-HEAD browser/CI results separately.

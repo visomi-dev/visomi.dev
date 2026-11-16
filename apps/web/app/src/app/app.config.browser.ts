@@ -8,7 +8,7 @@ import {
   type ApplicationConfig,
 } from '@angular/core';
 
-import { sessionInterceptor } from './shared/session-interceptor';
+import { sessionInterceptor } from './auth/session/interceptor';
 import { appConfig } from './app.config';
 import { BrowserErrors } from './shared/observability/browser-errors';
 import { browserErrorsInterceptor } from './shared/observability/browser-errors-interceptor';

@@ -58,6 +58,8 @@ routes are exposed. Missing owner/auth configuration denies access. The owner en
 `/app/en/admin/auth/sign-in` or `/app/es/admin/auth/sign-in`; authorization is enforced again on every
 contact API request. Retired entrypoints and unknown app routes return 404 without a compatibility
 redirect. The localized app roots also return 404.
+The Angular implementation groups password sign-in under `auth/password/sign-in` and owner session,
+guard and interception under `auth/session`, following the stack's authentication feature organization.
 Private responses are `private, no-store`. Authorized list/detail HTML can contain private data during
 SSR; HTTP transfer caching is disabled, and message content is rendered as escaped text. Telemetry
 export is disabled unless explicitly enabled by an operator.

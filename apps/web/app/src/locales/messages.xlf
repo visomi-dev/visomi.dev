@@ -196,21 +196,21 @@
       <trans-unit id="signInHeroTitle" datatype="html">
         <source>Owner sign-in</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">11,13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessDenied" datatype="html">
         <source>Owner access required.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">13,16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessError" datatype="html">
         <source>Access could not be verified. Please try again.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">17,20</context>
         </context-group>
         <context-group purpose="location">
@@ -221,49 +221,49 @@
       <trans-unit id="dashboardAccessCode" datatype="html">
         <source>Verification code</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">22,25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessVerify" datatype="html">
         <source>Verify access</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">47,49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="signInVerifyRestart" datatype="html">
         <source>Start again</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">51,53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessEmail" datatype="html">
         <source>Verified email</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">54,57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessPassword" datatype="html">
         <source>Password</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">67,70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessSignIn" datatype="html">
         <source>Access dashboard</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">93,95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessLoading" datatype="html">
         <source>Verifying access…</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">99,104</context>
         </context-group>
         <context-group purpose="location">
@@ -274,7 +274,7 @@
       <trans-unit id="signInFooterLabel" datatype="html">
         <source>Private administration · VISOMI.DEV</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
           <context context-type="linenumber">105,107</context>
         </context-group>
       </trans-unit>

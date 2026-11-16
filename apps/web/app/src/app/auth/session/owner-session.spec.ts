@@ -6,7 +6,7 @@ import { firstValueFrom, takeUntil } from 'rxjs';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import { OwnerSession } from './owner-session';
-import { sessionInterceptor } from './session-interceptor';
+import { sessionInterceptor } from './interceptor';
 
 vi.mock('socket.io-client', () => ({
   io: vi.fn(() => ({ active: true, on: vi.fn(), connect: vi.fn(), disconnect: vi.fn(), removeAllListeners: vi.fn() })),

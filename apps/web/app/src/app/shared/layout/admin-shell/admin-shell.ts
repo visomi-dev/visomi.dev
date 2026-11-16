@@ -4,7 +4,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { appShell, navItem, sidebar, topbar } from '@visomi-stack/web-frontend-ui/lib/shell';
 
-import { OwnerSession } from '../../owner-session';
+import { OwnerSession } from '../../../auth/session/owner-session';
 import { Preferences } from '../preferences/preferences';
 
 @Component({
