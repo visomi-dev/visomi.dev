@@ -270,3 +270,13 @@ change only the interceptor import. All 42 Angular tests, lint and types passed
 fresh after relocation, alongside the localized production build. The existing browser matrix continues to cover canonical
 localized SSR/client routing, second factor, isolation, logout and all three session
 review regressions. The PR records final-HEAD browser/CI results separately.
+
+The first organization CI run (`#151`, `8e72c64`) found six inventory entries whose
+historical destinations had moved. They now record explicit `relocatedTo` metadata;
+all pre-existing inventory fields, source/destination paths, hashes and 1,127-entry
+counts remain unchanged. Validation follows the current file for existence and drift,
+and new tests reject missing/unsafe relocation targets or omitted relocation metadata.
+This metadata is provenance tracking only; no source module or URL alias is retained.
+Fresh `web-gateway:deployment-check` passed 47 contract tests (including the three
+new relocation regressions) plus its three development-tool checks. The inventory
+check passed with unchanged counts and ten separately reported digest differences.

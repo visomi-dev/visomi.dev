@@ -41,17 +41,19 @@ export async function inspectInventory(inventory) {
       continue;
     }
 
-    if (!safe(entry.destination) || !/^[a-f0-9]{64}$/.test(entry.destinationSha256)) {
+    const destination = entry.relocatedTo === undefined ? entry.destination : entry.relocatedTo;
+
+    if (!safe(entry.destination) || !safe(destination) || !/^[a-f0-9]{64}$/.test(entry.destinationSha256)) {
       errors.push('destination_invalid');
       continue;
     }
 
     try {
-      const contents = await readFile(resolve(root, entry.destination));
+      const contents = await readFile(resolve(root, destination));
 
       // A digest records provenance at a review point. Code may evolve without rewriting historical evidence.
       if (sha(contents) !== entry.destinationSha256) {
-        drift.push(entry.destination);
+        drift.push(destination);
       }
     } catch {
       errors.push('destination_missing');

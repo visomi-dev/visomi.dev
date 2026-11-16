@@ -224,4 +224,6 @@ demonstrate that the excluded browser adapters were connected.
 `pnpm nx run web-gateway:inventory-check` validates all 1,127 historical source entries,
 source digest, counts, classifications and destination existence. Hashes are snapshots:
 `migrationDestinationSha256` retains the earlier value when reconciled; destination drift
-is reported independently rather than prohibiting future changes.
+is reported independently rather than prohibiting future changes. When a file moves,
+`relocatedTo` identifies its current checked destination while preserving the original
+`source`, `destination` and digest fields. Invalid or missing relocation targets fail validation.

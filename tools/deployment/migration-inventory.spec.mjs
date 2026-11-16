@@ -47,3 +47,57 @@ test('reports destination drift separately so future code can evolve without era
   assert.deepEqual(result.errors, []);
   assert.ok(result.drift.includes(entry.destination));
 });
+
+test('requires explicit relocation metadata when the historical destination no longer exists', async () => {
+  const changed = structuredClone(inventory);
+  const entry = changed.files.find((entry) => entry.relocatedTo);
+
+  assert.ok(entry);
+  assert.notEqual(entry.destination, entry.relocatedTo);
+  const original = await inspectInventory(changed);
+
+  assert.deepEqual(original.errors, []);
+
+  delete entry.relocatedTo;
+  const missing = await inspectInventory(changed);
+
+  assert.ok(missing.errors.includes('destination_missing'));
+  assert.equal(missing.sourceDigest, original.sourceDigest);
+  assert.deepEqual(missing.counts, original.counts);
+});
+
+test('rejects invalid or missing current destinations instead of accepting a stale historical path', async () => {
+  for (const relocatedTo of [
+    '',
+    null,
+    42,
+    '../outside-inventory',
+    '/absolute-inventory',
+    'synthetic-missing-inventory',
+  ]) {
+    const changed = structuredClone(inventory);
+    const entry = changed.files.find((entry) => entry.relocatedTo);
+
+    entry.relocatedTo = relocatedTo;
+    const result = await inspectInventory(changed);
+
+    assert.ok(
+      result.errors.includes(
+        relocatedTo === 'synthetic-missing-inventory' ? 'destination_missing' : 'destination_invalid',
+      ),
+    );
+  }
+});
+
+test('reports relocated content drift at its current path without replacing the historical digest', async () => {
+  const changed = structuredClone(inventory);
+  const entry = changed.files.find((entry) => entry.relocatedTo);
+
+  entry.destinationSha256 = '0'.repeat(64);
+  const result = await inspectInventory(changed);
+
+  assert.deepEqual(result.errors, []);
+  assert.ok(result.drift.includes(entry.relocatedTo));
+  assert.ok(!result.drift.includes(entry.destination));
+  assert.equal(entry.destinationSha256, '0'.repeat(64));
+});
