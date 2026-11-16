@@ -138,3 +138,41 @@ Historical local artifact review was limited to metadata and six recent candidat
 filesystems, inspected read-only with networking disabled. One identified application
 image had no `.private-operations` directory. This is not an exhaustive certification of
 all historical caches; no unrelated images were pruned and no exposure was established.
+
+## PR #49 owner-session review follow-up
+
+The local and fetched PR branch both started at reviewed commit
+`1a71866433982ed3b110c70d74d4149821acc7cb`, with no local changes. These repairs
+preserve that history and the existing tests.
+
+- Logout errors now propagate to the administrative shell without announcing success,
+  clearing the current owner state or navigating away. Only an acknowledged logout
+  invalidates local data and notifies other tabs. Network/HTTP 500 regressions assert
+  a visible error, an active synthetic server session and a successful subsequent retry.
+- Private-path recognition covers contact IDs in both localized and router-relative
+  paths. Expired-session unit cases and a browser case with controlled server-side
+  session revocation verify data removal and redirect from contact detail. The browser
+  fixture uses revocation rather than waiting for a production session TTL.
+- Focus/online checks preserve in-flight resolvers while the server still authorizes
+  the owner. Confirmed loss of ownership also cancels reads when the user ID is unchanged.
+  Delayed pagination and detail responses reproduced the original bug: the captured
+  response was HTTP 200 and the server still authorized the owner, but the final view
+  contained zero contacts. The repaired tests require the captured data to appear.
+
+The eight initial regression unit cases failed before the repair; all 42 Angular tests
+passed after it, including a guard against cancelling sign-in on anonymous public-page checks.
+The five focused browser scenarios passed in Chromium, Firefox and WebKit (15 cases),
+using the existing HTTPS fixtures and only synthetic sessions. Earlier green CI is not
+evidence for these newly exercised scenarios. No production, credential, infrastructure,
+merge or deployment operation is part of this follow-up.
+
+The expanded combined run exposed shared authentication rate-budget exhaustion.
+Review scenarios use separate local fixtures per engine, retaining the production
+limits and all existing test assertions. The migration inventory keeps its historical
+snapshot and reports the two expected source/test digest differences from these repairs.
+
+Fresh final acceptance: `PLAYWRIGHT_BROWSERS=all NX_NO_CLOUD=true pnpm nx run
+app-e2e:e2e --skipNxCache --output-style=static` passed all 99 cases (84 retained
+and 15 new), alongside the 42 Angular tests. Lint/type checks passed for `web-app`
+and `app-e2e`; `web-gateway:deployment-check` passed with its dependency replay
+identified separately. The earlier combined rate-limited run is not an acceptance pass.

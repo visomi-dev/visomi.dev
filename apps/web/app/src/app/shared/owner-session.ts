@@ -63,7 +63,7 @@ export class OwnerSession {
 
         const changed = this.identity !== undefined && this.identity !== (session.user?.id ?? null);
 
-        if (changed) {
+        if (changed || (!authorized && this.privateRoute())) {
           this.invalidate();
         }
 
@@ -128,25 +128,20 @@ export class OwnerSession {
   async signOut(): Promise<void> {
     const csrf = await this.csrf();
 
+    await firstValueFrom(this.http.post('/api/auth/logout', {}, { headers: { 'x-csrf-token': csrf } }));
+
     this.invalidate();
+    this.socket?.disconnect();
+    this.notify();
 
-    try {
-      await firstValueFrom(this.http.post('/api/auth/logout', {}, { headers: { 'x-csrf-token': csrf } }));
-    } finally {
-      this.socket?.disconnect();
-      this.notify();
-
-      await this.router.navigate(['/admin/auth/sign-in'], { replaceUrl: true });
-    }
+    await this.router.navigate(['/admin/auth/sign-in'], { replaceUrl: true });
   }
 
   private privateRoute(): boolean {
     const current = this.document.defaultView?.location.pathname;
+    const privatePath = /^(?:\/app\/(?:en|es))?\/admin\/(?:dashboard|contacts|metrics)(?:[/?#]|$)/;
 
-    return (
-      /^\/admin\/(?:dashboard|contacts(?:\/|$)|metrics)(?:[/?]|$)/.test(this.router.url) ||
-      Boolean(current && /^\/app\/(?:en|es)\/admin\/(?:dashboard|contacts(?:\/|$)|metrics)(?:[/?]|$)/.test(current))
-    );
+    return privatePath.test(this.router.url) || Boolean(current && privatePath.test(current));
   }
 
   private notify(): void {
@@ -196,10 +191,7 @@ export class OwnerSession {
 
     const refresh = () => {
       if (this.document.visibilityState !== 'hidden') {
-        if (this.privateRoute()) {
-          this.invalidate();
-        }
-
+        // A passive check must not cancel valid resolvers. Confirmed invalidity cancels them in revalidate().
         void this.revalidate();
       }
     };

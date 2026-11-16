@@ -128,7 +128,19 @@ async function main(): Promise<void> {
 
       // Inbox tests revoke their session; metrics keep an independent session for the same synthetic owner.
       for (const sessionRole of (role === 'owner'
-        ? ['owner', 'metricsOwner', 'syncOwner', 'focusOwner', 'realtimeOwner', 'lateOwner']
+        ? [
+            'owner',
+            'metricsOwner',
+            'syncOwner',
+            'focusOwner',
+            'realtimeOwner',
+            'lateOwner',
+            'logoutNetworkOwner',
+            'logoutServerOwner',
+            'detailExpiryOwner',
+            'paginationFocusOwner',
+            'detailFocusOwner',
+          ]
         : ['other']
       ).flatMap((name) => [name, ...['chromium', 'firefox', 'webkit'].map((browser) => `${name}-${browser}`)])) {
         const sid = randomUUID();
