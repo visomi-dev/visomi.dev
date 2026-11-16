@@ -1,0 +1,101 @@
+<div [class]="shellClass">
+  <a
+    href="#admin-main"
+    class="ui-focus-ring sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-white focus:p-4 focus:text-zinc-950"
+    i18n="@@adminHeaderSkip"
+    >Skip to content</a
+  >
+
+  <header [class]="topbarClass">
+    <a href="/" class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg"
+      ><img
+        ngSrc="brand/logotype.svg"
+        alt="VISOMI.DEV"
+        width="175"
+        height="36"
+        priority
+        class="h-9 w-44 object-contain dark:invert"
+    /></a>
+
+    <app-preferences />
+  </header>
+
+  <div [class]="frameClass">
+    <aside class="hidden min-h-0 lg:block">
+      <div [class]="sidebarClass">
+        <nav class="flex-1 space-y-2" aria-label="Private navigation" i18n-aria-label="@@metricsNavigationLabel">
+          <a
+            [class]="navClass"
+            routerLink="/admin/dashboard"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            i18n="@@dashboardHeroTitle"
+            >Contact requests</a
+          >
+
+          <a
+            [class]="navClass"
+            routerLink="/admin/metrics"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            i18n="@@metricsHeroTitle"
+            >Technical metrics</a
+          >
+        </nav>
+
+        <button
+          type="button"
+          class="min-h-11 rounded-lg bg-blue-700 px-4 py-3 font-semibold text-white disabled:opacity-50"
+          [disabled]="busy()"
+          [attr.aria-busy]="busy()"
+          (click)="signOut()"
+          i18n="@@dashboardAccessSignOut"
+        >
+          Sign out
+        </button>
+      </div>
+    </aside>
+
+    <main id="admin-main" tabindex="-1" [class]="contentClass">
+      @if (failed()) {
+        <p role="alert" i18n="@@dashboardAccessError">Access could not be verified. Please try again.</p>
+      }
+
+      @if (valid()) {
+        <router-outlet />
+      } @else {
+        <p role="status" i18n="@@dashboardAccessLoading">Verifying access…</p>
+      }
+    </main>
+  </div>
+
+  <nav
+    class="flex shrink-0 flex-wrap items-center justify-around gap-2 border-t border-zinc-200 bg-white px-3 py-2 lg:hidden dark:border-zinc-800 dark:bg-zinc-950"
+    aria-label="Private navigation"
+    i18n-aria-label="@@metricsNavigationLabel"
+  >
+    <a
+      routerLink="/admin/dashboard"
+      class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg px-3 text-sm"
+      i18n="@@dashboardHeroTitle"
+      >Contact requests</a
+    >
+
+    <a
+      routerLink="/admin/metrics"
+      class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg px-3 text-sm"
+      i18n="@@metricsHeroTitle"
+      >Technical metrics</a
+    >
+
+    <button
+      type="button"
+      class="ui-focus-ring min-h-11 rounded-lg px-3 text-sm"
+      [disabled]="busy()"
+      (click)="signOut()"
+      i18n="@@dashboardAccessSignOut"
+    >
+      Sign out
+    </button>
+  </nav>
+</div>

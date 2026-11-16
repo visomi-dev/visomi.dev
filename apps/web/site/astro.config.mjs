@@ -8,6 +8,7 @@ const site = process.env.SITE_URL ?? 'https://visomi.dev';
 const publicUrl = new URL(site);
 
 export default defineConfig({
+  logger: { entrypoint: new URL('./src/logger.mjs', import.meta.url) },
   actions:
     output === 'server'
       ? {
@@ -38,7 +39,7 @@ export default defineConfig({
   },
   vite: {
     resolve: { tsconfigPaths: true },
-    build: { assetsInlineLimit: 0 },
+    build: { assetsInlineLimit: 0, sourcemap: 'hidden' },
     plugins: [tailwindcss()],
   },
 });

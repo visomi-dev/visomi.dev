@@ -78,7 +78,7 @@ describe('compiled Angular boundary', () => {
       const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
 
       try {
-        const rendered = await fetch(origin + '/app/en/');
+        const rendered = await fetch(origin + '/app/en/admin/auth/sign-in');
 
         await rendered.text();
 
@@ -88,7 +88,7 @@ describe('compiled Angular boundary', () => {
         );
         const rejected = await new Promise<{ status: number; body: string }>((resolve, reject) => {
           const request = nodeRequest(
-            origin + '/app/en/?private=SYNTHETIC_PRIVATE_QUERY',
+            origin + '/app/en/admin/auth/sign-in?private=SYNTHETIC_PRIVATE_QUERY',
             {
               headers: { host: 'SYNTHETIC_PRIVATE_HOST.example.test' },
             },
@@ -162,7 +162,7 @@ describe('compiled Angular boundary', () => {
             {
               host: '127.0.0.1',
               port: (server.address() as AddressInfo).port,
-              path: '/app/en/',
+              path: '/app/en/admin/auth/sign-in',
               headers: Object.fromEntries(
                 Object.entries({
                   host: 'visomi.dev',
@@ -239,9 +239,12 @@ describe('compiled Angular boundary', () => {
       await once(server, 'listening');
 
       try {
-        const result = await fetch(`http://127.0.0.1:${(server.address() as AddressInfo).port}/app/en/`, {
-          headers: { 'x-forwarded-host': 'attacker.invalid', 'x-forwarded-proto': 'https' },
-        });
+        const result = await fetch(
+          `http://127.0.0.1:${(server.address() as AddressInfo).port}/app/en/admin/auth/sign-in`,
+          {
+            headers: { 'x-forwarded-host': 'attacker.invalid', 'x-forwarded-proto': 'https' },
+          },
+        );
 
         await result.text();
 
@@ -312,12 +315,12 @@ describe('compiled Angular boundary', () => {
 
       try {
         const [owner, anonymous, other, access] = await Promise.all([
-          fetch(origin + '/app/en/dashboard', {
+          fetch(origin + '/app/en/admin/dashboard', {
             headers: { cookie: 'synthetic=owner', 'x-forwarded-for': '192.0.2.123' },
           }),
-          fetch(origin + '/app/en/dashboard'),
-          fetch(origin + '/app/en/dashboard', { headers: { cookie: 'synthetic=other' } }),
-          fetch(origin + '/app/es/access'),
+          fetch(origin + '/app/en/admin/dashboard'),
+          fetch(origin + '/app/en/admin/dashboard', { headers: { cookie: 'synthetic=other' } }),
+          fetch(origin + '/app/es/admin/auth/sign-in'),
         ]);
         const [ownerHtml, anonymousHtml, otherHtml, accessHtml] = await Promise.all(
           [owner, anonymous, other, access].map((response) => response.text()),
@@ -352,3 +355,44 @@ describe('compiled Angular boundary', () => {
     compiledSsrTimeout,
   );
 });
+
+it(
+  'bounds a real compiled Angular render failure without exposing request material',
+  async () => {
+    const application = await loadApplication(
+      new URL('../../../../dist/apps/web/app/server/server.mjs', import.meta.url),
+    );
+    const parent = express();
+
+    parent.use('/api/contact/session', (_request, response) => response.json({ owner: true }));
+    // Invalid synthetic data deliberately makes the compiled template fail while reading its tracked item.
+    parent.use('/api/contact/submissions', (_request, response) => response.json({ items: [null], next: null }));
+    parent.use(application.createApp({ errorMode: 'inherited', helmetMode: 'inherited' }));
+    parent.use(httpErrorHandler);
+    const server = parent.listen(0, '127.0.0.1');
+
+    await once(server, 'listening');
+
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:${(server.address() as AddressInfo).port}/app/en/admin/dashboard?private=SYNTHETIC_PRIVATE_SSR_RENDER`,
+      );
+      const body = await response.text();
+
+      expect(error).toHaveBeenCalledWith('{"event":"app.render_failed"}');
+      expect(response.status).toBe(500);
+      expect(body).not.toContain('SYNTHETIC_PRIVATE_SSR_RENDER');
+      expect(error).toHaveBeenCalledWith('{"event":"app.render_failed"}');
+      expect(JSON.stringify([...error.mock.calls, ...warn.mock.calls])).not.toContain('SYNTHETIC_PRIVATE_SSR_RENDER');
+    } finally {
+      error.mockRestore();
+      warn.mockRestore();
+
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+    }
+  },
+  compiledSsrTimeout,
+);

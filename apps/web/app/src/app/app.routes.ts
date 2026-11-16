@@ -5,27 +5,44 @@ import { dashboardResolver } from './pages/dashboard/dashboard.resolver';
 import { metricsResolver } from './pages/metrics/metrics.resolver';
 
 export const appRoutes: Route[] = [
-  { path: '', pathMatch: 'full', children: [] },
   {
-    path: 'metrics',
-    canActivate: [ownerGuard],
-    resolve: { metrics: metricsResolver },
-    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-    loadComponent: () => import('./pages/metrics/metrics').then((module) => module.Metrics),
-  },
-  { path: 'access', loadComponent: () => import('./pages/dashboard/dashboard').then((module) => module.Dashboard) },
-  {
-    path: 'dashboard',
-    canActivate: [ownerGuard],
-    resolve: { dashboard: dashboardResolver },
-    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-    loadComponent: () => import('./pages/dashboard/dashboard').then((module) => module.Dashboard),
+    path: 'admin',
+    pathMatch: 'full',
+    loadComponent: () => import('./pages/not-found/not-found').then((module) => module.NotFound),
   },
   {
-    path: 'dashboard/:id',
-    canActivate: [ownerGuard],
-    resolve: { dashboard: dashboardResolver },
-    loadComponent: () => import('./pages/dashboard/dashboard').then((module) => module.Dashboard),
+    path: 'admin/auth/sign-in',
+    pathMatch: 'full',
+    loadComponent: () => import('./pages/sign-in/sign-in').then((module) => module.SignIn),
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: 'admin',
+    loadComponent: () => import('./shared/layout/admin-shell/admin-shell').then((module) => module.AdminShell),
+    children: [
+      {
+        path: 'dashboard',
+        pathMatch: 'full',
+        canActivate: [ownerGuard],
+        resolve: { dashboard: dashboardResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        loadComponent: () => import('./pages/dashboard/dashboard').then((module) => module.Dashboard),
+      },
+      {
+        path: 'contacts/:id',
+        pathMatch: 'full',
+        canActivate: [ownerGuard],
+        resolve: { dashboard: dashboardResolver },
+        loadComponent: () => import('./pages/dashboard/dashboard').then((module) => module.Dashboard),
+      },
+      {
+        path: 'metrics',
+        pathMatch: 'full',
+        canActivate: [ownerGuard],
+        resolve: { metrics: metricsResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        loadComponent: () => import('./pages/metrics/metrics').then((module) => module.Metrics),
+      },
+    ],
+  },
+  { path: '**', loadComponent: () => import('./pages/not-found/not-found').then((module) => module.NotFound) },
 ];

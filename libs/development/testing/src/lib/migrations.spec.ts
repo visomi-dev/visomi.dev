@@ -35,6 +35,9 @@ it('applies the production migration command to an empty isolated database and c
     await pool.end();
 
     await database.stop();
+
+    expect(Object.values(database.timings).every((value) => value >= 0 && value < 60000)).toBe(true);
+    process.stdout.write(JSON.stringify({ fixture: 'isolated-migrations', phases: database.timings }) + '\n');
   }
 }, 60000);
 

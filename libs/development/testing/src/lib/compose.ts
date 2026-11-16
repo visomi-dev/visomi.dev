@@ -4,6 +4,8 @@ import { promisify } from 'node:util';
 
 import { workspaceRoot } from '@nx/devkit';
 
+import { runOwnedCommand } from './owned-command';
+
 const execute = promisify(execFile);
 
 export type TestCompose = {
@@ -29,11 +31,19 @@ export async function createTestCompose(
     throw new Error('test_compose_provider_invalid');
   } else {
     try {
-      await execute('docker', ['compose', 'version']);
+      const version = await execute('docker', ['--version'], { timeout: 5000 });
 
-      provider = 'docker';
+      if (/podman version/i.test(version.stdout)) {
+        await execute('podman-compose', ['version'], { timeout: 5000 });
+
+        provider = 'podman-compose';
+      } else {
+        await execute('docker', ['compose', 'version'], { timeout: 5000 });
+
+        provider = 'docker';
+      }
     } catch {
-      await execute('podman-compose', ['version']);
+      await execute('podman-compose', ['version'], { timeout: 5000 });
 
       provider = 'podman-compose';
     }
@@ -58,7 +68,7 @@ export function runTestCompose(
     throw new Error('isolated_compose_owner_invalid');
   }
 
-  return execute(
+  return runOwnedCommand(
     owner.provider,
     [
       ...(owner.provider === 'docker' ? ['compose'] : []),
@@ -76,7 +86,7 @@ export function runTestCompose(
       cwd: workspaceRoot,
       signal,
       // Match the HTTP readiness window for cold builds; keep routine Compose commands bounded.
-      timeout: args[0] === 'build' ? 600000 : 300000,
+      timeout: args[0] === 'build' ? 600000 : args[0] === 'down' ? 20000 : 300000,
       maxBuffer: 10 * 1024 * 1024,
       env: {
         ...process.env,

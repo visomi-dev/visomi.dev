@@ -235,7 +235,8 @@ export function createBrowserReporter(
         credentials: 'omit',
         referrerPolicy: 'no-referrer',
         keepalive: true,
-        mode: 'same-origin',
+        // Preserve the browser's Origin with no-referrer in Firefox/WebKit. The endpoint is fixed and redirects fail.
+        mode: 'cors',
         redirect: 'error',
         headers: { 'content-type': 'application/json', 'x-browser-telemetry': configuration.token },
         body: serialized,

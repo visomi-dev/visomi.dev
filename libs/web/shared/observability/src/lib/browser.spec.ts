@@ -104,7 +104,7 @@ describe('browser error capture policy', () => {
     expect(calls[0][1]).toMatchObject({
       credentials: 'omit',
       referrerPolicy: 'no-referrer',
-      mode: 'same-origin',
+      mode: 'cors',
       redirect: 'error',
       headers: { 'x-browser-telemetry': config.token },
     });

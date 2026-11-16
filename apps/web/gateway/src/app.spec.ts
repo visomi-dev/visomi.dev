@@ -379,11 +379,11 @@ describe('gateway composition', () => {
     expect(result).toEqual({ status: 403, body: { error: 'access_denied' } });
   });
 
-  it('uses private JSON error fallbacks when the preserved public site has no stack error templates', async () => {
+  it('uses private JSON error fallbacks when compiled error documents are unavailable', async () => {
     const site = await loadSite(new URL('../../../../dist/apps/web/site/server/entry.mjs', import.meta.url));
     const app = createGatewayApp({
       api: apiFixture((_request, _response, next) => next(new HttpError(422, 'request_invalid'))),
-      site,
+      site: { ...site!, clientDirectory: '/synthetic/missing-documents' },
       trustProxy: ['127.0.0.1'],
       auth: { middleware: [(_request, _response, next) => next()] },
       application: {

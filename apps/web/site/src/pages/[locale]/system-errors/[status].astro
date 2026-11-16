@@ -1,0 +1,58 @@
+---
+import '../../../styles/global.css';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return ['en', 'es'].flatMap((locale) =>
+    ['404', '500', '4xx', '5xx'].map((status) => ({ params: { locale, status } })),
+  );
+}
+
+const locale = Astro.params.locale === 'es' ? 'es' : 'en';
+const missing = Astro.params.status === '404';
+const client = Astro.params.status?.startsWith('4');
+const title =
+  locale === 'es'
+    ? missing
+      ? 'Página no encontrada'
+      : client
+        ? 'No se pudo completar la solicitud'
+        : 'Servicio no disponible'
+    : missing
+      ? 'Page not found'
+      : client
+        ? 'Request could not be completed'
+        : 'Service unavailable';
+const back = locale === 'es' ? 'Volver al sitio' : 'Return to website';
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width" />
+
+    <meta name="robots" content="noindex" />
+
+    <title>{title} | VISOMI.DEV</title>
+  </head>
+
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <main class="mx-auto flex min-h-screen max-w-3xl flex-col items-start justify-center gap-6 px-6 py-12">
+      <a href={locale === 'es' ? '/es/' : '/'} class="font-mono text-sm tracking-widest">
+        VISOMI.DEV
+      </a>
+
+      <h1 class="text-3xl font-semibold sm:text-5xl">{title}</h1>
+
+      <a
+        href={locale === 'es' ? '/es/' : '/'}
+        class="inline-flex min-h-11 items-center rounded-lg border border-slate-600 px-5 py-3 underline"
+      >
+        {back}
+      </a>
+    </main>
+  </body>
+</html>

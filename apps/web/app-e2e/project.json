@@ -15,7 +15,8 @@
         "{workspaceRoot}/compose*.yaml",
         "{workspaceRoot}/pnpm-workspace.yaml",
         "{workspaceRoot}/package.json",
-        "{workspaceRoot}/pnpm-lock.yaml"
+        "{workspaceRoot}/pnpm-lock.yaml",
+        "{workspaceRoot}/styles.base.css"
       ]
     }
   }

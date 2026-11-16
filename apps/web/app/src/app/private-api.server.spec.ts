@@ -20,7 +20,7 @@ describe('private API SSR transport', () => {
     (path) => {
       const { next } = invoke(
         path,
-        new Request('https://visomi.dev/app/en/dashboard', {
+        new Request('https://visomi.dev/app/en/admin/dashboard', {
           headers: { cookie: 'synthetic=owner', 'x-forwarded-host': 'attacker.invalid' },
         }),
       );

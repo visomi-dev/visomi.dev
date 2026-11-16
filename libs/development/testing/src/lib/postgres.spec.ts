@@ -95,7 +95,7 @@ describe('Compose PostgreSQL resource', () => {
     const resource = await testPostgres();
 
     expect(resource.url).toBe('postgresql://visomi_test:synthetic-test-password@127.0.0.1:54321/visomi_auth_test');
-    expect(runTestCompose).toHaveBeenCalledWith(resource.compose, ['up', '-d', 'postgres'], undefined);
+    expect(runTestCompose).toHaveBeenCalledWith(resource.compose, ['up', '-d', 'postgres'], expect.any(AbortSignal));
     expect(boundary.clients[0].query).toHaveBeenCalledExactlyOnceWith('SELECT 1');
     expect(boundary.clients[0].end).toHaveBeenCalledOnce();
     expect(vi.mocked(migrate).mock.calls[0][1].migrationsFolder).toMatch(
@@ -138,7 +138,11 @@ describe('Compose PostgreSQL resource', () => {
       const text = await readFile(manifest, 'utf8');
       const owner = JSON.parse(text);
 
-      expect(runTestCompose).toHaveBeenLastCalledWith(owner.compose, ['down', '--volumes', '--remove-orphans']);
+      expect(runTestCompose).toHaveBeenLastCalledWith(
+        owner.compose,
+        ['down', '--timeout', '2', '--volumes', '--remove-orphans'],
+        expect.any(AbortSignal),
+      );
 
       await expect(stat(owner.directory)).rejects.toMatchObject({ code: 'ENOENT' });
 
@@ -162,14 +166,20 @@ describe('Compose PostgreSQL resource', () => {
 
     await expect(testPostgres(join(directory, 'postgres.json'))).rejects.toThrow('isolated_postgres_setup_failed');
 
-    expect(vi.mocked(runTestCompose).mock.calls.at(-1)?.[1]).toEqual(['down', '--volumes', '--remove-orphans']);
+    expect(vi.mocked(runTestCompose).mock.calls.at(-1)?.[1]).toEqual([
+      'down',
+      '--timeout',
+      '2',
+      '--volumes',
+      '--remove-orphans',
+    ]);
   });
 
   it('waits for PostgreSQL readiness before migrating', async () => {
     boundary.failures = 1;
     const resource = await testPostgres();
 
-    expect(delay).toHaveBeenCalledExactlyOnceWith(100, undefined, { signal: undefined });
+    expect(delay).toHaveBeenCalledExactlyOnceWith(100, undefined, { signal: expect.any(AbortSignal) });
     expect(boundary.clients[0].query).toHaveBeenCalledTimes(2);
     expect(migrate).toHaveBeenCalledOnce();
 
@@ -193,7 +203,13 @@ describe('Compose PostgreSQL resource', () => {
     await expect(testPostgres()).rejects.toThrow('isolated_postgres_setup_failed');
 
     expect(boundary.clients[0].end).toHaveBeenCalledOnce();
-    expect(vi.mocked(runTestCompose).mock.calls.at(-1)?.[1]).toEqual(['down', '--volumes', '--remove-orphans']);
+    expect(vi.mocked(runTestCompose).mock.calls.at(-1)?.[1]).toEqual([
+      'down',
+      '--timeout',
+      '2',
+      '--volumes',
+      '--remove-orphans',
+    ]);
   });
 });
 
@@ -248,7 +264,9 @@ describe('Compose cleanup ownership', () => {
   it('preserves ownership after a failed cleanup so a later teardown can retry', async () => {
     const cluster = await owned();
 
-    vi.mocked(runTestCompose).mockRejectedValueOnce(new Error('SYNTHETIC_PRIVATE_STOP_ERROR'));
+    vi.mocked(runTestCompose)
+      .mockRejectedValueOnce(new Error('SYNTHETIC_PRIVATE_STOP_ERROR'))
+      .mockRejectedValueOnce(new Error('SYNTHETIC_PRIVATE_STOP_ERROR'));
 
     await expect(stopTestPostgres(cluster, descriptor(cluster))).rejects.toThrow('isolated_postgres_cleanup_failed');
 
@@ -260,4 +278,23 @@ describe('Compose cleanup ownership', () => {
 
     await expect(stat(cluster)).rejects.toMatchObject({ code: 'ENOENT' });
   });
+});
+
+it('retries partial teardown within one deadline and retains ownership on cancellation', async () => {
+  const first = await owned();
+
+  vi.mocked(runTestCompose).mockRejectedValueOnce(new Error('isolated_command_failed'));
+
+  await stopTestPostgres(first, descriptor(first));
+
+  expect(runTestCompose).toHaveBeenCalledTimes(2);
+  const second = await owned();
+  const controller = new AbortController();
+
+  controller.abort();
+  vi.mocked(runTestCompose).mockRejectedValueOnce(new Error('isolated_command_aborted'));
+
+  await expect(stopTestPostgres(second, descriptor(second), controller.signal)).rejects.toThrow(
+    'isolated_postgres_cleanup_failed:isolated_command_aborted',
+  );
 });

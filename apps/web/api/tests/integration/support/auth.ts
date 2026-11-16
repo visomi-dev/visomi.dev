@@ -119,7 +119,7 @@ export function authenticationFixture(options: { privateMetrics?: PrivateMetrics
     await resource?.close();
 
     await postgres?.stop();
-  });
+  }, 30000);
   const lastCode = (email: string) => {
     const sent = messages.filter((message) => message.to === email).slice(-1)[0];
     const code = sent?.raw.match(/\b\d{6}\b/)?.[0];

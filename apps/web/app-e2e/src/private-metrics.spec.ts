@@ -5,17 +5,18 @@ import AxeBuilder from '@axe-core/playwright';
 import { workspaceRoot } from '@nx/devkit';
 import { expect, test, type Page } from '@playwright/test';
 
-async function owner(page: Page, baseURL: string, role: 'owner' | 'other' = 'owner') {
+async function owner(page: Page, baseURL: string, role: 'owner' | 'other' = 'owner', browserName = 'chromium') {
   const file = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL).port}`, 'session.json');
   const content = await readFile(file, 'utf8');
-  const data = JSON.parse(content) as { cookies: Record<'metricsOwner' | 'other', string> };
+  const data = JSON.parse(content) as { cookies: Record<string, string> };
 
   await page.context().addCookies([
     {
-      name: 'visomi.sid',
-      value: encodeURIComponent(data.cookies[role === 'owner' ? 'metricsOwner' : 'other']),
+      name: '__Host-visomi.sid',
+      value: encodeURIComponent(data.cookies[`${role === 'owner' ? 'metricsOwner' : 'other'}-${browserName}`]),
       url: baseURL,
       httpOnly: true,
+      secure: true,
       sameSite: 'Strict',
     },
   ]);
@@ -24,34 +25,36 @@ async function owner(page: Page, baseURL: string, role: 'owner' | 'other' = 'own
 test('metrics reject anonymous users and authenticated non-owners on the server and in routing', async ({
   page,
   baseURL,
+  browserName,
 }) => {
   const denied = await page.request.get('/api/private/metrics');
 
   expect(denied.status()).toBe(401);
 
-  await page.goto('/app/en/metrics');
+  await page.goto('/app/en/admin/metrics');
 
-  await expect(page).toHaveURL(/\/access$/);
+  await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 
-  await owner(page, baseURL!, 'other');
+  await owner(page, baseURL!, 'other', browserName);
 
   const forbidden = await page.request.get('/api/private/metrics');
 
   expect(forbidden.status()).toBe(403);
   expect(forbidden.headers()['cache-control']).toContain('no-store');
 
-  await page.goto('/app/en/metrics');
+  await page.goto('/app/en/admin/metrics');
 
-  await expect(page).toHaveURL(/\/access$/);
+  await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 });
 
 test('the owner opens and refreshes real process metrics without exposing contact data', async ({
   page,
   baseURL,
+  browserName,
 }, info) => {
-  await owner(page, baseURL!);
+  await owner(page, baseURL!, 'owner', browserName);
 
-  await page.goto('/app/en/dashboard');
+  await page.goto('/app/en/admin/dashboard');
 
   await page.getByRole('link', { name: 'Technical metrics' }).click();
 
@@ -66,7 +69,7 @@ test('the owner opens and refreshes real process metrics without exposing contac
 
   expect(response.headers()['cache-control']).toContain('no-store');
   expect(response.headers()['vary']).toContain('Cookie');
-  expect(JSON.parse(snapshot)).toMatchObject({ enabled: true, scope: 'web-gateway', traceExportEnabled: false });
+  expect(JSON.parse(snapshot)).toMatchObject({ enabled: true, scope: 'web-gateway', traceExportEnabled: true });
   expect(snapshot).not.toMatch(/example.test|Synthetic browser|contactXss|password/);
 
   await page.getByRole('button', { name: 'Refresh metrics' }).click();
@@ -96,8 +99,8 @@ const states = [
 ];
 
 for (const state of states) {
-  test(`metrics show a clear ${state.name} state`, async ({ page, baseURL }) => {
-    await owner(page, baseURL!);
+  test(`metrics show a clear ${state.name} state`, async ({ page, baseURL, browserName }) => {
+    await owner(page, baseURL!, 'owner', browserName);
 
     await page.route('**/api/private/metrics', (route) =>
       route.fulfill({
@@ -113,18 +116,18 @@ for (const state of states) {
       }),
     );
 
-    await page.goto('/app/en/metrics');
+    await page.goto('/app/en/admin/metrics');
 
     await expect(page.getByText(state.text, { exact: false })).toBeVisible();
   });
 }
 
-test('Spanish metrics remain accessible at mobile widths', async ({ page, baseURL }, info) => {
+test('Spanish metrics remain accessible at mobile widths', async ({ page, baseURL, browserName }, info) => {
   await page.setViewportSize({ width: 375, height: 812 });
 
-  await owner(page, baseURL!);
+  await owner(page, baseURL!, 'owner', browserName);
 
-  const documentResponse = await page.goto('/app/es/metrics');
+  const documentResponse = await page.goto('/app/es/admin/metrics');
 
   expect(documentResponse!.headers()['cache-control']).toContain('no-store');
 

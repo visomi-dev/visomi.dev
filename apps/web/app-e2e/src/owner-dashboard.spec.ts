@@ -5,7 +5,12 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { workspaceRoot } from '@nx/devkit';
 
-test('anonymous users and authenticated non-owners cannot open requests', async ({ page, request, baseURL }) => {
+test('anonymous users and authenticated non-owners cannot open requests', async ({
+  page,
+  request,
+  baseURL,
+  browserName,
+}) => {
   const denied = await request.get('/api/contact/submissions/1');
 
   expect(denied.status()).toBe(401);
@@ -15,17 +20,18 @@ test('anonymous users and authenticated non-owners cannot open requests', async 
 
   await page.context().addCookies([
     {
-      name: 'visomi.sid',
-      value: encodeURIComponent(data.cookies.other),
+      name: '__Host-visomi.sid',
+      value: encodeURIComponent(data.cookies[`other-${browserName}`]),
       url: baseURL!,
       httpOnly: true,
+      secure: true,
       sameSite: 'Strict',
     },
   ]);
 
-  await page.goto('/app/en/dashboard');
+  await page.goto('/app/en/admin/dashboard');
 
-  await expect(page).toHaveURL(/\/app\/en\/access$/);
+  await expect(page).toHaveURL(/\/app\/en\/admin\/auth\/sign-in$/);
 
   await expect(page.getByText('Owner access required.')).toBeVisible();
 
@@ -41,6 +47,7 @@ test('anonymous users and authenticated non-owners cannot open requests', async 
 test('the owner reads paginated requests and escaped message content from the production API', async ({
   page,
   baseURL,
+  browserName,
 }) => {
   const directory = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL!).port}`);
   const awaitedResult2 = await readFile(resolve(directory, 'session.json'), 'utf8');
@@ -48,32 +55,39 @@ test('the owner reads paginated requests and escaped message content from the pr
 
   await page.context().addCookies([
     {
-      name: 'visomi.sid',
-      value: encodeURIComponent(data.cookies.owner),
+      name: '__Host-visomi.sid',
+      value: encodeURIComponent(data.cookies[`owner-${browserName}`]),
       url: baseURL!,
       httpOnly: true,
+      secure: true,
       sameSite: 'Strict',
     },
   ]);
 
   const message = '<img src=x onerror="window.contactXss=true"> Synthetic browser request';
   const sent = await page.request.post('/api/contact/submissions', {
-    data: { name: 'Browser request', email: 'browser@example.test', locale: 'en', type: 'other', message },
+    data: {
+      name: `Browser request ${browserName}`,
+      email: 'browser@example.test',
+      locale: 'en',
+      type: 'other',
+      message,
+    },
   });
 
   expect(sent.status()).toBe(201);
 
-  await page.goto('/app/en/dashboard');
+  await page.goto('/app/en/admin/dashboard');
 
   await expect(page.locator('article')).toHaveCount(25);
 
   await page.getByRole('link', { name: 'Older requests' }).click();
 
-  await expect(page.locator('article')).toHaveCount(2);
+  await expect(page.getByRole('link', { name: 'Synthetic request 1', exact: true })).toBeVisible();
 
-  await page.goto('/app/en/dashboard');
+  await page.goto('/app/en/admin/dashboard');
 
-  await page.getByRole('link', { name: 'Browser request', exact: true }).click();
+  await page.getByRole('link', { name: `Browser request ${browserName}`, exact: true }).click();
 
   await expect(page.getByText(message, { exact: true })).toBeVisible();
 
@@ -88,7 +102,7 @@ test('the owner reads paginated requests and escaped message content from the pr
 
   await page.getByRole('button', { name: 'Sign out' }).click();
 
-  await expect(page).toHaveURL(/\/app\/en\/access$/);
+  await expect(page).toHaveURL(/\/app\/en\/admin\/auth\/sign-in$/);
 
   const revoked = await page.request.get('/api/contact/submissions');
 
@@ -98,7 +112,7 @@ test('the owner reads paginated requests and escaped message content from the pr
 test('private access completes the stack password and email second-factor flow', async ({ page, baseURL }) => {
   const directory = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL!).port}`);
 
-  await page.goto('/app/en/access');
+  await page.goto('/app/en/admin/auth/sign-in');
 
   await page.getByLabel('Verified email').fill('owner@example.test');
 
@@ -124,15 +138,15 @@ test('private access completes the stack password and email second-factor flow',
 
   await page.getByRole('button', { name: 'Verify access' }).click();
 
-  await expect(page).toHaveURL(/\/app\/en\/dashboard$/);
+  await expect(page).toHaveURL(/\/app\/en\/admin\/dashboard$/);
 
   await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible();
 });
 
 test('the private app keeps the stack Spanish locale without changing public URLs', async ({ page, request }) => {
-  await page.goto('/app/es/access');
+  await page.goto('/app/es/admin/auth/sign-in');
 
-  await expect(page.getByRole('heading', { name: 'Solicitudes de contacto' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Ingreso del propietario' })).toBeVisible();
 
   await expect(page.getByLabel('Correo verificado')).toBeVisible();
 

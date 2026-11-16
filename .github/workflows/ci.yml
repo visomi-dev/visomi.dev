@@ -84,14 +84,20 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Install Chromium
+      - name: Install browser engines
         if: contains(fromJSON('["site-e2e","app-e2e","worker"]'), matrix.project)
         timeout-minutes: 5
         # Hosted Ubuntu includes native Chromium libraries; en/es uses the website's own fonts.
-        run: pnpm exec playwright install chromium
+        run: |
+          if [ '${{ matrix.project }}' = app-e2e ]; then
+            pnpm exec playwright install --with-deps chromium firefox webkit
+          else
+            pnpm exec playwright install chromium
+          fi
       - name: Run end-to-end tests
         env:
           E2E_PROJECT: ${{ matrix.project }}
+          PLAYWRIGHT_BROWSERS: ${{ matrix.project == 'app-e2e' && 'all' || 'chromium' }}
         run: pnpm nx run "$E2E_PROJECT:e2e"
       - name: Preserve public visual comparison diagnostics
         if: failure() && matrix.project == 'site-e2e'
@@ -116,6 +122,8 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Verify build context isolation
+        run: pnpm nx run web-gateway:context-check
       - name: Build and verify the production image
         run: pnpm nx run web-gateway:container-check
       - name: Verify private trace storage and capture policy

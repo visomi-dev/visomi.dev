@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const routes = ['/app/'] as const;
+const routes = ['/app/en/admin/auth/sign-in'] as const;
 
 test.describe('gateway application screens', () => {
   for (const route of routes) {

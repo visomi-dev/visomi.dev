@@ -35,6 +35,7 @@ beforeEach(() => {
     directory: compose.directory,
     compose,
     url: 'postgresql://synthetic-test',
+    timings: { setupMs: 0, readinessMs: 0, migrationMs: 0, cleanupMs: 0 },
     stop,
   });
 });

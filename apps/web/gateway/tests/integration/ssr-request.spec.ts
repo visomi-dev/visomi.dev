@@ -12,7 +12,7 @@ function incoming(method = 'GET') {
   const request = new IncomingMessage(new Socket());
 
   request.method = method;
-  request.url = '/app/en/access?locale=en';
+  request.url = '/app/en/admin/auth/sign-in?locale=en';
   request.headers = {
     host: 'visomi.dev',
     'x-forwarded-host': 'visomi.dev',
@@ -51,7 +51,7 @@ describe('Angular request privacy boundary', () => {
     const socket = request.socket;
     const rendered = createSsrRequest(request, proxyHeaders);
 
-    expect(rendered.url).toBe('https://visomi.dev/app/en/access?locale=en');
+    expect(rendered.url).toBe('https://visomi.dev/app/en/admin/auth/sign-in?locale=en');
     expect(Object.fromEntries(rendered.headers)).toEqual({
       host: 'visomi.dev',
       'x-forwarded-host': 'visomi.dev',
@@ -67,7 +67,7 @@ describe('Angular request privacy boundary', () => {
     expect(request.headers).toEqual(headers);
     expect(request.rawHeaders).toEqual(rawHeaders);
     expect(request.socket).toBe(socket);
-    expect(request.url).toBe('/app/en/access?locale=en');
+    expect(request.url).toBe('/app/en/admin/auth/sign-in?locale=en');
   });
 
   it.each(['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE'])('preserves %s and its body semantics', async (method) => {
@@ -86,7 +86,7 @@ describe('Angular request privacy boundary', () => {
   it('ignores forwarded URL claims without an explicit canonical policy', () => {
     const rendered = createSsrRequest(incoming());
 
-    expect(rendered.url).toBe('http://visomi.dev/app/en/access?locale=en');
+    expect(rendered.url).toBe('http://visomi.dev/app/en/admin/auth/sign-in?locale=en');
   });
 
   it('preserves cancellation from the original request', () => {

@@ -1,4 +1,6 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+const graphics = vi.hoisted(() => ({ fail: false }));
 
 vi.mock('three', () => {
   class Scene {
@@ -33,12 +35,22 @@ vi.mock('three', () => {
     }
   }
 
-  class PlaneGeometry {}
+  class PlaneGeometry {
+    dispose() {
+      return undefined;
+    }
+  }
 
   class Mesh {}
 
   class WebGLRenderer {
     domElement = document.createElement('canvas');
+
+    constructor() {
+      if (graphics.fail) {
+        throw new Error('synthetic_renderer_failure');
+      }
+    }
 
     setSize() {
       return undefined;
@@ -68,9 +80,72 @@ vi.mock('three', () => {
   };
 });
 
-import { initBackground } from './background';
+import { initBackground, __resetBackgroundForTesting } from './background';
 
 describe('initBackground', () => {
+  beforeEach(() => {
+    __resetBackgroundForTesting();
+    graphics.fail = false;
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(
+      {} as ReturnType<HTMLCanvasElement['getContext']>,
+    );
+  });
+  afterEach(() => {
+    __resetBackgroundForTesting();
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  it('keeps the static background usable when WebGL is unavailable', async () => {
+    document.body.innerHTML = '<div id="light-bg"></div><div id="dark-bg"></div>';
+    vi.mocked(HTMLCanvasElement.prototype.getContext).mockReturnValue(null);
+    globalThis.fetch = vi.fn().mockResolvedValue({ text: vi.fn().mockResolvedValue('shader') }) as typeof fetch;
+
+    await expect(initBackground()).resolves.toBeUndefined();
+
+    expect(document.querySelector('canvas')).toBeNull();
+  });
+  it('releases the background when renderer initialization fails after acquiring a context', async () => {
+    document.body.innerHTML = '<div id="light-bg"></div><div id="dark-bg"></div>';
+    graphics.fail = true;
+    globalThis.fetch = vi.fn().mockResolvedValue({ text: vi.fn().mockResolvedValue('shader') }) as typeof fetch;
+
+    await expect(initBackground()).resolves.toBeUndefined();
+
+    expect(document.querySelector('canvas')).toBeNull();
+  });
+
+  it('renders frames while visible, pauses offscreen and transitions back to the light theme', async () => {
+    vi.useFakeTimers();
+    document.body.innerHTML = '<div id="light-bg"></div><div id="dark-bg"></div>';
+    document.documentElement.classList.add('dark');
+    vi.stubGlobal('devicePixelRatio', 0);
+    globalThis.fetch = vi.fn().mockResolvedValue({ text: vi.fn().mockResolvedValue('shader') }) as typeof fetch;
+    let frame: FrameRequestCallback = () => undefined;
+
+    window.requestAnimationFrame = vi.fn((callback) => {
+      frame = callback;
+
+      return 1;
+    });
+    window.cancelAnimationFrame = vi.fn();
+
+    await initBackground();
+
+    frame(0);
+    expect(window.requestAnimationFrame).toHaveBeenCalled();
+    document.documentElement.classList.remove('dark');
+
+    await Promise.resolve();
+
+    vi.advanceTimersByTime(700);
+    expect(document.getElementById('dark-bg')?.classList.contains('hidden')).toBe(true);
+    __resetBackgroundForTesting();
+    frame(1);
+    expect(window.cancelAnimationFrame).toHaveBeenCalled();
+    vi.useRealTimers();
+  });
+
   it('initializes the background renderer and responds to theme changes', async () => {
     vi.useFakeTimers();
 

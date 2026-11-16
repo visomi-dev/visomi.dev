@@ -8,7 +8,7 @@ export const ownerGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return http.get<{ owner: boolean }>('/api/contact/session').pipe(
-    map((session) => (session.owner === true ? true : router.createUrlTree(['/access']))),
-    catchError(() => of(router.createUrlTree(['/access']))),
+    map((session) => (session.owner === true ? true : router.createUrlTree(['/admin/auth/sign-in']))),
+    catchError(() => of(router.createUrlTree(['/admin/auth/sign-in']))),
   );
 };
