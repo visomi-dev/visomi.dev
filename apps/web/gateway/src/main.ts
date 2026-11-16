@@ -8,6 +8,7 @@ import { spawn, type ChildProcess } from 'node:child_process';
 
 import { prepareDocumentPolicy } from '@visomi-stack/web-backend-shared/lib/http/document-policy';
 import { emitReadySignal } from '@visomi-stack/web-backend-shared/lib/http/readiness';
+import { proxyConfiguration } from '@visomi-stack/web-backend-shared/lib/http/proxy-configuration';
 import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import {
   createMemoryRealtimeTransport,
@@ -241,9 +242,7 @@ async function bootstrap() {
     auth,
     observability,
     ...(browserTelemetry ? { browserTelemetry } : {}),
-    ...(process.env.AUTH_TRUST_PROXY
-      ? { trustProxy: process.env.AUTH_TRUST_PROXY.split(',').map((value) => value.trim()) }
-      : {}),
+    ...proxyConfiguration(process.env.AUTH_TRUST_PROXY),
   });
 
   server.on('request', application);

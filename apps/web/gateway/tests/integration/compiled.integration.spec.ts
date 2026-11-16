@@ -73,7 +73,7 @@ afterAll(async () => {
   }
 });
 
-async function launch(databaseUrl?: string, trustProxy?: string) {
+async function launch(databaseUrl?: string, trustProxy?: string, secure = false) {
   const portProbe = createServer();
 
   await new Promise<void>((ready) => portProbe.listen(0, '127.0.0.1', ready));
@@ -103,7 +103,7 @@ async function launch(databaseUrl?: string, trustProxy?: string) {
             SMTP_FROM: 'auth@example.test',
             SMTP_ALLOW_INSECURE_LOCAL: 'true',
             DATABASE_URL: databaseUrl,
-            AUTH_ORIGIN: url,
+            AUTH_ORIGIN: secure ? url.replace('http:', 'https:') : url,
             AUTH_RP_ID: '127.0.0.1',
             SESSION_SECRET: 'synthetic-gateway-session-secret-32-bytes',
           }
@@ -410,103 +410,163 @@ describe('compiled ESM gateway and embedded API', () => {
     }
   });
 
-  it('uses one inherited owner auth chain with real PostgreSQL, second factor and owned-pool cleanup', async () => {
-    const name = 'gateway_' + randomUUID();
-    const connection = new URL(postgres.url);
-
-    connection.searchParams.set('application_name', name);
-    const gateway = await launch(connection.toString());
-    const ownerId = randomUUID();
-    const password = 'Synthetic password 42!';
-    const passwordHash = await hashPassword(password);
-
-    await probe.pool.query(
-      'INSERT INTO auth_users (id,email,email_verified_at,password_hash) VALUES ($1,$2,now(),$3)',
-      [ownerId, 'owner@example.test', passwordHash],
-    );
-
-    let cookie = '';
-    let token = '';
-    let requests = 0;
-    const request = async (method: string, path: string, body?: unknown) => {
-      const response = await fetch(gateway.url + '/api/auth' + path, {
-        method,
-        headers: {
-          origin: gateway.url,
-          cookie,
-          'x-csrf-token': token,
-          ...(body ? { 'content-type': 'application/json' } : {}),
-        },
-        ...(body ? { body: JSON.stringify(body) } : {}),
-      });
-      const updated = response.headers.getSetCookie()[0];
-
-      if (updated) {
-        cookie = updated.split(';')[0];
-      }
-
-      requests++;
-      const responseBody = await (response.status === 204 ? undefined : response.json());
-
-      return { status: response.status, body: responseBody };
-    };
+  it('rejects HTTPS session mutations when the TLS ingress is not trusted', async () => {
+    const gateway = await launch(postgres.url, undefined, true);
 
     try {
-      const anonymous = await request('GET', '/session');
+      const response = await fetch(gateway.url + '/api/auth/session', {
+        headers: { 'x-forwarded-proto': 'https' },
+      });
+      const anonymous = await response.json();
 
-      token = anonymous.body.csrfToken;
-      expect(anonymous.status).toBe(200);
-      expect(anonymous.body.authenticated).toBe(false);
-      const denied = await request('POST', '/password/sign-up', {});
-
-      expect(denied.status).toBe(404);
-      const csrfToken = token;
-
-      token = 'synthetic_invalid_csrf';
-      const forbidden = await request('POST', '/password/sign-in', { email: 'owner@example.test', password });
-
-      token = csrfToken;
-      expect(forbidden.status).toBe(403);
-      expect(forbidden.body).toEqual({ error: 'csrf_invalid' });
-      const pending = await request('POST', '/password/sign-in', { email: 'owner@example.test', password });
-
-      expect(pending.status).toBe(202);
-      const originalCookie = cookie;
-      const code = messages[messages.length - 1].match(/\b\d{6}\b/)![0];
-      const verified = await request('POST', '/password/verify', {
-        flowId: pending.body.flowId,
-        factor: { kind: 'email', code },
+      expect(response.status).toBe(200);
+      expect(response.headers.getSetCookie()).toEqual([]);
+      const mutation = await fetch(gateway.url + '/api/auth/password/sign-in', {
+        method: 'POST',
+        headers: {
+          origin: gateway.url.replace('http:', 'https:'),
+          'x-forwarded-proto': 'https',
+          'x-csrf-token': anonymous.csrfToken,
+          'content-type': 'application/json',
+        },
+        body: '{}',
       });
 
-      expect(verified.status).toBe(200);
-      expect(verified.body.user.id).toBe(ownerId);
-      expect(cookie).not.toBe(originalCookie);
-      token = verified.body.csrfToken;
-      const session = await request('GET', '/session');
+      const failure = await mutation.json();
 
-      expect(session.body.authenticated).toBe(true);
-      const logout = await request('POST', '/logout', {});
-
-      expect(logout.status).toBe(204);
-      const revoked = await request('GET', '/session');
-
-      expect(revoked.body.authenticated).toBe(false);
-      const active = await probe.pool.query('SELECT count(*) FROM pg_stat_activity WHERE application_name = $1', [
-        name,
-      ]);
-
-      expect(Number(active.rows[0].count)).toBeGreaterThan(0);
-      const result = await gateway.stop('SIGTERM');
-      const closed = await probe.pool.query('SELECT count(*) FROM pg_stat_activity WHERE application_name = $1', [
-        name,
-      ]);
-
-      expect(result.code).toBe(0);
-      expect(Number(closed.rows[0].count)).toBe(0);
-      expect(result.events.filter((event) => event.event === 'http.request')).toHaveLength(requests);
-      expect(result.events.every((event) => event.service === 'web-gateway')).toBe(true);
+      expect(mutation.status).toBe(403);
+      expect(failure).toEqual({ error: 'csrf_invalid' });
     } finally {
       await gateway.cleanup();
     }
   });
+
+  it.each([undefined, '127.0.0.1', '1-hop'])(
+    'uses one inherited owner auth chain with real PostgreSQL, second factor and pool cleanup (proxy=%s)',
+    async (trustProxy) => {
+      const name = 'gateway_' + randomUUID();
+      const connection = new URL(postgres.url);
+
+      connection.searchParams.set('application_name', name);
+      const gateway = await launch(connection.toString(), trustProxy, Boolean(trustProxy));
+      const origin = trustProxy ? gateway.url.replace('http:', 'https:') : gateway.url;
+      const ownerId = randomUUID();
+      const password = 'Synthetic password 42!';
+      const passwordHash = await hashPassword(password);
+
+      await probe.pool.query(
+        'INSERT INTO auth_users (id,email,email_verified_at,password_hash) VALUES ($1,$2,now(),$3)',
+        [ownerId, 'owner@example.test', passwordHash],
+      );
+
+      let cookie = '';
+      let token = '';
+      let requests = 0;
+      const request = async (method: string, path: string, body?: unknown, requestOrigin = origin) => {
+        const response = await fetch(gateway.url + '/api/auth' + path, {
+          method,
+          headers: {
+            origin: requestOrigin,
+            ...(trustProxy ? { 'x-forwarded-proto': 'https' } : {}),
+            cookie,
+            'x-csrf-token': token,
+            ...(body ? { 'content-type': 'application/json' } : {}),
+          },
+          ...(body ? { body: JSON.stringify(body) } : {}),
+        });
+        const updated = response.headers.getSetCookie()[0];
+
+        if (updated) {
+          if (trustProxy) {
+            expect(updated).toContain('__Host-visomi.sid=');
+            expect(updated).toContain('; Secure');
+            expect(updated).toContain('; HttpOnly');
+            expect(updated).toContain('; SameSite=Strict');
+            expect(updated).not.toMatch(/; Domain=/i);
+          }
+
+          cookie = updated.split(';')[0];
+        }
+
+        requests++;
+        const responseBody = await (response.status === 204 ? undefined : response.json());
+
+        return { status: response.status, body: responseBody };
+      };
+
+      try {
+        const anonymous = await request('GET', '/session');
+
+        token = anonymous.body.csrfToken;
+        expect(anonymous.status).toBe(200);
+        expect(anonymous.body.authenticated).toBe(false);
+        expect(cookie).toContain(trustProxy ? '__Host-visomi.sid=' : 'visomi.sid=');
+
+        if (trustProxy) {
+          const insecure = await fetch(gateway.url + '/api/auth/session');
+
+          requests++;
+          expect(insecure.headers.getSetCookie()).toEqual([]);
+        }
+
+        const denied = await request('POST', '/password/sign-up', {});
+
+        expect(denied.status).toBe(404);
+        const csrfToken = token;
+
+        token = 'synthetic_invalid_csrf';
+        const forbidden = await request('POST', '/password/sign-in', { email: 'owner@example.test', password });
+
+        token = csrfToken;
+        expect(forbidden.status).toBe(403);
+        expect(forbidden.body).toEqual({ error: 'csrf_invalid' });
+        const foreign = await request('POST', '/password/sign-in', {}, 'https://foreign.example.test');
+
+        expect(foreign.status).toBe(403);
+        expect(foreign.body).toEqual({ error: 'csrf_invalid' });
+        const pending = await request('POST', '/password/sign-in', { email: 'owner@example.test', password });
+
+        expect(pending.status).toBe(202);
+        const originalCookie = cookie;
+        const code = messages[messages.length - 1].match(/\b\d{6}\b/)![0];
+        const verified = await request('POST', '/password/verify', {
+          flowId: pending.body.flowId,
+          factor: { kind: 'email', code },
+        });
+
+        expect(verified.status).toBe(200);
+        expect(verified.body.user.id).toBe(ownerId);
+        expect(cookie).not.toBe(originalCookie);
+        token = verified.body.csrfToken;
+
+        const session = await request('GET', '/session');
+
+        expect(session.body.authenticated).toBe(true);
+        const logout = await request('POST', '/logout', {});
+
+        expect(logout.status).toBe(204);
+        const revoked = await request('GET', '/session');
+
+        expect(revoked.body.authenticated).toBe(false);
+        const active = await probe.pool.query('SELECT count(*) FROM pg_stat_activity WHERE application_name = $1', [
+          name,
+        ]);
+
+        expect(Number(active.rows[0].count)).toBeGreaterThan(0);
+        const result = await gateway.stop('SIGTERM');
+        const closed = await probe.pool.query('SELECT count(*) FROM pg_stat_activity WHERE application_name = $1', [
+          name,
+        ]);
+
+        expect(result.code).toBe(0);
+        expect(Number(closed.rows[0].count)).toBe(0);
+        expect(result.events.filter((event) => event.event === 'http.request')).toHaveLength(requests);
+        expect(result.events.every((event) => event.service === 'web-gateway')).toBe(true);
+      } finally {
+        await gateway.cleanup();
+
+        await probe.pool.query('DELETE FROM auth_users WHERE id=$1', [ownerId]);
+      }
+    },
+  );
 });

@@ -15,7 +15,7 @@ files, connect resources, migrate schemas or create seeds.
 | `AUTH_ORIGIN`                | Exact browser origin, without a trailing slash; HTTPS except loopback development.              |
 | `AUTH_RP_ID`                 | WebAuthn relying party host or permitted parent domain.                                         |
 | `SESSION_SECRET`             | Shared high-entropy session/HMAC secret, at least 32 bytes.                                     |
-| `AUTH_TRUST_PROXY`           | Optional explicit proxy addresses/CIDRs, comma separated.                                       |
+| `AUTH_TRUST_PROXY`           | Optional proxy addresses/CIDRs, comma separated, or explicit `1-hop` ingress mode (see below).  |
 | `SMTP_HOST`, `SMTP_PORT`     | SMTP server; port defaults to 587.                                                              |
 | `SMTP_SECURE`                | `true` for implicit TLS, usually port 465; otherwise STARTTLS is required.                      |
 | `SMTP_FROM`                  | Sender address.                                                                                 |
@@ -69,9 +69,27 @@ the command before applying this setting. The local `backend-shared:db-migrate`
 target uses the same executable. Application imports and startup never migrate.
 
 Before enabling the deployment, confirm any new database/storage charges and
-verify the ingress proxy configuration. Configure `AUTH_TRUST_PROXY` only with
-verified proxy addresses/CIDRs. Do not infer a stable allowlist from a single
-request or trust arbitrary forwarded headers. Check `/api/auth/session` and
+verify the ingress proxy configuration. Prefer verified proxy addresses/CIDRs in
+`AUTH_TRUST_PROXY`. Do not infer a stable allowlist from a single request.
+
+For a provider without stable ingress ranges, `AUTH_TRUST_PROXY=1-hop` explicitly
+selects Express's numeric single-hop policy. This is a deployment trust decision:
+every path to the listener must either pass through an ingress that **replaces**
+client-supplied `X-Forwarded-For`, `X-Forwarded-Host` and `X-Forwarded-Proto`, or
+come from a trusted private caller. No raw TCP proxy may expose the listener.
+All services sharing that private environment must be trusted; the hop count
+does not authenticate the ingress or protect against a compromised private peer.
+Do not enable this mode on a directly reachable listener or with untrusted
+private services. Without an explicit setting, forwarded headers stay untrusted.
+
+[Railway's edge specifications](https://docs.railway.com/networking/public-networking/specs-and-limits#technical-specifications)
+describe the rewritten headers. Its ingress socket addresses are not a stable
+allowlist; review the [provider's trust-boundary guidance](https://station.railway.com/questions/railway-https-ingress-stable-proxy-cid-a5975383)
+before selecting this mode. Secure, host-only session cookies and CSRF validation
+remain enabled. An HTTPS session response with a token but no cookie will fail
+the next mutation with `csrf_invalid`, before any password check.
+
+Check `/api/auth/session` and
 `/api/auth/providers` on the public origin, verify that the host-only secure cookie
 persists across requests, and verify SSR session state. A successful health check
 on `/api/` alone does not establish that authentication works.

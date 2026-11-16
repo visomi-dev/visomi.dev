@@ -34,7 +34,7 @@ export function createGatewayApp(options: {
   observability?: Observability;
   privateMetrics?: PrivateMetrics;
   browserTelemetry?: Pick<ReturnType<typeof createBrowserTelemetry>, 'context' | 'router'>;
-  trustProxy?: string[];
+  trustProxy?: string[] | 1;
   helmetMode?: 'managed' | 'inherited';
   errorMode?: 'managed' | 'inherited';
 }) {

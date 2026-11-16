@@ -82,17 +82,17 @@ for (const theme of ['light', 'dark'] as const) {
         try {
           await expect(loader).toBeVisible();
 
-          await expect(loader.locator('.sr-only')).toHaveText(status);
+          await expect(loader.getByRole('status')).toHaveText(status);
 
-          const artwork = loader.locator('.brand-loader');
+          const bar = loader.locator('.navigation-progress');
 
-          await expect(artwork.locator('svg')).toBeVisible();
+          await expect(bar).toBeVisible();
 
-          await expect(artwork.locator('svg')).toHaveAttribute('viewBox', '0 0 545 547');
+          await expect(loader).toHaveCSS('pointer-events', 'none');
 
-          await expect(artwork.locator('mask')).toHaveCount(3);
+          await expect(loader).toHaveCSS('height', '2px');
 
-          await expect(artwork).toHaveCSS('filter', filter);
+          await expect(loader.locator('svg')).toHaveCount(0);
 
           await loader.screenshot({ path: testInfo.outputPath('loader.png'), animations: 'disabled' });
         } finally {
@@ -112,18 +112,13 @@ for (const theme of ['light', 'dark'] as const) {
 }
 
 for (const reducedMotion of ['reduce', 'no-preference'] as const) {
-  const duration = reducedMotion === 'reduce' ? '1e-06s' : '1.6s';
-  const animation = reducedMotion === 'reduce' ? 'none' : 'visomi-loader-draw-0';
+  const animation = reducedMotion === 'reduce' ? 'none' : 'navigation-progress-slide';
 
-  test(`loader respects ${reducedMotion} motion preference`, async ({ page }) => {
+  test(`navigation bar respects ${reducedMotion} motion preference`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion });
 
     await page.goto('/');
 
-    await expect(page.locator('.visomi-loader-draw').first()).toHaveCSS('animation-duration', duration);
-
-    await expect(page.locator('.visomi-loader-draw').first()).toHaveCSS('animation-name', animation);
-
-    await expect(page.locator('.visomi-loader-ink')).toHaveCSS('animation-duration', duration);
+    await expect(page.locator('.navigation-progress')).toHaveCSS('animation-name', animation);
   });
 }
