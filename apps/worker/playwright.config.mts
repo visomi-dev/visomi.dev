@@ -16,7 +16,7 @@ export default defineConfig({
     url: 'http://127.0.0.1:8187/api/health',
     timeout: 120000,
     reuseExistingServer: false,
-    gracefulShutdown: { signal: 'SIGTERM', timeout: 15000 },
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 60000 },
     cwd: workspaceRoot,
   },
 });

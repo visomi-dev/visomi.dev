@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { workspaceRoot } from '@nx/devkit';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type APIResponse, type Page } from '@playwright/test';
 
 async function authenticate(page: Page, baseURL: string, role: string) {
   const directory = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL).port}`);
@@ -117,7 +117,15 @@ test('the existing realtime session channel clears revoked data without a tab no
 test('a late private response after logout never restores contact data', async ({ page, baseURL, browserName }) => {
   await authenticate(page, baseURL!, `lateOwner-${browserName}`);
 
+  const connected = page.waitForEvent('websocket').then((socket) =>
+    socket.waitForEvent('framereceived', {
+      predicate: (frame) => typeof frame.payload === 'string' && frame.payload.startsWith('40/session'),
+    }),
+  );
+
   await page.goto('/app/en/admin/dashboard');
+
+  await connected;
 
   await expect(page.locator('article')).toHaveCount(25);
 
@@ -125,20 +133,29 @@ test('a late private response after logout never restores contact data', async (
   const blocked = new Promise<void>((resolve) => {
     release = resolve;
   });
+  let capture: (response: APIResponse) => void = () => undefined;
+  const captured = new Promise<APIResponse>((resolve) => {
+    capture = resolve;
+  });
 
   await page.route('**/api/contact/submissions?*', async (route) => {
     const response = await route.fetch();
+
+    capture(response);
 
     await blocked;
 
     await route.fulfill({ response }).catch(() => undefined);
   });
 
-  const started = page.waitForRequest((request) => request.url().includes('/api/contact/submissions?'));
-
   await page.getByRole('link', { name: 'Older requests' }).click({ noWaitAfter: true });
 
-  await started;
+  const response = await captured;
+
+  expect(response.status()).toBe(200);
+  const payload = await response.json();
+
+  expect(payload.items.length).toBeGreaterThan(0);
 
   await revoke(page);
 

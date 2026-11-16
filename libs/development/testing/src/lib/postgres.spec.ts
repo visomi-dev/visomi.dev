@@ -7,7 +7,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createTestCompose, runTestCompose } from './compose';
+import { createTestCompose, runTestCompose, stopTestCompose } from './compose';
 import type { TestCompose } from './compose';
 import { testPostgres, stopTestPostgres } from './postgres';
 
@@ -16,7 +16,12 @@ const boundary = vi.hoisted(() => ({
   failures: 0,
 }));
 
-vi.mock('./compose', () => ({ createTestCompose: vi.fn(), runTestCompose: vi.fn() }));
+vi.mock('./compose', () => ({
+  TEST_POSTGRES_CLEANUP_MS: 45000,
+  createTestCompose: vi.fn(),
+  runTestCompose: vi.fn(),
+  stopTestCompose: vi.fn(),
+}));
 vi.mock('node:timers/promises', () => ({ setTimeout: vi.fn() }));
 vi.mock('node:fs/promises', async (original) => {
   const actual = await original<typeof ImportedModule1>();
@@ -61,6 +66,7 @@ beforeEach(async () => {
   boundary.clients.length = 0;
   boundary.failures = 0;
   vi.mocked(migrate).mockResolvedValue(undefined);
+  vi.mocked(stopTestCompose).mockResolvedValue(undefined);
   vi.mocked(runTestCompose).mockResolvedValue({ stdout: '127.0.0.1:54321\n', stderr: '' });
   vi.mocked(createTestCompose).mockImplementation(async (cluster, telemetryDirectory, app) => ({
     ...descriptor(cluster),
@@ -138,11 +144,7 @@ describe('Compose PostgreSQL resource', () => {
       const text = await readFile(manifest, 'utf8');
       const owner = JSON.parse(text);
 
-      expect(runTestCompose).toHaveBeenLastCalledWith(
-        owner.compose,
-        ['down', '--timeout', '2', '--volumes', '--remove-orphans'],
-        expect.any(AbortSignal),
-      );
+      expect(stopTestCompose).toHaveBeenLastCalledWith(owner.compose, expect.any(AbortSignal));
 
       await expect(stat(owner.directory)).rejects.toMatchObject({ code: 'ENOENT' });
 
@@ -158,7 +160,7 @@ describe('Compose PostgreSQL resource', () => {
     const entries = await readdir(directory);
 
     expect(entries).toEqual([]);
-    expect(runTestCompose).not.toHaveBeenCalled();
+    expect(stopTestCompose).not.toHaveBeenCalled();
   });
 
   it('cleans even partially created Compose resources when container startup fails', async () => {
@@ -166,13 +168,7 @@ describe('Compose PostgreSQL resource', () => {
 
     await expect(testPostgres(join(directory, 'postgres.json'))).rejects.toThrow('isolated_postgres_setup_failed');
 
-    expect(vi.mocked(runTestCompose).mock.calls.at(-1)?.[1]).toEqual([
-      'down',
-      '--timeout',
-      '2',
-      '--volumes',
-      '--remove-orphans',
-    ]);
+    expect(stopTestCompose).toHaveBeenCalledOnce();
   });
 
   it('waits for PostgreSQL readiness before migrating', async () => {
@@ -203,13 +199,7 @@ describe('Compose PostgreSQL resource', () => {
     await expect(testPostgres()).rejects.toThrow('isolated_postgres_setup_failed');
 
     expect(boundary.clients[0].end).toHaveBeenCalledOnce();
-    expect(vi.mocked(runTestCompose).mock.calls.at(-1)?.[1]).toEqual([
-      'down',
-      '--timeout',
-      '2',
-      '--volumes',
-      '--remove-orphans',
-    ]);
+    expect(stopTestCompose).toHaveBeenCalledOnce();
   });
 });
 
@@ -218,7 +208,7 @@ describe('Compose cleanup ownership', () => {
     await expect(stopTestPostgres(directory, descriptor(directory))).rejects.toThrow('isolated_postgres_owner_invalid');
 
     expect(readFile).not.toHaveBeenCalled();
-    expect(runTestCompose).not.toHaveBeenCalled();
+    expect(stopTestCompose).not.toHaveBeenCalled();
   });
 
   it('rejects a descriptor for a different directory', async () => {
@@ -226,7 +216,7 @@ describe('Compose cleanup ownership', () => {
 
     await expect(stopTestPostgres(cluster, descriptor(directory))).rejects.toThrow('isolated_postgres_owner_invalid');
 
-    expect(runTestCompose).not.toHaveBeenCalled();
+    expect(stopTestCompose).not.toHaveBeenCalled();
   });
 
   it('rejects an incorrect ownership marker without stopping or deleting anything', async () => {
@@ -236,7 +226,7 @@ describe('Compose cleanup ownership', () => {
 
     await expect(stopTestPostgres(cluster, descriptor(cluster))).rejects.toThrow('isolated_postgres_owner_invalid');
 
-    expect(runTestCompose).not.toHaveBeenCalled();
+    expect(stopTestCompose).not.toHaveBeenCalled();
     const retained = await stat(cluster);
 
     expect(retained.isDirectory()).toBe(true);
@@ -247,7 +237,7 @@ describe('Compose cleanup ownership', () => {
 
     await stopTestPostgres(cluster, descriptor(cluster));
 
-    expect(runTestCompose).not.toHaveBeenCalled();
+    expect(stopTestCompose).not.toHaveBeenCalled();
   });
 
   it('propagates ownership marker read errors instead of deleting the directory', async () => {
@@ -258,13 +248,13 @@ describe('Compose cleanup ownership', () => {
 
     await expect(stopTestPostgres(cluster, descriptor(cluster))).rejects.toBe(failure);
 
-    expect(runTestCompose).not.toHaveBeenCalled();
+    expect(stopTestCompose).not.toHaveBeenCalled();
   });
 
   it('preserves ownership after a failed cleanup so a later teardown can retry', async () => {
     const cluster = await owned();
 
-    vi.mocked(runTestCompose)
+    vi.mocked(stopTestCompose)
       .mockRejectedValueOnce(new Error('SYNTHETIC_PRIVATE_STOP_ERROR'))
       .mockRejectedValueOnce(new Error('SYNTHETIC_PRIVATE_STOP_ERROR'));
 
@@ -283,16 +273,16 @@ describe('Compose cleanup ownership', () => {
 it('retries partial teardown within one deadline and retains ownership on cancellation', async () => {
   const first = await owned();
 
-  vi.mocked(runTestCompose).mockRejectedValueOnce(new Error('isolated_command_failed'));
+  vi.mocked(stopTestCompose).mockRejectedValueOnce(new Error('isolated_command_failed'));
 
   await stopTestPostgres(first, descriptor(first));
 
-  expect(runTestCompose).toHaveBeenCalledTimes(2);
+  expect(stopTestCompose).toHaveBeenCalledTimes(2);
   const second = await owned();
   const controller = new AbortController();
 
   controller.abort();
-  vi.mocked(runTestCompose).mockRejectedValueOnce(new Error('isolated_command_aborted'));
+  vi.mocked(stopTestCompose).mockRejectedValueOnce(new Error('isolated_command_aborted'));
 
   await expect(stopTestPostgres(second, descriptor(second), controller.signal)).rejects.toThrow(
     'isolated_postgres_cleanup_failed:isolated_command_aborted',

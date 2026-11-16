@@ -103,6 +103,10 @@ allowlist was relaxed. See the [Fetch standard](https://fetch.spec.whatwg.org/#a
 ## Local acceptance record (2026-11-16)
 
 Fresh runs use `NX_NO_CLOUD=true` and `--skipNxCache`; cached results are not counted here.
+Administrative and public Nx E2E cache inputs include `PLAYWRIGHT_BROWSERS` so a
+Chromium-only result cannot stand in for the three-engine matrix. The late-response
+scenario waits for the client's session connection and captures an authorized 200
+response before revocation; SSR-visible rows alone are not a hydration readiness signal.
 
 | Check                                                           | Result                                                                                                                     |
 | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -110,14 +114,21 @@ Fresh runs use `NX_NO_CLOUD=true` and `--skipNxCache`; cached results are not co
 | `pnpm nx run site-e2e:e2e --skipNxCache`                        | 145 passed, including the 40 preserved pixel/content/SEO comparisons; no flaky or skipped cases                            |
 | `pnpm nx run web-api:test --skipNxCache`                        | 45 suites / 342 tests passed, including PostgreSQL teardown                                                                |
 | `pnpm nx run web-gateway:test --skipNxCache`                    | 171 tests passed; compiled Angular render failure returns HTTP 500 with bounded diagnostics                                |
-| `pnpm nx run dev-testing:test --skipNxCache`                    | 94 tests passed, including owned process groups, provider pipe draining, timeout and cleanup ownership                     |
+| `pnpm nx run dev-testing:test --skipNxCache`                    | 98 tests passed, including owned process groups, provider pipe draining, timeout and cleanup ownership                     |
 | `pnpm nx run web-site:test --skipNxCache`                       | Passed; WebGL acquisition failure keeps a static background without an uncaught browser error                              |
 | `pnpm nx run web-gateway:deployment-check --skipNxCache`        | Passed; IaC contracts, tooling and migration inventory                                                                     |
 
 Earlier API runs passed their assertions but failed teardown and are **not** acceptance
 passes. Native Podman detection avoids the Docker compatibility compose bridge;
-provider completion drains inherited pipes for a bounded interval. Setup and cleanup
-have separate deadlines, and cleanup retries share one total deadline.
+provider completion drains inherited pipes for a bounded interval. Podman cleanup
+selects actual resources by exact project label instead of walking all declared services.
+On this busy shared host, network removal alone can exceed the former 20-second
+cleanup allowance: a fresh isolated migration run measured 32.77 seconds for cleanup,
+versus 3.99 seconds in another run. The setup deadline remains 40 seconds; cleanup has one 45-second
+budget shared by every resource and retry, a two-second container stop and matching
+60-second teardown/runner windows. The migration rehearsal's 100-second total covers
+both deadlines plus its actual migration assertions. No production deadline or coverage
+threshold changes. A later fresh acceptance pass does not erase earlier teardown failures.
 
 Screenshots reviewed: English desktop light sign-in, Spanish mobile dark sign-in and
 Spanish mobile authenticated metrics. Visual alignment uses the fixed source/reference

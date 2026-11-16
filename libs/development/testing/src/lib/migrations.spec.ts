@@ -39,7 +39,7 @@ it('applies the production migration command to an empty isolated database and c
     expect(Object.values(database.timings).every((value) => value >= 0 && value < 60000)).toBe(true);
     process.stdout.write(JSON.stringify({ fixture: 'isolated-migrations', phases: database.timings }) + '\n');
   }
-}, 60000);
+}, 100000);
 
 it('fails with a controlled message when configuration is absent or unreachable', async () => {
   for (const url of ['', 'postgresql://synthetic:synthetic-private-password@127.0.0.1:1/unused']) {

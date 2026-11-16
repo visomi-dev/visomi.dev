@@ -17,7 +17,7 @@ const fixture = (port: number) => ({
   },
   ignoreHTTPSErrors: true,
   reuseExistingServer: false,
-  gracefulShutdown: { signal: 'SIGTERM' as const, timeout: 15000 },
+  gracefulShutdown: { signal: 'SIGTERM' as const, timeout: 60000 },
   timeout: 120000,
   cwd: workspaceRoot,
 });

@@ -7,7 +7,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Pool } from 'pg';
 
-import { createTestCompose, runTestCompose } from './compose';
+import { createTestCompose, runTestCompose, stopTestCompose, TEST_POSTGRES_CLEANUP_MS } from './compose';
 import type { TestCompose } from './compose';
 
 // Every resource has its own Compose project/volume; developer DATABASE_URL is never consulted.
@@ -104,7 +104,7 @@ export async function testPostgres(
 export async function stopTestPostgres(
   directory: string,
   compose: TestCompose,
-  signal: AbortSignal = AbortSignal.timeout(20000),
+  signal: AbortSignal = AbortSignal.timeout(TEST_POSTGRES_CLEANUP_MS),
 ) {
   if (!basename(directory).startsWith('visomi-auth-test-') || compose.directory !== directory) {
     throw new Error('isolated_postgres_owner_invalid');
@@ -126,7 +126,7 @@ export async function stopTestPostgres(
 
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      await runTestCompose(compose, ['down', '--timeout', '2', '--volumes', '--remove-orphans'], signal);
+      await stopTestCompose(compose, signal);
 
       break;
     } catch (error) {

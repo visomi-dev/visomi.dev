@@ -3212,8 +3212,10 @@
       "destination": "apps/web/api/playwright.config.mts",
       "action": "adapted",
       "sourceSha256": "560dfdaf32b7011603093e10d15274c74357934acd21e55f974b2663f5da6049",
-      "destinationSha256": "2ef2ccdf0dc140851bd8a9d8e24f81b0dfa78909a6c945382501f271166771b7",
-      "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
+      "destinationSha256": "527e6d3f3431813b3b47a7b1136513167c050ec24e69691c6e18eb9718ca3e3d",
+      "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary.",
+      "migrationDestinationSha256": "2ef2ccdf0dc140851bd8a9d8e24f81b0dfa78909a6c945382501f271166771b7",
+      "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
     },
     {
       "source": "apps/web/api/project.json",
@@ -3930,7 +3932,7 @@
       "destination": "apps/web/api/tests/integration/auth-persistence.integration.spec.ts",
       "action": "adapted",
       "sourceSha256": "d7f56679bb934a9b896711bb16d259460eaaf39d1d04047f8243e2eb93a1ec40",
-      "destinationSha256": "c76c61492380389b869611bfb522daeab2c25ead42611cafca53f0f529984945",
+      "destinationSha256": "b2f2adfa22a52a6078862f3b1d97814739dc21ec17a181bc93669cf4034e646f",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary.",
       "migrationDestinationSha256": "ed77a5a4a630032c4aacea937874081d1d7e2a33af3dc4e1f694cc5bc24cdd37",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
@@ -3980,7 +3982,7 @@
       "destination": "apps/web/api/tests/integration/support/auth.ts",
       "action": "adapted",
       "sourceSha256": "ff478317e0b9ac8d4679a97921ae2ffa403c70d0084071d44a874cd4f84c0faf",
-      "destinationSha256": "89718772a9b4e8a4645481d53b63d02f7bc2383cc869cd7da7e8cc242831133f",
+      "destinationSha256": "82115ebe03a2e14b224a6725163f6ecfa8db636c6210d2b11aa6a176ea17da19",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary.",
       "migrationDestinationSha256": "54ba5c8e8f4a1a862e6dd6df5f21585fa965de29f7288aee76dea871c359a69c",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
@@ -4153,7 +4155,7 @@
       "reason": "Replace template public registration and showcase E2Es with isolated owner/contact, lifecycle/privacy, public parity and queue recovery tests.",
       "sourceSha256": "1d46cbc5585bf62f377bd7ef0a813be0e80ab08b7154482c1f30d14a82d53f82",
       "destination": "apps/web/app-e2e/project.json",
-      "destinationSha256": "1fb09cdf7f9ee498ddfd54666bb35d6b386a1cdd5fd6f26fa63074a15ed260ba",
+      "destinationSha256": "d9746ec816bb67d1ca79757e4c6763316276738103a0bcb0787944d7f3dad755",
       "migrationDestinationSha256": "7e15a7759bf362295958ad8dfd2822150316e0b78a1de16c32751d1428f1dd8a",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
     },
@@ -4717,7 +4719,7 @@
       "reason": "VIS-50/53/56/57/58/59/60: restore baseline infrastructure at the owner-only runtime boundary; preserve website presentation and closed account-management routes.",
       "sourceSha256": "3dce5fd70fda433d77512b45b0bc7e952a1da1a1e5f0cedf8b015ac39b3a08f5",
       "destination": "apps/web/app-e2e/src/session-sync.spec.ts",
-      "destinationSha256": "47e5587cba1f55796f64cecb39d5f4aee8a1bc918fefa92be89454acb2009250",
+      "destinationSha256": "b508033b759306f1323f586ffa4c43f7ff834e2997fdb662289f7cf4095f9a41",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
       "migrationDestinationSha256": "2992dffa2c7694069d451b4b7b228441956c1b53a8968532a0654206b8c11060"
     },
@@ -5886,8 +5888,10 @@
       "destination": "apps/web/gateway/playwright.config.mts",
       "action": "adapted",
       "sourceSha256": "46594d46b7bcacb01c1daad2bc340217d1031e325543df7fc1f06c0d194ce3f0",
-      "destinationSha256": "83f88040c33156649eeb3c890ca2ceb957d37ae968533dcbbdaa2048c21f79ee",
-      "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary."
+      "destinationSha256": "e1f27ffc9058ae5edc90e826a71b47e746a6a16f904ed27a0f8316068711d184",
+      "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary.",
+      "migrationDestinationSha256": "83f88040c33156649eeb3c890ca2ceb957d37ae968533dcbbdaa2048c21f79ee",
+      "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
     },
     {
       "source": "apps/web/gateway/project.json",
@@ -7423,7 +7427,7 @@
       "destination": "libs/development/testing/src/lib/compose.spec.ts",
       "action": "adapted",
       "sourceSha256": "0e30527dd905b514cff610a212ff412e0e68cc1668d20ca042859a2de2746f7d",
-      "destinationSha256": "14672d36d35b90af4e04c89d77fee1f99a3cef6d041de2be0a0172dd8fd2a381",
+      "destinationSha256": "7e4d75eff41e941228b03b074ebe9cb8a35c2816d3075edda21d0f00bea16813",
       "reason": "Adapt source paths, strict typing/imports, formatting and the portfolio runtime boundary.",
       "migrationDestinationSha256": "0c628b3ad848ce82db9059ff24966d64a4f5a7bdb7b6aa8778a473f19217b872",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
@@ -7433,7 +7437,7 @@
       "destination": "libs/development/testing/src/lib/compose.ts",
       "action": "adapted",
       "sourceSha256": "c3d510a32e284d224f01409438fffe0c48a208c9c18b9382c7a4525ec7da89a8",
-      "destinationSha256": "bbda6d3dc5ea48e0539affdc6375859e2235dc7906cb604a3737e4d13bc869a3",
+      "destinationSha256": "493e4c4966318406ebd6bd005577d2d942c2fa456013c14b5efd9d1e31b50530",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary.",
       "migrationDestinationSha256": "9610bf6eef16937281769b4183da0be8df93681aa851a7b5b4c0af413d7c88d1",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
@@ -7465,7 +7469,7 @@
       "destination": "libs/development/testing/src/lib/migrations.spec.ts",
       "action": "adapted",
       "sourceSha256": "52c6c69857a6ecff4e45d2ddf30e9ea3941204d5095f70dfc5390365ff7705f5",
-      "destinationSha256": "806ec8de866cbd83689a4f34bc0931b936d5683a9098ce90cb381bdf9e984096",
+      "destinationSha256": "34fef45701dc46d0a2660f6085faadd574673758f3947346999dfd8a98ea1dc9",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary.",
       "migrationDestinationSha256": "be3cb9e20f4a9d695d32673ccbb41aebaab89a5354d6fb464108d75c5c2bb93a",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
@@ -7550,7 +7554,7 @@
       "destination": "libs/development/testing/src/lib/postgres.spec.ts",
       "action": "adapted",
       "sourceSha256": "c445dd5f7a2e32982ce76aa68b9bd2117be5068da536ad32eb811beaffba3195",
-      "destinationSha256": "c1c1289f987fbcc733677713c4cc21765f8f98d61bf99c6690139c38a84181c8",
+      "destinationSha256": "7a673b7681fde93c57e6593543376077662d342e531336ddea16b1275f5ac678",
       "reason": "Preserve stack infrastructure while applying strict imports/types, repository paths and the minimal contact/owner runtime boundary.",
       "migrationDestinationSha256": "32b673f94da05e196eb83d48ef2736413a48cc7c1d18b4cdc64c45f0e1e3cc85",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
@@ -7560,7 +7564,7 @@
       "destination": "libs/development/testing/src/lib/postgres.ts",
       "action": "adapted",
       "sourceSha256": "4ed87ad9581bfbbe82864af2f2fbf39048e7d2c35a1ddb250164b5ea2a38d4cb",
-      "destinationSha256": "63e93369698753250368f11dd631cdaf4dc4acf28f68ce6b3de55fae8b3384ef",
+      "destinationSha256": "756d1c0f0ed135bae45cad53c7217e4bb52c4a212e6ca4577455382247af001f",
       "migrationDestinationSha256": "4ed87ad9581bfbbe82864af2f2fbf39048e7d2c35a1ddb250164b5ea2a38d4cb",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
       "reason": "Approved owner/session, SSR, deployment and validation adaptations after initial migration."

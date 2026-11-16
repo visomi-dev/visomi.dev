@@ -9,6 +9,7 @@
     "e2e": {
       "dependsOn": ["web-gateway:build"],
       "inputs": [
+        { "env": "PLAYWRIGHT_BROWSERS" },
         "default",
         "^default",
         "{workspaceRoot}/tools/testing/**/*",

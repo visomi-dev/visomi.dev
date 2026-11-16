@@ -12,7 +12,7 @@ export default defineConfig({
     url: 'http://127.0.0.1:8185/ready',
     timeout: 120000,
     reuseExistingServer: false,
-    gracefulShutdown: { signal: 'SIGTERM', timeout: 15000 },
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 60000 },
     cwd: workspaceRoot,
     env: { VISOMI_E2E_PORT: '8185', VISOMI_E2E_RUNTIME: 'web-api', TSX_TSCONFIG_PATH: 'tsconfig.base.json' },
   },
