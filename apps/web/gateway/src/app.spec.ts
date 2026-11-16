@@ -67,7 +67,10 @@ describe('gateway composition', () => {
           (options: { authContext?: (request: Request) => unknown }) => (request: Request, response: Response) =>
             response.json(options.authContext?.(request)),
       };
-      const result = await dispatch(createGatewayApp({ api: apiFixture(), auth, application }), '/app/en/auth/sign-in');
+      const result = await dispatch(
+        createGatewayApp({ api: apiFixture(), auth, application }),
+        '/app/en/admin/auth/sign-in',
+      );
 
       expect(result.body).toEqual({ available: false, session: null });
     },
@@ -88,7 +91,7 @@ describe('gateway composition', () => {
     };
     const app = createGatewayApp({ api: apiFixture(), auth, application });
     const documentHeaders = vi.fn();
-    const rendered = await dispatch(app, '/app/en/auth/sign-in', documentHeaders);
+    const rendered = await dispatch(app, '/app/en/admin/auth/sign-in', documentHeaders);
 
     expect(rendered.body).toEqual({ available: true, session: snapshot });
     expect(auth.snapshot).toHaveBeenCalledOnce();

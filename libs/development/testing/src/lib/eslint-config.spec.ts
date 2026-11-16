@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { ESLint, Linter } from 'eslint';
 
 const workspace = fileURLToPath(new URL('../../../../../', import.meta.url));
-const filename = resolve(workspace, 'apps/web/app-e2e/auth/access.auth.spec.ts');
+const filename = resolve(workspace, 'apps/web/app-e2e/src/owner-dashboard.spec.ts');
 const paddingRule = '@stylistic/padding-line-between-statements';
 
 async function configuredRules(cwd = workspace) {

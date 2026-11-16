@@ -4,7 +4,8 @@ Personal engineering portfolio built with Nx, Astro and Angular, using the runti
 [visomi-stack](https://github.com/visomi-dev/visomi-stack).
 
 The public portfolio keeps its original content, design, WebGL background, printable CV, brand assets
-and English/Spanish URLs. The Angular app is a blank private shell with an owner-only contact dashboard.
+and English/Spanish URLs. The Angular app provides owner sign-in and protected contact/metrics screens
+under the localized administrative namespace.
 Contact submissions use PostgreSQL; social images use the existing BullMQ/Redis worker.
 
 ## Projects and routes
@@ -13,7 +14,7 @@ Contact submissions use PostgreSQL; social images use the existing BullMQ/Redis 
 | -------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | `web-gateway`  | Owns HTTP, shared authentication, PostgreSQL, telemetry and worker lifecycle                      | Single entrypoint                                                               |
 | `web-site`     | Original Astro portfolio and contact form                                                         | `/`, `/journey/`, `/projects/`, `/resume/`, `/contact/`, and `/es/` equivalents |
-| `web-app`      | Private Angular shell, access screen and protected list/detail                                    | `/app/en/`, `/app/es/`                                                          |
+| `web-app`      | Private Angular shell, owner sign-in and protected list/detail                                    | `/app/{en,es}/admin/auth/sign-in`, `/app/{en,es}/admin/...`                     |
 | `web-api`      | Import-safe Express composition, health/readiness, contact API and minimal private authentication | `/api` when embedded                                                            |
 | `web-realtime` | Stack transport infrastructure; no product/business routes                                        | Owned by gateway when authentication is configured                              |
 | `web-edge`     | Optional, undeployed Cloudflare path guard; local build/tests only                                | Prepared route configuration                                                    |
@@ -54,9 +55,12 @@ Reuse the existing stack identity with a verified email. Set `AUTH_ORIGIN`, `AUT
 and `OWNER_EMAIL`, optionally pinning `OWNER_USER_ID`. SMTP and/or the configured TOTP factor supplies
 the stack's second-factor proof. No public signup, password reset, OAuth enrollment or account-management
 routes are exposed. Missing owner/auth configuration denies access. The owner enters through
-`/app/en/access` or `/app/es/access`; authorization is enforced again on every contact API request.
-Private responses are `no-store`, list/detail data never enter SSR/transfer state, and message content
-is rendered as escaped text. Telemetry export is disabled unless explicitly enabled by an operator.
+`/app/en/admin/auth/sign-in` or `/app/es/admin/auth/sign-in`; authorization is enforced again on every
+contact API request. Retired entrypoints and unknown app routes return 404 without a compatibility
+redirect. The localized app roots also return 404.
+Private responses are `private, no-store`. Authorized list/detail HTML can contain private data during
+SSR; HTTP transfer caching is disabled, and message content is rendered as escaped text. Telemetry
+export is disabled unless explicitly enabled by an operator.
 
 ## Migration and release
 

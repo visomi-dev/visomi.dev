@@ -90,7 +90,8 @@ Implementation and verification evidence will be recorded per issue and in the f
 ## Final architecture adaptations
 
 - Private Angular entrypoints preserve the stack's `/app/en/` and `/app/es/` locale bases. Both roots
-  are empty; `/access` supports only the confirmed existing owner's password and second factor.
+  return 404. The owner's password and second-factor flow is at `/app/en/admin/auth/sign-in` or
+  `/app/es/admin/auth/sign-in`. Retired entrypoints return 404; there are no legacy aliases or login redirects.
   Guards and resolvers fetch essential list/detail data before activation; private routes render
   with RenderMode.Server. A read-only, request-scoped interceptor forwards only the current
   request cookie to allowlisted private endpoints. Authenticated HTML may contain private

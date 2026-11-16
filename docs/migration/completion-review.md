@@ -176,3 +176,63 @@ app-e2e:e2e --skipNxCache --output-style=static` passed all 99 cases (84 retaine
 and 15 new), alongside the 42 Angular tests. Lint/type checks passed for `web-app`
 and `app-e2e`; `web-gateway:deployment-check` passed with its dependency replay
 identified separately. The earlier combined rate-limited run is not an acceptance pass.
+
+## Repository-wide sign-in route audit
+
+The follow-up started from clean local and fetched PR branches at `0824758`.
+The audit covered tracked application/library code, templates, localized routing,
+tests, documentation, hidden configuration and development/deployment tooling.
+Generated outputs, Git history and private operator state are not rewritten.
+
+The only owner sign-in entrypoints are `/app/en/admin/auth/sign-in` and
+`/app/es/admin/auth/sign-in`. Client routes, SSR route definitions, owner guards,
+session redirects and language links already agreed on that contract. No runtime
+alias or legacy login redirect was added. Private APIs retain independent owner
+authorization, the password/second-factor flow and logout/session protections.
+
+Corrections found by the audit:
+
+- The root README still recommended the retired entrypoints and incorrectly said
+  list/detail data never entered SSR. It now documents the agreed entrypoints,
+  private SSR HTML, disabled transfer caching and 404 app roots.
+- The migration README still described empty roots and the old access screen.
+- Two gateway test dispatches and the development reload fixture used abbreviated
+  sign-in paths. They now use the agreed administrative route.
+- The ESLint fixture referenced a removed stack auth test path. It now resolves
+  configuration for the actual owner dashboard E2E file.
+
+Intentional remaining references:
+
+- `stack-files.json` retains the historical source filename
+  `apps/web/app-e2e/auth/access.auth.spec.ts` and its original digest. It is excluded
+  provenance, not a current application route or test file.
+- Negative route tests name retired paths to prove rejection. This audit names them
+  only as retired paths; current instructions use the agreed sign-in entrypoint.
+- Authorization fields, accessibility references, retention/access policy and
+  stable `dashboardAccess...` translation IDs describe concepts, not URI aliases.
+
+Regression coverage checks both localized SSR and Angular client navigation:
+the agreed entrypoint renders, private-route denial uses the exact localized
+sign-in destination, and retired/abbreviated/encoded app paths return 404 with no
+Location header. Owner and non-owner credentials are verified before testing their
+legacy rejection. Client navigation reaches the 404 view without document reloads
+or a hidden compatibility redirect. Existing session regressions remain intact.
+
+Outside the app namespace, the website's existing generic trailing-slash rule still
+normalizes `/access` to `/access/`; the latter returns 404 and never enters sign-in.
+This public URL normalization is not an application compatibility route. Current
+Railway/CI/Compose configuration contains no obsolete sign-in destination, and no
+production configuration, merge, auto-merge or deployment operation is authorized
+by this audit.
+
+Audit validation: fresh Angular 42, gateway 171 and fixture-library 98 tests passed.
+Gateway development-tool checks, lint/types and formatting passed; static cache
+replays are separate from the fresh test runs. The first expanded browser run
+passed 108 cases and exposed an incorrect new assertion expecting `owner: false`.
+The private API correctly rejects an authenticated non-owner with 403
+`access_denied`; the assertion now requires that exact denial after verifying
+authentication. Subsequent local runs stopped during fixture setup/cleanup before
+running cases while the shared Podman host was also running another repository's
+tests. Neither those attempts nor the earlier concurrent-build failure count as
+acceptance. No test, rate limit or fixture deadline was relaxed. The PR records
+the new HEAD's independent CI outcome and browser matrix evidence.

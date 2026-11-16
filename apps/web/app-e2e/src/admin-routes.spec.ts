@@ -11,9 +11,13 @@ for (const locale of ['en', 'es']) {
       'admin/auth/sign-in/extra',
       'admin/unknown',
     ]) {
-      const response = await request.get(`/app/${locale}/${route}`, { headers: { accept: 'text/html' } });
+      const response = await request.get(`/app/${locale}/${route}`, {
+        headers: { accept: 'text/html' },
+        maxRedirects: 0,
+      });
 
       expect(response.status(), route).toBe(404);
+      expect(response.headers()['location']).toBeUndefined();
       expect(response.headers()['cache-control']).toContain('no-store');
       const html = await response.text();
 

@@ -247,7 +247,7 @@ await writeFile('dist/apps/web/gateway/main.js', source);
       return response.status === 503 && body.includes('live-reload/client.js');
     });
 
-    const loading = await fetch(origin + '/app/es/sign-in');
+    const loading = await fetch(origin + '/app/es/admin/auth/sign-in');
     const loadingHtml = await loading.text();
 
     assert.equal(loading.status, 503);
