@@ -1,0 +1,115 @@
+/* Portable UI behavior; each application supplies its visual identity. */
+@theme static {
+  --ui-theme-duration-ms: 400;
+  --ui-theme-easing: ease-in-out;
+  --color-ui-focus: var(--color-blue-600);
+  --color-ui-focus-dark: var(--color-blue-400);
+}
+
+/* Limit the shared timing to theme changes, including modal backdrops and the page canvas. */
+@media (prefers-reduced-motion: no-preference) {
+  :root:is([data-theme-transition], :has([data-theme-transition])) {
+    &,
+    & *,
+    & *::before,
+    & *::after,
+    & *::placeholder,
+    & *::marker,
+    & *::file-selector-button,
+    & ::backdrop {
+      transition-property:
+        color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, box-shadow, filter,
+        --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+      transition-duration: calc(var(--ui-theme-duration-ms) * 1ms);
+      transition-timing-function: var(--ui-theme-easing);
+      transition-delay: 0s;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:is([data-theme-transition], :has([data-theme-transition])) {
+    &,
+    & *,
+    & *::before,
+    & *::after,
+    & *::placeholder,
+    & *::marker,
+    & *::file-selector-button,
+    & ::backdrop {
+      transition-duration: 0s;
+      transition-delay: 0s;
+    }
+  }
+}
+
+/* An external image keeps SVG mask IDs isolated across simultaneous indicators. */
+@utility ui-loader {
+  background-color: currentColor;
+  mask-image: url('../../../../../assets/brand/visomi-loader.svg');
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-mode: alpha;
+
+  @media (prefers-reduced-motion: reduce) {
+    mask-image: url('../../../../../assets/brand/isotype.svg');
+  }
+}
+
+@utility ui-focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+
+  &:focus-visible {
+    outline-color: var(--color-ui-focus);
+  }
+
+  .dark &:focus-visible {
+    outline-color: var(--color-ui-focus-dark);
+  }
+}
+
+@keyframes ui-theme-enter {
+  from {
+    translate: 0 4rem;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes ui-theme-leave {
+  from {
+    translate: 0 0;
+    opacity: 1;
+  }
+  to {
+    translate: 0 -4rem;
+    opacity: 0;
+  }
+}
+
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    .ui-theme-switcher[data-theme-animated] {
+      .ui-theme-sun {
+        animation: ui-theme-enter calc(var(--ui-theme-duration-ms) * 1ms) var(--ui-theme-easing);
+      }
+
+      .ui-theme-moon {
+        animation: ui-theme-leave calc(var(--ui-theme-duration-ms) * 1ms) var(--ui-theme-easing);
+      }
+
+      .dark & .ui-theme-sun {
+        animation-name: ui-theme-leave;
+      }
+
+      .dark & .ui-theme-moon {
+        animation-name: ui-theme-enter;
+      }
+    }
+  }
+}

@@ -1,3 +1,9 @@
+const headingFoundation = ({ wrap = 'balance' }: { wrap?: 'balance' | 'wrap' } = {}) =>
+  wrap === 'balance' ? 'text-balance' : 'text-wrap';
+const textFoundation = ({ wrap = 'pretty' }: { wrap?: 'pretty' | 'wrap' } = {}) =>
+  wrap === 'pretty' ? 'text-pretty' : 'text-wrap';
+const linkFoundation = 'ui-focus-ring motion-reduce:transition-none';
+
 export type TextSize = 'xs' | 'sm' | 'md' | 'lg' | 'lead' | 'inherit';
 export type TextTone = 'default' | 'muted' | 'subtle' | 'accent' | 'inverse' | 'inherit';
 export type TextWeight = 'inherit' | 'normal' | 'medium' | 'semibold';
@@ -53,12 +59,14 @@ const headingTones = {
 } as const;
 
 export const heading = {
+  foundation: headingFoundation,
   classes({ size = 'lg', tone = 'default' }: { size?: HeadingSize; tone?: HeadingTone } = {}): string {
-    return ['font-semibold text-balance', headingSizes[size], headingTones[tone]].join(' ');
+    return [`font-semibold ${headingFoundation()}`, headingSizes[size], headingTones[tone]].join(' ');
   },
 } as const;
 
 export const text = {
+  foundation: textFoundation,
   classes({
     size = 'md',
     tone = 'default',
@@ -73,7 +81,7 @@ export const text = {
     mono?: boolean;
   } = {}): string {
     return [
-      'text-pretty',
+      textFoundation(),
       textSizes[size],
       textLeading[leading][size],
       textTones[tone],
@@ -102,12 +110,13 @@ const linkUnderlines = {
 } as const;
 
 export const link = {
+  foundation: linkFoundation,
   classes({ variant = 'default', underline = 'always' }: LinkOptions = {}): string {
     return [
       'rounded-sm underline-offset-4 transition-colors motion-reduce:transition-none',
       variant === 'inverse'
         ? 'outline-2 outline-solid outline-transparent outline-offset-3 focus-visible:outline-white'
-        : 'ui-focus-ring',
+        : linkFoundation,
       linkVariants[variant],
       linkUnderlines[underline],
     ].join(' ');

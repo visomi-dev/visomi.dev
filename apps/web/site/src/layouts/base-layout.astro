@@ -48,9 +48,9 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
             const savedTheme = window.localStorage.getItem('theme');
             const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-            return savedTheme === 'dark' || (!savedTheme && systemDark);
+            return savedTheme === 'dark' || (savedTheme !== 'light' && systemDark);
           } catch {
-            return true;
+            return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
           }
         })();
 

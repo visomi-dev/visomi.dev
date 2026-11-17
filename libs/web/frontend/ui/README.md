@@ -5,7 +5,11 @@ internal, non-buildable library. Consumers compile the TypeScript source.
 The library has no Angular, Astro, DOM or Node runtime dependencies.
 
 ```ts
-import { button, input, badge, card, link } from '@visomi-stack/web-frontend-ui';
+import { button } from '@visomi-stack/web-frontend-ui/lib/button';
+import { input } from '@visomi-stack/web-frontend-ui/lib/forms';
+import { badge } from '@visomi-stack/web-frontend-ui/lib/data';
+import { card } from '@visomi-stack/web-frontend-ui/lib/layout';
+import { link } from '@visomi-stack/web-frontend-ui/lib/typography';
 
 button.classes({ variant: 'secondary', size: 'sm' });
 input.classes({ size: 'lg' });
@@ -20,41 +24,35 @@ complete and include this library's source in each application's Tailwind
 `@source` declarations. Extra layout classes can live at the call site; the order
 of conflicting utilities in a class string does not define precedence.
 
-## Application-owned themes
+## Portfolio adapters and themes
 
-Theme behavior lives in each frontend rather than in the shared recipe library.
-The `themeSwitcher` recipe shares the sun/moon artwork and vertical reel transition.
-Angular and Astro headers use native toggle buttons with a localized label,
-pressed state and reduced-motion support. They use the system theme initially and
-persist an explicit light or dark choice after activation; the native selector
-remains available in the foundations demonstrations.
+The public website uses the shared `foundation` portions of button, link, control,
+layout, typography, feedback and theme recipes through `apps/web/site/src/shared/ui.ts`.
+These contain structure and interaction behavior without the stack demo's colors,
+font sizes or geometry. Full `classes()` recipes retain their existing defaults for
+Angular. Typography foundations accept `wrap: 'wrap'` to preserve the portfolio's
+existing line breaks instead of the demo's balanced/pretty wrapping.
 
-Angular and Astro independently own their TypeScript preference type, storage,
-DOM updates and media listeners. Both retain the `visomi.theme` storage key and
-support `light`, `dark` and `system`. Invalid values follow the system.
+The shared stylesheet is `src/styles.css`. Both `styles.base.css` (Angular) and the
+website stylesheet import it. Focus colors are application theme tokens; the portfolio
+uses its neutral palette. See the [website inventory](../../../../docs/website-ui-foundations.md)
+for actual consumers, custom presentation and validation.
 
-Angular uses the `Theme` service and `select[appUITheme]` directive from its
-`ui/theme/` adapters. Add `appUI` separately for the existing select appearance:
+Theme behavior remains application-owned. The shared recipe supplies native-button
+structure, sun/moon artwork and the vertical reel. The shared CSS defines **400 ms,
+ease-in-out** for the reel and, while `data-theme-transition` is present, page colors,
+borders, shadows, filters and SVG colors. The marker is temporary so hover behavior
+returns to its own timing. Reduced motion suppresses both transitions and the reel.
 
-```html
-<select appUI appUITheme aria-label="Appearance">
-  <option value="system">System</option>
-  <option value="light">Light</option>
-  <option value="dark">Dark</option>
-</select>
-```
+The public Astro website keeps its existing `theme` storage key; Angular keeps
+`visomi.theme`. Both use system preference when no explicit choice exists. The website
+initializes its theme before paint, synchronizes native controls across Astro swaps,
+follows system changes until the user chooses, and remains usable when storage is
+blocked. Preference synchronization does not participate in private session state.
 
-Astro uses `components/theme-select.astro`, which retains the existing `Select`
-props and projects the same native options. Both synchronize multiple controls,
-persist selection when storage is available, and follow system changes in
-`system` mode. Labels and translated options belong to each consumer.
-
-Angular initializes the theme through its service after rendering. Astro
-compiles the component script through its normal pipeline. Neither application
-uses a separate theme build or bootstrap asset. Stored preferences apply when
-the frontend code starts, so they may appear after the first paint.
-See [web foundations](../../../../docs/web-foundations.md#themes-and-accessibility)
-for the build and CSP contract.
+The catalog and shell examples below describe the reusable Angular API and upstream
+stack reference adapters. The portfolio does not expose the stack's `/ui/` demo routes
+or adopt its application shell: it retains its own navigation and page compositions.
 
 ## Recipes and options
 
@@ -151,7 +149,7 @@ for modal actions. Host class bindings preserve additional caller classes.
 `app-shell`, `app-sidebar` and the native `header[app-topbar]` component.
 `Navbar` (`nav[appUI=navbar]`) and `NavItem`
 (`a[appUI=nav-item]`, `button[appUI=nav-item]`) are appearance directives.
-Astro has matching server adapters: `app-shell.astro`, `sidebar.astro`,
+The upstream stack has matching Astro server adapters: `app-shell.astro`, `sidebar.astro`,
 `topbar.astro`, `navbar.astro` and `nav-item.astro` (a native anchor).
 
 ```html
@@ -214,7 +212,7 @@ The framework adapters own these wrappers; consumers only project meaningful
 content. No route discovery, global navigation state, duplicated IDs, DOM
 rewriting, modal drawer or client layout script is introduced.
 
-Full Astro examples live at `/en/ui/shell/` and `/es/ui/shell/`; Angular's existing
+In the upstream stack, full Astro examples live at `/en/ui/shell/` and `/es/ui/shell/`; Angular's existing
 localized foundation pages demonstrate the same shell. The Astro page loads
 only its theme-control script, and works without JavaScript. Navigation markup
 exists in both desktop and mobile slots, with exactly one version visible and

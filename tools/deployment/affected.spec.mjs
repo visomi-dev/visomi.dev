@@ -5,12 +5,13 @@ import { fileURLToPath } from 'node:url';
 
 const cwd = fileURLToPath(new URL('../../', import.meta.url));
 const cases = [
+  ['libs/web/frontend/ui/src/styles.css', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   ['styles.base.css', 'e2e', ['app-e2e', 'worker']],
   ['libs/web/frontend/ui/src/lib/forms.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   [
     'libs/web/frontend/ui/src/lib/forms.ts',
     'lint',
-    ['app-e2e', 'site-e2e', 'web-app', 'web-frontend-ui', 'web-gateway'],
+    ['app-e2e', 'site-e2e', 'web-app', 'web-frontend-ui', 'web-gateway', 'web-site'],
   ],
   ['libs/web/frontend/ui/src/lib/forms.ts', 'container-check', ['web-gateway']],
   ['apps/web/app/src/app/pages/dashboard/dashboard.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],

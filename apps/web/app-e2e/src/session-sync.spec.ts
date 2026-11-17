@@ -29,19 +29,52 @@ async function revoke(page: Page) {
     headers: { 'x-csrf-token': session.csrfToken, origin: new URL(page.url()).origin },
   });
 
-  expect(result.ok()).toBe(true);
+  expect(result.status()).toBe(204);
 }
+
+async function visitDashboard(page: Page) {
+  // SSR rows precede browser session initialization. Revoke only after that read has settled.
+  const authorized = page.waitForResponse((response) => new URL(response.url()).pathname === '/api/contact/session');
+
+  await page.goto('/app/en/admin/dashboard');
+
+  const response = await authorized;
+
+  expect(response.status()).toBe(200);
+}
+
+test('seeded authenticated sessions have stable CSRF across concurrent initialization reads', async ({
+  page,
+  baseURL,
+  browserName,
+}) => {
+  await authenticate(page, baseURL!, `csrfOwner-${browserName}`);
+
+  const responses = await Promise.all(Array.from({ length: 4 }, () => page.request.get('/api/auth/session')));
+  const sessions = await Promise.all(responses.map((response) => response.json()));
+
+  expect(responses.every((response) => response.status() === 200)).toBe(true);
+  expect(sessions.every((session) => session.authenticated === true)).toBe(true);
+  expect(new Set(sessions.map((session) => session.csrfToken)).size).toBe(1);
+
+  const logout = await page.request.post('/api/auth/logout', {
+    data: {},
+    headers: { 'x-csrf-token': sessions[0].csrfToken, origin: baseURL! },
+  });
+
+  expect(logout.status()).toBe(204);
+});
 
 test('logout removes private data from another open tab immediately', async ({ page, baseURL, browserName }) => {
   await authenticate(page, baseURL!, `syncOwner-${browserName}`);
 
-  await page.goto('/app/en/admin/dashboard');
+  await visitDashboard(page);
 
   await expect(page.locator('article')).toHaveCount(25);
 
   const second = await page.context().newPage();
 
-  await second.goto('/app/en/admin/dashboard');
+  await visitDashboard(second);
 
   await expect(second.locator('article')).toHaveCount(25);
 
@@ -71,7 +104,7 @@ test('focus revalidates expiry without BroadcastChannel or a realtime connection
 
   await authenticate(page, baseURL!, `focusOwner-${browserName}`);
 
-  await page.goto('/app/en/admin/dashboard');
+  await visitDashboard(page);
 
   await expect(page.locator('article')).toHaveCount(25);
 
@@ -101,7 +134,7 @@ test('the existing realtime session channel clears revoked data without a tab no
     }),
   );
 
-  await page.goto('/app/en/admin/dashboard');
+  await visitDashboard(page);
 
   await connected;
 
@@ -123,7 +156,7 @@ test('a late private response after logout never restores contact data', async (
     }),
   );
 
-  await page.goto('/app/en/admin/dashboard');
+  await visitDashboard(page);
 
   await connected;
 

@@ -86,6 +86,7 @@ describe('initBackground', () => {
   beforeEach(() => {
     __resetBackgroundForTesting();
     graphics.fail = false;
+    document.documentElement.style.setProperty('--ui-theme-duration-ms', '400');
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(
       {} as ReturnType<HTMLCanvasElement['getContext']>,
     );
@@ -105,6 +106,62 @@ describe('initBackground', () => {
 
     expect(document.querySelector('canvas')).toBeNull();
   });
+  it('cancels stale theme cleanup and honors reduced motion even without WebGL', async () => {
+    vi.useFakeTimers();
+    document.body.innerHTML = '<div id="light-bg"></div><div id="dark-bg"></div>';
+    document.documentElement.classList.remove('dark');
+    vi.mocked(HTMLCanvasElement.prototype.getContext).mockReturnValue(null);
+    globalThis.fetch = vi.fn().mockResolvedValue({ text: vi.fn().mockResolvedValue('shader') });
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false }));
+
+    await initBackground();
+
+    document.documentElement.classList.add('dark');
+
+    await Promise.resolve();
+
+    vi.advanceTimersByTime(200);
+    document.documentElement.classList.remove('dark');
+
+    await Promise.resolve();
+
+    vi.advanceTimersByTime(200);
+    expect(document.getElementById('light-bg')?.classList.contains('hidden')).toBe(false);
+    vi.advanceTimersByTime(200);
+    expect(document.getElementById('dark-bg')?.classList.contains('hidden')).toBe(true);
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }));
+    document.documentElement.classList.add('dark');
+
+    await Promise.resolve();
+
+    expect(document.getElementById('light-bg')?.classList.contains('hidden')).toBe(true);
+    expect(document.getElementById('dark-bg')?.classList.contains('hidden')).toBe(false);
+    expect(document.querySelector('.bg-upward-enter, .bg-upward-leave')).toBeNull();
+    vi.useRealTimers();
+  });
+
+  it('renders a static shader for reduced motion and responds to preference changes', async () => {
+    document.body.innerHTML = '<div id="light-bg"></div><div id="dark-bg"></div>';
+    document.documentElement.classList.add('dark');
+    globalThis.fetch = vi.fn().mockResolvedValue({ text: vi.fn().mockResolvedValue('shader') });
+    const motion = Object.assign(new EventTarget(), { matches: true });
+
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue(motion));
+    vi.spyOn(window, 'requestAnimationFrame').mockReturnValue(1);
+    vi.spyOn(window, 'cancelAnimationFrame');
+
+    await initBackground();
+
+    expect(document.querySelector('#dark-bg canvas')).not.toBeNull();
+    expect(window.requestAnimationFrame).not.toHaveBeenCalled();
+    motion.matches = false;
+    motion.dispatchEvent(new Event('change'));
+    expect(window.requestAnimationFrame).toHaveBeenCalledOnce();
+    motion.matches = true;
+    motion.dispatchEvent(new Event('change'));
+    expect(window.cancelAnimationFrame).toHaveBeenCalledWith(1);
+  });
+
   it('releases the background when renderer initialization fails after acquiring a context', async () => {
     document.body.innerHTML = '<div id="light-bg"></div><div id="dark-bg"></div>';
     graphics.fail = true;
@@ -138,7 +195,7 @@ describe('initBackground', () => {
 
     await Promise.resolve();
 
-    vi.advanceTimersByTime(700);
+    vi.advanceTimersByTime(400);
     expect(document.getElementById('dark-bg')?.classList.contains('hidden')).toBe(true);
     __resetBackgroundForTesting();
     frame(1);
@@ -170,7 +227,7 @@ describe('initBackground', () => {
 
     await Promise.resolve();
 
-    vi.advanceTimersByTime(700);
+    vi.advanceTimersByTime(400);
 
     expect(lightBackground?.classList.contains('hidden')).toBe(true);
     expect(darkBackground?.classList.contains('hidden')).toBe(false);

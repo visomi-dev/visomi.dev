@@ -1,4 +1,5 @@
 ---
+import { ui } from '../shared/ui';
 import { getSiteContent } from '../content/site-content';
 import type { Locale } from '../i18n/translations';
 
@@ -369,7 +370,7 @@ const { resume } = getSiteContent(locale);
   }
 </style>
 
-<main class="resume-document min-h-screen-nav mt-20 grow px-6 pt-12 pb-24">
+<main class:list={[ui.container, 'resume-document min-h-screen-nav mt-20 grow px-6 pt-12 pb-24']}>
   <div class="mx-auto max-w-5xl">
     {resume.pageLabel && (
       <div
@@ -382,15 +383,22 @@ const { resume } = getSiteContent(locale);
 
     <header class="mb-20 grid gap-10 lg:grid-cols-[1.6fr_0.9fr]">
       <div>
-        <h1 class="text-surface-dark dark:text-surface-light mb-4 text-4xl font-bold tracking-tight md:text-6xl">
+        <h1
+          class:list={[
+            ui.heading,
+            'text-surface-dark dark:text-surface-light mb-4 text-4xl font-bold tracking-tight md:text-6xl',
+          ]}
+        >
           {resume.name}
         </h1>
 
-        <p class="text-surface-dark/80 dark:text-surface-light/80 mb-6 text-lg font-medium md:text-xl">
+        <p
+          class:list={[ui.text, 'text-surface-dark/80 dark:text-surface-light/80 mb-6 text-lg font-medium md:text-xl']}
+        >
           {resume.headline}
         </p>
 
-        <p class="text-muted-light dark:text-muted-dark max-w-3xl text-lg leading-relaxed font-light">
+        <p class:list={[ui.text, 'text-muted-light dark:text-muted-dark max-w-3xl text-lg leading-relaxed font-light']}>
           {resume.summary}
         </p>
       </div>
@@ -398,19 +406,33 @@ const { resume } = getSiteContent(locale);
       <div class="border-border-light dark:border-border-dark rounded-2xl border bg-white/80 p-6 backdrop-blur-sm dark:bg-neutral-950/80">
         <div class="space-y-4 font-mono text-sm">
           <div>
-            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Location</p>
+            <p
+              class:list={[
+                ui.text,
+                'text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase',
+              ]}
+            >
+              Location
+            </p>
 
-            <p class="text-surface-dark dark:text-surface-light wrap-break-word">{resume.location}</p>
+            <p class:list={[ui.text, 'text-surface-dark dark:text-surface-light wrap-break-word']}>{resume.location}</p>
           </div>
 
           <div>
-            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Email</p>
+            <p
+              class:list={[
+                ui.text,
+                'text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase',
+              ]}
+            >
+              Email
+            </p>
 
             {/* Keep the exception scoped to the explicitly public address if resume content changes. */}
             <Fragment set:html={resume.email === 'visomi.dev@gmail.com' ? '<!--email_off-->' : ''} />
 
             <a
-              class="text-surface-dark dark:text-surface-light break-all hover:underline"
+              class:list={[ui.link, 'text-surface-dark dark:text-surface-light break-all hover:underline']}
               href={`mailto:${resume.email}`}
             >
               {resume.email}
@@ -420,31 +442,68 @@ const { resume } = getSiteContent(locale);
           </div>
 
           <div>
-            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Phone</p>
+            <p
+              class:list={[
+                ui.text,
+                'text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase',
+              ]}
+            >
+              Phone
+            </p>
 
-            <p class="text-surface-dark dark:text-surface-light">{resume.phone}</p>
+            <p class:list={[ui.text, 'text-surface-dark dark:text-surface-light']}>{resume.phone}</p>
           </div>
 
           <div>
-            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">Website</p>
+            <p
+              class:list={[
+                ui.text,
+                'text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase',
+              ]}
+            >
+              Website
+            </p>
 
-            <a class="text-surface-dark dark:text-surface-light hover:underline" href={`https://${resume.website}`}>
+            <a
+              class:list={[ui.link, 'text-surface-dark dark:text-surface-light hover:underline']}
+              href={`https://${resume.website}`}
+            >
               {resume.website}
             </a>
           </div>
 
           <div>
-            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">GitHub</p>
+            <p
+              class:list={[
+                ui.text,
+                'text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase',
+              ]}
+            >
+              GitHub
+            </p>
 
-            <a class="text-surface-dark dark:text-surface-light hover:underline" href={`https://${resume.github}`}>
+            <a
+              class:list={[ui.link, 'text-surface-dark dark:text-surface-light hover:underline']}
+              href={`https://${resume.github}`}
+            >
               {resume.github}
             </a>
           </div>
 
           <div>
-            <p class="text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase">LinkedIn</p>
+            <p
+              class:list={[
+                ui.text,
+                'text-muted-light dark:text-muted-dark mb-1 text-[10px] tracking-[0.25em] uppercase',
+              ]}
+            >
+              LinkedIn
+            </p>
 
-            <a class="text-surface-dark dark:text-surface-light hover:underline" href={`https://${resume.linkedin}`}>
+            <a
+              class:list={[ui.link, 'text-surface-dark dark:text-surface-light hover:underline']}
+              href={`https://${resume.linkedin}`}
+            >
               {resume.linkedin}
             </a>
           </div>
@@ -454,19 +513,26 @@ const { resume } = getSiteContent(locale);
 
     <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
       <div class="mb-12 flex items-baseline justify-between">
-        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+        <h2
+          class:list={[
+            ui.heading,
+            'text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase',
+          ]}
+        >
           {resume.experienceLabel}
         </h2>
       </div>
 
       <div class="space-y-16">
         {resume.experience.map((experience) => (
-          <article class="group">
+          <article class:list={[ui.card, 'group']}>
             <div class="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
               <div class="resume-screen-experience-heading">
-                <h3 class="text-surface-dark dark:text-surface-light text-2xl font-semibold">{experience.company}</h3>
+                <h3 class:list={[ui.heading, 'text-surface-dark dark:text-surface-light text-2xl font-semibold']}>
+                  {experience.company}
+                </h3>
 
-                <p class="text-surface-dark/80 dark:text-surface-light/80 mt-2 text-base font-medium">
+                <p class:list={[ui.text, 'text-surface-dark/80 dark:text-surface-light/80 mt-2 text-base font-medium']}>
                   {experience.role}
                 </p>
               </div>
@@ -502,15 +568,27 @@ const { resume } = getSiteContent(locale);
 
     <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
       <div class="mb-12 flex items-baseline justify-between">
-        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+        <h2
+          class:list={[
+            ui.heading,
+            'text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase',
+          ]}
+        >
           {resume.stackLabel}
         </h2>
       </div>
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         {resume.skillGroups.map((group) => (
-          <article class="border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70">
-            <h3 class="text-surface-dark dark:text-surface-light mb-4 text-lg font-semibold">{group.label}</h3>
+          <article
+            class:list={[
+              ui.card,
+              'border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70',
+            ]}
+          >
+            <h3 class:list={[ui.heading, 'text-surface-dark dark:text-surface-light mb-4 text-lg font-semibold']}>
+              {group.label}
+            </h3>
 
             <div class="flex flex-wrap gap-2">
               {group.items.map((item) => (
@@ -526,14 +604,24 @@ const { resume } = getSiteContent(locale);
 
     <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
       <div class="mb-12 flex items-baseline justify-between">
-        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+        <h2
+          class:list={[
+            ui.heading,
+            'text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase',
+          ]}
+        >
           {resume.mentoringLabel}
         </h2>
       </div>
 
       <div class="space-y-4">
         {resume.mentoring.map((item) => (
-          <p class="text-muted-light dark:text-muted-dark border-border-light dark:border-border-dark border-l pl-4 text-base leading-relaxed">
+          <p
+            class:list={[
+              ui.text,
+              'text-muted-light dark:text-muted-dark border-border-light dark:border-border-dark border-l pl-4 text-base leading-relaxed',
+            ]}
+          >
             {item}
           </p>
         ))}
@@ -542,15 +630,25 @@ const { resume } = getSiteContent(locale);
 
     <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
       <div class="mb-12 flex items-baseline justify-between">
-        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+        <h2
+          class:list={[
+            ui.heading,
+            'text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase',
+          ]}
+        >
           {resume.freelanceLabel}
         </h2>
       </div>
 
       <div class="grid gap-4 md:grid-cols-2">
         {resume.freelance.map((item) => (
-          <article class="border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70">
-            <p class="text-muted-light dark:text-muted-dark text-base leading-relaxed">{item}</p>
+          <article
+            class:list={[
+              ui.card,
+              'border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70',
+            ]}
+          >
+            <p class:list={[ui.text, 'text-muted-light dark:text-muted-dark text-base leading-relaxed']}>{item}</p>
           </article>
         ))}
       </div>
@@ -558,16 +656,23 @@ const { resume } = getSiteContent(locale);
 
     <section class="border-border-light dark:border-border-dark mb-20 border-t pt-12">
       <div class="mb-12 flex items-baseline justify-between">
-        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+        <h2
+          class:list={[
+            ui.heading,
+            'text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase',
+          ]}
+        >
           {resume.educationLabel}
         </h2>
       </div>
 
       <div class="flex flex-col gap-4 md:flex-row md:items-baseline md:justify-between">
         <div>
-          <h3 class="text-surface-dark dark:text-surface-light mb-2 text-xl font-semibold">{resume.education.title}</h3>
+          <h3 class:list={[ui.heading, 'text-surface-dark dark:text-surface-light mb-2 text-xl font-semibold']}>
+            {resume.education.title}
+          </h3>
 
-          <p class="text-muted-light dark:text-muted-dark">{resume.education.school}</p>
+          <p class:list={[ui.text, 'text-muted-light dark:text-muted-dark']}>{resume.education.school}</p>
         </div>
 
         <span class="text-muted-light dark:text-muted-dark font-mono text-sm">{resume.education.date}</span>
@@ -576,15 +681,25 @@ const { resume } = getSiteContent(locale);
 
     <section class="border-border-light dark:border-border-dark border-t pt-12">
       <div class="mb-12 flex items-baseline justify-between">
-        <h2 class="text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase">
+        <h2
+          class:list={[
+            ui.heading,
+            'text-muted-light dark:text-muted-dark font-mono text-xs font-bold tracking-widest uppercase',
+          ]}
+        >
           {resume.languagesLabel}
         </h2>
       </div>
 
       <div class="grid gap-4 md:grid-cols-2">
         {resume.languages.map((item) => (
-          <article class="border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70">
-            <p class="text-muted-light dark:text-muted-dark text-base leading-relaxed">{item}</p>
+          <article
+            class:list={[
+              ui.card,
+              'border-border-light dark:border-border-dark rounded-2xl border bg-white/70 p-6 dark:bg-neutral-950/70',
+            ]}
+          >
+            <p class:list={[ui.text, 'text-muted-light dark:text-muted-dark text-base leading-relaxed']}>{item}</p>
           </article>
         ))}
       </div>

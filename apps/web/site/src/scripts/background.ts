@@ -58,7 +58,8 @@ const syncLoop = () => {
     return;
   }
 
-  const shouldRender = !document.hidden && !state.darkBackground.classList.contains('hidden');
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  const shouldRender = !document.hidden && !state.darkBackground.classList.contains('hidden') && !reduced;
 
   if (shouldRender) {
     startLoop();
@@ -67,6 +68,10 @@ const syncLoop = () => {
   }
 
   stopLoop();
+
+  if (reduced) {
+    state.renderer.render(state.scene, state.camera);
+  }
 };
 
 const teardown = () => {
@@ -108,9 +113,7 @@ const loadShaders = async (): Promise<[string, string] | null> => {
 };
 
 export const initBackground = async () => {
-  if (state) {
-    teardown();
-  }
+  teardown();
 
   const lightBackground = document.getElementById('light-bg');
   const darkBackground = document.getElementById('dark-bg');
@@ -130,42 +133,50 @@ export const initBackground = async () => {
     lightBackground.classList.remove('hidden');
   }
 
+  let transitionTimer: ReturnType<typeof setTimeout> | undefined;
+  let previousDark = isDarkOnLoad;
   const themeObserver = new MutationObserver(() => {
-    if (!state) {
-      return;
-    }
-
     const isDark = html.classList.contains('dark');
 
-    if (isDark) {
-      lightBackground.classList.remove('bg-upward-enter');
-      lightBackground.classList.add('bg-upward-leave');
+    if (isDark === previousDark) {
+      return;
+    }
 
-      darkBackground.classList.remove('hidden', 'bg-upward-leave');
-      darkBackground.classList.add('bg-upward-enter');
+    previousDark = isDark;
+    clearTimeout(transitionTimer);
+    const incoming = isDark ? darkBackground : lightBackground;
+    const outgoing = isDark ? lightBackground : darkBackground;
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const duration = Number(getComputedStyle(html).getPropertyValue('--ui-theme-duration-ms'));
 
-      window.setTimeout(() => {
-        lightBackground.classList.add('hidden');
-        syncLoop();
-      }, 700);
+    incoming.classList.remove('hidden', 'bg-upward-leave');
+    outgoing.classList.remove('bg-upward-enter');
+
+    if (reduced) {
+      incoming.classList.remove('bg-upward-enter');
+      outgoing.classList.add('hidden');
+      outgoing.classList.remove('bg-upward-leave');
+      syncLoop();
 
       return;
     }
 
-    darkBackground.classList.remove('bg-upward-enter');
-    darkBackground.classList.add('bg-upward-leave');
-
-    lightBackground.classList.remove('hidden', 'bg-upward-leave');
-    lightBackground.classList.add('bg-upward-enter');
-
-    window.setTimeout(() => {
-      darkBackground.classList.add('hidden');
+    incoming.classList.add('bg-upward-enter');
+    outgoing.classList.add('bg-upward-leave');
+    syncLoop();
+    transitionTimer = setTimeout(() => {
+      outgoing.classList.add('hidden');
+      incoming.classList.remove('bg-upward-enter');
+      outgoing.classList.remove('bg-upward-leave');
       syncLoop();
-    }, 700);
+    }, duration);
   });
 
   themeObserver.observe(html, { attributes: true, attributeFilter: ['class'] });
-  cleanups.push(() => themeObserver.disconnect());
+  cleanups.push(() => {
+    themeObserver.disconnect();
+    clearTimeout(transitionTimer);
+  });
 
   const shaders = await loadShaders();
 
@@ -199,7 +210,6 @@ export const initBackground = async () => {
   if (!context) {
     geometry.dispose();
     material.dispose();
-    teardown();
 
     return;
   }
@@ -217,7 +227,6 @@ export const initBackground = async () => {
   } catch {
     geometry.dispose();
     material.dispose();
-    teardown();
 
     return;
   }
@@ -227,6 +236,10 @@ export const initBackground = async () => {
   darkBackground.appendChild(renderer.domElement);
 
   state = { scene, camera, renderer, material, resolution, darkBackground };
+  const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+
+  motion?.addEventListener?.('change', syncLoop);
+  cleanups.push(() => motion?.removeEventListener?.('change', syncLoop));
 
   const onResize = () => {
     if (!state) {

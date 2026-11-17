@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 
 import { getSiteContent } from '../content/site-content';
 import type { Locale } from '../i18n/translations';
+import { ui as foundation } from '../shared/ui';
 
 type Props = {
   locale: Locale;
@@ -56,14 +57,24 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
   });
 ---
 
-<main class="min-h-screen-nav mx-auto mt-20 max-w-[1680px] grow overflow-x-hidden px-6 pt-12 pb-12 2xl:px-10 2xl:pt-16 2xl:pb-16">
+<main
+  class:list={[
+    foundation.container,
+    'min-h-screen-nav mx-auto mt-20 max-w-[1680px] grow overflow-x-hidden px-6 pt-12 pb-12 2xl:px-10 2xl:pt-16 2xl:pb-16',
+  ]}
+>
   <header class="mb-20">
     <div class="flex flex-col gap-6">
       <div class="text-muted-light dark:text-muted-dark flex items-center gap-3 font-mono text-xs tracking-wider">
         <span>{projects.pageLabel}</span>
       </div>
 
-      <h1 class="text-surface-dark dark:text-surface-light text-5xl leading-[1.1] font-semibold tracking-tight md:text-6xl">
+      <h1
+        class:list={[
+          foundation.heading,
+          'text-surface-dark dark:text-surface-light text-5xl leading-[1.1] font-semibold tracking-tight md:text-6xl',
+        ]}
+      >
         <span>{projects.titleLine1}</span>
 
         <br />
@@ -72,7 +83,12 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
       </h1>
 
       <div class="mt-8 flex flex-col justify-between gap-12 md:flex-row md:items-end">
-        <p class="text-muted-light dark:text-muted-dark max-w-2xl text-lg leading-relaxed font-light">
+        <p
+          class:list={[
+            foundation.text,
+            'text-muted-light dark:text-muted-dark max-w-2xl text-lg leading-relaxed font-light',
+          ]}
+        >
           {projects.description}
         </p>
 
@@ -81,6 +97,7 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
             <button
               data-filter={filter.value}
               class:list={[
+                foundation.button,
                 'filter-btn rounded border px-4 py-2 transition-all',
                 index === 0
                   ? 'bg-primary-light dark:bg-primary-dark border-transparent text-white dark:text-black'
@@ -105,7 +122,10 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
       return (
         <article
           data-category={project.category}
-          class="project-card border-border-light/70 dark:border-border-dark/70 relative border-t pt-16 first:pt-0"
+          class:list={[
+            foundation.card,
+            'project-card border-border-light/70 dark:border-border-dark/70 relative border-t pt-16 first:pt-0',
+          ]}
         >
           <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.18fr)] lg:gap-16 xl:gap-20 2xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1.25fr)] 2xl:gap-24">
             <div class="space-y-8 lg:sticky lg:top-28 lg:self-start">
@@ -128,16 +148,31 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
                       <span class:list={['pi text-xl text-neutral-700 dark:text-neutral-300', project.icon]} />
                     </div>
 
-                    <p class="text-muted-light dark:text-muted-dark font-mono text-[10px] tracking-[0.3em] uppercase">
+                    <p
+                      class:list={[
+                        foundation.text,
+                        'text-muted-light dark:text-muted-dark font-mono text-[10px] tracking-[0.3em] uppercase',
+                      ]}
+                    >
                       {ui.caseStudiesLabel}
                     </p>
                   </div>
 
-                  <h2 class="text-surface-dark dark:text-surface-light text-4xl leading-tight font-semibold tracking-tight md:text-5xl 2xl:text-6xl">
+                  <h2
+                    class:list={[
+                      foundation.heading,
+                      'text-surface-dark dark:text-surface-light text-4xl leading-tight font-semibold tracking-tight md:text-5xl 2xl:text-6xl',
+                    ]}
+                  >
                     {project.title}
                   </h2>
 
-                  <p class="text-muted-light dark:text-muted-dark max-w-xl text-base leading-8 font-light md:text-lg 2xl:max-w-2xl 2xl:text-xl 2xl:leading-9">
+                  <p
+                    class:list={[
+                      foundation.text,
+                      'text-muted-light dark:text-muted-dark max-w-xl text-base leading-8 font-light md:text-lg 2xl:max-w-2xl 2xl:text-xl 2xl:leading-9',
+                    ]}
+                  >
                     {project.summary}
                   </p>
                 </div>
@@ -148,27 +183,38 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
                   <div class="mb-4 flex items-center gap-2">
                     <span class="h-2 w-2 rounded-full bg-blue-500" />
 
-                    <p class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-[0.24em] uppercase">
+                    <p
+                      class:list={[
+                        foundation.text,
+                        'text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-[0.24em] uppercase',
+                      ]}
+                    >
                       {ui.screenNarrativeLabel}
                     </p>
                   </div>
 
                   <p
-                    class="text-muted-light dark:text-muted-dark mb-3 font-mono text-[10px] tracking-[0.24em] uppercase"
+                    class:list={[
+                      foundation.text,
+                      'text-muted-light dark:text-muted-dark mb-3 font-mono text-[10px] tracking-[0.24em] uppercase',
+                    ]}
                     data-project-caption-step={project.slug}
                   >
                     {activeScreen.step}
                   </p>
 
                   <h3
-                    class="text-surface-dark dark:text-surface-light text-xl font-semibold"
+                    class:list={[foundation.heading, 'text-surface-dark dark:text-surface-light text-xl font-semibold']}
                     data-project-caption-title={project.slug}
                   >
                     {activeScreen.title}
                   </h3>
 
                   <p
-                    class="text-muted-light dark:text-muted-dark mt-3 text-sm leading-7 2xl:text-base 2xl:leading-8"
+                    class:list={[
+                      foundation.text,
+                      'text-muted-light dark:text-muted-dark mt-3 text-sm leading-7 2xl:text-base 2xl:leading-8',
+                    ]}
                     data-project-caption-body={project.slug}
                   >
                     {activeScreen.description}
@@ -180,7 +226,12 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
                 <div class="flex items-center gap-2">
                   <span class="h-2 w-2 rounded-full bg-emerald-500" />
 
-                  <h3 class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-[0.24em] uppercase">
+                  <h3
+                    class:list={[
+                      foundation.heading,
+                      'text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-[0.24em] uppercase',
+                    ]}
+                  >
                     {ui.decisionsLabel}
                   </h3>
                 </div>
@@ -188,15 +239,30 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
                 <div class="grid gap-4 sm:grid-cols-2">
                   {project.highlights.map((highlight, index) => (
                     <div class="border-border-light bg-surface-light/70 dark:border-border-dark dark:bg-surface-dark/40 rounded-2xl border p-5">
-                      <p class="text-muted-light dark:text-muted-dark mb-4 font-mono text-[10px] tracking-[0.24em] uppercase">
+                      <p
+                        class:list={[
+                          foundation.text,
+                          'text-muted-light dark:text-muted-dark mb-4 font-mono text-[10px] tracking-[0.24em] uppercase',
+                        ]}
+                      >
                         {String(index + 1).padStart(2, '0')}
                       </p>
 
-                      <p class="text-surface-dark dark:text-surface-light text-lg leading-snug font-semibold">
+                      <p
+                        class:list={[
+                          foundation.text,
+                          'text-surface-dark dark:text-surface-light text-lg leading-snug font-semibold',
+                        ]}
+                      >
                         {highlight.value}
                       </p>
 
-                      <p class="text-muted-light dark:text-muted-dark mt-2 text-[11px] font-bold tracking-[0.22em] uppercase 2xl:text-xs">
+                      <p
+                        class:list={[
+                          foundation.text,
+                          'text-muted-light dark:text-muted-dark mt-2 text-[11px] font-bold tracking-[0.22em] uppercase 2xl:text-xs',
+                        ]}
+                      >
                         {highlight.label}
                       </p>
                     </div>
@@ -205,7 +271,12 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
               </div>
 
               <div class="space-y-4">
-                <h3 class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-[0.24em] uppercase">
+                <h3
+                  class:list={[
+                    foundation.heading,
+                    'text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-[0.24em] uppercase',
+                  ]}
+                >
                   {ui.technologiesLabel}
                 </h3>
 
@@ -253,11 +324,21 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
                       </div>
 
                       <div class="space-y-3">
-                        <p class="text-surface-dark dark:text-surface-light font-mono text-xs tracking-[0.25em] uppercase">
+                        <p
+                          class:list={[
+                            foundation.text,
+                            'text-surface-dark dark:text-surface-light font-mono text-xs tracking-[0.25em] uppercase',
+                          ]}
+                        >
                           {projects.privatePreviewLabel}
                         </p>
 
-                        <p class="text-muted-light dark:text-muted-dark mx-auto max-w-md text-sm leading-7">
+                        <p
+                          class:list={[
+                            foundation.text,
+                            'text-muted-light dark:text-muted-dark mx-auto max-w-md text-sm leading-7',
+                          ]}
+                        >
                           {projects.privatePreviewDescription}
                         </p>
                       </div>
@@ -305,7 +386,12 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
                   <div class="flex items-center gap-2">
                     <span class="h-2 w-2 rounded-full bg-violet-500" />
 
-                    <h3 class="text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-[0.24em] uppercase">
+                    <h3
+                      class:list={[
+                        foundation.heading,
+                        'text-muted-light dark:text-muted-dark font-mono text-[10px] font-bold tracking-[0.24em] uppercase',
+                      ]}
+                    >
                       {ui.thumbnailLabel}
                     </h3>
                   </div>
@@ -318,6 +404,7 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
                         <button
                           type="button"
                           class:list={[
+                            foundation.button,
                             'project-thumb border-border-light bg-surface-light/70 dark:border-border-dark dark:bg-surface-dark/55 hover:border-primary-light dark:hover:border-primary-dark flex items-center gap-3 rounded-2xl border p-3 text-left transition-all',
                             index === 0 && 'ring-primary-light dark:ring-primary-dark ring-1',
                           ]}
@@ -339,11 +426,21 @@ const createScreenDetails = (project: (typeof projectsList)[number]) =>
                           </div>
 
                           <div class="min-w-0">
-                            <p class="text-muted-light dark:text-muted-dark mb-1 font-mono text-[10px] tracking-[0.22em] uppercase 2xl:text-[11px]">
+                            <p
+                              class:list={[
+                                foundation.text,
+                                'text-muted-light dark:text-muted-dark mb-1 font-mono text-[10px] tracking-[0.22em] uppercase 2xl:text-[11px]',
+                              ]}
+                            >
                               {detail?.step ?? `${ui.viewLabel} ${index + 1}`}
                             </p>
 
-                            <p class="text-surface-dark dark:text-surface-light line-clamp-2 text-sm font-medium 2xl:text-base">
+                            <p
+                              class:list={[
+                                foundation.text,
+                                'text-surface-dark dark:text-surface-light line-clamp-2 text-sm font-medium 2xl:text-base',
+                              ]}
+                            >
                               {detail?.title ?? screenshot.alt}
                             </p>
                           </div>

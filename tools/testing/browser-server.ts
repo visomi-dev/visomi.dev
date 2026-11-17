@@ -1,6 +1,6 @@
 import { spawn, type ChildProcess } from 'node:child_process';
 import { once } from 'node:events';
-import { createHmac, randomUUID } from 'node:crypto';
+import { createHmac, randomBytes, randomUUID } from 'node:crypto';
 import { appendFile, mkdir, writeFile } from 'node:fs/promises';
 import type { Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
@@ -10,6 +10,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { SMTPServer } from 'smtp-server';
 import { hashPassword } from '@visomi-stack/dev-testing/lib/password';
 import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
+import { runFixture } from '@visomi-stack/dev-testing/lib/fixture-lifetime';
 
 import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 
@@ -17,100 +18,109 @@ import { browserHttps } from './browser-https';
 import { browserCollector } from './browser-collector';
 
 // Test-only executable. Owns an isolated Compose project; never reads ambient DATABASE_URL or .env.
+let phase = 'configuration';
+
 async function main(): Promise<void> {
-  const port = Number(process.env['VISOMI_E2E_PORT'] ?? 8183);
+  await runFixture(async ({ signal, onCleanup, stop }) => {
+    const port = Number(process.env['VISOMI_E2E_PORT'] ?? 8183);
 
-  if (!Number.isInteger(port) || port < 1024 || port > 65535) {
-    throw new Error('fixture_port_invalid');
-  }
-
-  const runtime = process.env['VISOMI_E2E_RUNTIME'] ?? 'web-gateway';
-
-  if (!['web-gateway', 'web-api'].includes(runtime)) {
-    throw new Error('fixture_runtime_invalid');
-  }
-
-  const tls = process.env['VISOMI_E2E_HTTPS'] === 'true';
-  const runtimePort = tls ? port + 100 : port;
-  const origin = tls ? `https://visomi.dev:${port}` : `http://127.0.0.1:${port}`;
-  const directory = resolve('tmp', `browser-fixture-${port}`);
-
-  await mkdir(directory, { recursive: true });
-
-  const postgres = await testPostgres();
-  const database = createDatabase(postgres.url);
-  const secret = 'synthetic-browser-session-secret-more-than-32-bytes';
-  let child: ChildProcess | undefined;
-  let proxy: Awaited<ReturnType<typeof browserHttps>> | undefined;
-  let collector: Awaited<ReturnType<typeof browserCollector>> | undefined;
-  let stopping = false;
-  const smtp = new SMTPServer({
-    disabledCommands: ['AUTH', 'STARTTLS'],
-    logger: false,
-    onData(stream, _session, callback) {
-      let raw = '';
-
-      stream.on('data', (chunk) => {
-        raw += String(chunk);
-      });
-      stream.on('end', () => {
-        const code = raw.match(/\b\d{6}\b/)?.[0];
-
-        void writeFile(resolve(directory, 'mail.json'), JSON.stringify({ code }), { mode: 0o600 }).then(
-          () => callback(),
-          () => callback(new Error('synthetic_delivery_failed')),
-        );
-      });
-    },
-  });
-  const stop = async () => {
-    if (stopping) {
-      return;
+    if (!Number.isInteger(port) || port < 1024 || port > 65535) {
+      throw new Error('fixture_port_invalid');
     }
 
-    stopping = true;
+    const runtime = process.env['VISOMI_E2E_RUNTIME'] ?? 'web-gateway';
 
-    if (child && child.exitCode === null) {
-      const exited = once(child, 'exit', { signal: AbortSignal.timeout(10000) });
-
-      child.kill('SIGTERM');
-
-      await exited.catch(() => {
-        child?.kill('SIGKILL');
-      });
+    if (!['web-gateway', 'web-api'].includes(runtime)) {
+      throw new Error('fixture_runtime_invalid');
     }
 
-    const results = await Promise.allSettled([
-      new Promise<void>((done) => smtp.close(done)),
-      database.close(),
-      postgres.stop(),
-      collector?.stop(),
-      proxy?.stop(),
-    ]);
+    const tls = process.env['VISOMI_E2E_HTTPS'] === 'true';
+    const runtimePort = tls ? port + 100 : port;
+    const origin = tls ? `https://visomi.dev:${port}` : `http://127.0.0.1:${port}`;
+    const directory = resolve('tmp', `browser-fixture-${port}`);
 
-    if (results.some((result) => result.status === 'rejected')) {
-      process.exitCode = 1;
-      process.stderr.write('browser_fixture_cleanup_failed\n');
-    }
-  };
+    await mkdir(directory, { recursive: true });
 
-  process.once('SIGINT', () => void stop());
-  process.once('SIGTERM', () => void stop());
+    const resources: {
+      postgres?: Awaited<ReturnType<typeof testPostgres>>;
+      database?: ReturnType<typeof createDatabase>;
+      child?: ChildProcess;
+    } = {};
+    const secret = 'synthetic-browser-session-secret-more-than-32-bytes';
+    let proxy: Awaited<ReturnType<typeof browserHttps>> | undefined;
+    let collector: Awaited<ReturnType<typeof browserCollector>> | undefined;
+    const smtp = new SMTPServer({
+      disabledCommands: ['AUTH', 'STARTTLS'],
+      logger: false,
+      onData(stream, _session, callback) {
+        let raw = '';
 
-  try {
+        stream.on('data', (chunk) => {
+          raw += String(chunk);
+        });
+        stream.on('end', () => {
+          const code = raw.match(/\b\d{6}\b/)?.[0];
+
+          void writeFile(resolve(directory, 'mail.json'), JSON.stringify({ code }), { mode: 0o600 }).then(
+            () => callback(),
+            () => callback(new Error('synthetic_delivery_failed')),
+          );
+        });
+      },
+    });
+
+    onCleanup(async () => {
+      if (resources.child && resources.child.exitCode === null) {
+        const exited = once(resources.child, 'exit', { signal: AbortSignal.timeout(10000) });
+
+        resources.child.kill('SIGTERM');
+
+        await exited.catch(() => {
+          resources.child?.kill('SIGKILL');
+        });
+      }
+
+      const results = await Promise.allSettled([
+        new Promise<void>((done) => smtp.close(done)),
+        resources.database?.close(),
+        resources.postgres?.stop(),
+        collector?.stop(),
+        proxy?.stop(),
+      ]);
+
+      if (results.some((result) => result.status === 'rejected')) {
+        process.exitCode = 1;
+        process.stderr.write('browser_fixture_cleanup_failed\n');
+      }
+    });
+
+    phase = 'postgres';
+    const postgres = await testPostgres(undefined, 'web-api', AbortSignal.any([signal, AbortSignal.timeout(40000)]));
+
+    resources.postgres = postgres;
+    const database = createDatabase(postgres.url);
+
+    resources.database = database;
+    signal.throwIfAborted();
+
     if (tls) {
+      phase = 'tls';
       const created = await browserHttps(directory, port, runtimePort);
 
       proxy = created;
     }
 
     if (process.env['VISOMI_E2E_BROWSER_TELEMETRY'] === 'true') {
-      const createdCollector = await browserCollector();
+      phase = 'collector';
+      const createdCollector = await browserCollector(signal);
 
       collector = createdCollector;
 
       await writeFile(resolve(directory, 'collector.json'), JSON.stringify({ query: collector.query }));
     }
+
+    signal.throwIfAborted();
+    phase = 'seed';
 
     await new Promise<void>((done) => smtp.listen(0, '127.0.0.1', done));
 
@@ -140,12 +150,14 @@ async function main(): Promise<void> {
             'detailExpiryOwner',
             'paginationFocusOwner',
             'detailFocusOwner',
+            'csrfOwner',
           ]
         : ['other']
       ).flatMap((name) => [name, ...['chromium', 'firefox', 'webkit'].map((browser) => `${name}-${browser}`)])) {
         const sid = randomUUID();
         const expire = new Date(Date.now() + 8 * 60 * 60_000);
         const session = {
+          csrf: randomBytes(32).toString('base64url'),
           cookie: {
             originalMaxAge: 8 * 60 * 60_000,
             expires: expire.toISOString(),
@@ -178,7 +190,9 @@ async function main(): Promise<void> {
 
     await writeFile(resolve(directory, 'runtime.log'), '');
 
-    child = spawn(
+    signal.throwIfAborted();
+    phase = 'runtime';
+    const child = spawn(
       process.execPath,
       [runtime === 'web-api' ? 'dist/apps/web/api/main.js' : 'dist/apps/web/gateway/main.js'],
       {
@@ -213,19 +227,24 @@ async function main(): Promise<void> {
         },
       },
     );
+
+    resources.child = child;
     for (const stream of [child.stdout, child.stderr]) {
       stream?.on('data', (chunk) => {
         void appendFile(resolve(directory, 'runtime.log'), chunk);
       });
     }
     child.once('exit', () => {
-      if (!stopping) {
+      if (!signal.aborted) {
         process.exitCode = 1;
-        void stop();
+        stop();
       }
     });
     for (let attempt = 0; ; attempt++) {
-      const ready = await fetch(`http://127.0.0.1:${runtimePort}${runtime === 'web-api' ? '' : '/api'}/ready`).then(
+      signal.throwIfAborted();
+      const ready = await fetch(`http://127.0.0.1:${runtimePort}${runtime === 'web-api' ? '' : '/api'}/ready`, {
+        signal: AbortSignal.any([signal, AbortSignal.timeout(1000)]),
+      }).then(
         (response) => response.ok,
         () => false,
       );
@@ -234,23 +253,17 @@ async function main(): Promise<void> {
         break;
       }
 
-      if (attempt >= 100 || stopping) {
+      if (attempt >= 100 || signal.aborted) {
         throw new Error('fixture_startup_failed');
       }
 
-      await delay(100);
+      await delay(100, undefined, { signal });
     }
     process.stdout.write('[fixture ready]\n');
-  } catch {
-    process.exitCode = 1;
-
-    await stop();
-
-    process.stderr.write('browser_fixture_failed\n');
-  }
+  });
 }
 
 void main().catch(() => {
-  process.stderr.write('browser_fixture_failed\n');
+  process.stderr.write(`browser_fixture_failed:${phase}\n`);
   process.exitCode = 1;
 });

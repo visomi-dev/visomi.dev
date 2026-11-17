@@ -1,5 +1,8 @@
-const base =
-  'ui-focus-ring inline-flex min-w-11 cursor-pointer items-center justify-center gap-2 rounded-lg border font-medium disabled:cursor-not-allowed disabled:opacity-50';
+const actionFoundation = 'ui-focus-ring cursor-pointer disabled:cursor-not-allowed disabled:opacity-50';
+const busyFoundation =
+  "aria-busy:cursor-wait [&[aria-busy]]:after:content-[''] [&[aria-busy]]:after:size-4 [&[aria-busy]]:after:shrink-0 aria-[busy=false]:after:invisible aria-busy:after:ui-loader";
+
+const base = `${actionFoundation} inline-flex min-w-11 items-center justify-center gap-2 rounded-lg border font-medium`;
 
 const variants = {
   primary: 'border-blue-600 bg-blue-600 text-white enabled:hover:bg-blue-700 enabled:active:bg-blue-800',
@@ -27,6 +30,7 @@ const linkVariants = {
 } as const;
 
 export const linkButton = {
+  foundation: actionFoundation,
   classes({ variant = 'primary', size = 'md' }: ButtonOptions = {}): string {
     return [
       base,
@@ -45,13 +49,14 @@ export type ButtonOptions = {
 };
 
 export const button = {
+  foundation: `${actionFoundation} ${busyFoundation}`,
   classes({ variant = 'primary', size = 'md' }: ButtonOptions = {}): string {
     return [
       base,
       variants[variant],
       sizes[size],
       // Binding aria-busy reserves the trailing slot before loading can wrap the label.
-      "aria-busy:cursor-wait [&[aria-busy]]:after:content-[''] [&[aria-busy]]:after:size-4 [&[aria-busy]]:after:shrink-0 aria-[busy=false]:after:invisible aria-busy:after:ui-loader",
+      busyFoundation,
     ].join(' ');
   },
 } as const;

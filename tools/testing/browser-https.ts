@@ -137,27 +137,32 @@ export async function browserHttps(directory: string, port: number, upstreamPort
     socket.on('close', () => upstream.destroy());
   });
 
-  await new Promise<void>((done, reject) => {
-    forward.once('error', reject);
-    forward.listen(port + 200, '127.0.0.1', done);
-  });
+  const stop = async () => {
+    for (const socket of sockets) {
+      socket.destroy();
+    }
 
-  await new Promise<void>((done, reject) => {
-    server.once('error', reject);
-    server.listen(port, '127.0.0.1', done);
-  });
-
-  return {
-    certificate,
-    async stop() {
-      for (const socket of sockets) {
-        socket.destroy();
-      }
-
-      await Promise.all([
-        new Promise<void>((done) => server.close(() => done())),
-        new Promise<void>((done) => forward.close(() => done())),
-      ]);
-    },
+    await Promise.all([
+      new Promise<void>((done) => server.close(() => done())),
+      new Promise<void>((done) => forward.close(() => done())),
+    ]);
   };
+
+  try {
+    await new Promise<void>((done, reject) => {
+      forward.once('error', reject);
+      forward.listen(port + 200, '127.0.0.1', done);
+    });
+
+    await new Promise<void>((done, reject) => {
+      server.once('error', reject);
+      server.listen(port, '127.0.0.1', done);
+    });
+
+    return { certificate, stop };
+  } catch (error) {
+    await stop();
+
+    throw error;
+  }
 }

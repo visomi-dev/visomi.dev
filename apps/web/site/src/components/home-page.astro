@@ -1,4 +1,5 @@
 ---
+import { ui } from '../shared/ui';
 import { Image } from 'astro:assets';
 
 import { getSiteContent } from '../content/site-content';
@@ -22,7 +23,12 @@ const toneStyles = {
 
 <section class="min-h-screen-nav relative z-10 mt-20 flex flex-col items-center justify-start px-6 pt-12 pb-12 text-center md:justify-center">
   <div class="animate-fade-in-up mx-auto max-w-5xl space-y-8">
-    <div class="border-border-light dark:border-border-dark mb-4 inline-flex items-center space-x-2 rounded-full border bg-white/80 px-3 py-1 shadow-sm dark:bg-white/10">
+    <div
+      class:list={[
+        ui.card,
+        'border-border-light dark:border-border-dark mb-4 inline-flex items-center space-x-2 rounded-full border bg-white/80 px-3 py-1 shadow-sm dark:bg-white/10',
+      ]}
+    >
       <span class="relative flex h-2 w-2">
         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
 
@@ -34,7 +40,12 @@ const toneStyles = {
       </span>
     </div>
 
-    <h1 class="text-4xl leading-tight font-bold tracking-tight text-neutral-900 sm:text-5xl md:text-7xl md:leading-[1.1] lg:text-8xl dark:text-white">
+    <h1
+      class:list={[
+        ui.heading,
+        'text-4xl leading-tight font-bold tracking-tight text-neutral-900 sm:text-5xl md:text-7xl md:leading-[1.1] lg:text-8xl dark:text-white',
+      ]}
+    >
       <span class="block">{home.heroTitleLine1}</span>
 
       <span class="block bg-linear-to-r from-neutral-900 to-neutral-500 bg-clip-text text-transparent dark:from-white dark:to-neutral-500">
@@ -42,13 +53,21 @@ const toneStyles = {
       </span>
     </h1>
 
-    <p class="text-muted-light dark:text-muted-dark mx-auto max-w-3xl text-lg leading-relaxed font-light md:text-xl">
+    <p
+      class:list={[
+        ui.text,
+        'text-muted-light dark:text-muted-dark mx-auto max-w-3xl text-lg leading-relaxed font-light md:text-xl',
+      ]}
+    >
       {home.heroSubtitle}
     </p>
 
     <div class="flex flex-col items-center justify-center gap-4 pt-8 sm:flex-row">
       <a
-        class="group relative rounded-full bg-neutral-900 px-8 py-3 font-medium text-white shadow-lg shadow-black/5 transition-all hover:scale-105 hover:bg-neutral-900/90 active:scale-95 dark:bg-white dark:text-black dark:shadow-white/5 dark:hover:bg-white/90"
+        class:list={[
+          ui.link,
+          'group relative rounded-full bg-neutral-900 px-8 py-3 font-medium text-white shadow-lg shadow-black/5 transition-all hover:scale-105 hover:bg-neutral-900/90 active:scale-95 dark:bg-white dark:text-black dark:shadow-white/5 dark:hover:bg-white/90',
+        ]}
         href="#works"
       >
         {home.heroPrimaryCta}
@@ -57,7 +76,10 @@ const toneStyles = {
       </a>
 
       <a
-        class="border-border-light dark:border-border-dark rounded-full border bg-white px-8 py-3 font-medium text-neutral-900 shadow-sm transition-all hover:border-neutral-400/30 hover:bg-neutral-100 dark:bg-neutral-900 dark:text-white dark:hover:border-neutral-600 dark:hover:bg-neutral-800"
+        class:list={[
+          ui.link,
+          'border-border-light dark:border-border-dark rounded-full border bg-white px-8 py-3 font-medium text-neutral-900 shadow-sm transition-all hover:border-neutral-400/30 hover:bg-neutral-100 dark:bg-neutral-900 dark:text-white dark:hover:border-neutral-600 dark:hover:bg-neutral-800',
+        ]}
         href={getPagePath(locale, 'resume')}
       >
         {home.heroSecondaryCta}
@@ -68,7 +90,9 @@ const toneStyles = {
 
 <section class="px-4 py-20" id="journey">
   <div class="mx-auto max-w-5xl">
-    <h2 class="mb-16 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl dark:text-white">
+    <h2
+      class:list={[ui.heading, 'mb-16 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl dark:text-white']}
+    >
       {home.journeyTitle}
     </h2>
 
@@ -81,14 +105,19 @@ const toneStyles = {
             <span class="text-muted-light/70 text-4xl font-bold tabular-nums dark:text-neutral-500">{item.year}</span>
 
             <div class="md:text-right">
-              <h3 class="text-xl font-semibold text-neutral-900 dark:text-white">{item.role}</h3>
+              <h3 class:list={[ui.heading, 'text-xl font-semibold text-neutral-900 dark:text-white']}>{item.role}</h3>
 
-              <p class="text-muted-light text-sm font-medium dark:text-neutral-400">{item.company}</p>
+              <p class:list={[ui.text, 'text-muted-light text-sm font-medium dark:text-neutral-400']}>{item.company}</p>
             </div>
           </div>
 
-          <div class="border-border-light rounded-xl border bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-900/80">
-            <p class="text-muted-light leading-relaxed dark:text-neutral-300">{item.description}</p>
+          <div
+            class:list={[
+              ui.card,
+              'border-border-light rounded-xl border bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-900/80',
+            ]}
+          >
+            <p class:list={[ui.text, 'text-muted-light leading-relaxed dark:text-neutral-300']}>{item.description}</p>
           </div>
         </div>
       ))}
@@ -99,15 +128,20 @@ const toneStyles = {
 <section id="works" class="mx-auto max-w-6xl px-4 py-20">
   <div class="mb-12 flex flex-col items-end justify-between md:flex-row">
     <div>
-      <h2 class="mb-2 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl dark:text-white">
+      <h2
+        class:list={[ui.heading, 'mb-2 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl dark:text-white']}
+      >
         {home.worksTitle}
       </h2>
 
-      <p class="text-muted-light dark:text-muted-dark">{home.worksSubtitle}</p>
+      <p class:list={[ui.text, 'text-muted-light dark:text-muted-dark']}>{home.worksSubtitle}</p>
     </div>
 
     <a
-      class="hover:text-muted-light dark:hover:text-muted-dark mt-4 hidden items-center gap-1 font-medium text-neutral-900 transition-colors md:mt-0 md:flex dark:text-white"
+      class:list={[
+        ui.link,
+        'hover:text-muted-light dark:hover:text-muted-dark mt-4 hidden items-center gap-1 font-medium text-neutral-900 transition-colors md:mt-0 md:flex dark:text-white',
+      ]}
       href="https://github.com/visomi-dev"
       target="_blank"
     >
@@ -121,7 +155,10 @@ const toneStyles = {
     {featuredProjects.map((project, index) => (
       <a
         href={getPagePath(locale, 'projects')}
-        class="group border-border-light dark:border-border-dark relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-colors duration-300 hover:border-neutral-400/40 hover:shadow-md dark:bg-neutral-900 dark:hover:border-neutral-600"
+        class:list={[
+          ui.link,
+          'group border-border-light dark:border-border-dark relative overflow-hidden rounded-2xl border bg-white shadow-sm transition-colors duration-300 hover:border-neutral-400/40 hover:shadow-md dark:bg-neutral-900 dark:hover:border-neutral-600',
+        ]}
       >
         <div class="relative h-48 overflow-hidden bg-neutral-100 dark:bg-neutral-800">
           {project.screenshots[0] ? (
@@ -142,21 +179,28 @@ const toneStyles = {
             0{index + 1}
           </div>
 
-          <div class="absolute right-4 bottom-4 rounded-full border border-white/50 bg-black/60 px-2 py-1 font-mono text-[10px] tracking-[0.2em] text-white uppercase">
+          <div
+            class:list={[
+              ui.card,
+              'absolute right-4 bottom-4 rounded-full border border-white/50 bg-black/60 px-2 py-1 font-mono text-[10px] tracking-[0.2em] text-white uppercase',
+            ]}
+          >
             {project.category}
           </div>
         </div>
 
         <div class="p-6">
           <div class="mb-4 flex items-start justify-between gap-4">
-            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white">{project.title}</h3>
+            <h3 class:list={[ui.heading, 'text-xl font-semibold text-neutral-900 dark:text-white']}>{project.title}</h3>
 
             <span class="pi pi-arrow-up-right text-muted-light dark:text-muted-dark transition-colors group-hover:text-neutral-900 dark:group-hover:text-white" />
           </div>
 
-          <p class="text-surface-dark/80 dark:text-surface-light/80 mb-3 text-sm font-medium">{project.role}</p>
+          <p class:list={[ui.text, 'text-surface-dark/80 dark:text-surface-light/80 mb-3 text-sm font-medium']}>
+            {project.role}
+          </p>
 
-          <p class="text-muted-light dark:text-muted-dark mb-4 text-sm">{project.summary}</p>
+          <p class:list={[ui.text, 'text-muted-light dark:text-muted-dark mb-4 text-sm']}>{project.summary}</p>
 
           <div class="flex flex-wrap gap-2">
             {project.technologies.slice(0, 3).map((tag) => (
@@ -174,21 +218,30 @@ const toneStyles = {
 <section class="px-4 pt-20" id="features">
   <div class="mx-auto max-w-6xl">
     <div class="mb-16 text-center">
-      <h2 class="mb-4 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl dark:text-white">
+      <h2
+        class:list={[ui.heading, 'mb-4 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl dark:text-white']}
+      >
         {home.featuresTitle}
       </h2>
 
-      <p class="text-muted-light dark:text-muted-dark mx-auto max-w-2xl text-lg">{home.featuresSubtitle}</p>
+      <p class:list={[ui.text, 'text-muted-light dark:text-muted-dark mx-auto max-w-2xl text-lg']}>
+        {home.featuresSubtitle}
+      </p>
     </div>
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {home.features.map((feature) => (
-        <div class="group border-border-light dark:border-border-dark rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:border-neutral-400/40 hover:shadow-md dark:bg-neutral-900 dark:hover:border-neutral-600">
+        <div
+          class:list={[
+            ui.card,
+            'group border-border-light dark:border-border-dark rounded-2xl border bg-white p-8 shadow-sm transition-all duration-300 hover:border-neutral-400/40 hover:shadow-md dark:bg-neutral-900 dark:hover:border-neutral-600',
+          ]}
+        >
           <div class="mb-6 flex items-start justify-between gap-4">
             <div>
-              <h3 class="text-lg font-bold text-neutral-900 dark:text-white">{feature.title}</h3>
+              <h3 class:list={[ui.heading, 'text-lg font-bold text-neutral-900 dark:text-white']}>{feature.title}</h3>
 
-              <p class="text-muted-light dark:text-muted-dark text-sm">{feature.subtitle}</p>
+              <p class:list={[ui.text, 'text-muted-light dark:text-muted-dark text-sm']}>{feature.subtitle}</p>
             </div>
 
             <span class:list={['rounded border px-2 py-1 font-mono text-xs', toneStyles[feature.tone]]}>
@@ -196,9 +249,14 @@ const toneStyles = {
             </span>
           </div>
 
-          <div class="border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-lg border bg-neutral-50 p-4 font-mono text-[11px] dark:bg-neutral-800">
+          <div
+            class:list={[
+              ui.card,
+              'border-border-light text-muted-light dark:border-border-dark dark:text-muted-dark rounded-lg border bg-neutral-50 p-4 font-mono text-[11px] dark:bg-neutral-800',
+            ]}
+          >
             {feature.lines.map((line) => (
-              <p class="mb-1 last:mb-0">{line}</p>
+              <p class:list={[ui.text, 'mb-1 last:mb-0']}>{line}</p>
             ))}
           </div>
         </div>

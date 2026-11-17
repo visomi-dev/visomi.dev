@@ -1,8 +1,11 @@
 import { toneClasses, type Tone } from './data';
 
+const alertFoundation = 'grid gap-2';
+
 export const alert = {
+  foundation: alertFoundation,
   classes({ tone = 'accent' }: { tone?: Tone } = {}): string {
-    return ['grid gap-2 rounded-xl border p-4 text-sm leading-6', toneClasses[tone]].join(' ');
+    return [`${alertFoundation} rounded-xl border p-4 text-sm leading-6`, toneClasses[tone]].join(' ');
   },
 } as const;
 export const loader = {

@@ -1,4 +1,5 @@
 ---
+import { ui } from '../shared/ui';
 import { actions } from 'astro:actions';
 
 import { createTranslator, type Locale } from '../i18n/translations';
@@ -24,7 +25,12 @@ const invalidFieldIds = [
 ].filter(Boolean) as string[];
 ---
 
-<main class="min-h-screen-nav mx-auto mt-20 w-full max-w-[1800px] px-6 pt-10 pb-12 md:px-8 md:pt-14 2xl:px-12">
+<main
+  class:list={[
+    ui.container,
+    'min-h-screen-nav mx-auto mt-20 w-full max-w-[1800px] px-6 pt-10 pb-12 md:px-8 md:pt-14 2xl:px-12',
+  ]}
+>
   <section class="grid gap-8 xl:grid-cols-[minmax(0,1.1fr)_minmax(24rem,40rem)] xl:items-center xl:gap-16 2xl:grid-cols-[minmax(0,1fr)_minmax(34rem,42rem)] 2xl:gap-24">
     <div class="min-w-0 space-y-8">
       <header class="flex max-w-3xl flex-col gap-5">
@@ -32,11 +38,21 @@ const invalidFieldIds = [
           <span>{`// ${year} // ${t('contactPageLabel')}`}</span>
         </div>
 
-        <h1 class="text-surface-dark dark:text-surface-light max-w-[12ch] text-4xl leading-none font-semibold tracking-tight sm:text-5xl md:max-w-[11ch] md:text-6xl 2xl:text-7xl">
+        <h1
+          class:list={[
+            ui.heading,
+            'text-surface-dark dark:text-surface-light max-w-[12ch] text-4xl leading-none font-semibold tracking-tight sm:text-5xl md:max-w-[11ch] md:text-6xl 2xl:text-7xl',
+          ]}
+        >
           {t('contactPageTitle')}
         </h1>
 
-        <p class="text-muted-light dark:text-muted-dark max-w-xl text-base leading-relaxed font-light sm:text-lg md:text-xl">
+        <p
+          class:list={[
+            ui.text,
+            'text-muted-light dark:text-muted-dark max-w-xl text-base leading-relaxed font-light sm:text-lg md:text-xl',
+          ]}
+        >
           {t('contactHeroDescription')}
         </p>
       </header>
@@ -49,7 +65,10 @@ const invalidFieldIds = [
             {/* Keep this public address usable without Cloudflare's one-shot email decoder. */}
             <!--email_off-->
             <a
-              class="text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light font-mono text-sm transition-colors"
+              class:list={[
+                ui.link,
+                'text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light font-mono text-sm transition-colors',
+              ]}
               href="mailto:visomi.dev@gmail.com"
             >
               visomi.dev@gmail.com
@@ -61,7 +80,10 @@ const invalidFieldIds = [
             <span class="pi pi-github text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light text-lg transition-colors"></span>
 
             <a
-              class="text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light font-mono text-sm transition-colors"
+              class:list={[
+                ui.link,
+                'text-muted-light dark:text-muted-dark group-hover:text-surface-dark dark:group-hover:text-surface-light font-mono text-sm transition-colors',
+              ]}
               href="https://github.com/visomi-dev"
               target="_blank"
             >
@@ -70,7 +92,12 @@ const invalidFieldIds = [
           </div>
         </div>
 
-        <div class="border-border-light dark:border-border-dark rounded-2xl border border-dashed px-4 py-3 md:justify-self-start xl:justify-self-end">
+        <div
+          class:list={[
+            ui.card,
+            'border-border-light dark:border-border-dark rounded-2xl border border-dashed px-4 py-3 md:justify-self-start xl:justify-self-end',
+          ]}
+        >
           <div class="flex items-center gap-2">
             <span class="relative flex h-2 w-2">
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
@@ -87,10 +114,17 @@ const invalidFieldIds = [
     </div>
 
     <div class="xl:flex xl:justify-end">
-      <div class="border-border-light dark:border-border-dark w-full rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300 sm:p-8 md:p-10 xl:max-w-2xl dark:bg-neutral-900">
+      <div
+        class:list={[
+          ui.card,
+          'border-border-light dark:border-border-dark w-full rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300 sm:p-8 md:p-10 xl:max-w-2xl dark:bg-neutral-900',
+        ]}
+      >
         {(isSuccess || isError) && (
           <div
+            role={isError ? 'alert' : 'status'}
             class:list={[
+              ui.alert,
               'mb-6 rounded-xl border px-4 py-3 text-sm leading-6',
               isSuccess
                 ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200'
@@ -124,7 +158,8 @@ const invalidFieldIds = [
                 id="name"
                 name="name"
                 class:list={[
-                  'text-surface-dark dark:text-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950',
+                  ui.input,
+                  'text-surface-dark dark:text-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all dark:bg-neutral-950',
                   errors.name
                     ? 'border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400'
                     : 'border-border-light focus:border-surface-dark dark:border-border-dark dark:focus:border-surface-light',
@@ -138,7 +173,7 @@ const invalidFieldIds = [
               />
 
               {errors.name && (
-                <p id="name-error" class="text-sm text-red-600 dark:text-red-300">
+                <p id="name-error" class:list={[ui.text, 'text-sm text-red-600 dark:text-red-300']}>
                   {errors.name}
                 </p>
               )}
@@ -157,7 +192,8 @@ const invalidFieldIds = [
                 id="email"
                 name="email"
                 class:list={[
-                  'text-surface-dark dark:text-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950',
+                  ui.input,
+                  'text-surface-dark dark:text-surface-light w-full rounded border bg-white px-4 py-3 text-sm transition-all dark:bg-neutral-950',
                   errors.email
                     ? 'border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400'
                     : 'border-border-light focus:border-surface-dark dark:border-border-dark dark:focus:border-surface-light',
@@ -171,7 +207,7 @@ const invalidFieldIds = [
               />
 
               {errors.email && (
-                <p id="email-error" class="text-sm text-red-600 dark:text-red-300">
+                <p id="email-error" class:list={[ui.text, 'text-sm text-red-600 dark:text-red-300']}>
                   {errors.email}
                 </p>
               )}
@@ -189,7 +225,8 @@ const invalidFieldIds = [
             <div class="relative">
               <select
                 class:list={[
-                  'text-surface-dark dark:text-surface-light w-full cursor-pointer appearance-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950',
+                  ui.select,
+                  'text-surface-dark dark:text-surface-light w-full cursor-pointer appearance-none rounded border bg-white px-4 py-3 text-sm transition-all dark:bg-neutral-950',
                   errors.type
                     ? 'border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400'
                     : 'border-border-light focus:border-surface-dark dark:border-border-dark dark:focus:border-surface-light',
@@ -223,7 +260,7 @@ const invalidFieldIds = [
             </div>
 
             {errors.type && (
-              <p id="type-error" class="text-sm text-red-600 dark:text-red-300">
+              <p id="type-error" class:list={[ui.text, 'text-sm text-red-600 dark:text-red-300']}>
                 {errors.type}
               </p>
             )}
@@ -239,7 +276,8 @@ const invalidFieldIds = [
 
             <textarea
               class:list={[
-                'text-surface-dark dark:text-surface-light w-full resize-none rounded border bg-white px-4 py-3 text-sm transition-all focus:ring-0 focus:outline-none dark:bg-neutral-950',
+                ui.textarea,
+                'text-surface-dark dark:text-surface-light w-full resize-none rounded border bg-white px-4 py-3 text-sm transition-all dark:bg-neutral-950',
                 errors.message
                   ? 'border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400'
                   : 'border-border-light focus:border-surface-dark dark:border-border-dark dark:focus:border-surface-light',
@@ -255,7 +293,7 @@ const invalidFieldIds = [
             >{formValues.message}</textarea>
 
             {errors.message && (
-              <p id="message-error" class="text-sm text-red-600 dark:text-red-300">
+              <p id="message-error" class:list={[ui.text, 'text-sm text-red-600 dark:text-red-300']}>
                 {errors.message}
               </p>
             )}
@@ -263,7 +301,10 @@ const invalidFieldIds = [
 
           <div class="flex items-center justify-between pt-2">
             <button
-              class="bg-surface-dark text-surface-light dark:bg-surface-light dark:text-surface-dark rounded border border-transparent px-6 py-3 font-mono text-[10px] font-bold tracking-widest uppercase transition-all hover:bg-neutral-800 active:scale-95 sm:px-8 dark:hover:bg-neutral-100"
+              class:list={[
+                ui.button,
+                'bg-surface-dark text-surface-light dark:bg-surface-light dark:text-surface-dark rounded border border-transparent px-6 py-3 font-mono text-[10px] font-bold tracking-widest uppercase transition-all hover:bg-neutral-800 active:scale-95 sm:px-8 dark:hover:bg-neutral-100',
+              ]}
               type="submit"
               disabled={isStaticBuild}
             >
@@ -276,7 +317,7 @@ const invalidFieldIds = [
           </div>
 
           {isStaticBuild && (
-            <p class="text-sm text-amber-700 dark:text-amber-300">
+            <p class:list={[ui.text, 'text-sm text-amber-700 dark:text-amber-300']}>
               {locale === 'es'
                 ? 'El formulario de contacto solo esta disponible en la version principal desplegada en el servidor.'
                 : 'The contact form is only available in the primary server deployment.'}

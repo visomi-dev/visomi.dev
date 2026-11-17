@@ -21,6 +21,7 @@ export async function testPostgres(
   const temporaryRoot = manifest ? dirname(manifest) : tmpdir();
   const directory = await mkdtemp(join(temporaryRoot, 'visomi-auth-test-'));
   let compose: TestCompose | undefined;
+  let phase = 'provider';
 
   await writeFile(join(directory, 'test-owner'), 'visomi-stack-isolated-postgres');
 
@@ -35,8 +36,11 @@ export async function testPostgres(
       await writeFile(manifest, JSON.stringify({ directory, compose }));
     }
 
+    phase = 'start';
+
     await runTestCompose(compose, ['up', '-d', 'postgres'], signal);
 
+    phase = 'port';
     const { stdout } = await runTestCompose(compose, ['port', 'postgres', '5432'], signal);
     // Docker reports the binding; podman-compose reports only the published port.
     const match = /^(?:127\.0\.0\.1:)?(\d+)$/.exec(stdout.trim());
@@ -52,6 +56,7 @@ export async function testPostgres(
     const db = drizzle({ client: pool, logger: false });
 
     try {
+      phase = 'readiness';
       for (let attempt = 0; ; attempt++) {
         try {
           await pool.query('SELECT 1');
@@ -68,6 +73,8 @@ export async function testPostgres(
 
       timings.readinessMs = performance.now() - readyStarted;
       const migrationStarted = performance.now();
+
+      phase = 'migration';
 
       await migrate(db, {
         migrationsFolder: resolve(__dirname, '../../../../../libs/backend/shared/src/lib/database/migrations'),
@@ -97,7 +104,7 @@ export async function testPostgres(
       await rm(directory, { recursive: true, force: true });
     }
 
-    throw new Error('isolated_postgres_setup_failed');
+    throw new Error(`isolated_postgres_setup_failed:${phase}`);
   }
 }
 

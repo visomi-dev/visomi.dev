@@ -2,11 +2,18 @@
 @import '@fontsource/inter';
 
 @import 'tailwindcss';
+@import '../../../../../libs/web/frontend/ui/src/styles.css';
+
 @import 'primeicons/primeicons.css' layer(utilities);
+
+@source '../../../../../libs/web/frontend/ui/src';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  --color-ui-focus: #111827;
+  --color-ui-focus-dark: #f5f5f5;
+
   --font-family: 'Inter', sans-serif;
   --font-family-mono: 'JetBrains Mono', monospace;
 
@@ -102,38 +109,6 @@ button:not(:disabled) {
   min-height: calc(100svh - (var(--spacing) * 20));
 }
 
-@keyframes upward-enter {
-  from {
-    opacity: 0;
-    transform: translateY(4rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes upward-leave {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  to {
-    opacity: 0;
-    transform: translateY(-4rem);
-  }
-}
-
-.upward-enter {
-  animation: 400ms ease-in-out both upward-enter;
-}
-
-.upward-leave {
-  animation: 400ms ease-in-out both upward-leave;
-}
-
 @keyframes bg-upward-enter {
   from {
     opacity: 0;
@@ -159,11 +134,11 @@ button:not(:disabled) {
 }
 
 .bg-upward-enter {
-  animation: 700ms ease-in-out both bg-upward-enter;
+  animation: calc(var(--ui-theme-duration-ms) * 1ms) var(--ui-theme-easing) both bg-upward-enter;
 }
 
 .bg-upward-leave {
-  animation: 700ms ease-in-out both bg-upward-leave;
+  animation: calc(var(--ui-theme-duration-ms) * 1ms) var(--ui-theme-easing) both bg-upward-leave;
 }
 
 .timeline-line-glow {
@@ -204,9 +179,8 @@ canvas {
   *,
   *::before,
   *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    animation: none !important;
+    transition: none !important;
     scroll-behavior: auto !important;
   }
 }
