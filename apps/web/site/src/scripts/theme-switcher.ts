@@ -1,6 +1,7 @@
 type ThemePreference = 'light' | 'dark' | 'system';
 
 let preference: ThemePreference = 'system';
+let memoryOnly = false;
 let bound = false;
 let transitionTimer: ReturnType<typeof setTimeout> | undefined;
 let transitionFrame = 0;
@@ -10,10 +11,16 @@ const readPreference = () => {
     const stored = localStorage.getItem('theme');
 
     preference = stored === 'light' || stored === 'dark' ? stored : 'system';
+    memoryOnly = false;
   } catch {
     // Keep the in-memory choice when persistence is unavailable.
   }
 };
+
+const isDarkTheme = () =>
+  preference === 'system'
+    ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false)
+    : preference === 'dark';
 
 const endTransition = () => {
   delete document.documentElement.dataset['themeTransition'];
@@ -24,10 +31,7 @@ const endTransition = () => {
 
 const apply = (animate = false) => {
   const root = document.documentElement;
-  const dark =
-    preference === 'system'
-      ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false)
-      : preference === 'dark';
+  const dark = isDarkTheme();
   const changed = root.classList.contains('dark') !== dark;
   const motion = animate && changed && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -68,7 +72,11 @@ export const initThemeSwitcher = () => {
   document.addEventListener('astro:before-swap', (event) => {
     const { newDocument } = event as Event & { newDocument: Document };
 
-    newDocument.documentElement.classList.toggle('dark', document.documentElement.classList.contains('dark'));
+    if (!memoryOnly) {
+      readPreference();
+    }
+
+    newDocument.documentElement.classList.toggle('dark', isDarkTheme());
   });
   document.addEventListener('astro:page-load', () => {
     if (document.querySelector('button[data-theme-switcher]:disabled')) {
@@ -87,8 +95,9 @@ export const initThemeSwitcher = () => {
 
     try {
       localStorage.setItem('theme', preference);
+      memoryOnly = false;
     } catch {
-      // A blocked storage policy must not disable the control.
+      memoryOnly = true;
     }
 
     apply(true);

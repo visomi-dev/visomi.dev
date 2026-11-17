@@ -158,4 +158,22 @@ describe('initThemeSwitcher', () => {
     expect(document.querySelector('[data-theme-animated]')).toBeNull();
     expect(document.documentElement.hasAttribute('data-theme-transition')).toBe(false);
   });
+
+  it('carries a theme that could not be written into the incoming document', () => {
+    document.body.innerHTML = createSwitcherMarkup();
+    localStorage.setItem('theme', 'light');
+    initThemeSwitcher();
+
+    vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+      throw new Error('write blocked');
+    });
+    document.querySelector<HTMLButtonElement>('button[data-theme-switcher]')?.click();
+
+    const newDocument = document.implementation.createHTMLDocument();
+
+    document.dispatchEvent(Object.assign(new Event('astro:before-swap'), { newDocument }));
+
+    expect(localStorage.getItem('theme')).toBe('light');
+    expect(newDocument.documentElement.classList.contains('dark')).toBe(true);
+  });
 });
