@@ -64,7 +64,8 @@ export function runTestCompose(
   return runOwnedCommand(
     owner.provider,
     [
-      ...(owner.provider === 'docker' ? ['compose'] : []),
+      // Compose services already have their own network; an extra Podman pod is unlabelled and unnecessary.
+      ...(owner.provider === 'docker' ? ['compose'] : ['--in-pod=false']),
       '--env-file',
       join(owner.directory, 'compose.env'),
       '-f',
@@ -130,23 +131,21 @@ export async function stopTestCompose(owner: TestCompose, signal: AbortSignal): 
     return;
   }
 
-  // podman-compose down traverses every declared service, including ones never started.
-  // Remove only actual resources carrying this exact project label, within one deadline.
+  // Containers are selected at deletion time by the exact randomly generated project label.
   const command = (args: string[]) =>
     runOwnedCommand('podman', args, { signal, timeout: TEST_POSTGRES_CLEANUP_MS, maxBuffer: 1024 * 1024 });
   const label = `label=io.podman.compose.project=${owner.project}`;
-  const resources = [
-    { list: ['ps', '--all'], remove: ['rm', '--force', '--time', '2', '--volumes'], field: '{{.ID}}' },
-    { list: ['volume', 'ls'], remove: ['volume', 'rm'], field: '{{.Name}}' },
-    { list: ['network', 'ls'], remove: ['network', 'rm'], field: '{{.Name}}' },
-  ];
 
-  for (const resource of resources) {
-    const { stdout } = await command([...resource.list, '--filter', label, '--format', resource.field]);
+  await command(['rm', '--force', '--time', '2', '--volumes', '--filter', label]);
+
+  // Podman's prune scans containers globally even with a label filter, and races other
+  // projects' teardown. List only owned resources and delete those explicit names instead.
+  for (const resource of ['volume', 'network']) {
+    const { stdout } = await command([resource, 'ls', '--filter', label, '--quiet']);
     const names = stdout.trim().split(/\s+/).filter(Boolean);
 
-    if (names.length) {
-      await command([...resource.remove, ...names]);
+    if (names.length > 0) {
+      await command([resource, 'rm', ...names]);
     }
   }
 }

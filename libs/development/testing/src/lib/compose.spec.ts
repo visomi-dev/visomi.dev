@@ -158,6 +158,7 @@ describe('test Compose command ownership', () => {
     );
     expect(command).toBe('podman-compose');
     expect(args).not.toContain('compose');
+    expect(args?.[0]).toBe('--in-pod=false');
     expect(args).toEqual(expect.arrayContaining(['-p', owner.project, 'down', '--volumes']));
   });
 
@@ -215,38 +216,38 @@ describe('owned Compose teardown', () => {
     );
   });
 
-  it.each([true, false])('selects only actual Podman resources by exact project label; present=%s', async (present) => {
-    const signal = new AbortController().signal;
-    const identifiers = ['owned-container', 'owned-volume', 'owned-network'];
-    let listed = 0;
+  it.each([true, false])(
+    'removes only the exact Podman project without global prune scans; present=%s',
+    async (present) => {
+      const signal = new AbortController().signal;
 
-    vi.mocked(execFile).mockImplementation(((
-      _command: string,
-      args: string[],
-      _options: unknown,
-      callback: (error: null, stdout: string, stderr: string) => void,
-    ) => {
-      const listing = args.includes('--filter');
-      const stdout = listing && present ? identifiers[listed] + '\n' : '';
+      vi.mocked(execFile).mockImplementation(((
+        _command: string,
+        args: string[],
+        _options: unknown,
+        callback: (error: null, stdout: string, stderr: string) => void,
+      ) => callback(null, present && args[1] === 'ls' ? `owned-${args[0]}\n` : '', '')) as never);
 
-      listed += Number(listing);
-      callback(null, stdout, '');
-    }) as never);
+      await stopTestCompose({ ...owner, provider: 'podman-compose' }, signal);
 
-    await stopTestCompose({ ...owner, provider: 'podman-compose' }, signal);
+      const calls = vi.mocked(execFile).mock.calls;
+      const filter = ['--filter', 'label=io.podman.compose.project=' + owner.project];
 
-    const calls = vi.mocked(execFile).mock.calls;
-    const selections = calls.filter((call) => (call[1] as string[]).includes('--filter'));
-    const removals = calls.filter((call) => (call[1] as string[]).includes('rm'));
-
-    expect(selections).toHaveLength(3);
-    for (const call of selections) {
-      expect(call[0]).toBe('podman');
-      expect(call[1]).toContain('label=io.podman.compose.project=' + owner.project);
-      expect(call[2]).toMatchObject({ signal, timeout: 45000 });
-    }
-    expect(removals.map((call) => (call[1] as string[]).at(-1))).toEqual(present ? identifiers : []);
-  });
+      expect(calls.map((call) => call[1])).toEqual([
+        ['rm', '--force', '--time', '2', '--volumes', ...filter],
+        ['volume', 'ls', ...filter, '--quiet'],
+        ...(present ? [['volume', 'rm', 'owned-volume']] : []),
+        ['network', 'ls', ...filter, '--quiet'],
+        ...(present ? [['network', 'rm', 'owned-network']] : []),
+      ]);
+      for (const call of calls) {
+        expect(call[0]).toBe('podman');
+        expect(call[1]).not.toContain('--all');
+        expect(call[1]).not.toContain('prune');
+        expect(call[2]).toMatchObject({ signal, timeout: 45000 });
+      }
+    },
+  );
 
   it('rejects an unowned cleanup descriptor before invoking Podman', async () => {
     await expect(stopTestCompose({ ...owner, project: 'unrelated' }, new AbortController().signal)).rejects.toThrow(
