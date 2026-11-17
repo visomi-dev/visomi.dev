@@ -11,11 +11,9 @@ import { createTestCompose, runTestCompose, stopTestCompose, TEST_POSTGRES_CLEAN
 import type { TestCompose } from './compose';
 
 // Every resource has its own Compose project/volume; developer DATABASE_URL is never consulted.
-export async function testPostgres(
-  manifest?: string,
-  app: TestCompose['app'] = 'web-api',
-  signal: AbortSignal = AbortSignal.timeout(40000),
-) {
+export async function testPostgres(manifest?: string, app: TestCompose['app'] = 'web-api', cancellation?: AbortSignal) {
+  const deadline = AbortSignal.timeout(40000);
+  const signal = cancellation ? AbortSignal.any([cancellation, deadline]) : deadline;
   const timings = { setupMs: 0, readinessMs: 0, migrationMs: 0, cleanupMs: 0 };
   const started = performance.now();
   const temporaryRoot = manifest ? dirname(manifest) : tmpdir();
@@ -57,7 +55,7 @@ export async function testPostgres(
 
     try {
       phase = 'readiness';
-      for (let attempt = 0; ; attempt++) {
+      for (;;) {
         signal.throwIfAborted();
 
         try {
@@ -65,9 +63,8 @@ export async function testPostgres(
 
           break;
         } catch {
-          if (attempt === 99) {
-            throw new Error('test_postgres_startup_timeout');
-          }
+          // Fast refusals must not exhaust readiness before the setup deadline.
+          signal.throwIfAborted();
 
           await delay(100, undefined, { signal });
         }
@@ -102,13 +99,15 @@ export async function testPostgres(
 
     return { url, directory, compose, stop, timings };
   } catch {
+    const reason = deadline.aborted ? ':timeout' : signal.aborted ? ':cancelled' : '';
+
     if (compose) {
       await stopTestPostgres(directory, compose);
     } else {
       await rm(directory, { recursive: true, force: true });
     }
 
-    throw new Error(`isolated_postgres_setup_failed:${phase}`);
+    throw new Error(`isolated_postgres_setup_failed:${phase}${reason}`);
   }
 }
 

@@ -95,7 +95,7 @@ async function main(): Promise<void> {
     });
 
     phase = 'postgres';
-    const postgres = await testPostgres(undefined, 'web-api', AbortSignal.any([signal, AbortSignal.timeout(40000)]));
+    const postgres = await testPostgres(undefined, 'web-api', signal);
 
     resources.postgres = postgres;
     const database = createDatabase(postgres.url);
