@@ -64,7 +64,7 @@ async function main() {
     await runTestCompose(database.compose, ['up', '-d', 'redis'], signal);
 
     const binding = await runTestCompose(database.compose, ['port', 'redis', '6379'], signal);
-    const port = /^(?:127\.0\.0\.1:)?(\d+)$/.exec(binding.stdout.trim())?.[1];
+    const port = /^127\.0\.0\.1:(\d+)$/.exec(binding.stdout.trim())?.[1];
 
     if (!port) {
       throw new Error('isolated_redis_port_invalid');

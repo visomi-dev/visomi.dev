@@ -42,8 +42,8 @@ export async function testPostgres(
 
     phase = 'port';
     const { stdout } = await runTestCompose(compose, ['port', 'postgres', '5432'], signal);
-    // Docker reports the binding; podman-compose reports only the published port.
-    const match = /^(?:127\.0\.0\.1:)?(\d+)$/.exec(stdout.trim());
+    // Both providers must report a loopback binding for this fixture.
+    const match = /^127\.0\.0\.1:(\d+)$/.exec(stdout.trim());
 
     if (!match || Number(match[1]) < 1 || Number(match[1]) > 65535) {
       throw new Error('test_postgres_port_unavailable');

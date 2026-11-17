@@ -61,6 +61,17 @@ export function runTestCompose(
 ): Promise<{ stdout: string; stderr: string }> {
   validateOwner(owner);
 
+  const [action, service, port] = args;
+
+  if (owner.provider === 'podman-compose' && action === 'port' && (service === 'postgres' || service === 'redis')) {
+    // The test override names these containers explicitly. Query only their port mappings.
+    return runOwnedCommand('podman', ['port', `${owner.project}-${service}`, `${port}/tcp`], {
+      signal,
+      timeout: 40000,
+      maxBuffer: 1024,
+    });
+  }
+
   return runOwnedCommand(
     owner.provider,
     [

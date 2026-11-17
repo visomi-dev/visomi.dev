@@ -136,7 +136,7 @@ describe('Compose PostgreSQL resource', () => {
     await resource.stop();
   });
 
-  it.each(['0.0.0.0:54321', '127.0.0.1:0', '127.0.0.1:65536', 'synthetic-invalid-port'])(
+  it.each(['54321', '0.0.0.0:54321', '127.0.0.1:0', '127.0.0.1:65536', 'synthetic-invalid-port'])(
     'cleans up an invalid host port: %s',
     async (stdout) => {
       vi.mocked(runTestCompose).mockResolvedValue({ stdout, stderr: '' });

@@ -41,8 +41,9 @@ application, awaits database initialization, and starts its compiled main in Com
 An explicit Nx dependency on `backend-shared` tracks migration changes. Unit tests
 stub process/database boundaries for ownership and failure cases; API and gateway
 integration/E2E suites exercise real container PostgreSQL and HTTP.
-Podman runs with `--in-pod=false`: these Compose services already own their network,
-and an additional unlabelled pod is unnecessary. Teardown filters containers by the exact generated project label, then lists owned
+Podman runs with `--in-pod=false` because these Compose services already own their
+network. The fixture queries the published loopback ports directly on the named
+PostgreSQL and Redis containers. Teardown filters containers by the exact generated project label, then lists owned
 volumes and networks and removes their explicit names. It never uses prune: even a
 filtered Podman prune scans unrelated containers and races their cleanup. It does not
 change the developer's engine settings.

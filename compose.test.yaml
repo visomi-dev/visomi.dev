@@ -1,5 +1,9 @@
 # Used together with compose.yaml, always with a unique test project and synthetic env file.
 services:
+  postgres:
+    container_name: '${COMPOSE_PROJECT_NAME}-postgres'
+  redis:
+    container_name: '${COMPOSE_PROJECT_NAME}-redis'
   app:
     build:
       target: test-runtime

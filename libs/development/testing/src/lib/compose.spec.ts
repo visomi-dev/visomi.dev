@@ -176,6 +176,22 @@ describe('test Compose command ownership', () => {
   });
 
   it.each([
+    ['postgres', '5432'],
+    ['redis', '6379'],
+  ])('reads the owned Podman %s binding without inspecting the full container', async (service, port) => {
+    const signal = new AbortController().signal;
+
+    await runTestCompose({ ...owner, provider: 'podman-compose' }, ['port', service, port], signal);
+
+    expect(execFile).toHaveBeenCalledExactlyOnceWith(
+      'podman',
+      ['port', `${owner.project}-${service}`, `${port}/tcp`],
+      expect.objectContaining({ signal, timeout: 40000 }),
+      expect.any(Function),
+    );
+  });
+
+  it.each([
     { directory: '/synthetic/developer-data' },
     { project: 'visomi-local' },
     { provider: 'synthetic-command' },
