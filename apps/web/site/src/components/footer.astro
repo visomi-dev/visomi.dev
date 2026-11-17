@@ -1,4 +1,5 @@
 ---
+import { ui } from '../shared/ui';
 import { createTranslator, type Locale } from '../i18n/translations';
 
 type Props = {
@@ -19,7 +20,10 @@ const t = createTranslator(locale);
     {/* Exempt only the public email link, including its mailto target. */}
     <!--email_off-->
     <a
-      class="text-muted-light dark:text-muted-dark transition-colors hover:text-neutral-900 dark:hover:text-white"
+      class:list={[
+        ui.link,
+        'text-muted-light dark:text-muted-dark transition-colors hover:text-neutral-900 dark:hover:text-white',
+      ]}
       href="mailto:visomi.dev@gmail.com"
       aria-label="Email"
     >
@@ -28,7 +32,10 @@ const t = createTranslator(locale);
     <!--/email_off-->
 
     <a
-      class="text-muted-light dark:text-muted-dark transition-colors hover:text-neutral-900 dark:hover:text-white"
+      class:list={[
+        ui.link,
+        'text-muted-light dark:text-muted-dark transition-colors hover:text-neutral-900 dark:hover:text-white',
+      ]}
       href="https://github.com/visomi-dev"
       target="_blank"
       aria-label="GitHub"
@@ -43,7 +50,10 @@ const t = createTranslator(locale);
     </a>
 
     <a
-      class="text-muted-light dark:text-muted-dark transition-colors hover:text-neutral-900 dark:hover:text-white"
+      class:list={[
+        ui.link,
+        'text-muted-light dark:text-muted-dark transition-colors hover:text-neutral-900 dark:hover:text-white',
+      ]}
       href="https://www.linkedin.com/in/visomi/"
       target="_blank"
       aria-label="LinkedIn"

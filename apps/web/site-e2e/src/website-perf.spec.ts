@@ -218,7 +218,7 @@ test.describe('theme persistence across SPA navigation', () => {
 
     await expect(page).toHaveURL(/\/journey\/$/);
 
-    await page.locator('label.theme-switch-label').first().click();
+    await page.locator('button[data-theme-switcher]').first().click();
 
     await expect.poll(() => page.evaluate(() => window.localStorage.getItem('theme'))).toBe('light');
 

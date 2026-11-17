@@ -1,3 +1,6 @@
+const containerFoundation = 'mx-auto w-full min-w-0';
+const cardFoundation = 'min-w-0';
+
 export type SurfaceTone = 'default' | 'raised' | 'ghost' | 'subtle' | 'accent' | 'inverse';
 export type Padding = 'none' | 'sm' | 'md' | 'lg';
 export type CardLayout = 'stack' | 'plain';
@@ -18,19 +21,21 @@ const widths = { sm: 'max-w-lg', md: 'max-w-3xl', lg: 'max-w-6xl', xl: 'max-w-7x
 const gutters = { default: 'px-6 sm:px-10', compact: 'px-5 sm:px-8', none: '' } as const;
 
 export const container = {
+  foundation: containerFoundation,
   classes({ width = 'lg', gutter = 'default' }: { width?: ContainerWidth; gutter?: ContainerGutter } = {}): string {
-    return ['mx-auto w-full min-w-0', gutters[gutter], widths[width]].filter(Boolean).join(' ');
+    return [containerFoundation, gutters[gutter], widths[width]].filter(Boolean).join(' ');
   },
 } as const;
 
 export const card = {
+  foundation: cardFoundation,
   classes({
     tone = 'default',
     padding = 'md',
     layout = 'stack',
   }: { tone?: SurfaceTone; padding?: Padding; layout?: CardLayout } = {}): string {
     return [
-      'min-w-0 rounded-xl border',
+      `${cardFoundation} rounded-xl border`,
       layout === 'stack' ? 'flex flex-col gap-4' : '',
       surfaces[tone],
       paddings[padding],

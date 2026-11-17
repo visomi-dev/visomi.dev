@@ -1,50 +1,70 @@
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 
 import { workspaceRoot } from '@nx/devkit';
 import { chromium } from '@playwright/test';
 import { runTestCompose } from '@visomi-stack/dev-testing/lib/compose';
+import { runFixture } from '@visomi-stack/dev-testing/lib/fixture-lifetime';
 import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
 
 async function main() {
-  const root = resolve(workspaceRoot, 'tmp/worker-fixture');
+  await runFixture(async ({ signal, onCleanup, stop }) => {
+    const root = resolve(workspaceRoot, 'tmp/worker-fixture');
+    const resources: { database?: Awaited<ReturnType<typeof testPostgres>>; child?: ReturnType<typeof spawn> } = {};
+    const postgresRoot = await mkdtemp(resolve(tmpdir(), 'visomi-worker-test-'));
 
-  await mkdir(root, { recursive: true });
+    onCleanup(async () => {
+      const child = resources.child;
 
-  const database = await testPostgres(resolve(root, 'postgres.json'));
-  let child: ReturnType<typeof spawn> | undefined;
-  let stopping = false;
+      if (child && child.exitCode === null && child.signalCode === null) {
+        const exited = once(child, 'exit');
 
-  async function stop() {
-    if (stopping) {
-      return;
-    }
+        child.kill('SIGTERM');
 
-    stopping = true;
+        await Promise.race([exited, delay(10000, undefined, { ref: false })]);
 
-    if (child && child.exitCode === null) {
-      const exit = once(child, 'exit');
+        if (child.exitCode === null && child.signalCode === null) {
+          child.kill('SIGKILL');
 
-      child.kill('SIGTERM');
+          await exited;
+        }
+      }
 
-      await exit;
-    }
+      try {
+        await resources.database?.stop();
 
-    await database.stop();
+        const entries = await readdir(postgresRoot, { withFileTypes: true });
 
-    await rm(root, { recursive: true, force: true });
-  }
-  process.on('SIGTERM', () => void stop());
-  process.on('SIGINT', () => void stop());
+        // A retained project directory means setup cleanup failed. Keep its manifest for recovery.
+        if (!entries.some((entry) => entry.isDirectory())) {
+          await rm(postgresRoot, { recursive: true, force: true });
+        }
+      } finally {
+        await rm(root, { recursive: true, force: true });
+      }
+    });
 
-  try {
-    await runTestCompose(database.compose, ['up', '-d', 'redis']);
+    await mkdir(root, { recursive: true });
 
-    const binding = await runTestCompose(database.compose, ['port', 'redis', '6379']);
-    const port = /(?:127\.0\.0\.1:)?(\d+)\s*$/.exec(binding.stdout)?.[1];
+    signal.throwIfAborted();
+
+    const database = await testPostgres(
+      resolve(postgresRoot, 'postgres.json'),
+      'web-api',
+      AbortSignal.any([signal, AbortSignal.timeout(40000)]),
+    );
+
+    resources.database = database;
+    signal.throwIfAborted();
+
+    await runTestCompose(database.compose, ['up', '-d', 'redis'], signal);
+
+    const binding = await runTestCompose(database.compose, ['port', 'redis', '6379'], signal);
+    const port = /^127\.0\.0\.1:(\d+)$/.exec(binding.stdout.trim())?.[1];
 
     if (!port) {
       throw new Error('isolated_redis_port_invalid');
@@ -53,7 +73,7 @@ async function main() {
     // Docker reallocates anonymous published ports on start; make this owned binding explicit first.
     database.compose.redisPort = Number(port);
 
-    await runTestCompose(database.compose, ['up', '-d', '--force-recreate', 'redis']);
+    await runTestCompose(database.compose, ['up', '-d', '--force-recreate', 'redis'], signal);
 
     const redisUrl = `redis://127.0.0.1:${port}`;
 
@@ -65,7 +85,9 @@ async function main() {
       mode: 0o600,
     });
 
-    child = spawn(process.execPath, [resolve(workspaceRoot, 'dist/apps/web/gateway/main.js')], {
+    signal.throwIfAborted();
+
+    const child = spawn(process.execPath, [resolve(workspaceRoot, 'dist/apps/web/gateway/main.js')], {
       cwd: root,
       env: {
         PATH: process.env.PATH,
@@ -79,6 +101,14 @@ async function main() {
       },
       stdio: ['ignore', 'pipe', 'pipe'],
     });
+
+    resources.child = child;
+    child.once('exit', () => {
+      if (!signal.aborted) {
+        process.exitCode = 1;
+        stop();
+      }
+    });
     child.stdout?.on('data', () => {
       /* Consume runtime output without retaining payloads. */
     });
@@ -86,8 +116,12 @@ async function main() {
       /* Errors are asserted through HTTP and queue state. */
     });
     for (let attempt = 0; attempt < 200; attempt++) {
+      signal.throwIfAborted();
+
       try {
-        const response = await fetch('http://127.0.0.1:8187/api/health');
+        const response = await fetch('http://127.0.0.1:8187/api/health', {
+          signal: AbortSignal.any([signal, AbortSignal.timeout(1000)]),
+        });
 
         if (response.ok) {
           break;
@@ -100,13 +134,9 @@ async function main() {
         throw new Error('worker_fixture_startup_failed');
       }
 
-      await delay(100);
+      await delay(100, undefined, { signal });
     }
-
-    await once(child, 'exit');
-  } finally {
-    await stop();
-  }
+  });
 }
 void main().catch(() => {
   console.error('worker_fixture_failed');

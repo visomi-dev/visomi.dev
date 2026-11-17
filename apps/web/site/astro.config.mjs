@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
@@ -38,7 +40,13 @@ export default defineConfig({
     },
   },
   vite: {
-    resolve: { tsconfigPaths: true },
+    resolve: {
+      tsconfigPaths: true,
+      // Astro component IDs are not TypeScript files; resolve the same source library explicitly.
+      alias: {
+        '@visomi-stack/web-frontend-ui': fileURLToPath(new URL('../../../libs/web/frontend/ui/src', import.meta.url)),
+      },
+    },
     build: { assetsInlineLimit: 0, sourcemap: 'hidden' },
     plugins: [tailwindcss()],
   },

@@ -1,4 +1,5 @@
 ---
+import { ui } from '../shared/ui';
 import isotypeUrl from '../../../../../assets/brand/isotype.svg?url';
 import logotypeUrl from '../../../../../assets/brand/logotype.svg?url';
 
@@ -28,7 +29,7 @@ const navItems = [
   <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-12">
     <a
       href={getPagePath(locale, 'home')}
-      class="flex items-center gap-3"
+      class:list={[ui.link, 'flex items-center gap-3']}
       aria-label={`Visomi — ${t('navHome')}`}
       data-brand-home
     >
@@ -41,7 +42,10 @@ const navItems = [
       {navItems.map((item) => (
         <a
           href={getPagePath(locale, item.page)}
-          class={`transition-colors hover:text-black dark:hover:text-white ${currentPage === item.page ? 'text-black dark:text-white' : ''}`}
+          class:list={[
+            ui.link,
+            `transition-colors hover:text-black dark:hover:text-white ${currentPage === item.page ? 'text-black dark:text-white' : ''}`,
+          ]}
           aria-current={currentPage === item.page ? 'page' : undefined}
         >
           {item.label}
@@ -57,11 +61,12 @@ const navItems = [
 
             <a
               href={getPagePath(itemLocale, currentPage)}
-              class={
+              class:list={[
+                ui.link,
                 itemLocale === locale
                   ? 'font-bold text-black dark:text-white'
-                  : 'hover:text-black dark:hover:text-white'
-              }
+                  : 'hover:text-black dark:hover:text-white',
+              ]}
               hreflang={itemLocale}
             >
               {itemLocale.toUpperCase()}
@@ -70,11 +75,14 @@ const navItems = [
         ))}
       </div>
 
-      <ThemeSwitcher />
+      <ThemeSwitcher locale={locale} />
 
       <button
         id="mobile-menu-btn"
-        class="p-2 text-neutral-500 transition-colors hover:text-black md:hidden dark:text-neutral-400 dark:hover:text-white"
+        class:list={[
+          ui.button,
+          'p-2 text-neutral-500 transition-colors hover:text-black md:hidden dark:text-neutral-400 dark:hover:text-white',
+        ]}
         aria-label="Open menu"
       >
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,7 +100,10 @@ const navItems = [
       {navItems.map((item) => (
         <a
           href={getPagePath(locale, item.page)}
-          class={`py-2 text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white ${currentPage === item.page ? 'font-bold text-black dark:text-white' : ''}`}
+          class:list={[
+            ui.link,
+            `py-2 text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white ${currentPage === item.page ? 'font-bold text-black dark:text-white' : ''}`,
+          ]}
           aria-current={currentPage === item.page ? 'page' : undefined}
         >
           {item.label}

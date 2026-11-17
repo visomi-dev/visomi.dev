@@ -1,6 +1,8 @@
 ---
 import '../../../styles/global.css';
 
+import { ui } from '../../../shared/ui';
+
 export const prerender = true;
 
 export function getStaticPaths() {
@@ -41,7 +43,7 @@ const back = locale === 'es' ? 'Volver al sitio' : 'Return to website';
 
   <body class="min-h-screen bg-slate-950 text-slate-100">
     <main class="mx-auto flex min-h-screen max-w-3xl flex-col items-start justify-center gap-6 px-6 py-12">
-      <a href={locale === 'es' ? '/es/' : '/'} class="font-mono text-sm tracking-widest">
+      <a href={locale === 'es' ? '/es/' : '/'} class:list={[ui.link, 'font-mono text-sm tracking-widest']}>
         VISOMI.DEV
       </a>
 
@@ -49,7 +51,10 @@ const back = locale === 'es' ? 'Volver al sitio' : 'Return to website';
 
       <a
         href={locale === 'es' ? '/es/' : '/'}
-        class="inline-flex min-h-11 items-center rounded-lg border border-slate-600 px-5 py-3 underline"
+        class:list={[
+          ui.link,
+          'inline-flex min-h-11 items-center rounded-lg border border-slate-600 px-5 py-3 underline',
+        ]}
       >
         {back}
       </a>

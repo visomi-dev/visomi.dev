@@ -1,116 +1,118 @@
-type PageLoadHandler = () => void;
+type ThemePreference = 'light' | 'dark' | 'system';
 
-let onPageLoad: PageLoadHandler | null = null;
+let preference: ThemePreference = 'system';
+let memoryOnly = false;
+let bound = false;
+let transitionTimer: ReturnType<typeof setTimeout> | undefined;
+let transitionFrame = 0;
 
-const applyTheme = () => {
-  const savedTheme = window.localStorage?.getItem('theme');
-  const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+const readPreference = () => {
+  try {
+    const stored = localStorage.getItem('theme');
 
-  return savedTheme === 'dark' || (!savedTheme && systemDark);
+    preference = stored === 'light' || stored === 'dark' ? stored : 'system';
+    memoryOnly = false;
+  } catch {
+    // Keep the in-memory choice when persistence is unavailable.
+  }
 };
 
-const syncIcons = (html: HTMLElement) => {
-  const isDark = html.classList.contains('dark');
+const isDarkTheme = () =>
+  preference === 'system'
+    ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false)
+    : preference === 'dark';
 
-  document.querySelectorAll<HTMLElement>('.theme-switch-label').forEach((label) => {
-    const input = label.querySelector<HTMLInputElement>('.theme-switch-input');
-    const iconLight = label.querySelector<HTMLElement>('.theme-icon-light');
-    const iconDark = label.querySelector<HTMLElement>('.theme-icon-dark');
-
-    if (!input || !iconLight || !iconDark) {
-      return;
-    }
-
-    input.checked = isDark;
-
-    if (isDark) {
-      iconDark.classList.remove('hidden', 'upward-enter', 'upward-leave');
-      iconLight.classList.add('hidden');
-    } else {
-      iconLight.classList.remove('hidden', 'upward-enter', 'upward-leave');
-      iconDark.classList.add('hidden');
-    }
-  });
+const endTransition = () => {
+  delete document.documentElement.dataset['themeTransition'];
+  for (const control of document.querySelectorAll<HTMLElement>('[data-theme-switcher]')) {
+    delete control.dataset['themeAnimated'];
+  }
 };
 
-const toggleTheme = (html: HTMLElement) => {
-  const nextIsDark = !html.classList.contains('dark');
+const apply = (animate = false) => {
+  const root = document.documentElement;
+  const dark = isDarkTheme();
+  const changed = root.classList.contains('dark') !== dark;
+  const motion = animate && changed && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-  html.classList.toggle('dark', nextIsDark);
-  window.localStorage?.setItem('theme', nextIsDark ? 'dark' : 'light');
+  clearTimeout(transitionTimer);
+  cancelAnimationFrame(transitionFrame);
 
-  syncIcons(html);
+  if (motion) {
+    const duration = Number(getComputedStyle(root).getPropertyValue('--ui-theme-duration-ms'));
 
-  document.querySelectorAll<HTMLElement>('.theme-switch-label').forEach((label) => {
-    const lightIcon = label.querySelector<HTMLElement>('.theme-icon-light');
-    const darkIcon = label.querySelector<HTMLElement>('.theme-icon-dark');
-
-    if (!lightIcon || !darkIcon) {
-      return;
-    }
-
-    if (nextIsDark) {
-      lightIcon.classList.remove('upward-enter');
-      lightIcon.classList.add('upward-leave');
-
-      window.setTimeout(() => {
-        lightIcon.classList.add('hidden');
-        darkIcon.classList.remove('hidden', 'upward-leave');
-        darkIcon.classList.add('upward-enter');
-      }, 350);
-
-      return;
-    }
-
-    darkIcon.classList.remove('upward-enter');
-    darkIcon.classList.add('upward-leave');
-
-    window.setTimeout(() => {
-      darkIcon.classList.add('hidden');
-      lightIcon.classList.remove('hidden', 'upward-leave');
-      lightIcon.classList.add('upward-enter');
-    }, 350);
-  });
-};
-
-const attachHandlers = (html: HTMLElement) => {
-  document.querySelectorAll<HTMLElement>('.theme-switch-label').forEach((label) => {
-    if (label.dataset['themeSwitchBound'] === 'true') {
-      return;
-    }
-
-    label.dataset['themeSwitchBound'] = 'true';
-
-    label.addEventListener('click', (event) => {
-      event.preventDefault();
-      toggleTheme(html);
+    root.dataset['themeTransition'] = '';
+    transitionFrame = requestAnimationFrame(() => {
+      transitionTimer = setTimeout(endTransition, duration);
     });
+  } else {
+    endTransition();
+  }
 
-    label.addEventListener('keyup', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleTheme(html);
-      }
-    });
-  });
+  root.classList.toggle('dark', dark);
+  for (const control of document.querySelectorAll<HTMLButtonElement>('button[data-theme-switcher]')) {
+    if (motion && !control.disabled) {
+      control.dataset['themeAnimated'] = '';
+    }
+
+    control.setAttribute('aria-pressed', String(dark));
+    control.disabled = false;
+  }
 };
 
 export const initThemeSwitcher = () => {
-  const html = document.documentElement;
+  readPreference();
+  apply();
 
-  if (!onPageLoad) {
-    onPageLoad = () => {
-      html.classList.toggle('dark', applyTheme());
-      attachHandlers(html);
-      syncIcons(html);
-    };
-
-    document.addEventListener('astro:page-load', onPageLoad);
+  if (bound) {
+    return;
   }
 
-  html.classList.toggle('dark', applyTheme());
-  attachHandlers(html);
-  syncIcons(html);
+  bound = true;
+  document.addEventListener('astro:before-swap', (event) => {
+    const { newDocument } = event as Event & { newDocument: Document };
+
+    if (!memoryOnly) {
+      readPreference();
+    }
+
+    newDocument.documentElement.classList.toggle('dark', isDarkTheme());
+  });
+  document.addEventListener('astro:page-load', () => {
+    if (document.querySelector('button[data-theme-switcher]:disabled')) {
+      apply();
+    }
+  });
+  document.addEventListener('click', (event) => {
+    const control =
+      event.target instanceof Element ? event.target.closest<HTMLButtonElement>('button[data-theme-switcher]') : null;
+
+    if (!control || control.disabled) {
+      return;
+    }
+
+    preference = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+
+    try {
+      localStorage.setItem('theme', preference);
+      memoryOnly = false;
+    } catch {
+      memoryOnly = true;
+    }
+
+    apply(true);
+  });
+  window.matchMedia?.('(prefers-color-scheme: dark)').addEventListener?.('change', () => {
+    if (preference === 'system') {
+      apply(true);
+    }
+  });
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'theme' || event.key === null) {
+      readPreference();
+      apply(true);
+    }
+  });
 };
 
 initThemeSwitcher();

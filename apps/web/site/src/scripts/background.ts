@@ -11,6 +11,7 @@ type BackgroundState = {
   camera: THREE.OrthographicCamera;
   renderer: THREE.WebGLRenderer;
   material: THREE.ShaderMaterial;
+  geometry: THREE.PlaneGeometry;
   resolution: THREE.Vector2;
   darkBackground: HTMLElement;
 };
@@ -58,7 +59,8 @@ const syncLoop = () => {
     return;
   }
 
-  const shouldRender = !document.hidden && !state.darkBackground.classList.contains('hidden');
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  const shouldRender = !document.hidden && !state.darkBackground.classList.contains('hidden') && !reduced;
 
   if (shouldRender) {
     startLoop();
@@ -67,6 +69,10 @@ const syncLoop = () => {
   }
 
   stopLoop();
+
+  if (reduced) {
+    state.renderer.render(state.scene, state.camera);
+  }
 };
 
 const teardown = () => {
@@ -81,36 +87,39 @@ const teardown = () => {
   if (state) {
     state.renderer.dispose();
     state.material.dispose();
+    state.geometry.dispose();
+    state.renderer.domElement.remove();
     state = null;
   }
 };
 
-const loadShaders = async (): Promise<[string, string] | null> => {
+const loadShaders = async (signal: AbortSignal): Promise<[string, string] | null> => {
   if (vertexShaderText !== null && fragmentShaderText !== null) {
     return [vertexShaderText, fragmentShaderText];
   }
 
   try {
     const [vertex, fragment] = await Promise.all([
-      fetch(vertexShaderUrl).then((response) => response.text()),
-      fetch(fragmentShaderUrl).then((response) => response.text()),
+      fetch(vertexShaderUrl, { signal }).then((response) => response.text()),
+      fetch(fragmentShaderUrl, { signal }).then((response) => response.text()),
     ]);
 
+    signal.throwIfAborted();
     vertexShaderText = vertex;
     fragmentShaderText = fragment;
 
     return [vertex, fragment];
   } catch (error) {
-    console.error('Failed to load background shaders:', error);
+    if (!signal.aborted) {
+      console.error('Failed to load background shaders:', error);
+    }
 
     return null;
   }
 };
 
 export const initBackground = async () => {
-  if (state) {
-    teardown();
-  }
+  teardown();
 
   const lightBackground = document.getElementById('light-bg');
   const darkBackground = document.getElementById('dark-bg');
@@ -130,46 +139,58 @@ export const initBackground = async () => {
     lightBackground.classList.remove('hidden');
   }
 
+  let transitionTimer: ReturnType<typeof setTimeout> | undefined;
+  let previousDark = isDarkOnLoad;
   const themeObserver = new MutationObserver(() => {
-    if (!state) {
-      return;
-    }
-
     const isDark = html.classList.contains('dark');
 
-    if (isDark) {
-      lightBackground.classList.remove('bg-upward-enter');
-      lightBackground.classList.add('bg-upward-leave');
+    if (isDark === previousDark) {
+      return;
+    }
 
-      darkBackground.classList.remove('hidden', 'bg-upward-leave');
-      darkBackground.classList.add('bg-upward-enter');
+    previousDark = isDark;
+    clearTimeout(transitionTimer);
+    const incoming = isDark ? darkBackground : lightBackground;
+    const outgoing = isDark ? lightBackground : darkBackground;
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const duration = Number(getComputedStyle(html).getPropertyValue('--ui-theme-duration-ms'));
 
-      window.setTimeout(() => {
-        lightBackground.classList.add('hidden');
-        syncLoop();
-      }, 700);
+    incoming.classList.remove('hidden', 'bg-upward-leave');
+    outgoing.classList.remove('bg-upward-enter');
+
+    if (reduced) {
+      incoming.classList.remove('bg-upward-enter');
+      outgoing.classList.add('hidden');
+      outgoing.classList.remove('bg-upward-leave');
+      syncLoop();
 
       return;
     }
 
-    darkBackground.classList.remove('bg-upward-enter');
-    darkBackground.classList.add('bg-upward-leave');
-
-    lightBackground.classList.remove('hidden', 'bg-upward-leave');
-    lightBackground.classList.add('bg-upward-enter');
-
-    window.setTimeout(() => {
-      darkBackground.classList.add('hidden');
+    incoming.classList.add('bg-upward-enter');
+    outgoing.classList.add('bg-upward-leave');
+    syncLoop();
+    transitionTimer = setTimeout(() => {
+      outgoing.classList.add('hidden');
+      incoming.classList.remove('bg-upward-enter');
+      outgoing.classList.remove('bg-upward-leave');
       syncLoop();
-    }, 700);
+    }, duration);
   });
 
   themeObserver.observe(html, { attributes: true, attributeFilter: ['class'] });
-  cleanups.push(() => themeObserver.disconnect());
+  cleanups.push(() => {
+    themeObserver.disconnect();
+    clearTimeout(transitionTimer);
+  });
 
-  const shaders = await loadShaders();
+  const controller = new AbortController();
 
-  if (!shaders) {
+  cleanups.push(() => controller.abort());
+
+  const shaders = await loadShaders(controller.signal);
+
+  if (controller.signal.aborted || !shaders) {
     return;
   }
 
@@ -199,7 +220,6 @@ export const initBackground = async () => {
   if (!context) {
     geometry.dispose();
     material.dispose();
-    teardown();
 
     return;
   }
@@ -217,7 +237,6 @@ export const initBackground = async () => {
   } catch {
     geometry.dispose();
     material.dispose();
-    teardown();
 
     return;
   }
@@ -226,7 +245,11 @@ export const initBackground = async () => {
   renderer.setSize(resolution.x, resolution.y);
   darkBackground.appendChild(renderer.domElement);
 
-  state = { scene, camera, renderer, material, resolution, darkBackground };
+  state = { scene, camera, renderer, material, geometry, resolution, darkBackground };
+  const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+
+  motion?.addEventListener?.('change', syncLoop);
+  cleanups.push(() => motion?.removeEventListener?.('change', syncLoop));
 
   const onResize = () => {
     if (!state) {

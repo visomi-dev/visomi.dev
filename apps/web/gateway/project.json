@@ -22,6 +22,7 @@
         "{workspaceRoot}/tools/development/**/*",
         "{workspaceRoot}/libs/web/frontend/ui/src/lib/layout.ts",
         "{workspaceRoot}/libs/web/frontend/ui/src/lib/typography.ts",
+        "{workspaceRoot}/libs/web/frontend/ui/src/styles.css",
         "{workspaceRoot}/styles.base.css",
         "{workspaceRoot}/eslint.config.mjs",
         {
@@ -66,7 +67,7 @@
           "tsc -p tools/testing/tsconfig.json",
           "eslint .railway tools/deployment/*.mjs tools/testing/*.ts tools/testing/*.mjs",
           "bash -n tools/deployment/container.sh",
-          "node --import tsx --test tools/deployment/affected.spec.mjs tools/deployment/resolve-browser-error.spec.mjs tools/deployment/watch-patterns.spec.mjs tools/deployment/jaeger-iac.spec.mjs tools/deployment/migration-inventory.spec.mjs"
+          "node --import tsx --test tools/deployment/affected.spec.mjs tools/deployment/resolve-browser-error.spec.mjs tools/deployment/watch-patterns.spec.mjs tools/deployment/jaeger-iac.spec.mjs tools/deployment/migration-inventory.spec.mjs tools/testing/browser-https.spec.ts"
         ],
         "parallel": false
       },

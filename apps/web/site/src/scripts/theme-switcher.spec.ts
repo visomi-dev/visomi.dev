@@ -1,21 +1,23 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { initThemeSwitcher } from './theme-switcher';
 
 const createSwitcherMarkup = () => `
-  <label class="theme-switch-label">
-    <input class="theme-switch-input" type="checkbox" />
+  <button data-theme-switcher disabled>
     <span class="theme-icon-light"></span>
     <span class="theme-icon-dark hidden"></span>
-  </label>
-  <label class="theme-switch-label">
-    <input class="theme-switch-input" type="checkbox" />
+  </button>
+  <button data-theme-switcher disabled>
     <span class="theme-icon-light"></span>
     <span class="theme-icon-dark hidden"></span>
-  </label>
+  </button>
 `;
 
 describe('initThemeSwitcher', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
   it('applies the stored theme and toggles all controls', () => {
     vi.useFakeTimers();
 
@@ -25,21 +27,20 @@ describe('initThemeSwitcher', () => {
 
     initThemeSwitcher();
 
-    const labels = document.querySelectorAll<HTMLElement>('.theme-switch-label');
-    const inputs = document.querySelectorAll<HTMLInputElement>('.theme-switch-input');
+    const labels = document.querySelectorAll<HTMLButtonElement>('button[data-theme-switcher]');
 
     expect(document.documentElement.classList.contains('dark')).toBe(true);
-    expect(inputs[0]?.checked).toBe(true);
-    expect(inputs[1]?.checked).toBe(true);
+    expect(labels[0]?.getAttribute('aria-pressed')).toBe('true');
+    expect(labels[1]?.getAttribute('aria-pressed')).toBe('true');
 
-    labels[0]?.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true, key: 'Enter' }));
-    vi.advanceTimersByTime(350);
+    labels[0]?.click();
+    vi.advanceTimersByTime(450);
 
     expect(document.documentElement.classList.contains('dark')).toBe(false);
     expect(localStorage.getItem('theme')).toBe('light');
 
-    labels[1]?.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true, key: ' ' }));
-    vi.advanceTimersByTime(350);
+    labels[1]?.click();
+    vi.advanceTimersByTime(450);
 
     expect(document.documentElement.classList.contains('dark')).toBe(true);
     expect(localStorage.getItem('theme')).toBe('dark');
@@ -47,16 +48,15 @@ describe('initThemeSwitcher', () => {
     vi.useRealTimers();
   });
 
-  it('falls back to light theme and ignores incomplete switchers', () => {
+  it('falls back to light theme and ignores non-button markup', () => {
     document.body.innerHTML = `
-      <label class="theme-switch-label">
-        <input class="theme-switch-input" type="checkbox" />
+      <button data-theme-switcher disabled>
         <span class="theme-icon-light"></span>
         <span class="theme-icon-dark hidden"></span>
-      </label>
-      <label class="theme-switch-label">
+      </button>
+      <span class="theme-switch-label">
         <span class="theme-icon-light"></span>
-      </label>
+      </span>
     `;
     localStorage.removeItem('theme');
     window.matchMedia = vi.fn().mockReturnValue({ matches: false }) as typeof window.matchMedia;
@@ -64,11 +64,11 @@ describe('initThemeSwitcher', () => {
 
     initThemeSwitcher();
 
-    const label = document.querySelector<HTMLElement>('.theme-switch-label');
+    const label = document.querySelector<HTMLButtonElement>('button[data-theme-switcher]');
 
     expect(document.documentElement.classList.contains('dark')).toBe(false);
 
-    label?.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true, key: 'Enter' }));
+    label?.click();
 
     expect(document.documentElement.classList.contains('dark')).toBe(true);
     expect(localStorage.getItem('theme')).toBe('dark');
@@ -93,14 +93,87 @@ describe('initThemeSwitcher', () => {
 
     expect(document.documentElement.classList.contains('dark')).toBe(false);
 
-    const newLabel = document.querySelector<HTMLElement>('.theme-switch-label');
+    const newLabel = document.querySelector<HTMLButtonElement>('button[data-theme-switcher]');
 
-    newLabel?.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true, key: 'Enter' }));
-    vi.advanceTimersByTime(350);
+    newLabel?.click();
+    vi.advanceTimersByTime(450);
 
     expect(document.documentElement.classList.contains('dark')).toBe(true);
     expect(localStorage.getItem('theme')).toBe('dark');
 
     vi.useRealTimers();
+  });
+
+  it('starts icons and page together, renews the clock on rapid toggles and cleans it up', () => {
+    vi.useFakeTimers();
+    document.body.innerHTML = createSwitcherMarkup();
+    localStorage.setItem('theme', 'light');
+    document.documentElement.style.setProperty('--ui-theme-duration-ms', '400');
+    window.matchMedia = vi.fn().mockReturnValue({ matches: false });
+    initThemeSwitcher();
+
+    const controls = document.querySelectorAll<HTMLButtonElement>('button[data-theme-switcher]');
+
+    expect(document.querySelector('[data-theme-animated]')).toBeNull();
+    controls[0]?.click();
+    document.dispatchEvent(new Event('astro:page-load'));
+    expect(document.documentElement.dataset['themeTransition']).toBe('');
+    expect([...controls].every((control) => control.hasAttribute('data-theme-animated'))).toBe(true);
+    expect([...controls].every((control) => control.getAttribute('aria-pressed') === 'true')).toBe(true);
+    vi.advanceTimersByTime(200);
+    controls[1]?.click();
+    vi.advanceTimersByTime(220);
+    expect(document.documentElement.hasAttribute('data-theme-transition')).toBe(true);
+    vi.advanceTimersByTime(200);
+    expect(document.documentElement.hasAttribute('data-theme-transition')).toBe(false);
+    expect(document.querySelector('[data-theme-animated]')).toBeNull();
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+  });
+
+  it('remains usable with blocked persistence and applies cross-tab preferences', () => {
+    document.body.innerHTML = createSwitcherMarkup();
+    localStorage.setItem('theme', 'light');
+    initThemeSwitcher();
+
+    const write = vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+
+    document.querySelector<HTMLButtonElement>('button[data-theme-switcher]')?.click();
+    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    write.mockRestore();
+    localStorage.setItem('theme', 'light');
+    window.dispatchEvent(new StorageEvent('storage', { key: 'theme' }));
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+  });
+
+  it('uses the system for invalid preferences and suppresses reduced motion', () => {
+    document.body.innerHTML = createSwitcherMarkup();
+    localStorage.setItem('theme', 'invalid');
+    window.matchMedia = vi.fn().mockReturnValue({ matches: true });
+    initThemeSwitcher();
+    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    document.querySelector<HTMLButtonElement>('button[data-theme-switcher]')?.click();
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+    expect(document.querySelector('[data-theme-animated]')).toBeNull();
+    expect(document.documentElement.hasAttribute('data-theme-transition')).toBe(false);
+  });
+
+  it('carries a theme that could not be written into the incoming document', () => {
+    document.body.innerHTML = createSwitcherMarkup();
+    localStorage.setItem('theme', 'light');
+    initThemeSwitcher();
+
+    vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+      throw new Error('write blocked');
+    });
+    document.querySelector<HTMLButtonElement>('button[data-theme-switcher]')?.click();
+
+    const newDocument = document.implementation.createHTMLDocument();
+
+    document.dispatchEvent(Object.assign(new Event('astro:before-swap'), { newDocument }));
+
+    expect(localStorage.getItem('theme')).toBe('light');
+    expect(newDocument.documentElement.classList.contains('dark')).toBe(true);
   });
 });

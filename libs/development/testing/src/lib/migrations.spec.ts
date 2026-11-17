@@ -41,6 +41,55 @@ it('applies the production migration command to an empty isolated database and c
   }
 }, 100000);
 
+it('starts independent databases concurrently and cleanup preserves the other fixture', async () => {
+  const databases: Awaited<ReturnType<typeof testPostgres>>[] = [];
+  const pools: Pool[] = [];
+
+  try {
+    const results = await Promise.allSettled(
+      [0, 1].map(async () => {
+        const database = await testPostgres();
+
+        databases.push(database);
+      }),
+    );
+
+    expect(results.map((result) => result.status)).toEqual(['fulfilled', 'fulfilled']);
+    expect(new Set(databases.map((database) => database.url)).size).toBe(2);
+    for (const [index, database] of databases.entries()) {
+      const pool = new Pool({ connectionString: database.url });
+
+      pools.push(pool);
+
+      await pool.query('CREATE TABLE fixture_probe (id integer PRIMARY KEY, value text);');
+
+      await pool.query('INSERT INTO fixture_probe VALUES (1, $1)', [`synthetic-${index}`]);
+
+      if (database.compose.provider === 'podman-compose') {
+        await expect(
+          execute('podman', ['pod', 'exists', `pod_${database.compose.project}`], { timeout: 10000 }),
+        ).rejects.toMatchObject({ code: 1 });
+      }
+    }
+
+    await pools[0].end();
+
+    pools.shift();
+
+    await databases[0].stop();
+
+    const remaining = await pools[0].query('SELECT value FROM fixture_probe WHERE id = 1');
+
+    expect(remaining.rows).toEqual([{ value: 'synthetic-1' }]);
+  } finally {
+    await Promise.all(pools.map((pool) => pool.end()));
+
+    const cleanup = await Promise.allSettled(databases.map((database) => database.stop()));
+
+    expect(cleanup.map((result) => result.status)).toEqual(databases.map(() => 'fulfilled'));
+  }
+}, 100000);
+
 it('fails with a controlled message when configuration is absent or unreachable', async () => {
   for (const url of ['', 'postgresql://synthetic:synthetic-private-password@127.0.0.1:1/unused']) {
     await expect(

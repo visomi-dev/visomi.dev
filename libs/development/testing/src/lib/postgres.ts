@@ -21,12 +21,13 @@ export async function testPostgres(
   const temporaryRoot = manifest ? dirname(manifest) : tmpdir();
   const directory = await mkdtemp(join(temporaryRoot, 'visomi-auth-test-'));
   let compose: TestCompose | undefined;
-
-  await writeFile(join(directory, 'test-owner'), 'visomi-stack-isolated-postgres');
-
-  await writeFile(join(directory, 'compose.env'), '');
+  let phase = 'provider';
 
   try {
+    await writeFile(join(directory, 'test-owner'), 'visomi-stack-isolated-postgres');
+
+    await writeFile(join(directory, 'compose.env'), '');
+
     const created = await createTestCompose(directory, temporaryRoot, app);
 
     compose = created;
@@ -35,11 +36,14 @@ export async function testPostgres(
       await writeFile(manifest, JSON.stringify({ directory, compose }));
     }
 
+    phase = 'start';
+
     await runTestCompose(compose, ['up', '-d', 'postgres'], signal);
 
+    phase = 'port';
     const { stdout } = await runTestCompose(compose, ['port', 'postgres', '5432'], signal);
-    // Docker reports the binding; podman-compose reports only the published port.
-    const match = /^(?:127\.0\.0\.1:)?(\d+)$/.exec(stdout.trim());
+    // Both providers must report a loopback binding for this fixture.
+    const match = /^127\.0\.0\.1:(\d+)$/.exec(stdout.trim());
 
     if (!match || Number(match[1]) < 1 || Number(match[1]) > 65535) {
       throw new Error('test_postgres_port_unavailable');
@@ -52,7 +56,10 @@ export async function testPostgres(
     const db = drizzle({ client: pool, logger: false });
 
     try {
+      phase = 'readiness';
       for (let attempt = 0; ; attempt++) {
+        signal.throwIfAborted();
+
         try {
           await pool.query('SELECT 1');
 
@@ -66,13 +73,17 @@ export async function testPostgres(
         }
       }
 
+      signal.throwIfAborted();
       timings.readinessMs = performance.now() - readyStarted;
       const migrationStarted = performance.now();
+
+      phase = 'migration';
 
       await migrate(db, {
         migrationsFolder: resolve(__dirname, '../../../../../libs/backend/shared/src/lib/database/migrations'),
       });
 
+      signal.throwIfAborted();
       timings.migrationMs = performance.now() - migrationStarted;
     } finally {
       await pool.end();
@@ -97,7 +108,7 @@ export async function testPostgres(
       await rm(directory, { recursive: true, force: true });
     }
 
-    throw new Error('isolated_postgres_setup_failed');
+    throw new Error(`isolated_postgres_setup_failed:${phase}`);
   }
 }
 
