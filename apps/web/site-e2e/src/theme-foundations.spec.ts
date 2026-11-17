@@ -301,3 +301,46 @@ test('native keyboard activation, system preference and Astro swaps share the sa
 
   await expect(button).toHaveAttribute('aria-pressed', 'false');
 });
+
+test('Astro swaps preserve the active theme before the incoming document is shown', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
+
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'localStorage', {
+      get() {
+        throw new DOMException('Storage blocked', 'SecurityError');
+      },
+    });
+    document.addEventListener('astro:after-swap', () => {
+      document.documentElement.dataset['themeAtSwap'] = String(document.documentElement.classList.contains('dark'));
+    });
+  });
+
+  await page.goto('/');
+
+  const switcher = page.locator('[data-theme-switcher]');
+
+  await switcher.click();
+
+  await expect(switcher).toHaveAttribute('aria-pressed', 'true');
+
+  await page.locator('nav a[href="/contact/"]').first().click();
+
+  await expect(page).toHaveURL(/\/contact\/$/);
+
+  await expect(page.locator('html')).toHaveAttribute('data-theme-at-swap', 'true');
+
+  await expect(switcher).toHaveAttribute('aria-pressed', 'true');
+
+  await switcher.click();
+
+  await expect(switcher).toHaveAttribute('aria-pressed', 'false');
+
+  await page.locator('nav a[href="/projects/"]').first().click();
+
+  await expect(page).toHaveURL(/\/projects\/$/);
+
+  await expect(page.locator('html')).toHaveAttribute('data-theme-at-swap', 'false');
+
+  await expect(switcher).toHaveAttribute('aria-pressed', 'false');
+});

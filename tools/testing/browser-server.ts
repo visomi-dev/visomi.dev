@@ -70,7 +70,7 @@ async function main(): Promise<void> {
     });
 
     onCleanup(async () => {
-      if (resources.child && resources.child.exitCode === null) {
+      if (resources.child && resources.child.exitCode === null && resources.child.signalCode === null) {
         const exited = once(resources.child, 'exit', { signal: AbortSignal.timeout(10000) });
 
         resources.child.kill('SIGTERM');

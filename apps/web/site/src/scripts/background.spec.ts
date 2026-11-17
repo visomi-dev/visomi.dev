@@ -80,7 +80,7 @@ vi.mock('three', () => {
   };
 });
 
-import { initBackground, __resetBackgroundForTesting } from './background';
+import { destroyBackground, initBackground, __resetBackgroundForTesting } from './background';
 
 describe('initBackground', () => {
   beforeEach(() => {
@@ -170,6 +170,35 @@ describe('initBackground', () => {
     await expect(initBackground()).resolves.toBeUndefined();
 
     expect(document.querySelector('canvas')).toBeNull();
+  });
+
+  it('discards a shader load that finishes after the next page has mounted', async () => {
+    const markup = '<div id="light-bg"></div><div id="dark-bg"></div>';
+    const response = { text: async () => 'shader' };
+    let release: () => void = () => undefined;
+    const delayed = new Promise((resolve) => {
+      release = () => resolve(response);
+    });
+    const fetch = vi.fn().mockResolvedValue(response).mockReturnValueOnce(delayed).mockReturnValueOnce(delayed);
+
+    vi.stubGlobal('fetch', fetch);
+    document.body.innerHTML = markup;
+    const outgoing = document.getElementById('dark-bg')!;
+    const previous = initBackground();
+
+    document.dispatchEvent(new Event('astro:before-swap'));
+    document.body.innerHTML = markup;
+
+    await initBackground();
+
+    release();
+
+    await previous;
+
+    expect(outgoing.querySelector('canvas')).toBeNull();
+    expect(document.querySelectorAll('#dark-bg canvas')).toHaveLength(1);
+    destroyBackground();
+    expect(document.querySelector('#dark-bg canvas')).toBeNull();
   });
 
   it('renders frames while visible, pauses offscreen and transitions back to the light theme', async () => {

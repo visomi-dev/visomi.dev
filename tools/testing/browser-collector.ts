@@ -58,8 +58,15 @@ export async function browserCollector(signal?: AbortSignal) {
     const query = `http://${queryPort}`;
 
     for (let attempt = 0; ; attempt++) {
-      const ready = await fetch(`${query}/api/v3/services`).then(
-        (response) => response.ok,
+      const timeout = AbortSignal.timeout(1000);
+      const ready = await fetch(`${query}/api/v3/services`, {
+        signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
+      }).then(
+        async (response) => {
+          await response.body?.cancel();
+
+          return response.ok;
+        },
         () => false,
       );
 

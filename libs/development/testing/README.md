@@ -51,6 +51,8 @@ fixtures are tested for independent data and for cleanup leaving the other fixtu
 
 `lib/fixture-lifetime` installs cancellation before browser/worker setup begins and
 awaits registered cleanup, including resources acquired while cancellation is pending.
+The worker keeps PostgreSQL ownership metadata in a separate temporary directory so
+discarding generated worker files cannot erase the manifest after a database cleanup failure.
 Browser seeds include the CSRF value established by real authentication; regression
 coverage verifies concurrent session initialization and logout with the stable token.
 No telemetry is sent to external services.

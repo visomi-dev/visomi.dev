@@ -23,11 +23,11 @@ export async function testPostgres(
   let compose: TestCompose | undefined;
   let phase = 'provider';
 
-  await writeFile(join(directory, 'test-owner'), 'visomi-stack-isolated-postgres');
-
-  await writeFile(join(directory, 'compose.env'), '');
-
   try {
+    await writeFile(join(directory, 'test-owner'), 'visomi-stack-isolated-postgres');
+
+    await writeFile(join(directory, 'compose.env'), '');
+
     const created = await createTestCompose(directory, temporaryRoot, app);
 
     compose = created;
@@ -58,6 +58,8 @@ export async function testPostgres(
     try {
       phase = 'readiness';
       for (let attempt = 0; ; attempt++) {
+        signal.throwIfAborted();
+
         try {
           await pool.query('SELECT 1');
 
@@ -71,6 +73,7 @@ export async function testPostgres(
         }
       }
 
+      signal.throwIfAborted();
       timings.readinessMs = performance.now() - readyStarted;
       const migrationStarted = performance.now();
 
@@ -80,6 +83,7 @@ export async function testPostgres(
         migrationsFolder: resolve(__dirname, '../../../../../libs/backend/shared/src/lib/database/migrations'),
       });
 
+      signal.throwIfAborted();
       timings.migrationMs = performance.now() - migrationStarted;
     } finally {
       await pool.end();

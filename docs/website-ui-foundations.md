@@ -42,7 +42,9 @@ borders, shadows, filters and SVG colors change in the same interaction. Reduced
 motion applies immediately. Superseding a change cancels its pending cleanup, so an
 old timer cannot hide the newly active background. Static layers remain functional
 when WebGL cannot initialize. Astro's initial page-load notification does not restart
-an interaction already underway; replacement controls initialize without a reel.
+an interaction already underway. The active theme is copied to Astro's incoming
+document before the swap, including when storage is blocked. Replacement controls
+initialize without a reel, and navigation cancels shader loading for the outgoing page.
 
 The public website retains the `theme` preference key. Private Angular session state,
 owner isolation, canonical sign-in routes and authentication behavior are independent.

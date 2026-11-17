@@ -11,6 +11,7 @@ type BackgroundState = {
   camera: THREE.OrthographicCamera;
   renderer: THREE.WebGLRenderer;
   material: THREE.ShaderMaterial;
+  geometry: THREE.PlaneGeometry;
   resolution: THREE.Vector2;
   darkBackground: HTMLElement;
 };
@@ -86,27 +87,32 @@ const teardown = () => {
   if (state) {
     state.renderer.dispose();
     state.material.dispose();
+    state.geometry.dispose();
+    state.renderer.domElement.remove();
     state = null;
   }
 };
 
-const loadShaders = async (): Promise<[string, string] | null> => {
+const loadShaders = async (signal: AbortSignal): Promise<[string, string] | null> => {
   if (vertexShaderText !== null && fragmentShaderText !== null) {
     return [vertexShaderText, fragmentShaderText];
   }
 
   try {
     const [vertex, fragment] = await Promise.all([
-      fetch(vertexShaderUrl).then((response) => response.text()),
-      fetch(fragmentShaderUrl).then((response) => response.text()),
+      fetch(vertexShaderUrl, { signal }).then((response) => response.text()),
+      fetch(fragmentShaderUrl, { signal }).then((response) => response.text()),
     ]);
 
+    signal.throwIfAborted();
     vertexShaderText = vertex;
     fragmentShaderText = fragment;
 
     return [vertex, fragment];
   } catch (error) {
-    console.error('Failed to load background shaders:', error);
+    if (!signal.aborted) {
+      console.error('Failed to load background shaders:', error);
+    }
 
     return null;
   }
@@ -178,9 +184,13 @@ export const initBackground = async () => {
     clearTimeout(transitionTimer);
   });
 
-  const shaders = await loadShaders();
+  const controller = new AbortController();
 
-  if (!shaders) {
+  cleanups.push(() => controller.abort());
+
+  const shaders = await loadShaders(controller.signal);
+
+  if (controller.signal.aborted || !shaders) {
     return;
   }
 
@@ -235,7 +245,7 @@ export const initBackground = async () => {
   renderer.setSize(resolution.x, resolution.y);
   darkBackground.appendChild(renderer.domElement);
 
-  state = { scene, camera, renderer, material, resolution, darkBackground };
+  state = { scene, camera, renderer, material, geometry, resolution, darkBackground };
   const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
 
   motion?.addEventListener?.('change', syncLoop);

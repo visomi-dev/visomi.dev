@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 
@@ -14,6 +15,7 @@ async function main() {
   await runFixture(async ({ signal, onCleanup, stop }) => {
     const root = resolve(workspaceRoot, 'tmp/worker-fixture');
     const resources: { database?: Awaited<ReturnType<typeof testPostgres>>; child?: ReturnType<typeof spawn> } = {};
+    const postgresRoot = await mkdtemp(resolve(tmpdir(), 'visomi-worker-test-'));
 
     onCleanup(async () => {
       const child = resources.child;
@@ -34,6 +36,13 @@ async function main() {
 
       try {
         await resources.database?.stop();
+
+        const entries = await readdir(postgresRoot, { withFileTypes: true });
+
+        // A retained project directory means setup cleanup failed. Keep its manifest for recovery.
+        if (!entries.some((entry) => entry.isDirectory())) {
+          await rm(postgresRoot, { recursive: true, force: true });
+        }
       } finally {
         await rm(root, { recursive: true, force: true });
       }
@@ -41,7 +50,13 @@ async function main() {
 
     await mkdir(root, { recursive: true });
 
-    const database = await testPostgres(resolve(root, 'postgres.json'), 'web-api', signal);
+    signal.throwIfAborted();
+
+    const database = await testPostgres(
+      resolve(postgresRoot, 'postgres.json'),
+      'web-api',
+      AbortSignal.any([signal, AbortSignal.timeout(40000)]),
+    );
 
     resources.database = database;
     signal.throwIfAborted();
@@ -49,7 +64,7 @@ async function main() {
     await runTestCompose(database.compose, ['up', '-d', 'redis'], signal);
 
     const binding = await runTestCompose(database.compose, ['port', 'redis', '6379'], signal);
-    const port = /(?:127\.0\.0\.1:)?(\d+)\s*$/.exec(binding.stdout)?.[1];
+    const port = /^(?:127\.0\.0\.1:)?(\d+)$/.exec(binding.stdout.trim())?.[1];
 
     if (!port) {
       throw new Error('isolated_redis_port_invalid');

@@ -14,6 +14,7 @@ import { testPostgres, stopTestPostgres } from './postgres';
 const boundary = vi.hoisted(() => ({
   clients: [] as { query: ReturnType<typeof vi.fn>; end: ReturnType<typeof vi.fn> }[],
   failures: 0,
+  onQuery: vi.fn<() => void>(),
 }));
 
 vi.mock('./compose', () => ({
@@ -34,6 +35,8 @@ vi.mock('pg', () => ({
   Pool: vi.fn(function () {
     const client = {
       query: vi.fn().mockImplementation(async () => {
+        boundary.onQuery();
+
         if (boundary.failures-- > 0) {
           throw new Error('SYNTHETIC_PRIVATE_DATABASE_ERROR');
         }
@@ -192,6 +195,31 @@ describe('Compose PostgreSQL resource', () => {
     expect(boundary.clients[0].end).toHaveBeenCalledOnce();
     expect(migrate).not.toHaveBeenCalled();
   });
+
+  it.each(['readiness', 'migration'] as const)(
+    'cleans the fixture when cancellation arrives during %s',
+    async (phase) => {
+      const controller = new AbortController();
+      const cancel = () => controller.abort();
+
+      if (phase === 'readiness') {
+        boundary.onQuery.mockImplementation(cancel);
+      } else {
+        vi.mocked(migrate).mockImplementation(async () => cancel());
+      }
+
+      await expect(testPostgres(undefined, 'web-api', controller.signal)).rejects.toThrow(
+        `isolated_postgres_setup_failed:${phase}`,
+      );
+
+      expect(migrate).toHaveBeenCalledTimes(Number(phase === 'migration'));
+      expect(boundary.clients[0].end).toHaveBeenCalledOnce();
+      expect(stopTestCompose).toHaveBeenCalledOnce();
+      expect(boundary.clients[0].end.mock.invocationCallOrder[0]).toBeLessThan(
+        vi.mocked(stopTestCompose).mock.invocationCallOrder[0],
+      );
+    },
+  );
 
   it('sanitizes migration failure and closes the pool before container cleanup', async () => {
     vi.mocked(migrate).mockRejectedValue(new Error('SYNTHETIC_PRIVATE_MIGRATION_ERROR'));

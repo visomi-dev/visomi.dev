@@ -65,9 +65,14 @@ export const initThemeSwitcher = () => {
   }
 
   bound = true;
+  document.addEventListener('astro:before-swap', (event) => {
+    const { newDocument } = event as Event & { newDocument: Document };
+
+    newDocument.documentElement.classList.toggle('dark', document.documentElement.classList.contains('dark'));
+  });
   document.addEventListener('astro:page-load', () => {
     if (document.querySelector('button[data-theme-switcher]:disabled')) {
-      initThemeSwitcher();
+      apply();
     }
   });
   document.addEventListener('click', (event) => {
