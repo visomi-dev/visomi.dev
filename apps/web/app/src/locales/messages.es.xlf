@@ -290,6 +290,13 @@
           <context context-type="linenumber">89,93</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="notFoundHeroTitle" datatype="html"><source>Page not found</source><target>Página no encontrada</target></trans-unit>
+      <trans-unit id="notFoundHeroLink" datatype="html"><source>Return to website</source><target>Volver al sitio</target></trans-unit>
+      <trans-unit id="signInHeroTitle" datatype="html"><source>Owner sign-in</source><target>Ingreso del propietario</target></trans-unit>
+      <trans-unit id="signInVerifyRestart" datatype="html"><source>Start again</source><target>Volver a empezar</target></trans-unit>
+      <trans-unit id="signInFooterLabel" datatype="html"><source>Private administration · VISOMI.DEV</source><target>Administración privada · VISOMI.DEV</target></trans-unit>
+      <trans-unit id="adminHeaderSkip" datatype="html"><source>Skip to content</source><target>Saltar al contenido</target></trans-unit>
+      <trans-unit id="adminHeaderTheme" datatype="html"><source>Dark theme</source><target>Tema oscuro</target></trans-unit>
     </body>
   </file>
 </xliff>

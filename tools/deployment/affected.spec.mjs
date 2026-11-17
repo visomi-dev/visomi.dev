@@ -5,15 +5,20 @@ import { fileURLToPath } from 'node:url';
 
 const cwd = fileURLToPath(new URL('../../', import.meta.url));
 const cases = [
-  ['styles.base.css', 'e2e', ['worker']],
-  ['libs/web/frontend/ui/src/lib/forms.ts', 'e2e', []],
-  ['libs/web/frontend/ui/src/lib/forms.ts', 'lint', ['web-frontend-ui']],
+  ['styles.base.css', 'e2e', ['app-e2e', 'worker']],
+  ['libs/web/frontend/ui/src/lib/forms.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
+  [
+    'libs/web/frontend/ui/src/lib/forms.ts',
+    'lint',
+    ['app-e2e', 'site-e2e', 'web-app', 'web-frontend-ui', 'web-gateway'],
+  ],
   ['libs/web/frontend/ui/src/lib/forms.ts', 'container-check', ['web-gateway']],
   ['apps/web/app/src/app/pages/dashboard/dashboard.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   ['apps/web/site/src/components/theme-switcher.astro', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   ['apps/web/gateway/src/app.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   ['apps/web/api/src/app.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-api', 'web-gateway', 'worker']],
   ['.railway/railway.ts', 'deployment-check', ['web-gateway']],
+  ['docs/migration/stack-files.json', 'deployment-check', ['web-gateway']],
   ['.railway/jaeger.yaml', 'container-check', ['web-gateway']],
   ['.railway/jaeger.yaml', 'jaeger-check', ['web-gateway']],
   ['tools/deployment/smoke.mjs', 'deployment-check', ['web-gateway']],

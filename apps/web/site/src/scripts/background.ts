@@ -193,11 +193,34 @@ export const initBackground = async () => {
 
   scene.add(mesh);
 
-  const renderer = new THREE.WebGLRenderer({
-    antialias: false,
-    alpha: true,
-    powerPreference: 'low-power',
-  });
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('webgl2', { antialias: false, alpha: true, powerPreference: 'low-power' });
+
+  if (!context) {
+    geometry.dispose();
+    material.dispose();
+    teardown();
+
+    return;
+  }
+
+  let renderer: THREE.WebGLRenderer;
+
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      context,
+      antialias: false,
+      alpha: true,
+      powerPreference: 'low-power',
+    });
+  } catch {
+    geometry.dispose();
+    material.dispose();
+    teardown();
+
+    return;
+  }
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
   renderer.setSize(resolution.x, resolution.y);

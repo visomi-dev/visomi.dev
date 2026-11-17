@@ -2,7 +2,7 @@
 set -euo pipefail
 
 engine=${CONTAINER_ENGINE:-docker}
-image=visomi-dev:ci
+image=${CONTAINER_IMAGE:-visomi-dev:ci}
 container=visomi-dev-ci-$$
 
 "$engine" build --target runtime --tag "$image" .

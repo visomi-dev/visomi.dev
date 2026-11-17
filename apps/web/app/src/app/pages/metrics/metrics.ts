@@ -1,17 +1,21 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { OwnerSession } from '../../auth/session/owner-session';
+import { NavigationHeading } from '../../shared/navigation-heading';
 
 import type { MetricsData } from './metrics.resolver';
 
 @Component({
   selector: 'app-metrics',
-  imports: [DecimalPipe, RouterLink],
+  imports: [NavigationHeading, DecimalPipe],
   templateUrl: './metrics.html',
   styleUrl: './metrics.css',
 })
 export class Metrics {
+  private readonly session = inject(OwnerSession);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -21,7 +25,7 @@ export class Metrics {
   readonly snapshot = computed(() => {
     const data = this.routeData()?.['metrics'] as MetricsData | undefined;
 
-    return data?.state === 'ready' ? data.snapshot : null;
+    return this.session.valid() && data?.state === 'ready' ? data.snapshot : null;
   });
 
   async refresh(): Promise<void> {

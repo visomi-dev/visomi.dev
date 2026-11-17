@@ -77,7 +77,7 @@ Legacy migration input is an explicit offline export; the application no longer 
 - Keep original Astro components, CSS, fonts, content, scripts, assets, unprefixed English URLs,
   prerender/cache/CV improvements and identity. Template public pages are excluded.
 - Keep existing social-image generation, BullMQ/Redis worker, contracts and public artifact URLs.
-- Angular is a blank shell plus owner contact list/detail, technical metrics and private authentication integration;
+- Angular provides owner contact list/detail, technical metrics and a separate private sign-in under the adapted stack shell;
   template public login/signup and account-management screens are excluded.
 - Adapt source package/repository/domain names and commands; remove developer-specific PATH values.
 - PostgreSQL/Redis infrastructure from VIS-16 is reused; no second database/broker or Jaeger service
@@ -90,9 +90,12 @@ Implementation and verification evidence will be recorded per issue and in the f
 ## Final architecture adaptations
 
 - Private Angular entrypoints preserve the stack's `/app/en/` and `/app/es/` locale bases. Both roots
-  are empty; `/access` supports only the confirmed existing owner's password and second factor.
+  return 404. The owner's password and second-factor flow is at `/app/en/admin/auth/sign-in` or
+  `/app/es/admin/auth/sign-in`. Retired entrypoints return 404; there are no legacy aliases or login redirects.
   Guards and resolvers fetch essential list/detail data before activation; private routes render
-  on the client and cannot embed contact data in SSR output.
+  with RenderMode.Server. A read-only, request-scoped interceptor forwards only the current
+  request cookie to allowlisted private endpoints. Authenticated HTML may contain private
+  contact data and must use private, no-store without an ETag. HTTP transfer caching is disabled.
 - Original public content was split into typed English/Spanish/project data modules without changing
   values. A stale predecessor assertion expected `06 // Idiomas`; the integrated baseline already
   rendered `Idiomas`, which remains unchanged.
@@ -159,8 +162,8 @@ loopback origin, and its deployment target is outside this implementation's auth
 
 The public E2E suite also runs the 40-view pixel/content/SEO comparison against its owned compiled
 gateway fixture, so CI enforces the recorded reference rather than relying only on manual captures.
-Browser E2Es pin hosted Ubuntu 24.04, which already includes Chromium's native libraries, and download
-only the lockfile's browser build. Removing the optional CJK/X11 font packages in an isolated Ubuntu
+Browser E2Es pin hosted Ubuntu 24.04. The administrative matrix installs the lockfile's
+Chromium, Firefox and WebKit builds plus their required native libraries. Removing the optional CJK/X11 font packages in an isolated Ubuntu
 image still passed all 40 captures with zero changed pixels; en/es uses self-hosted website fonts.
 The browser setup has a bounded timeout and all browser/E2E gates remain required.
 The worker fixture first allocates an isolated Redis port, then makes that same binding explicit before
@@ -172,12 +175,12 @@ intermediate package-manager process.
 
 ## Private technical metrics
 
-`/app/en/metrics` and `/app/es/metrics` are linked from the contact dashboard. A route guard and
+`/app/en/admin/metrics` and `/app/es/admin/metrics` are linked from the contact dashboard. A route guard and
 resolver load `/api/private/metrics`; every API request independently requires a full verified owner
-session and returns private/no-store responses. The route is rendered only in the client.
+session and returns private/no-store responses. The route uses SSR with the same request-scoped cookie and private/no-store policy as contacts.
 
-`VISOMI_PRIVATE_METRICS=true` explicitly opts into local HTTP aggregates. The default is false,
-including the Railway template. A disabled view reports that state instead of presenting fabricated
+`VISOMI_PRIVATE_METRICS=true` explicitly opts into local HTTP aggregates. The runtime default is false;
+Railway IaC preserves the bound environment's already authorized value. A disabled view reports that state instead of presenting fabricated
 zero measurements. Capture keeps 15 one-minute buckets per running process: request count,
 client/server errors, aborted requests, mean latency and maximum latency. Durations are clipped to
 0–60 seconds. No request body, URL/query, email, IP, user agent, identifier, token or raw exception is
@@ -186,8 +189,9 @@ The gateway passes the same collector to its embedded API, counting each respons
 
 The trace-export indicator describes the process's `VISOMI_OTLP_TRACING` configuration, not collector
 availability or confirmed delivery. Local aggregate capture does not enable trace/browser export.
-Existing exporter/browser opt-ins and owner authorization remain separate and disabled by default,
-as required by VIS-25/VIS-27. Enabling any of them in a real environment is a release/configuration gate.
+Exporter/browser opt-ins and owner authorization remain separate. Runtime browser capture defaults
+to disabled; IaC preserves its previously authorized environment value. Browser performance remains
+explicitly false in IaC. These repairs do not apply hosted configuration or infer new opt-in authority.
 The private browser suite covers the real enabled response, anonymous/non-owner denial, no-store,
 empty/disabled/error views, English/Spanish, mobile overflow and AXE.
 
@@ -209,3 +213,17 @@ interactive email/second-factor acceptance before enabling access. See [the cuto
 No real account was created/modified, no real contact data was read/replayed, no exporter was enabled
 and no Railway setting, merge or deployment was applied by these implementation checks. Code/test
 completion and release/real-account acceptance are separate; VIS-26 tracks the remaining operator gates.
+
+## Functional completion review
+
+See [completion-review.md](completion-review.md) for the administrative route map,
+browser/SSR wiring, provenance policy and explicit decisions on post-baseline improvements.
+Historical verification above covers only its originally exercised paths; it did not
+demonstrate that the excluded browser adapters were connected.
+
+`pnpm nx run web-gateway:inventory-check` validates all 1,127 historical source entries,
+source digest, counts, classifications and destination existence. Hashes are snapshots:
+`migrationDestinationSha256` retains the earlier value when reconciled; destination drift
+is reported independently rather than prohibiting future changes. When a file moves,
+`relocatedTo` identifies its current checked destination while preserving the original
+`source`, `destination` and digest fields. Invalid or missing relocation targets fail validation.

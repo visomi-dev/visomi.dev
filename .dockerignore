@@ -26,3 +26,17 @@ core.*
 **/*.env.*
 !.env.example
 !**/*.env.example
+
+# Local operator state, browser profiles, search databases and build evidence.
+.private-operations
+**/.private-operations
+.qmd/*.sqlite*
+**/.qmd/*.sqlite*
+.angular
+.playwright-mcp
+artifacts
+playwright-report
+test-results
+debug
+out-tsc
+.DS_Store

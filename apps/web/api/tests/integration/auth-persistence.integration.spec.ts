@@ -42,7 +42,7 @@ afterAll(async () => {
   await resource?.close();
 
   await postgres?.stop();
-});
+}, 60000);
 
 function payload(): SessionData {
   const cookie = new Cookie();

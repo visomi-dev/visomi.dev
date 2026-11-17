@@ -2,6 +2,7 @@ import { randomBytes } from 'node:crypto';
 
 import type { Request, Response } from 'express';
 
+import { REALTIME_PUBLISHER, type RealtimePublisher } from '@visomi-stack/backend-shared/lib/realtime';
 import { inject } from '@visomi-stack/backend-shared/lib/injection';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 
@@ -13,6 +14,7 @@ import type { Principal } from '../shared/identity';
 export class SessionResponses {
   private readonly config = inject<AuthConfig>(AUTH_CONFIG);
   private readonly recovery = inject(Recovery);
+  private readonly realtime = inject<RealtimePublisher>(REALTIME_PUBLISHER, { optional: true });
 
   async establish(request: Request, user: Principal): Promise<void> {
     const previous = request.sessionID;
@@ -41,7 +43,11 @@ export class SessionResponses {
 
       response.json({ ...sessionView(request), ...extras });
     } else {
+      const previous = request.sessionID;
+
       await destroySession(request);
+
+      void this.realtime?.notifySession(previous).catch(() => undefined);
 
       response.clearCookie(this.config.cookieName, {
         httpOnly: true,

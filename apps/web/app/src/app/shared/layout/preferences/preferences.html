@@ -1,0 +1,31 @@
+<nav
+  class="flex flex-wrap items-center gap-3 text-sm"
+  aria-label="Language"
+  i18n-aria-label="@@dashboardAccessLanguage"
+>
+  <a
+    [href]="languageUrl('en')"
+    lang="en"
+    [attr.aria-current]="language.startsWith('en') ? 'page' : null"
+    class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg px-2"
+    >English</a
+  >
+
+  <a
+    [href]="languageUrl('es')"
+    lang="es"
+    [attr.aria-current]="language === 'es' ? 'page' : null"
+    class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg px-2"
+    >Español</a
+  >
+
+  <button
+    class="ui-focus-ring min-h-11 rounded-lg border border-zinc-300 px-3 dark:border-zinc-600"
+    type="button"
+    (click)="toggle()"
+    [attr.aria-pressed]="dark()"
+    i18n="@@adminHeaderTheme"
+  >
+    Dark theme
+  </button>
+</nav>

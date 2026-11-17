@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
 import type { ResolveFn } from '@angular/router';
-import { catchError, map, of } from 'rxjs';
+import { catchError, defaultIfEmpty, map, of } from 'rxjs';
 
 export type Contact = {
   id: string;
@@ -26,6 +26,7 @@ export const dashboardResolver: ResolveFn<DashboardData> = (route) => {
     return http.get<{ item: Contact }>(`/api/contact/submissions/${encodeURIComponent(id)}`).pipe(
       map(({ item }): DashboardData => ({ state: 'ready', item })),
       catchError(() => of<DashboardData>({ state: 'error' })),
+      defaultIfEmpty({ state: 'denied' } satisfies DashboardData),
     );
   }
 
@@ -36,5 +37,6 @@ export const dashboardResolver: ResolveFn<DashboardData> = (route) => {
     .pipe(
       map((list): DashboardData => ({ state: 'ready', ...list })),
       catchError(() => of<DashboardData>({ state: 'error' })),
+      defaultIfEmpty({ state: 'denied' } satisfies DashboardData),
     );
 };

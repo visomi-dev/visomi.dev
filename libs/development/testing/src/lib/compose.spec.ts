@@ -1,11 +1,23 @@
-import { execFile } from 'node:child_process';
+import { execFile, type ExecFileOptions } from 'node:child_process';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createTestCompose, runTestCompose } from './compose';
+import { createTestCompose, runTestCompose, stopTestCompose } from './compose';
 import type { TestCompose } from './compose';
 
 vi.mock('node:child_process', () => ({ execFile: vi.fn() }));
+vi.mock('./owned-command', () => ({
+  runOwnedCommand: (command: string, args: string[], options: ExecFileOptions) =>
+    new Promise((resolve, reject) => {
+      execFile(command, args, options, (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve({ stdout, stderr });
+        }
+      });
+    }),
+}));
 
 const owner: TestCompose = {
   provider: 'docker',
@@ -42,7 +54,7 @@ describe('test Compose command ownership', () => {
     const resource = await createTestCompose(owner.directory, owner.telemetryDirectory, 'web-api');
 
     expect(resource.provider).toBe('docker');
-    expect(execFile).toHaveBeenCalledExactlyOnceWith('docker', ['compose', 'version'], expect.any(Function));
+    expect(execFile).toHaveBeenCalledWith('docker', ['compose', 'version'], { timeout: 5000 }, expect.any(Function));
   });
 
   it('uses podman-compose when Docker Compose is unavailable', async () => {
@@ -52,7 +64,22 @@ describe('test Compose command ownership', () => {
     const resource = await createTestCompose(owner.directory, owner.telemetryDirectory, 'web-api');
 
     expect(resource.provider).toBe('podman-compose');
-    expect(execFile).toHaveBeenLastCalledWith('podman-compose', ['version'], expect.any(Function));
+    expect(execFile).toHaveBeenLastCalledWith('podman-compose', ['version'], { timeout: 5000 }, expect.any(Function));
+  });
+
+  it('detects the Docker-to-Podman shim and avoids the external Docker Compose API compatibility bridge', async () => {
+    vi.mocked(execFile).mockImplementationOnce(((...args: unknown[]) => {
+      (args.at(-1) as (error: null, output: object) => void)(null, { stdout: 'podman version 5.4.2', stderr: '' });
+    }) as never);
+    const resource = await createTestCompose(owner.directory, owner.telemetryDirectory, 'web-api');
+
+    expect(resource.provider).toBe('podman-compose');
+    expect(execFile).not.toHaveBeenCalledWith(
+      'docker',
+      ['compose', 'version'],
+      expect.anything(),
+      expect.any(Function),
+    );
   });
 
   it('rejects an unsupported provider instead of interpreting a shell command', async () => {
@@ -123,6 +150,12 @@ describe('test Compose command ownership', () => {
 
     const [command, args] = vi.mocked(execFile).mock.calls[0];
 
+    expect(execFile).toHaveBeenCalledWith(
+      'podman-compose',
+      expect.any(Array),
+      expect.objectContaining({ timeout: 20000 }),
+      expect.any(Function),
+    );
     expect(command).toBe('podman-compose');
     expect(args).not.toContain('compose');
     expect(args).toEqual(expect.arrayContaining(['-p', owner.project, 'down', '--volumes']));
@@ -155,6 +188,71 @@ describe('test Compose command ownership', () => {
     expect(() => runTestCompose({ ...owner, ...change } as TestCompose, ['down', '--volumes'])).toThrow(
       'isolated_compose_owner_invalid',
     );
+    expect(execFile).not.toHaveBeenCalled();
+  });
+});
+
+describe('owned Compose teardown', () => {
+  it('keeps Docker cleanup in the owned Compose project', async () => {
+    const signal = new AbortController().signal;
+
+    await stopTestCompose(owner, signal);
+
+    expect(execFile).toHaveBeenCalledWith(
+      'docker',
+      expect.arrayContaining([
+        'compose',
+        '-p',
+        owner.project,
+        'down',
+        '--timeout',
+        '2',
+        '--volumes',
+        '--remove-orphans',
+      ]),
+      expect.objectContaining({ signal }),
+      expect.any(Function),
+    );
+  });
+
+  it.each([true, false])('selects only actual Podman resources by exact project label; present=%s', async (present) => {
+    const signal = new AbortController().signal;
+    const identifiers = ['owned-container', 'owned-volume', 'owned-network'];
+    let listed = 0;
+
+    vi.mocked(execFile).mockImplementation(((
+      _command: string,
+      args: string[],
+      _options: unknown,
+      callback: (error: null, stdout: string, stderr: string) => void,
+    ) => {
+      const listing = args.includes('--filter');
+      const stdout = listing && present ? identifiers[listed] + '\n' : '';
+
+      listed += Number(listing);
+      callback(null, stdout, '');
+    }) as never);
+
+    await stopTestCompose({ ...owner, provider: 'podman-compose' }, signal);
+
+    const calls = vi.mocked(execFile).mock.calls;
+    const selections = calls.filter((call) => (call[1] as string[]).includes('--filter'));
+    const removals = calls.filter((call) => (call[1] as string[]).includes('rm'));
+
+    expect(selections).toHaveLength(3);
+    for (const call of selections) {
+      expect(call[0]).toBe('podman');
+      expect(call[1]).toContain('label=io.podman.compose.project=' + owner.project);
+      expect(call[2]).toMatchObject({ signal, timeout: 45000 });
+    }
+    expect(removals.map((call) => (call[1] as string[]).at(-1))).toEqual(present ? identifiers : []);
+  });
+
+  it('rejects an unowned cleanup descriptor before invoking Podman', async () => {
+    await expect(stopTestCompose({ ...owner, project: 'unrelated' }, new AbortController().signal)).rejects.toThrow(
+      'isolated_compose_owner_invalid',
+    );
+
     expect(execFile).not.toHaveBeenCalled();
   });
 });

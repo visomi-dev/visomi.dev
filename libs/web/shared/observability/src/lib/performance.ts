@@ -51,7 +51,7 @@ export function createBrowserPerformance(
         credentials: 'omit',
         referrerPolicy: 'no-referrer',
         keepalive: true,
-        mode: 'same-origin',
+        mode: 'cors',
         redirect: 'error',
         headers: { 'content-type': 'application/json', 'x-browser-telemetry': config.token },
         body: JSON.stringify(payload),

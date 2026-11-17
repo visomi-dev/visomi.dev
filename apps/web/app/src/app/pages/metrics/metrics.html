@@ -1,14 +1,8 @@
-<main class="min-h-screen bg-white p-6 text-slate-900 sm:p-10 dark:bg-slate-950 dark:text-slate-100">
+<section class="text-zinc-950 dark:text-zinc-50">
   <div class="mx-auto max-w-5xl space-y-6">
-    <h1 class="text-2xl font-semibold" i18n="@@metricsHeroTitle">Technical metrics</h1>
-
-    <nav class="flex flex-wrap gap-4" aria-label="Private navigation" i18n-aria-label="@@metricsNavigationLabel">
-      <a routerLink="/dashboard" class="underline" i18n="@@metricsContactLink">Contact requests</a>
-
-      <a href="/app/en/metrics" class="underline" lang="en">English</a>
-
-      <a href="/app/es/metrics" class="underline" lang="es">Español</a>
-    </nav>
+    <h1 appNavigationHeading tabindex="-1" class="text-2xl font-semibold" i18n="@@metricsHeroTitle">
+      Technical metrics
+    </h1>
 
     <p i18n="@@metricsScopeDescription">
       HTTP measurements from this process over the last 15 minutes. Local counters reset on restart. Latency is capped
@@ -89,4 +83,4 @@
       <p role="alert" i18n="@@metricsErrorState">Metrics could not be loaded. Please try again.</p>
     }
   </div>
-</main>
+</section>

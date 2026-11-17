@@ -63,9 +63,10 @@
       "options": {
         "commands": [
           "tsc --noEmit --module esnext --moduleResolution bundler --allowImportingTsExtensions --target es2022 --types node --skipLibCheck .railway/railway.ts",
-          "eslint .railway tools/deployment/*.mjs",
+          "tsc -p tools/testing/tsconfig.json",
+          "eslint .railway tools/deployment/*.mjs tools/testing/*.ts tools/testing/*.mjs",
           "bash -n tools/deployment/container.sh",
-          "node --import tsx --test tools/deployment/affected.spec.mjs tools/deployment/resolve-browser-error.spec.mjs tools/deployment/watch-patterns.spec.mjs tools/deployment/jaeger-iac.spec.mjs"
+          "node --import tsx --test tools/deployment/affected.spec.mjs tools/deployment/resolve-browser-error.spec.mjs tools/deployment/watch-patterns.spec.mjs tools/deployment/jaeger-iac.spec.mjs tools/deployment/migration-inventory.spec.mjs"
         ],
         "parallel": false
       },
@@ -74,6 +75,7 @@
         "{workspaceRoot}/.railway/**/*",
         "{workspaceRoot}/tools/deployment/**/*",
         "{workspaceRoot}/tools/development/**/*",
+        "{workspaceRoot}/docs/migration/stack-files.json",
         "{workspaceRoot}/eslint.config.mjs",
         "{workspaceRoot}/tools/lint-rules/**/*",
         {
@@ -209,6 +211,28 @@
       ],
       "options": {
         "command": "bash tools/deployment/container.sh"
+      }
+    },
+    "context-check": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node tools/deployment/docker-context-check.mjs"
+      }
+    },
+    "inventory-check": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "node tools/deployment/migration-inventory.mjs"
+      }
+    },
+    "artifact-map-check": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "dependsOn": ["build"],
+      "options": {
+        "command": "node tools/deployment/artifact-maps-check.mjs"
       }
     }
   },

@@ -67,7 +67,10 @@ describe('gateway composition', () => {
           (options: { authContext?: (request: Request) => unknown }) => (request: Request, response: Response) =>
             response.json(options.authContext?.(request)),
       };
-      const result = await dispatch(createGatewayApp({ api: apiFixture(), auth, application }), '/app/en/auth/sign-in');
+      const result = await dispatch(
+        createGatewayApp({ api: apiFixture(), auth, application }),
+        '/app/en/admin/auth/sign-in',
+      );
 
       expect(result.body).toEqual({ available: false, session: null });
     },
@@ -88,7 +91,7 @@ describe('gateway composition', () => {
     };
     const app = createGatewayApp({ api: apiFixture(), auth, application });
     const documentHeaders = vi.fn();
-    const rendered = await dispatch(app, '/app/en/auth/sign-in', documentHeaders);
+    const rendered = await dispatch(app, '/app/en/admin/auth/sign-in', documentHeaders);
 
     expect(rendered.body).toEqual({ available: true, session: snapshot });
     expect(auth.snapshot).toHaveBeenCalledOnce();
@@ -379,11 +382,11 @@ describe('gateway composition', () => {
     expect(result).toEqual({ status: 403, body: { error: 'access_denied' } });
   });
 
-  it('uses private JSON error fallbacks when the preserved public site has no stack error templates', async () => {
+  it('uses private JSON error fallbacks when compiled error documents are unavailable', async () => {
     const site = await loadSite(new URL('../../../../dist/apps/web/site/server/entry.mjs', import.meta.url));
     const app = createGatewayApp({
       api: apiFixture((_request, _response, next) => next(new HttpError(422, 'request_invalid'))),
-      site,
+      site: { ...site!, clientDirectory: '/synthetic/missing-documents' },
       trustProxy: ['127.0.0.1'],
       auth: { middleware: [(_request, _response, next) => next()] },
       application: {

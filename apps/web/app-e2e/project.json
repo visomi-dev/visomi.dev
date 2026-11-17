@@ -9,13 +9,15 @@
     "e2e": {
       "dependsOn": ["web-gateway:build"],
       "inputs": [
+        { "env": "PLAYWRIGHT_BROWSERS" },
         "default",
         "^default",
         "{workspaceRoot}/tools/testing/**/*",
         "{workspaceRoot}/compose*.yaml",
         "{workspaceRoot}/pnpm-workspace.yaml",
         "{workspaceRoot}/package.json",
-        "{workspaceRoot}/pnpm-lock.yaml"
+        "{workspaceRoot}/pnpm-lock.yaml",
+        "{workspaceRoot}/styles.base.css"
       ]
     }
   }

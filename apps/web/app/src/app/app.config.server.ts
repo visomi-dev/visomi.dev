@@ -1,13 +1,15 @@
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
+import { ErrorHandler, mergeApplicationConfig, type ApplicationConfig } from '@angular/core';
 import { provideServerRendering, withRoutes } from '@angular/ssr';
 
 import { appConfig } from './app.config';
 import { serverRoutes } from './app.routes.server';
+import { ServerErrors } from './shared/observability/server-errors';
 import { privateApiInterceptor } from './private-api.server';
 
 const serverConfig: ApplicationConfig = {
   providers: [
+    { provide: ErrorHandler, useClass: ServerErrors },
     provideHttpClient(withFetch(), withInterceptors([privateApiInterceptor])),
     provideServerRendering(withRoutes(serverRoutes)),
   ],

@@ -29,11 +29,11 @@ for (const locale of ['en', 'es']) {
 }
 
 for (const locale of ['en', 'es']) {
-  for (const path of [`/app/${locale}/`, `/app/${locale}/access`]) {
+  for (const path of [`/app/${locale}/`, `/app/${locale}/admin/auth/sign-in`]) {
     const response = await request(path);
     const html = await response.text();
 
-    assert.equal(response.status, 200);
+    assert.equal(response.status, path === `/app/${locale}/` ? 404 : 200);
     assert.match(response.headers.get('content-type'), /text\/html/);
     assert.ok(html.includes('<app-root'));
     assert.ok(!html.includes('__VISOMI_CSP_NONCE__'));
@@ -62,11 +62,11 @@ for (const locale of ['en', 'es']) {
 // SSR evaluates owner guards before sending private documents. Anonymous users
 // must receive an exact localized access redirect, never a 200 client-side shell.
 for (const locale of ['en', 'es']) {
-  for (const route of ['dashboard', 'dashboard/123', 'metrics']) {
+  for (const route of ['admin/dashboard', 'admin/contacts/123', 'admin/metrics']) {
     const response = await request(`/app/${locale}/${route}`);
 
     assert.equal(response.status, 302);
-    assert.equal(response.headers.get('location'), `/app/${locale}/access`);
+    assert.equal(response.headers.get('location'), `/app/${locale}/admin/auth/sign-in`);
     assert.equal(response.headers.get('cache-control'), 'private, no-store');
     assert.equal(response.headers.get('etag'), null);
     const body = await response.text();

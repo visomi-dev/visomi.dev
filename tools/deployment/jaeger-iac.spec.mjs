@@ -51,9 +51,10 @@ test('native tracing and unrelated capture remain off; existing dependencies sta
   for (const service of [gateway, jaeger]) {
     assert.deepEqual(service.tracing, { enabled: false, autoInstrumentation: false });
   }
-  for (const flag of ['VISOMI_PRIVATE_METRICS', 'VISOMI_BROWSER_TELEMETRY', 'VISOMI_BROWSER_PERFORMANCE']) {
-    assert.deepEqual(gateway.variables[flag], literal('false'));
+  for (const flag of ['VISOMI_PRIVATE_METRICS', 'VISOMI_BROWSER_TELEMETRY']) {
+    assert.deepEqual(gateway.variables[flag], { type: 'preserve' });
   }
+  assert.deepEqual(gateway.variables.VISOMI_BROWSER_PERFORMANCE, literal('false'));
   for (const flag of ['OTEL_METRICS_EXPORTER', 'OTEL_LOGS_EXPORTER']) {
     assert.deepEqual(gateway.variables[flag], literal('none'));
   }

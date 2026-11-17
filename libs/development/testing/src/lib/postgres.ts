@@ -7,11 +7,17 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Pool } from 'pg';
 
-import { createTestCompose, runTestCompose } from './compose';
+import { createTestCompose, runTestCompose, stopTestCompose, TEST_POSTGRES_CLEANUP_MS } from './compose';
 import type { TestCompose } from './compose';
 
 // Every resource has its own Compose project/volume; developer DATABASE_URL is never consulted.
-export async function testPostgres(manifest?: string, app: TestCompose['app'] = 'web-api', signal?: AbortSignal) {
+export async function testPostgres(
+  manifest?: string,
+  app: TestCompose['app'] = 'web-api',
+  signal: AbortSignal = AbortSignal.timeout(40000),
+) {
+  const timings = { setupMs: 0, readinessMs: 0, migrationMs: 0, cleanupMs: 0 };
+  const started = performance.now();
   const temporaryRoot = manifest ? dirname(manifest) : tmpdir();
   const directory = await mkdtemp(join(temporaryRoot, 'visomi-auth-test-'));
   let compose: TestCompose | undefined;
@@ -39,8 +45,10 @@ export async function testPostgres(manifest?: string, app: TestCompose['app'] = 
       throw new Error('test_postgres_port_unavailable');
     }
 
+    timings.setupMs = performance.now() - started;
+    const readyStarted = performance.now();
     const url = `postgresql://visomi_test:synthetic-test-password@127.0.0.1:${match[1]}/visomi_auth_test`;
-    const pool = new Pool({ connectionString: url, connectionTimeoutMillis: 1000 });
+    const pool = new Pool({ connectionString: url, connectionTimeoutMillis: 1000, query_timeout: 5000, max: 1 });
     const db = drizzle({ client: pool, logger: false });
 
     try {
@@ -58,18 +66,30 @@ export async function testPostgres(manifest?: string, app: TestCompose['app'] = 
         }
       }
 
+      timings.readinessMs = performance.now() - readyStarted;
+      const migrationStarted = performance.now();
+
       await migrate(db, {
         migrationsFolder: resolve(__dirname, '../../../../../libs/backend/shared/src/lib/database/migrations'),
       });
+
+      timings.migrationMs = performance.now() - migrationStarted;
     } finally {
       await pool.end();
     }
 
     let stopping: Promise<void> | undefined;
     const owner = compose;
-    const stop = () => (stopping ??= stopTestPostgres(directory, owner));
+    const stop = () =>
+      (stopping ??= (async () => {
+        const cleanupStarted = performance.now();
 
-    return { url, directory, compose, stop };
+        await stopTestPostgres(directory, owner);
+
+        timings.cleanupMs = performance.now() - cleanupStarted;
+      })());
+
+    return { url, directory, compose, stop, timings };
   } catch {
     if (compose) {
       await stopTestPostgres(directory, compose);
@@ -81,7 +101,11 @@ export async function testPostgres(manifest?: string, app: TestCompose['app'] = 
   }
 }
 
-export async function stopTestPostgres(directory: string, compose: TestCompose) {
+export async function stopTestPostgres(
+  directory: string,
+  compose: TestCompose,
+  signal: AbortSignal = AbortSignal.timeout(TEST_POSTGRES_CLEANUP_MS),
+) {
   if (!basename(directory).startsWith('visomi-auth-test-') || compose.directory !== directory) {
     throw new Error('isolated_postgres_owner_invalid');
   }
@@ -100,11 +124,29 @@ export async function stopTestPostgres(directory: string, compose: TestCompose) 
     throw error;
   }
 
-  try {
-    await runTestCompose(compose, ['down', '--volumes', '--remove-orphans']);
-  } catch {
-    // Keep the manifest/marker when cleanup fails so teardown can retry safely.
-    throw new Error('isolated_postgres_cleanup_failed');
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      await stopTestCompose(compose, signal);
+
+      break;
+    } catch (error) {
+      if (attempt === 0 && !signal.aborted) {
+        continue;
+      }
+
+      const failure = error as { message?: string };
+      const reason =
+        [
+          'isolated_command_timeout',
+          'isolated_command_aborted',
+          'isolated_command_failed',
+          'isolated_command_output_limit',
+        ].find((code) => code === failure.message) ?? 'provider_error';
+
+      // The marker survives exhausted cleanup, and raw command output never enters the error.
+      // eslint-disable-next-line preserve-caught-error -- Retain only a fixed code.
+      throw new Error(`isolated_postgres_cleanup_failed:${reason}`);
+    }
   }
 
   await rm(directory, { recursive: true, force: true });

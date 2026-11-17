@@ -252,7 +252,7 @@ describe('compiled ESM gateway and embedded API', () => {
 
     try {
       const headers = { 'x-forwarded-for': '192.0.2.1' };
-      const document = await fetch(gateway.url + '/app/en/access', { headers });
+      const document = await fetch(gateway.url + '/app/en/admin/auth/sign-in', { headers });
       const html = await document.text();
       const stylesheet = html.match(/href="([^"]+\.css)"/)?.[1];
 
@@ -288,18 +288,22 @@ describe('compiled ESM gateway and embedded API', () => {
         }
 
         if (client === 1) {
-          const limited = await fetch(gateway.url + '/app/en/access', {
+          const limited = await fetch(gateway.url + '/app/en/admin/auth/sign-in', {
             headers: { ...headers, accept: 'text/html' },
           });
 
           expect(limited.status).toBe(429);
           expect(limited.headers.get('retry-after')).toBeTruthy();
 
-          await expect(limited.json()).resolves.toEqual({ error: 'rate_limited' });
+          expect(limited.headers.get('content-type')).toContain('text/html');
+          const body = await limited.text();
+
+          expect(body).toContain('Request could not be completed');
+          expect(limited.headers.get('cache-control')).toBe('no-store');
         }
       }
 
-      const rejected = await fetch(gateway.url + '/app/en/access', {
+      const rejected = await fetch(gateway.url + '/app/en/admin/auth/sign-in', {
         headers: { 'x-forwarded-for': '192.0.2.11' },
         redirect: 'manual',
       });

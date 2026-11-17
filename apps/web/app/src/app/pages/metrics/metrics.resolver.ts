@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
 import type { ResolveFn } from '@angular/router';
-import { catchError, map, of } from 'rxjs';
+import { catchError, defaultIfEmpty, map, of } from 'rxjs';
 
 import type { PrivateMetricsSnapshot } from '@visomi-stack/web-shared-observability/lib/private-metrics';
 
@@ -13,4 +13,5 @@ export const metricsResolver: ResolveFn<MetricsData> = () =>
     .pipe(
       map((snapshot): MetricsData => ({ state: 'ready', snapshot })),
       catchError(() => of<MetricsData>({ state: 'error' })),
+      defaultIfEmpty({ state: 'error' } satisfies MetricsData),
     );

@@ -45,8 +45,11 @@ collector volume and credentials intact. Reconcile the IaC flag with that operat
 rollback before the next apply so it does not silently re-enable export.
 
 Native Railway tracing/auto-instrumentation remains disabled. Only the application's
-allowlisted operational spans are exported. Browser error/performance capture and
-local private dashboard metrics remain disabled independently. OTLP metrics and logs
+allowlisted operational spans are exported. Private dashboard metrics and browser error capture preserve their existing environment opt-ins
+(`VISOMI_PRIVATE_METRICS`, `VISOMI_BROWSER_TELEMETRY`). The owner has already approved both
+for the bound production service; applying unrelated IaC must preserve those values. New
+environments still default to disabled in the runtime until explicitly configured. Browser
+performance remains explicitly disabled independently. OTLP metrics and logs
 export remain `none`; local dashboard metrics are process-local, not Jaeger history.
 
 The contact cutover/rollback and owner acceptance gates are documented in

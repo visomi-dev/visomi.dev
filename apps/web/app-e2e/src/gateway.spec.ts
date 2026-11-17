@@ -18,12 +18,12 @@ test.describe('monolith gateway', () => {
   });
 
   test('serves Angular under /app', async ({ page }) => {
-    const response = await page.goto('/app/');
+    const response = await page.goto('/app/en/admin/auth/sign-in');
 
     expect(response?.ok()).toBe(true);
 
     await expect(page.locator('app-root')).toHaveCount(1);
 
-    await expect(page.locator('h1')).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: 'Owner sign-in' })).toBeVisible();
   });
 });

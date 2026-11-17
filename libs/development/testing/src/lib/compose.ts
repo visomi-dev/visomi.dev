@@ -4,7 +4,11 @@ import { promisify } from 'node:util';
 
 import { workspaceRoot } from '@nx/devkit';
 
+import { runOwnedCommand } from './owned-command';
+
 const execute = promisify(execFile);
+
+export const TEST_POSTGRES_CLEANUP_MS = 45000;
 
 export type TestCompose = {
   provider: 'docker' | 'podman-compose';
@@ -29,11 +33,19 @@ export async function createTestCompose(
     throw new Error('test_compose_provider_invalid');
   } else {
     try {
-      await execute('docker', ['compose', 'version']);
+      const version = await execute('docker', ['--version'], { timeout: 5000 });
 
-      provider = 'docker';
+      if (/podman version/i.test(version.stdout)) {
+        await execute('podman-compose', ['version'], { timeout: 5000 });
+
+        provider = 'podman-compose';
+      } else {
+        await execute('docker', ['compose', 'version'], { timeout: 5000 });
+
+        provider = 'docker';
+      }
     } catch {
-      await execute('podman-compose', ['version']);
+      await execute('podman-compose', ['version'], { timeout: 5000 });
 
       provider = 'podman-compose';
     }
@@ -47,18 +59,9 @@ export function runTestCompose(
   args: string[],
   signal?: AbortSignal,
 ): Promise<{ stdout: string; stderr: string }> {
-  if (
-    !basename(owner.directory).startsWith('visomi-auth-test-') ||
-    owner.project !== basename(owner.directory).toLowerCase() ||
-    !['docker', 'podman-compose'].includes(owner.provider) ||
-    !['web-api', 'web-gateway'].includes(owner.app) ||
-    (owner.redisPort !== undefined &&
-      (!Number.isInteger(owner.redisPort) || owner.redisPort < 1 || owner.redisPort > 65535))
-  ) {
-    throw new Error('isolated_compose_owner_invalid');
-  }
+  validateOwner(owner);
 
-  return execute(
+  return runOwnedCommand(
     owner.provider,
     [
       ...(owner.provider === 'docker' ? ['compose'] : []),
@@ -76,7 +79,7 @@ export function runTestCompose(
       cwd: workspaceRoot,
       signal,
       // Match the HTTP readiness window for cold builds; keep routine Compose commands bounded.
-      timeout: args[0] === 'build' ? 600000 : 300000,
+      timeout: args[0] === 'build' ? 600000 : args[0] === 'down' ? 20000 : 300000,
       maxBuffer: 10 * 1024 * 1024,
       env: {
         ...process.env,
@@ -103,4 +106,47 @@ export function runTestCompose(
       },
     },
   );
+}
+
+function validateOwner(owner: TestCompose): void {
+  if (
+    !basename(owner.directory).startsWith('visomi-auth-test-') ||
+    owner.project !== basename(owner.directory).toLowerCase() ||
+    !['docker', 'podman-compose'].includes(owner.provider) ||
+    !['web-api', 'web-gateway'].includes(owner.app) ||
+    (owner.redisPort !== undefined &&
+      (!Number.isInteger(owner.redisPort) || owner.redisPort < 1 || owner.redisPort > 65535))
+  ) {
+    throw new Error('isolated_compose_owner_invalid');
+  }
+}
+
+export async function stopTestCompose(owner: TestCompose, signal: AbortSignal): Promise<void> {
+  validateOwner(owner);
+
+  if (owner.provider === 'docker') {
+    await runTestCompose(owner, ['down', '--timeout', '2', '--volumes', '--remove-orphans'], signal);
+
+    return;
+  }
+
+  // podman-compose down traverses every declared service, including ones never started.
+  // Remove only actual resources carrying this exact project label, within one deadline.
+  const command = (args: string[]) =>
+    runOwnedCommand('podman', args, { signal, timeout: TEST_POSTGRES_CLEANUP_MS, maxBuffer: 1024 * 1024 });
+  const label = `label=io.podman.compose.project=${owner.project}`;
+  const resources = [
+    { list: ['ps', '--all'], remove: ['rm', '--force', '--time', '2', '--volumes'], field: '{{.ID}}' },
+    { list: ['volume', 'ls'], remove: ['volume', 'rm'], field: '{{.Name}}' },
+    { list: ['network', 'ls'], remove: ['network', 'rm'], field: '{{.Name}}' },
+  ];
+
+  for (const resource of resources) {
+    const { stdout } = await command([...resource.list, '--filter', label, '--format', resource.field]);
+    const names = stdout.trim().split(/\s+/).filter(Boolean);
+
+    if (names.length) {
+      await command([...resource.remove, ...names]);
+    }
+  }
 }

@@ -48,7 +48,7 @@
 /* An external image keeps SVG mask IDs isolated across simultaneous indicators. */
 @utility ui-loader {
   background-color: currentColor;
-  mask-image: url('./assets/brand/visomi-loader-smil.svg');
+  mask-image: url('./assets/brand/visomi-loader.svg');
   mask-position: center;
   mask-repeat: no-repeat;
   mask-size: contain;
