@@ -2,6 +2,11 @@
 services:
   postgres:
     container_name: '${COMPOSE_PROJECT_NAME}-postgres'
+    # Each fixture initializes and discards a cluster. Keep its data and WAL off the shared build disk.
+    environment:
+      PGDATA: /var/lib/postgresql/fixture/data
+    tmpfs:
+      - /var/lib/postgresql/fixture:size=256m
   redis:
     container_name: '${COMPOSE_PROJECT_NAME}-redis'
   app:

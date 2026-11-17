@@ -5,6 +5,7 @@ import { promisify } from 'node:util';
 import { Pool } from 'pg';
 import { expect, it } from 'vitest';
 
+import { runTestCompose } from './compose';
 import { testPostgres } from './postgres';
 
 const execute = promisify(execFile);
@@ -15,6 +16,21 @@ it('applies the production migration command to an empty isolated database and c
   const pool = new Pool({ connectionString: database.url });
 
   try {
+    const settings = await pool.query<{ data_directory: string }>('SHOW data_directory');
+    const dataDirectory = settings.rows[0].data_directory;
+    const storage = await runTestCompose(database.compose, [
+      'exec',
+      '-T',
+      'postgres',
+      'stat',
+      '-f',
+      '-c',
+      '%T',
+      dataDirectory,
+    ]);
+
+    expect(storage.stdout.trim()).toBe('tmpfs');
+
     // This fixture owns an isolated disposable database, never the developer's DATABASE_URL.
     await pool.query('DROP SCHEMA public CASCADE; CREATE SCHEMA public; DROP SCHEMA drizzle CASCADE;');
 
