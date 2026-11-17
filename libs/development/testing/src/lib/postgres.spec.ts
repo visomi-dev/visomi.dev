@@ -74,7 +74,7 @@ beforeEach(async () => {
   vi.mocked(createTestCompose).mockImplementation(async (cluster, telemetryDirectory, app) => ({
     ...descriptor(cluster),
     telemetryDirectory,
-    app,
+    app: app === 'postgres' ? 'web-api' : app,
   }));
   const actual = await vi.importActual<typeof ImportedModule1>('node:fs/promises');
 
@@ -117,6 +117,14 @@ describe('Compose PostgreSQL resource', () => {
     await first;
 
     await expect(stat(resource.directory)).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
+  it('requests a host-only database for callers that only connect over loopback', async () => {
+    const resource = await testPostgres(undefined, 'postgres');
+
+    expect(createTestCompose).toHaveBeenCalledWith(resource.directory, expect.any(String), 'postgres');
+
+    await resource.stop();
   });
 
   it('records ownership before startup and selects the gateway build without reading a developer env file', async () => {

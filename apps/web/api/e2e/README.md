@@ -133,7 +133,10 @@ There is no Nx serve watcher or native PostgreSQL server in this E2E startup.
 
 Each disposable PostgreSQL cluster stores its data and WAL on a 256 MiB tmpfs to
 isolate migrations from build-disk writeback. Its 40-second setup deadline includes
-Compose startup, SQL readiness and migrations.
+container startup, SQL readiness and migrations. Host-only API templates and browser
+fixtures on rootless Podman use its configured pasta or slirp4netns network and a
+single loopback-published container. Docker and Podman installations without a
+recognized private network driver use Compose.
 
 Every run owns its project name, temporary PostgreSQL storage, network, synthetic credentials,
 and ignored `tmp/api-e2e/run-*` or `gateway-run-*` directory. PostgreSQL is published

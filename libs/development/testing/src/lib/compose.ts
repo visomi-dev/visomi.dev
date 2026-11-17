@@ -17,12 +17,13 @@ export type TestCompose = {
   telemetryDirectory: string;
   app: 'web-api' | 'web-gateway';
   redisPort?: number;
+  hostNetwork?: 'pasta' | 'slirp4netns';
 };
 
 export async function createTestCompose(
   directory: string,
   telemetryDirectory: string,
-  app: TestCompose['app'],
+  target: TestCompose['app'] | 'postgres',
 ): Promise<TestCompose> {
   const configured = process.env['VISOMI_TEST_COMPOSE'];
   let provider: TestCompose['provider'];
@@ -51,7 +52,35 @@ export async function createTestCompose(
     }
   }
 
-  return { provider, project: basename(directory).toLowerCase(), directory, telemetryDirectory, app };
+  const owner: TestCompose = {
+    provider,
+    project: basename(directory).toLowerCase(),
+    directory,
+    telemetryDirectory,
+    app: target === 'postgres' ? 'web-api' : target,
+  };
+
+  if (target === 'postgres' && provider === 'podman-compose') {
+    try {
+      const { stdout } = await execute(
+        'podman',
+        ['info', '--format', '{{.Host.Security.Rootless}} {{.Host.RootlessNetworkCmd}}'],
+        { timeout: 5000 },
+      );
+
+      if (stdout.trim() === 'true pasta') {
+        owner.hostNetwork = 'pasta';
+      }
+
+      if (stdout.trim() === 'true slirp4netns') {
+        owner.hostNetwork = 'slirp4netns';
+      }
+    } catch {
+      // Older engines can still use the isolated Compose network.
+    }
+  }
+
+  return owner;
 }
 
 export function runTestCompose(
@@ -62,6 +91,39 @@ export function runTestCompose(
   validateOwner(owner);
 
   const [action, service, port] = args;
+
+  if (owner.hostNetwork && args.join(' ') === 'up -d postgres') {
+    // A host-only client needs a loopback port, not a shared Compose network or named volume.
+    return runOwnedCommand(
+      'podman',
+      [
+        'run',
+        '--detach',
+        '--network',
+        owner.hostNetwork,
+        '--name',
+        `${owner.project}-postgres`,
+        '--label',
+        `io.podman.compose.project=${owner.project}`,
+        '--publish',
+        '127.0.0.1::5432',
+        '--tmpfs',
+        '/var/lib/postgresql/data:size=256m',
+        '--env',
+        'POSTGRES_DB=visomi_auth_test',
+        '--env',
+        'POSTGRES_USER=visomi_test',
+        '--env',
+        'POSTGRES_PASSWORD=synthetic-test-password',
+        'docker.io/library/postgres:16-alpine',
+      ],
+      { signal, timeout: 40000, maxBuffer: 1024 * 1024 },
+    );
+  }
+
+  if (owner.hostNetwork && args.join(' ') !== 'port postgres 5432') {
+    throw new Error('isolated_postgres_host_command_invalid');
+  }
 
   if (owner.provider === 'podman-compose' && action === 'port' && (service === 'postgres' || service === 'redis')) {
     // The test override names these containers explicitly. Query only their port mappings.
@@ -126,6 +188,8 @@ function validateOwner(owner: TestCompose): void {
     owner.project !== basename(owner.directory).toLowerCase() ||
     !['docker', 'podman-compose'].includes(owner.provider) ||
     !['web-api', 'web-gateway'].includes(owner.app) ||
+    (owner.hostNetwork !== undefined &&
+      (owner.provider !== 'podman-compose' || !['pasta', 'slirp4netns'].includes(owner.hostNetwork))) ||
     (owner.redisPort !== undefined &&
       (!Number.isInteger(owner.redisPort) || owner.redisPort < 1 || owner.redisPort > 65535))
   ) {
@@ -148,6 +212,10 @@ export async function stopTestCompose(owner: TestCompose, signal: AbortSignal): 
   const label = `label=io.podman.compose.project=${owner.project}`;
 
   await command(['rm', '--force', '--time', '2', '--volumes', '--filter', label]);
+
+  if (owner.hostNetwork) {
+    return;
+  }
 
   // Podman's prune scans containers globally even with a label filter, and races other
   // projects' teardown. List only owned resources and delete those explicit names instead.

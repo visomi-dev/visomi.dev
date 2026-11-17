@@ -34,7 +34,7 @@ async function templateUrl(): Promise<string> {
     return readFile(ready, 'utf8');
   }
 
-  const template = await testPostgres(join(slot, 'postgres.json'));
+  const template = await testPostgres(join(slot, 'postgres.json'), 'postgres');
 
   await writeFile(ready, template.url, { mode: 0o600 });
 

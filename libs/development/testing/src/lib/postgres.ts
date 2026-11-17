@@ -11,7 +11,11 @@ import { createTestCompose, runTestCompose, stopTestCompose, TEST_POSTGRES_CLEAN
 import type { TestCompose } from './compose';
 
 // Every resource has its own Compose project/volume; developer DATABASE_URL is never consulted.
-export async function testPostgres(manifest?: string, app: TestCompose['app'] = 'web-api', cancellation?: AbortSignal) {
+export async function testPostgres(
+  manifest?: string,
+  target: TestCompose['app'] | 'postgres' = 'web-api',
+  cancellation?: AbortSignal,
+) {
   const deadline = AbortSignal.timeout(40000);
   const signal = cancellation ? AbortSignal.any([cancellation, deadline]) : deadline;
   const timings = { setupMs: 0, readinessMs: 0, migrationMs: 0, cleanupMs: 0 };
@@ -26,7 +30,7 @@ export async function testPostgres(manifest?: string, app: TestCompose['app'] = 
 
     await writeFile(join(directory, 'compose.env'), '');
 
-    const created = await createTestCompose(directory, temporaryRoot, app);
+    const created = await createTestCompose(directory, temporaryRoot, target);
 
     compose = created;
 

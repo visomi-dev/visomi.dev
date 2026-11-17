@@ -1,4 +1,5 @@
 import { execFile, type ExecFileOptions } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -103,6 +104,77 @@ describe('test Compose command ownership', () => {
     );
   });
 
+  it.each([
+    ['true pasta', 'pasta'],
+    ['true slirp4netns', 'slirp4netns'],
+    ['false pasta', undefined],
+    ['unknown', undefined],
+  ])('uses a private user-mode network only for supported host-only Podman fixtures: %s', async (info, expected) => {
+    vi.stubEnv('VISOMI_TEST_COMPOSE', 'podman-compose');
+    vi.mocked(execFile).mockImplementationOnce(((...args: unknown[]) => {
+      (args.at(-1) as (error: null, result: object) => void)(null, { stdout: info });
+    }) as never);
+
+    const result = await createTestCompose(owner.directory, owner.telemetryDirectory, 'postgres');
+
+    expect(result.hostNetwork).toBe(expected);
+    expect(result.app).toBe('web-api');
+  });
+
+  it('falls back to Compose when the host network driver cannot be determined', async () => {
+    vi.stubEnv('VISOMI_TEST_COMPOSE', 'podman-compose');
+    vi.mocked(execFile).mockImplementationOnce(((...args: unknown[]) => {
+      (args.at(-1) as (error: Error) => void)(new Error('info unavailable'));
+    }) as never);
+
+    const result = await createTestCompose(owner.directory, owner.telemetryDirectory, 'postgres');
+
+    expect(result.hostNetwork).toBeUndefined();
+  });
+
+  it('starts and removes only the host-only PostgreSQL container using the Compose image pin', async () => {
+    const host = { ...owner, provider: 'podman-compose', hostNetwork: 'pasta' } as const;
+    const signal = new AbortController().signal;
+
+    await runTestCompose(host, ['up', '-d', 'postgres'], signal);
+
+    const args = vi.mocked(execFile).mock.calls[0][1] as string[];
+    const compose = await readFile(new URL('../../../../../compose.yaml', import.meta.url), 'utf8');
+
+    expect(compose).toContain('postgres:\n    image: ' + args.at(-1) + '\n');
+    expect(args).toEqual(
+      expect.arrayContaining([
+        '--network',
+        'pasta',
+        '--publish',
+        '127.0.0.1::5432',
+        '--tmpfs',
+        '/var/lib/postgresql/data:size=256m',
+        '--label',
+        'io.podman.compose.project=' + host.project,
+      ]),
+    );
+
+    expect(() => runTestCompose(host, ['up', '-d', 'app'], signal)).toThrow('isolated_postgres_host_command_invalid');
+
+    await runTestCompose(host, ['port', 'postgres', '5432'], signal);
+
+    expect(vi.mocked(execFile).mock.calls[1][1]).toEqual(['port', host.project + '-postgres', '5432/tcp']);
+
+    await stopTestCompose(host, signal);
+
+    expect(execFile).toHaveBeenCalledTimes(3);
+    expect(vi.mocked(execFile).mock.calls[2][1]).toEqual([
+      'rm',
+      '--force',
+      '--time',
+      '2',
+      '--volumes',
+      '--filter',
+      'label=io.podman.compose.project=' + host.project,
+    ]);
+  });
+
   it.each(['web-api', 'web-gateway'] as const)('isolates %s from ambient development settings', async (app) => {
     vi.stubEnv('APP_DATABASE_URL', 'postgresql://synthetic-development/never-use');
     vi.stubEnv('POSTGRES_DB', 'synthetic-development');
@@ -198,6 +270,8 @@ describe('test Compose command ownership', () => {
     { app: 'synthetic-app' },
     { app: 'api' },
     { app: 'gateway' },
+    { hostNetwork: 'pasta' },
+    { provider: 'podman-compose', hostNetwork: 'other' },
     { redisPort: 0 },
     { redisPort: 65536 },
     { redisPort: 1.5 },

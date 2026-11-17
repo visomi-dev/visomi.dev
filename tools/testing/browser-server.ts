@@ -95,7 +95,7 @@ async function main(): Promise<void> {
     });
 
     phase = 'postgres';
-    const postgres = await testPostgres(undefined, 'web-api', signal);
+    const postgres = await testPostgres(undefined, 'postgres', signal);
 
     resources.postgres = postgres;
     const database = createDatabase(postgres.url);
@@ -263,7 +263,15 @@ async function main(): Promise<void> {
   });
 }
 
-void main().catch(() => {
-  process.stderr.write(`browser_fixture_failed:${phase}\n`);
+void main().catch((error: unknown) => {
+  const detail =
+    error instanceof Error &&
+    /^isolated_postgres_(?:setup_failed:(?:provider|start|port|readiness|migration)(?::(?:timeout|cancelled))?|cleanup_failed:(?:isolated_command_(?:timeout|aborted|failed|output_limit)|provider_error))$/.test(
+      error.message,
+    )
+      ? ':' + error.message
+      : '';
+
+  process.stderr.write(`browser_fixture_failed:${phase}${detail}\n`);
   process.exitCode = 1;
 });
