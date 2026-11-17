@@ -9,6 +9,7 @@ export default defineConfig(() => ({
   test: {
     name: 'web-api',
     watch: false,
+    globalSetup: ['./tests/integration/support/postgres-run.ts'],
     // Nx schedules this target exclusively. Keep at most two database-backed suites active inside it.
     maxWorkers: 2,
     hookTimeout: 120000,

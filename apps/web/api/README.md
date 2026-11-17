@@ -409,6 +409,11 @@ pnpm nx run-many -t build e2e -p web-api web-gateway
 Integration uses isolated Compose PostgreSQL and loopback SMTP, real Argon2id,
 real ES256 assertions and Google tokens signed with synthetic RSA keys. Only the
 Google certificate retrieval boundary is replaced; token verification is real.
+API integration suites clone a migrated database for each fixture. The Vitest run
+starts one disposable PostgreSQL cluster on demand per active pool slot and tears
+it down from its ownership manifest. Contact restore tests that need backup files
+keep dedicated fixture directories and clusters.
+
 Container E2E uses a test-only loopback SMTP mailbox loaded by its preload; it is
 absent from production startup. All identities, messages and credentials are
 synthetic. These checks are not physical-authenticator or email-client certification.

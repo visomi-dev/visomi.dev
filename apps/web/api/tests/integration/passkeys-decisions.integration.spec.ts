@@ -5,7 +5,6 @@ import { verifyAuthenticationResponse, verifyRegistrationResponse } from '@simpl
 import { eq } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { authenticator } from '@visomi-stack/dev-testing/lib/authenticator';
-import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
 
 import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
@@ -13,6 +12,8 @@ import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-au
 import { authService, sessionStore } from '../support/injection';
 import { authConfig } from '../../src/auth/shared/config';
 import { Passkeys } from '../../src/auth/passkeys/service';
+
+import { suitePostgres } from './support/postgres';
 
 vi.mock('@simplewebauthn/server', async (original) => {
   const actual = await original<typeof ImportedModule1>();
@@ -30,12 +31,12 @@ const config = authConfig({
   rpId: 'localhost',
   secret: 'synthetic-session-secret-with-32-bytes',
 });
-let postgres: Awaited<ReturnType<typeof testPostgres>>;
+let postgres: Awaited<ReturnType<typeof suitePostgres>>;
 let resource: ReturnType<typeof createDatabase>;
 let passkeys: Passkeys;
 
 beforeAll(async () => {
-  const isolated = await testPostgres();
+  const isolated = await suitePostgres();
 
   postgres = isolated;
   resource = createDatabase(postgres.url);
