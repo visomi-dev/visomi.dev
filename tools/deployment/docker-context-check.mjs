@@ -13,6 +13,8 @@ const tag = `localhost/visomi-context-check:${randomUUID()}`;
 const excluded = [
   '.private-operations/audit-sentinel.txt',
   '.qmd/search.sqlite',
+  '.codegraph/index.db',
+  'apps/web/app/.codegraph/index.db',
   '.playwright-mcp/profile/state.json',
   '.angular/cache/state',
   'artifacts/browser/state.json',
