@@ -24,5 +24,6 @@
     [required]="required()"
     [disabled]="disabled()"
     (input)="valueChange.emit(control.value)"
+    (paste)="paste($event)"
   />
 </div>

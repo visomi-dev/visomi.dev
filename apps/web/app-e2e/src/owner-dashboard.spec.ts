@@ -6,17 +6,26 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { workspaceRoot } from '@nx/devkit';
 
 async function enterSyntheticCode(page: Page, verification: Locator, browserName: string) {
+  const code = '00 12-34';
+
+  await verification.focus();
+
   if (browserName !== 'chromium') {
-    await verification.fill('001234');
+    await verification.evaluate((control, text) => {
+      const clipboardData = new DataTransfer();
+      const paste = new ClipboardEvent('paste', { bubbles: true, cancelable: true });
+
+      clipboardData.setData('text/plain', text);
+      Object.defineProperty(paste, 'clipboardData', { value: clipboardData });
+      control.dispatchEvent(paste);
+    }, code);
 
     return;
   }
 
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
 
-  await page.evaluate(() => navigator.clipboard.writeText('001234'));
-
-  await verification.focus();
+  await page.evaluate((text) => navigator.clipboard.writeText(text), code);
 
   await verification.press('ControlOrMeta+V');
 }

@@ -35,6 +35,27 @@ export class PinInput {
 
   private readonly control = viewChild.required<ElementRef<HTMLInputElement>>('control');
 
+  protected paste(event: ClipboardEvent): void {
+    const text = event.clipboardData?.getData('text/plain') ?? '';
+    const digits = text.replace(/[^0-9]/g, '');
+
+    if (text === digits) {
+      return;
+    }
+
+    // Normalize before the browser applies maxlength to the pasted text.
+    event.preventDefault();
+    const control = this.control().nativeElement;
+    const start = control.selectionStart ?? control.value.length;
+    const end = control.selectionEnd ?? start;
+    const available = this.digits() - (control.value.length - (end - start));
+
+    if (digits && available > 0) {
+      control.setRangeText(digits.slice(0, available), start, end, 'end');
+      this.valueChange.emit(control.value);
+    }
+  }
+
   // The browser can edit the value and the owner can clear it before Angular renders again.
   // Compare against the live control so clearing wins and ordinary edits keep native selection.
   private readonly syncValue = afterEveryRender({
