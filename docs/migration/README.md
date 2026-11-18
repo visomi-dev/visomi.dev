@@ -15,6 +15,8 @@ automatic inclusion of subsequent stack changes.
 
 `baseline.json` records source hashes before migration. `stack-files.json` inventories
 all tracked source-stack files, including hidden files, with copy destinations and exclusions.
+The [current scope matrix](current-stack-review.md#persistence-scope-by-source-path) records
+decisions for capabilities added after that baseline.
 Only tracked files were read/copied; no local env files, credentials, sessions or database
 contents were imported. MCP configuration is versioned without starting its connections.
 
@@ -77,6 +79,11 @@ Legacy migration input is an explicit offline export; the application no longer 
 - Keep original Astro components, CSS, fonts, content, scripts, assets, unprefixed English URLs,
   prerender/cache/CV improvements and identity. Template public pages are excluded.
 - Keep existing social-image generation, BullMQ/Redis worker, contracts and public artifact URLs.
+- Use cloud-only persistence for visomi.dev. Keep its PostgreSQL contracts and migrations for
+  contacts, authentication, sessions and visit aggregates. The stack's optional offline vault,
+  local key custody, PIN/PRF unlock and encrypted sync are outside this product's parity scope.
+- Use the shared PinInput for six-digit email and TOTP verification in the owner sign-in flow.
+  Preserve the server-side owner check, CSRF, cookie and private no-store contracts.
 - Angular provides owner contact list/detail, technical metrics and a separate private sign-in under the adapted stack shell;
   template public login/signup and account-management screens are excluded.
 - Adapt source package/repository/domain names and commands; remove developer-specific PATH values.
