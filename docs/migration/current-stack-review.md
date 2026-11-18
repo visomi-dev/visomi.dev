@@ -72,6 +72,10 @@ job now starts the three browsers from the official Playwright image matching th
 version. Nx and the PostgreSQL fixtures stay on the runner. The server binds to loopback and
 mounts the installed Playwright package read-only. The setup still has a five-minute budget.
 
+The first hosted run reached the administrative suite and retried a WebKit revocation test after
+its shared fixture returned HTTP 429 from the production auth limiter. Session synchronization
+now has a separate fixture per engine. The revocation assertions and auth limits are unchanged.
+
 ## Railway deployment metadata
 
 The active deployment of `c4a30f1` has a resolved manifest that selects `Dockerfile`, uses the
