@@ -85,20 +85,35 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Install browser engines
-        if: contains(fromJSON('["site-e2e","app-e2e","worker"]'), matrix.project)
+        if: contains(fromJSON('["site-e2e","worker"]'), matrix.project)
         timeout-minutes: 5
         # Hosted Ubuntu includes native Chromium libraries; en/es uses the website's own fonts.
+        run: pnpm exec playwright install chromium
+      - name: Start the administrative browser server
+        id: admin-browsers
+        if: matrix.project == 'app-e2e'
+        timeout-minutes: 5
+        # Use the version from the frozen lockfile. Host networking keeps the existing loopback fixtures reachable.
         run: |
-          if [ '${{ matrix.project }}' = app-e2e ]; then
-            pnpm exec playwright install --with-deps chromium firefox webkit
-          else
-            pnpm exec playwright install chromium
-          fi
+          version=$(node -p "require('@playwright/test/package.json').version")
+          container=$(docker run --detach --init --network host --ipc host --user pwuser \
+            --mount "type=bind,source=$GITHUB_WORKSPACE/node_modules,target=/work/node_modules,readonly" \
+            "mcr.microsoft.com/playwright:v$version-noble" \
+            node /work/node_modules/@playwright/test/cli.js run-server --host 127.0.0.1 --port 9300)
+          echo "container=$container" >> "$GITHUB_OUTPUT"
+          curl --fail --silent --show-error --retry 20 --retry-connrefused --retry-delay 1 --max-time 2 \
+            http://127.0.0.1:9300/ > /dev/null
       - name: Run end-to-end tests
         env:
           E2E_PROJECT: ${{ matrix.project }}
           PLAYWRIGHT_BROWSERS: ${{ matrix.project == 'app-e2e' && 'all' || 'chromium' }}
+          PW_TEST_CONNECT_WS_ENDPOINT: ${{ matrix.project == 'app-e2e' && 'ws://127.0.0.1:9300/' || '' }}
         run: pnpm nx run "$E2E_PROJECT:e2e"
+      - name: Stop the administrative browser server
+        if: always() && steps.admin-browsers.outputs.container != ''
+        env:
+          BROWSER_CONTAINER: ${{ steps.admin-browsers.outputs.container }}
+        run: docker rm --force "$BROWSER_CONTAINER"
       - name: Preserve public visual comparison diagnostics
         if: failure() && matrix.project == 'site-e2e'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6

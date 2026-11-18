@@ -64,6 +64,29 @@ run, concurrent cutovers, idempotent retry, reconciliation and rollback/replay i
 isolated libSQL database. The production release and validation with real accounts remain
 within the existing operational approval gates.
 
+## Administrative browser CI
+
+Two runs of the same documentation-only commit timed out while Ubuntu was downloading Playwright
+system dependencies. Both stopped before running the administrative tests. The administrative
+job now starts the three browsers from the official Playwright image matching the frozen package
+version. Nx and the PostgreSQL fixtures stay on the runner. The server binds to loopback and
+mounts the installed Playwright package read-only. The setup still has a five-minute budget.
+
+## Railway deployment metadata
+
+The active deployment of `c4a30f1` has a resolved manifest that selects `Dockerfile`, uses the
+watch patterns in the root `railway.json`, and checks `/api/ready` with a 60-second timeout.
+Its effective pre-deploy command is `node libs/backend/shared/tools/database/migrate.mjs`.
+The manifest records no explicit pre-deploy timeout. The versioned TypeScript definition
+declares 120 seconds. The watch patterns and readiness path in the resolved manifest come from
+the repository file. The separately stored service settings report a shorter watch list.
+
+The service reports the expected names for its PostgreSQL, Redis and telemetry bindings.
+The read-only comparison covered deployment settings and variable names. Effective opt-in values
+and reference targets remain an operator check for VIS-62. Railway documents retirement of legacy
+Config as Code on December 1, 2026. Future source-trigger validation belongs to the approved
+release process. See the [Railway configuration reference](https://docs.railway.com/config-as-code/reference).
+
 ## Diagnostics and storage
 
 The technical metrics view identifies HTTP 4xx and 5xx as response classes.
