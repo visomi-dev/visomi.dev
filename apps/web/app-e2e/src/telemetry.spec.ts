@@ -176,6 +176,8 @@ for (const [path, application] of [
 
     await page.goto('/app/en/admin/metrics');
 
+    await expect(page.getByRole('heading', { name: 'Technical metrics' })).toBeFocused();
+
     const details = page.locator('details', { hasText: traceId });
     const summary = details.locator('summary');
     const trace = details.getByText(traceId, { exact: true });
@@ -186,11 +188,17 @@ for (const [path, application] of [
 
     await expect(trace).toBeVisible();
 
-    await summary.press('Enter');
+    await summary.focus();
+
+    await expect(summary).toBeFocused();
+
+    await page.keyboard.press('Enter');
 
     await expect(trace).toBeHidden();
 
-    await summary.press('Space');
+    await expect(summary).toBeFocused();
+
+    await page.keyboard.press('Space');
 
     await expect(trace).toBeVisible();
 
