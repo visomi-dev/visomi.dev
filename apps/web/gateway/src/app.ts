@@ -191,7 +191,10 @@ export function createGatewayApp(options: {
     app.use(websiteAssets(options.site.clientDirectory));
     app.use(serveStatic(options.site.clientDirectory, { index: false, redirect: false }));
     app.use(redirectTrailingSlash);
-    app.use((request, _response, next) => {
+    app.use((request, response, next) => {
+      // Astro's own render fallback can run outside the website middleware.
+      response.setHeader('cache-control', 'no-store');
+
       // Astro accepts forwarded addresses after host validation. Trust only Express's configured proxy policy.
       request.headers['x-forwarded-for'] = request.ip;
       next();

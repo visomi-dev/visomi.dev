@@ -136,6 +136,21 @@ describe('gateway composition', () => {
 
     expect(apiHeaders.mock.calls[0][0]['content-security-policy']).not.toContain('accounts.google.com');
   });
+  it('provides no-store for an Astro fallback that bypasses website middleware', async () => {
+    const headers = vi.fn();
+    const app = createGatewayApp({
+      api: apiFixture(),
+      site: {
+        clientDirectory: '/synthetic/site/client',
+        handler: (_request, response) => response.status(500).json({ error: 'render_failed' }),
+      },
+    });
+    const result = await dispatch(app, '/synthetic-render-check/', headers);
+
+    expect(result.status).toBe(500);
+    expect(headers.mock.calls[0][0]['cache-control']).toBe('no-store');
+  });
+
   it('serves a silent disabled configuration without entering authentication', async () => {
     const authenticate = vi.fn<RequestHandler>();
     const inspect = vi.fn();
