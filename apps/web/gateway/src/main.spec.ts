@@ -3,6 +3,29 @@ import { describe, expect, it, vi } from 'vitest';
 import { boundary, start } from '../tests/support/main';
 
 describe('gateway executable ownership', () => {
+  it.each([undefined, 'https://synthetic.example.test'])('owns opt-in visit collection for %s', async (origin) => {
+    vi.stubEnv('VISOMI_VISIT_ANALYTICS', 'true');
+    vi.stubEnv('BROWSER_TELEMETRY_ORIGIN', origin);
+
+    await start();
+
+    expect(boundary.createGatewayApp).toHaveBeenCalledWith(
+      expect.objectContaining({
+        visits: expect.objectContaining({
+          router: expect.any(Function),
+          summary: expect.any(Function),
+          close: expect.any(Function),
+        }),
+      }),
+    );
+
+    boundary.signals.get('SIGTERM')!();
+
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(process.exitCode).toBe(0);
+  });
+
   const approvals = { origin: 'https://app.example.test' };
 
   it('uses the configured Redis transport and closes it with the host', async () => {

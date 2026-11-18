@@ -1,53 +1,76 @@
 <div class="flex min-h-dvh flex-col bg-zinc-50 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
   <header class="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5 sm:px-8">
-    <a href="/" class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg"
-      ><img
-        ngSrc="brand/logotype.svg"
-        alt="VISOMI.DEV"
-        width="175"
-        height="36"
-        priority
-        class="h-9 w-44 object-contain dark:invert"
-    /></a>
+    <a href="/" class="ui-focus-ring inline-flex min-h-11 shrink-0 items-center rounded-lg">
+      <picture>
+        <source media="(min-width: 640px)" srcset="brand/logotype.svg" />
+
+        <img
+          ngSrc="brand/isotype.svg"
+          alt="VISOMI.DEV"
+          width="175"
+          height="36"
+          priority
+          class="h-9 w-9 object-contain sm:w-[175px] dark:invert"
+        />
+      </picture>
+    </a>
 
     <app-preferences />
   </header>
 
-  <main class="flex flex-1 items-center justify-center px-5 py-8 sm:py-14">
-    <section
-      class="w-full max-w-md space-y-6 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-700 dark:bg-zinc-900"
-    >
+  <main id="auth-main" class="flex flex-1 items-center justify-center px-5 py-8 sm:py-14">
+    <section class="w-full max-w-md space-y-6 shadow-sm" [class]="cardClasses">
       <header class="space-y-3">
-        <h1 appNavigationHeading class="font-heading text-2xl font-semibold" tabindex="-1" i18n="@@signInHeroTitle">
-          Owner sign-in
-        </h1>
+        @if (challenge()) {
+          <h1 appNavigationHeading class="font-heading text-2xl font-semibold sm:text-3xl" i18n="@@signInVerifyTitle">
+            Confirm your sign-in
+          </h1>
 
-        <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300" i18n="@@dashboardAccessDenied">
-          Owner access required.
-        </p>
+          @if (factor() === 'email') {
+            <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300" i18n="@@signInVerifyEmail">
+              Enter the six-digit code from your email.
+            </p>
+          } @else {
+            <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300" i18n="@@signInVerifyTotp">
+              Enter the six-digit code from your authenticator.
+            </p>
+          }
+        } @else {
+          <h1
+            appNavigationHeading
+            class="font-heading text-2xl font-semibold sm:text-3xl"
+            tabindex="-1"
+            i18n="@@signInHeroTitle"
+          >
+            Owner sign-in
+          </h1>
+
+          <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300" i18n="@@dashboardAccessDenied">
+            Owner access required.
+          </p>
+        }
       </header>
 
-      @if (failed()) {
-        <p role="alert" i18n="@@dashboardAccessError">Access could not be verified. Please try again.</p>
+      @if (!challenge() && failed()) {
+        <p role="alert" class="text-sm text-red-700 dark:text-red-300">{{ failureMessage }}</p>
       }
 
       @if (challenge()) {
         <form class="space-y-5" (ngSubmit)="verify()">
-          <label class="block" for="code" i18n="@@dashboardAccessCode">Verification code</label>
-
-          <input
-            class="w-full rounded-lg border border-zinc-300 bg-white p-3 dark:border-zinc-600 dark:bg-zinc-950"
-            id="code"
-            name="code"
-            autocomplete="one-time-code"
-            [ngModel]="code()"
-            (ngModelChange)="code.set($event)"
-            required
-          />
+          <app-field controlId="code" [label]="codeLabel" [manualError]="failed() ? failureMessage : null">
+            <app-pin-input
+              required
+              autocomplete="one-time-code"
+              [value]="code()"
+              [disabled]="busy()"
+              (valueChange)="setCode($event)"
+            />
+          </app-field>
 
           <button
-            class="min-h-11 w-full rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white disabled:opacity-50 dark:bg-blue-600"
-            [disabled]="busy()"
+            class="w-full"
+            [class]="submitClasses"
+            [disabled]="busy() || !validCode()"
             type="submit"
             [attr.aria-busy]="busy()"
           >
@@ -64,7 +87,9 @@
 
         <button
           type="button"
-          class="min-h-11 w-full text-sm underline"
+          class="w-full"
+          [class]="restartClasses"
+          [disabled]="busy()"
           (click)="restart()"
           i18n="@@signInVerifyRestart"
         >
@@ -72,38 +97,50 @@
         </button>
       } @else {
         <form class="space-y-5" (ngSubmit)="signIn()">
-          <label class="block" for="email" i18n="@@dashboardAccessEmail">Verified email</label>
+          <app-field controlId="email" [label]="emailLabel">
+            <input
+              class="w-full"
+              [class]="controlClasses"
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="username"
+              [ngModel]="email()"
+              (ngModelChange)="email.set($event)"
+              required
+            />
+          </app-field>
 
-          <input
-            class="w-full rounded-lg border border-zinc-300 bg-white p-3 dark:border-zinc-600 dark:bg-zinc-950"
-            id="email"
-            name="email"
-            type="email"
-            autocomplete="username"
-            [ngModel]="email()"
-            (ngModelChange)="email.set($event)"
-            required
-          />
+          <app-field controlId="password" [label]="passwordLabel">
+            <div class="relative">
+              <input
+                class="w-full pr-24"
+                [class]="controlClasses"
+                id="password"
+                name="password"
+                [type]="passwordVisible() ? 'text' : 'password'"
+                autocomplete="current-password"
+                [ngModel]="password()"
+                (ngModelChange)="password.set($event)"
+                required
+              />
 
-          <label class="block" for="password" i18n="@@dashboardAccessPassword">Password</label>
+              <button
+                [class]="passwordButton"
+                type="button"
+                class="absolute inset-y-0 right-0 min-w-16"
+                aria-label="Show or hide password"
+                i18n-aria-label="@@signInPasswordVisibility"
+                aria-controls="password"
+                [attr.aria-pressed]="passwordVisible()"
+                (click)="togglePasswordVisibility()"
+              >
+                {{ passwordVisible() ? passwordHide : passwordShow }}
+              </button>
+            </div>
+          </app-field>
 
-          <input
-            class="w-full rounded-lg border border-zinc-300 bg-white p-3 dark:border-zinc-600 dark:bg-zinc-950"
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            [ngModel]="password()"
-            (ngModelChange)="password.set($event)"
-            required
-          />
-
-          <button
-            class="min-h-11 w-full rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white disabled:opacity-50 dark:bg-blue-600"
-            [disabled]="busy()"
-            type="submit"
-            [attr.aria-busy]="busy()"
-          >
+          <button class="w-full" [class]="submitClasses" [disabled]="busy()" type="submit" [attr.aria-busy]="busy()">
             @if (busy()) {
               <span
                 aria-hidden="true"

@@ -11,6 +11,7 @@ import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http
 import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
 import { routes } from '@visomi-stack/web-backend-shared/lib/http/contracts';
 import { securityHeaders } from '@visomi-stack/web-backend-shared/lib/http/security-headers';
+import type { VisitAnalytics } from '@visomi-stack/web-backend-shared/lib/analytics/visits';
 import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 
 import { authErrorHandler, createAuthRouter } from './auth/router';
@@ -28,6 +29,7 @@ export { authConfig } from './auth/shared/config';
 export type AppOptions = {
   observability?: Observability;
   privateMetrics?: PrivateMetrics;
+  visits?: Pick<VisitAnalytics, 'summary'>;
   pool?: Pool;
   contact?: ContactRepository;
   owner?: OwnerConfig;
@@ -104,6 +106,24 @@ export function createApp(options: AppOptions = {}) {
       },
     ),
     (_request, response) => response.json(privateMetrics.snapshot()),
+  );
+
+  app.get(
+    '/private/visits',
+    requireOwner(options.owner ?? { email: process.env['OWNER_EMAIL'], userId: process.env['OWNER_USER_ID'] }),
+    async (request, response) => {
+      const period = request.query['period'];
+
+      if (period !== '7' && period !== '30') {
+        response.status(400).json({ error: 'invalid_period' });
+
+        return;
+      }
+
+      const summary = await options.visits?.summary(period === '7' ? 7 : 30);
+
+      response.json(summary ?? { state: 'disabled' });
+    },
   );
 
   app.use(

@@ -44,7 +44,8 @@ for (const [path, application] of [
     page,
     request,
     baseURL,
-  }) => {
+    browserName,
+  }, info) => {
     const directory = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL!).port}`);
     const previousLog = await readFile(resolve(directory, 'runtime.log'), 'utf8');
     const runtimeErrors: string[] = [];
@@ -106,6 +107,7 @@ for (const [path, application] of [
     const collectorFile = await readFile(resolve(directory, 'collector.json'), 'utf8');
     const collector = JSON.parse(collectorFile);
     let persisted = '';
+    let traceId = '';
 
     await expect
       .poll(
@@ -128,6 +130,7 @@ for (const [path, application] of [
 
             if (body.includes('frontend.error') && body.includes(application)) {
               persisted = body;
+              traceId = id;
 
               return true;
             }
@@ -145,6 +148,41 @@ for (const [path, application] of [
     expect(log).not.toContain(marker);
 
     await verifyClientRouter(application, page, reports);
+
+    const anonymous = await request.get('/api/private/metrics');
+
+    expect(anonymous.status()).toBe(401);
+    const fixture = await readFile(resolve(directory, 'session.json'), 'utf8');
+    const { cookies } = JSON.parse(fixture) as { cookies: Record<string, string> };
+
+    await page.context().addCookies([
+      {
+        name: '__Host-visomi.sid',
+        value: encodeURIComponent(cookies[`metricsOwner-${browserName}`]),
+        url: baseURL!,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict',
+      },
+    ]);
+
+    const authorized = await page.request.get('/api/private/metrics');
+    const snapshot = await authorized.text();
+
+    expect(authorized.status()).toBe(200);
+    expect(authorized.headers()['cache-control']).toContain('no-store');
+    expect(snapshot).toContain(traceId);
+    expect(snapshot).not.toContain(marker);
+
+    await page.goto('/app/en/admin/metrics');
+
+    const details = page.locator('details', { hasText: traceId });
+
+    await details.locator('summary').click();
+
+    await expect(details.getByText(traceId, { exact: true })).toBeVisible();
+
+    await page.screenshot({ path: info.outputPath(`browser-diagnostics-${application}.png`), animations: 'disabled' });
   });
 }
 

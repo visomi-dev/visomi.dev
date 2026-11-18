@@ -101,6 +101,7 @@ async function fixture(useClock = true, includeApp = false, performance = false)
     url,
     send,
     configuration,
+    diagnostics: telemetry.diagnostics,
     advance: (ms: number) => {
       now += ms;
       vi.setSystemTime(now);
@@ -115,6 +116,39 @@ function signed(value: unknown): string {
 }
 
 describe('private browser error intake', () => {
+  it('keeps only the last 50 accepted reports and expires them after 15 minutes', async () => {
+    const f = await fixture();
+
+    expect(f.diagnostics()).toEqual({ events: [], windowMinutes: 15, limit: 50 });
+
+    await f.send({ ...report, query: marker });
+
+    expect(f.diagnostics().events).toHaveLength(0);
+
+    const responses = await Promise.all(Array.from({ length: 51 }, () => f.send()));
+
+    expect(responses.every((response) => response.status === 202)).toBe(true);
+    const { events } = f.diagnostics();
+
+    expect(events).toHaveLength(50);
+    expect(events[0]).toMatchObject({ ...report, traceId: expect.stringMatching(/^[a-f0-9]{32}$/) });
+    expect(JSON.stringify(events)).not.toContain(marker);
+
+    f.advance(15 * 60_000);
+    expect(f.diagnostics().events).toHaveLength(0);
+  });
+
+  it('keeps an accepted report visible when no trace span can be created', async () => {
+    const f = await fixture();
+
+    vi.spyOn(f.runtime, 'frontendError').mockReturnValue(undefined);
+    const result = await f.send();
+
+    expect(result.status).toBe(202);
+    expect(f.diagnostics().events[0]).toMatchObject(report);
+    expect(f.diagnostics().events[0]).not.toHaveProperty('traceId');
+  });
+
   it('accepts only Angular route measurements and never exports navigation material', async () => {
     const f = await fixture(true, true, true);
     const body = {

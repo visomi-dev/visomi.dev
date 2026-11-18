@@ -1,17 +1,23 @@
 import { NgOptimizedImage } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom, takeUntil } from 'rxjs';
 
+import { button } from '@visomi-stack/web-frontend-ui/lib/button';
+import { input as control } from '@visomi-stack/web-frontend-ui/lib/forms';
+import { card } from '@visomi-stack/web-frontend-ui/lib/layout';
+
+import { Field } from '../../../shared/field/field';
 import { Preferences } from '../../../shared/layout/preferences/preferences';
-import { OwnerSession } from '../../session/owner-session';
 import { NavigationHeading } from '../../../shared/navigation-heading';
+import { PinInput } from '../../../shared/pin-input/pin-input';
+import { OwnerSession } from '../../session/owner-session';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [NavigationHeading, FormsModule, Preferences, NgOptimizedImage],
+  imports: [NavigationHeading, FormsModule, Preferences, NgOptimizedImage, Field, PinInput],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css',
 })
@@ -25,10 +31,25 @@ export class SignIn {
   readonly challenge = signal(false);
   readonly email = signal('');
   readonly password = signal('');
+  protected readonly passwordVisible = signal(false);
   readonly code = signal('');
   readonly factor = signal<'email' | 'totp'>('email');
   private readonly csrf = signal('');
   private readonly flowId = signal('');
+
+  protected readonly validCode = computed(() => /^[0-9]{6}$/.test(this.code()));
+
+  protected readonly cardClasses = card.classes({ layout: 'plain', padding: 'lg' });
+  protected readonly controlClasses = control.classes();
+  protected readonly submitClasses = button.classes();
+  protected readonly passwordButton = button.classes({ variant: 'ghost', size: 'sm' });
+  protected readonly passwordShow = $localize`:@@signInPasswordShow:Show`;
+  protected readonly passwordHide = $localize`:@@signInPasswordHide:Hide`;
+  protected readonly restartClasses = button.classes({ variant: 'secondary' });
+  protected readonly codeLabel = $localize`:@@dashboardAccessCode:Verification code`;
+  protected readonly emailLabel = $localize`:@@dashboardAccessEmail:Verified email`;
+  protected readonly passwordLabel = $localize`:@@dashboardAccessPassword:Password`;
+  protected readonly failureMessage = $localize`:@@dashboardAccessError:Access could not be verified. Please try again.`;
 
   async signIn(): Promise<void> {
     if (this.busy()) {
@@ -58,12 +79,17 @@ export class SignIn {
       this.flowId.set(pending.flowId);
       this.factor.set(pending.factor);
       this.password.set('');
+      this.passwordVisible.set(false);
       this.challenge.set(true);
     } catch {
       this.failed.set(true);
     } finally {
       this.busy.set(false);
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible.update((visible) => !visible);
   }
 
   restart(): void {
@@ -74,8 +100,13 @@ export class SignIn {
     this.failed.set(false);
   }
 
+  setCode(value: string): void {
+    this.code.set(value.replace(/[^0-9]/g, '').slice(0, 6));
+    this.failed.set(false);
+  }
+
   async verify(): Promise<void> {
-    if (this.busy()) {
+    if (this.busy() || !this.validCode()) {
       return;
     }
 

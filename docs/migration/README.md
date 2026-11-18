@@ -227,3 +227,6 @@ source digest, counts, classifications and destination existence. Hashes are sna
 is reported independently rather than prohibiting future changes. When a file moves,
 `relocatedTo` identifies its current checked destination while preserving the original
 `source`, `destination` and digest fields. Invalid or missing relocation targets fail validation.
+
+See [current stack reconciliation](current-stack-review.md) for the updated upstream comparison
+and [visit analytics](visit-analytics.md) for opt-in public page views.

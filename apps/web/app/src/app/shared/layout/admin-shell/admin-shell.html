@@ -1,101 +1,167 @@
-<div [class]="shellClass">
-  <a
-    href="#admin-main"
-    class="ui-focus-ring sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-white focus:p-4 focus:text-zinc-950"
-    i18n="@@adminHeaderSkip"
-    >Skip to content</a
-  >
-
-  <header [class]="topbarClass">
-    <a href="/" class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg"
-      ><img
+<app-shell contentId="admin-main" skipLabel="Skip to content" i18n-skipLabel="@@adminHeaderSkip">
+  <app-sidebar label="Private navigation" i18n-label="@@metricsNavigationLabel">
+    <a
+      data-slot="brand"
+      routerLink="/admin/dashboard"
+      class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg"
+    >
+      <img
         ngSrc="brand/logotype.svg"
         alt="VISOMI.DEV"
-        width="175"
-        height="36"
+        width="194"
+        height="40"
         priority
-        class="h-9 w-44 object-contain dark:invert"
-    /></a>
+        class="h-10 w-[194px] object-contain dark:invert"
+      />
+    </a>
+
+    <div class="space-y-1">
+      @for (link of links; track link.path) {
+        <a [class]="navClass" [routerLink]="link.path" routerLinkActive="active" ariaCurrentWhenActive="page">{{
+          link.label
+        }}</a>
+      }
+    </div>
+
+    <div data-slot="footer">
+      <button
+        [class]="signOutButton"
+        type="button"
+        [disabled]="busy()"
+        [attr.aria-busy]="busy()"
+        (click)="signOut()"
+        i18n="@@dashboardAccessSignOut"
+      >
+        Sign out
+      </button>
+    </div>
+  </app-sidebar>
+
+  <header app-topbar>
+    <a
+      data-slot="title"
+      routerLink="/admin/dashboard"
+      class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg"
+    >
+      <picture>
+        <source media="(min-width: 640px)" srcset="brand/logotype.svg" />
+
+        <img
+          ngSrc="brand/isotype.svg"
+          alt="VISOMI.DEV"
+          width="175"
+          height="36"
+          priority
+          class="h-9 w-9 object-contain sm:w-[175px] dark:invert"
+        />
+      </picture>
+    </a>
 
     <app-preferences />
   </header>
 
-  <div [class]="frameClass">
-    <aside class="hidden min-h-0 lg:block">
-      <div [class]="sidebarClass">
-        <nav class="flex-1 space-y-2" aria-label="Private navigation" i18n-aria-label="@@metricsNavigationLabel">
-          <a
-            [class]="navClass"
-            routerLink="/admin/dashboard"
-            routerLinkActive="active"
-            ariaCurrentWhenActive="page"
-            i18n="@@dashboardHeroTitle"
-            >Contact requests</a
-          >
+  <div class="flex min-w-0 flex-col gap-6">
+    @if (failed()) {
+      <p role="alert" class="text-sm text-red-700 dark:text-red-300" i18n="@@dashboardAccessError">
+        Access could not be verified. Please try again.
+      </p>
+    }
 
-          <a
-            [class]="navClass"
-            routerLink="/admin/metrics"
-            routerLinkActive="active"
-            ariaCurrentWhenActive="page"
-            i18n="@@metricsHeroTitle"
-            >Technical metrics</a
-          >
-        </nav>
-
-        <button
-          type="button"
-          class="min-h-11 rounded-lg bg-blue-700 px-4 py-3 font-semibold text-white disabled:opacity-50"
-          [disabled]="busy()"
-          [attr.aria-busy]="busy()"
-          (click)="signOut()"
-          i18n="@@dashboardAccessSignOut"
-        >
-          Sign out
-        </button>
-      </div>
-    </aside>
-
-    <main id="admin-main" tabindex="-1" [class]="contentClass">
-      @if (failed()) {
-        <p role="alert" i18n="@@dashboardAccessError">Access could not be verified. Please try again.</p>
-      }
-
-      @if (valid()) {
-        <router-outlet />
-      } @else {
-        <p role="status" i18n="@@dashboardAccessLoading">Verifying access…</p>
-      }
-    </main>
+    @if (valid()) {
+      <router-outlet class="hidden" />
+    } @else {
+      <p role="status" i18n="@@dashboardAccessLoading">Verifying access…</p>
+    }
   </div>
 
-  <nav
-    class="flex shrink-0 flex-wrap items-center justify-around gap-2 border-t border-zinc-200 bg-white px-3 py-2 lg:hidden dark:border-zinc-800 dark:bg-zinc-950"
-    aria-label="Private navigation"
-    i18n-aria-label="@@metricsNavigationLabel"
-  >
-    <a
-      routerLink="/admin/dashboard"
-      class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg px-3 text-sm"
-      i18n="@@dashboardHeroTitle"
-      >Contact requests</a
-    >
+  <nav data-shell-mobile [class]="mobileBar" aria-label="Private navigation" i18n-aria-label="@@metricsNavigationLabel">
+    @for (link of links; track link.path; let first = $first) {
+      <a [class]="mobileItem" [routerLink]="link.path" routerLinkActive="active" ariaCurrentWhenActive="page">
+        <svg
+          data-slot="icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          @if (first) {
+            <path d="M3 5h18v14H3zM3 5l9 8 9-8" />
+          } @else {
+            <path d="M3 3v18h18M8 16v-4m5 4V8m5 8V5" />
+          }
+        </svg>
 
-    <a
-      routerLink="/admin/metrics"
-      class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg px-3 text-sm"
-      i18n="@@metricsHeroTitle"
-      >Technical metrics</a
-    >
+        <span>{{ link.label }}</span>
+      </a>
+    }
 
     <button
+      [class]="mobileItem"
       type="button"
-      class="ui-focus-ring min-h-11 rounded-lg px-3 text-sm"
+      (click)="mobileMenu.showModal()"
+      aria-haspopup="dialog"
+      aria-controls="mobile-navigation"
+    >
+      <svg data-slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+
+      <span i18n="@@adminShellMenu">Menu</span>
+    </button>
+  </nav>
+</app-shell>
+
+<dialog
+  #mobileMenu
+  id="mobile-navigation"
+  aria-labelledby="mobile-navigation-title"
+  class="mobile-navigation"
+  [class]="mobileDialog"
+>
+  <header class="flex items-center justify-between gap-3">
+    <h2 id="mobile-navigation-title" class="font-heading text-lg font-semibold" i18n="@@metricsNavigationLabel">
+      Private navigation
+    </h2>
+
+    <button
+      [class]="closeButton"
+      type="button"
+      (click)="mobileMenu.close()"
+      aria-label="Close navigation"
+      i18n-aria-label="@@adminShellCloseNavigation"
+      autofocus
+    >
+      <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="m6 6 12 12M6 18 18 6" />
+      </svg>
+    </button>
+  </header>
+
+  <nav class="space-y-2" aria-label="Private navigation" i18n-aria-label="@@metricsNavigationLabel">
+    @for (link of links; track link.path) {
+      <a
+        [class]="navClass"
+        [routerLink]="link.path"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        (click)="mobileMenu.close()"
+        >{{ link.label }}</a
+      >
+    }
+  </nav>
+
+  <footer class="mt-auto border-t border-zinc-200 pt-4 dark:border-zinc-700">
+    <button
+      [class]="mobileSignOut"
+      type="button"
+      class="w-full"
       [disabled]="busy()"
-      (click)="signOut()"
+      [attr.aria-busy]="busy()"
+      (click)="mobileMenu.close(); signOut()"
       i18n="@@dashboardAccessSignOut"
     >
       Sign out
     </button>
-  </nav>
-</div>
+  </footer>
+</dialog>

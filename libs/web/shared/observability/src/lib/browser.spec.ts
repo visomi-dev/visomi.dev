@@ -30,6 +30,17 @@ describe('browser error capture policy', () => {
   it.each(['/en/ui/', '/app/es/ui', '/es/ui/'])('uses fixed UI names for %s', (path) => {
     expect(browserScreen(path)).toBe('ui');
   });
+  it.each([
+    ['/app/en/admin/auth/sign-in', 'admin_sign_in'],
+    ['/app/es/admin/dashboard', 'admin_dashboard'],
+    ['/app/es/admin/contacts/123', 'admin_contact'],
+    ['/app/en/admin/metrics', 'admin_metrics'],
+    ['/app/en/admin/contacts/' + marker, 'unknown'],
+    ['/app/en/admin/metrics/' + marker, 'unknown'],
+  ])('uses a fixed screen category for %s', (path, screen) => {
+    expect(browserScreen(path)).toBe(screen);
+  });
+
   it('drops dynamic paths, arbitrary names, raw stacks, and URLs', () => {
     const error = new TypeError(marker);
 

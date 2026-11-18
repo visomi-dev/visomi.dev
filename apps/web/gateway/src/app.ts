@@ -17,6 +17,7 @@ import {
   createPrivateMetrics,
   type PrivateMetrics,
 } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
+import type { VisitAnalytics } from '@visomi-stack/web-backend-shared/lib/analytics/visits';
 
 import type { ApiModule, EmbeddedAuthentication } from './api-module';
 import type { SiteModule } from './site-module';
@@ -26,6 +27,7 @@ import { websiteAssets, redirectTrailingSlash } from './website';
 
 export function createGatewayApp(options: {
   api: ApiModule;
+  visits?: VisitAnalytics;
   pool?: Pool;
   socialImages?: RequestHandler;
   site?: SiteModule;
@@ -33,7 +35,8 @@ export function createGatewayApp(options: {
   auth?: EmbeddedAuthentication;
   observability?: Observability;
   privateMetrics?: PrivateMetrics;
-  browserTelemetry?: Pick<ReturnType<typeof createBrowserTelemetry>, 'context' | 'router'>;
+  browserTelemetry?: Pick<ReturnType<typeof createBrowserTelemetry>, 'context' | 'router'> &
+    Partial<Pick<ReturnType<typeof createBrowserTelemetry>, 'diagnostics'>>;
   trustProxy?: string[] | 1;
   helmetMode?: 'managed' | 'inherited';
   errorMode?: 'managed' | 'inherited';
@@ -94,6 +97,14 @@ export function createGatewayApp(options: {
     next();
   });
 
+  if (options.visits) {
+    app.use('/telemetry/visits', options.visits.router);
+  }
+
+  app.get('/telemetry/visits/config', (_request, response) =>
+    response.set('cache-control', 'no-store').json({ enabled: false }),
+  );
+
   if (options.browserTelemetry) {
     app.use(options.browserTelemetry.context);
     app.use('/telemetry', options.browserTelemetry.router);
@@ -134,7 +145,14 @@ export function createGatewayApp(options: {
       helmetMode: 'inherited',
       auth: options.auth,
       observability: options.observability,
-      privateMetrics,
+      visits: options.visits,
+      privateMetrics: {
+        middleware: privateMetrics.middleware,
+        snapshot: () => ({
+          ...privateMetrics.snapshot(),
+          browserErrors: options.browserTelemetry?.diagnostics?.() ?? null,
+        }),
+      },
     }),
   );
 

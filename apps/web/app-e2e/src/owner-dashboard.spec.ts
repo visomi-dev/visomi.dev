@@ -2,8 +2,24 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { workspaceRoot } from '@nx/devkit';
+
+async function enterSyntheticCode(page: Page, verification: Locator, browserName: string) {
+  if (browserName !== 'chromium') {
+    await verification.fill('001234');
+
+    return;
+  }
+
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+
+  await page.evaluate(() => navigator.clipboard.writeText('001234'));
+
+  await verification.focus();
+
+  await verification.press('ControlOrMeta+V');
+}
 
 test('anonymous users and authenticated non-owners cannot open requests', async ({
   page,
@@ -109,7 +125,11 @@ test('the owner reads paginated requests and escaped message content from the pr
   expect(revoked.status()).toBe(401);
 });
 
-test('private access completes the stack password and email second-factor flow', async ({ page, baseURL }) => {
+test('private access completes the stack password and email second-factor flow', async ({
+  page,
+  baseURL,
+  browserName,
+}, info) => {
   const directory = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL!).port}`);
 
   await page.goto('/app/en/admin/auth/sign-in');
@@ -120,7 +140,33 @@ test('private access completes the stack password and email second-factor flow',
 
   await page.getByRole('button', { name: 'Access dashboard' }).click();
 
-  await expect(page.getByLabel('Verification code')).toBeVisible();
+  const verification = page.getByLabel('Verification code');
+
+  await expect(verification).toBeVisible();
+
+  await expect(verification).toHaveAttribute('autocomplete', 'one-time-code');
+
+  await expect(verification).toHaveAttribute('inputmode', 'numeric');
+
+  await expect(page.locator('app-pin-input .slot')).toHaveCount(6);
+
+  const accessibility = await new AxeBuilder({ page }).analyze();
+
+  expect(accessibility.violations).toEqual([]);
+
+  await page.screenshot({ path: info.outputPath('verification.png'), animations: 'disabled' });
+
+  await enterSyntheticCode(page, verification, browserName);
+
+  await expect(verification).toHaveValue('001234');
+
+  await verification.press('End');
+
+  await verification.press('Backspace');
+
+  await expect(verification).toHaveValue('00123');
+
+  await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 
   let code = '';
 
@@ -134,7 +180,7 @@ test('private access completes the stack password and email second-factor flow',
     })
     .toMatch(/^\d{6}$/);
 
-  await page.getByLabel('Verification code').fill(code);
+  await verification.fill(code);
 
   await page.getByRole('button', { name: 'Verify access' }).click();
 

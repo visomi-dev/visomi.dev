@@ -30,6 +30,12 @@ it('reports a rejected application bootstrap once through the same function used
   expect(transport).toHaveBeenCalledTimes(2);
   const payload = JSON.parse(transport.mock.calls[1][1].body);
 
-  expect(payload).toEqual({ application: 'web-app', code: 'startup_failed', kind: 'TypeError', screen: 'unknown' });
+  expect(payload).toEqual({
+    application: 'web-app',
+    code: 'startup_failed',
+    kind: 'TypeError',
+    screen: 'admin_sign_in',
+  });
+
   expect(log).not.toHaveBeenCalled();
 });

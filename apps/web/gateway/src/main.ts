@@ -21,6 +21,7 @@ import type { MailTransport } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import type { DatabaseResource } from '@visomi-stack/backend-shared/lib/database/database';
 import type { RealtimeRuntime } from '@visomi-stack/backend-shared/lib/realtime';
 import { browserAssets } from '@visomi-stack/web-backend-shared/lib/observability/browser/assets';
+import { createVisitAnalytics } from '@visomi-stack/web-backend-shared/lib/analytics/visits';
 import { createBrowserTelemetry } from '@visomi-stack/web-backend-shared/lib/observability/browser/intake';
 import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 
@@ -50,6 +51,7 @@ let stopping = false;
 let socialImages: ReturnType<typeof createSocialImageRuntime> | undefined;
 let worker: ChildProcess | undefined;
 let browserTelemetry: ReturnType<typeof createBrowserTelemetry> | undefined;
+let visits: ReturnType<typeof createVisitAnalytics> | undefined;
 
 async function stop(exitCode: number): Promise<void> {
   if (stopping) {
@@ -99,6 +101,7 @@ async function stop(exitCode: number): Promise<void> {
 
   try {
     browserTelemetry?.close();
+    visits?.close();
     mail?.close();
   } catch {
     databaseClosed = false;
@@ -233,7 +236,18 @@ async function bootstrap() {
     });
   }
 
+  if (process.env['VISOMI_VISIT_ANALYTICS'] === 'true') {
+    visits = createVisitAnalytics({
+      enabled: true,
+      pool: database?.pool,
+      site: 'visomi-dev',
+      origin: process.env['BROWSER_TELEMETRY_ORIGIN'] ?? 'https://visomi.dev',
+      pages: ['home', 'journey', 'projects', 'resume', 'contact'],
+    });
+  }
+
   const application = createGatewayApp({
+    ...(visits ? { visits } : {}),
     socialImages: socialImages?.router,
     api,
     pool: database?.pool,

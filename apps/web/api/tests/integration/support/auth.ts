@@ -12,14 +12,16 @@ import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-au
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
 import type { PrivateMetrics } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 
-import { createApp, createAuthentication, authConfig } from '../../../src/app';
+import { createApp, createAuthentication, authConfig, type AppOptions } from '../../../src/app';
 
 import { createAuthRouter } from './stack-auth-router';
 import { suitePostgres } from './postgres';
 
 export const password = 'Synthetic password 42!';
 
-export function authenticationFixture(options: { privateMetrics?: PrivateMetrics } = {}) {
+export function authenticationFixture(
+  options: { privateMetrics?: PrivateMetrics; visits?: AppOptions['visits'] } = {},
+) {
   let postgres: Awaited<ReturnType<typeof suitePostgres>>;
   let resource: ReturnType<typeof createDatabase>;
   let server: Server;
@@ -95,6 +97,7 @@ export function authenticationFixture(options: { privateMetrics?: PrivateMetrics
         pool: resource.pool,
         owner: { email: 'owner@example.test' },
         privateMetrics: options.privateMetrics,
+        visits: options.visits,
       }),
     );
     app.use(httpErrorHandler);

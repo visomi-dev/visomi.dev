@@ -5,5 +5,6 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'admin/dashboard', renderMode: RenderMode.Server },
   { path: 'admin/contacts/:id', renderMode: RenderMode.Server },
   { path: 'admin/metrics', renderMode: RenderMode.Server },
+  { path: 'admin/visits', renderMode: RenderMode.Server },
   { path: '**', renderMode: RenderMode.Server, status: 404 },
 ];

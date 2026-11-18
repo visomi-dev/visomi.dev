@@ -4,7 +4,11 @@ import { throwError } from 'rxjs';
 
 /** Only these read-only private endpoints may receive the current SSR cookie. */
 export const privateApiInterceptor: HttpInterceptorFn = (request, next) => {
-  if (!/^\/api\/(?:contact\/(?:session|submissions(?:\/[1-9]\d{0,18})?)|private\/metrics)$/.test(request.url)) {
+  if (
+    !/^\/api\/(?:contact\/(?:session|submissions(?:\/[1-9]\d{0,18})?)|private\/(?:metrics|visits\?period=(?:7|30)))$/.test(
+      request.url,
+    )
+  ) {
     return next(request);
   }
 

@@ -223,6 +223,7 @@ async function main(): Promise<void> {
           OTEL_EXPORTER_OTLP_PROTOCOL: 'http/protobuf',
           OTEL_EXPORTER_OTLP_HEADERS: collector?.headers,
           VISOMI_BROWSER_TELEMETRY: process.env['VISOMI_E2E_BROWSER_TELEMETRY'] ?? 'false',
+          VISOMI_VISIT_ANALYTICS: process.env['VISOMI_E2E_VISITS'] ?? 'false',
           VISOMI_BROWSER_PERFORMANCE: process.env['VISOMI_E2E_BROWSER_PERFORMANCE'] ?? 'false',
         },
       },

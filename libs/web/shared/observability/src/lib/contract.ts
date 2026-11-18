@@ -13,7 +13,16 @@ export const browserErrorKinds = [
   'SyntaxError',
   'unknown',
 ] as const;
-export const screens = ['home', 'ui', 'unknown'] as const;
+export const screens = [
+  'home',
+  'ui',
+  'admin_sign_in',
+  'admin_dashboard',
+  'admin_contact',
+  'admin_metrics',
+  'admin_visits',
+  'unknown',
+] as const;
 export const browserRouteMetrics = ['route_completed', 'route_cancelled', 'route_failed'] as const;
 export type BrowserRouteMetric = (typeof browserRouteMetrics)[number];
 export const browserPerformanceMetrics = [

@@ -1,30 +1,22 @@
-import { Component, inject } from '@angular/core';
-import {
-  RouterOutlet,
-  Router,
-  NavigationStart,
-  NavigationEnd,
-  NavigationCancel,
-  NavigationError,
-} from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { filter, map } from 'rxjs';
+import { Component, afterNextRender, computed, inject, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 
-@Component({ selector: 'app-root', imports: [RouterOutlet], templateUrl: './app.html', styleUrl: './app.css' })
+import { PageLoader } from './shared/layout/page-loader/page-loader';
+import { ThemeHost } from './shared/layout/theme-host';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, PageLoader],
+  hostDirectives: [ThemeHost],
+  templateUrl: './app.html',
+  styleUrl: './app.css',
+})
 export class App {
   private readonly router = inject(Router);
 
-  readonly loading = toSignal(
-    this.router.events.pipe(
-      filter(
-        (event) =>
-          event instanceof NavigationStart ||
-          event instanceof NavigationEnd ||
-          event instanceof NavigationCancel ||
-          event instanceof NavigationError,
-      ),
-      map((event) => event instanceof NavigationStart),
-    ),
-    { initialValue: false },
-  );
+  private readonly rendered = signal(false);
+
+  protected readonly loading = computed(() => this.rendered() && this.router.currentNavigation() !== null);
+
+  private readonly initialize = afterNextRender(() => this.rendered.set(true));
 }

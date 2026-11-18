@@ -3,6 +3,7 @@ import type { Route } from '@angular/router';
 import { ownerGuard } from './auth/session/owner.guard';
 import { dashboardResolver } from './pages/dashboard/dashboard.resolver';
 import { metricsResolver } from './pages/metrics/metrics.resolver';
+import { visitsResolver } from './pages/visits/visits.resolver';
 
 export const appRoutes: Route[] = [
   {
@@ -41,6 +42,14 @@ export const appRoutes: Route[] = [
         resolve: { metrics: metricsResolver },
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
         loadComponent: () => import('./pages/metrics/metrics').then((module) => module.Metrics),
+      },
+      {
+        path: 'visits',
+        pathMatch: 'full',
+        canActivate: [ownerGuard],
+        resolve: { visits: visitsResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        loadComponent: () => import('./pages/visits/visits').then((module) => module.Visits),
       },
     ],
   },

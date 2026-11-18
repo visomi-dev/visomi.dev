@@ -13,6 +13,26 @@ import type {
 
 // Only known page names cross the boundary; paths and navigation history stay in the browser.
 export function browserScreen(path: string): BrowserScreen {
+  if (/^\/app\/(?:en|es)\/admin\/auth\/sign-in\/?$/.test(path)) {
+    return 'admin_sign_in';
+  }
+
+  if (/^\/app\/(?:en|es)\/admin\/dashboard\/?$/.test(path)) {
+    return 'admin_dashboard';
+  }
+
+  if (/^\/app\/(?:en|es)\/admin\/contacts\/[1-9]\d{0,18}\/?$/.test(path)) {
+    return 'admin_contact';
+  }
+
+  if (/^\/app\/(?:en|es)\/admin\/metrics\/?$/.test(path)) {
+    return 'admin_metrics';
+  }
+
+  if (/^\/app\/(?:en|es)\/admin\/visits\/?$/.test(path)) {
+    return 'admin_visits';
+  }
+
   if (/^(?:\/app)?\/(?:en|es)\/?$/.test(path) || /^\/app\/(?:en|es)\/foundations\/?$/.test(path)) {
     return 'home';
   }

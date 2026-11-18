@@ -139,7 +139,7 @@ export class OwnerSession {
 
   private privateRoute(): boolean {
     const current = this.document.defaultView?.location.pathname;
-    const privatePath = /^(?:\/app\/(?:en|es))?\/admin\/(?:dashboard|contacts|metrics)(?:[/?#]|$)/;
+    const privatePath = /^(?:\/app\/(?:en|es))?\/admin\/(?:dashboard|contacts|metrics|visits)(?:[/?#]|$)/;
 
     return privatePath.test(this.router.url) || Boolean(current && privatePath.test(current));
   }

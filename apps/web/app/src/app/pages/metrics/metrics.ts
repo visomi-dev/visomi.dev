@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import type { MetricsData } from './metrics.resolver';
 
 @Component({
   selector: 'app-metrics',
-  imports: [NavigationHeading, DecimalPipe],
+  imports: [NavigationHeading, DatePipe, DecimalPipe],
   templateUrl: './metrics.html',
   styleUrl: './metrics.css',
 })

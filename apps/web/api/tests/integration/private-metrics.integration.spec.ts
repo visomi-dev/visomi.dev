@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { createPrivateMetrics } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 import type { PrivateMetricsSnapshot } from '@visomi-stack/web-shared-observability/lib/private-metrics';
@@ -55,5 +55,37 @@ describe('metrics capture is closed by default', () => {
     expect(response.status).toBe(200);
     expect(payload.enabled).toBe(false);
     expect(payload.metrics).toBeNull();
+    const visitResponse = await fetch(fixture.origin + '/api/private/visits?period=7', {
+      headers: { cookie: owner.browser.cookie },
+    });
+    const status = await visitResponse.json();
+
+    expect(status).toEqual({ state: 'disabled' });
+  });
+});
+
+describe('owner-only visit analytics', () => {
+  const summary = vi.fn((period: 7 | 30) =>
+    Promise.resolve({ state: 'ready' as const, period, firstDay: '2026-11-17', days: [] }),
+  );
+  const fixture = authenticationFixture({ visits: { summary } });
+
+  it('denies the public and enforces the supported period options for the owner', async () => {
+    const url = fixture.origin + '/api/private/visits';
+    const denied = await fetch(url + '?period=7');
+
+    expect(denied.status).toBe(401);
+    const owner = await fixture.signup('owner@example.test');
+    const options = { headers: { cookie: owner.browser.cookie } };
+    const invalid = await fetch(url + '?period=1', options);
+
+    expect(invalid.status).toBe(400);
+    const week = await fetch(url + '?period=7', options);
+    const month = await fetch(url + '?period=30', options);
+
+    expect(week.status).toBe(200);
+    expect(month.status).toBe(200);
+    expect(month.headers.get('cache-control')).toContain('no-store');
+    expect(summary.mock.calls).toEqual([[7], [30]]);
   });
 });
