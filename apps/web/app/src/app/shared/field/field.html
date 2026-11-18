@@ -1,9 +1,7 @@
-<label [class]="labelClasses" [for]="controlId()">{{ label() }}</label>
+<label appUI [for]="controlId()">{{ label() }}</label>
 <ng-content />
 @if (description()) {
-  <p [class]="descriptionClasses" [id]="descriptionId()">{{ description() }}</p>
+  <p appUI="description" [id]="descriptionId()">{{ description() }}</p>
 }
 
-<p role="alert" data-slot="error" [class]="errorClasses" [id]="errorId()" [hidden]="!message()">
-  <span>{{ message() }}</span>
-</p>
+<p app-error [id]="errorId()" [hidden]="!message()">{{ message() }}</p>

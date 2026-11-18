@@ -1,8 +1,8 @@
 <section class="mx-auto max-w-5xl space-y-6">
   <header class="space-y-3">
-    <h1 appNavigationHeading class="font-heading text-2xl font-semibold" i18n="@@visitsTitle">Visit analytics</h1>
+    <h1 appUI appNavigationHeading i18n="@@visitsTitle">Visit analytics</h1>
 
-    <p i18n="@@visitsScope">
+    <p appUI tone="muted" i18n="@@visitsScope">
       Public page views reported by the browser. Each transition to another page or reload can add a view. The current
       UTC day is partial. A view is one page opening.
     </p>
@@ -11,7 +11,8 @@
   <nav class="flex flex-wrap gap-2" aria-label="Reporting period" i18n-aria-label="@@visitsPeriod">
     @for (days of periods; track days) {
       <a
-        [class]="button"
+        appUI="button"
+        variant="secondary"
         [routerLink]="[]"
         [queryParams]="{ period: days }"
         [attr.aria-current]="period() === days ? 'page' : null"
@@ -23,13 +24,13 @@
 
   @if (totals(); as data) {
     <dl class="grid gap-3 sm:grid-cols-2">
-      <div class="rounded-xl border border-zinc-300 p-5 dark:border-zinc-700">
+      <div appUI="card" layout="plain">
         <dt i18n="@@visitsCurrent">Page views in this period</dt>
 
         <dd data-visit-current class="mt-2 text-3xl font-semibold">{{ data.current | number }}</dd>
       </div>
 
-      <div class="rounded-xl border border-zinc-300 p-5 dark:border-zinc-700">
+      <div appUI="card" layout="plain">
         <dt i18n="@@visitsPrevious">Page views in the previous period</dt>
 
         <dd class="mt-2 text-3xl font-semibold">{{ data.previous | number }}</dd>
@@ -37,11 +38,11 @@
     </dl>
 
     @if (data.current === 0) {
-      <p role="status" i18n="@@visitsEmpty">No page views recorded in this period.</p>
+      <p appUI tone="muted" role="status" i18n="@@visitsEmpty">No page views recorded in this period.</p>
     } @else {
       <div class="grid gap-6 md:grid-cols-2">
         <section aria-labelledby="visited-pages">
-          <h2 id="visited-pages" class="font-heading text-lg font-semibold" i18n="@@visitsPages">Most viewed pages</h2>
+          <h2 appUI uiSize="sm" id="visited-pages" i18n="@@visitsPages">Most viewed pages</h2>
 
           <dl class="mt-3 divide-y divide-zinc-200 dark:divide-zinc-700">
             @for (row of data.pages; track row.locale + ':' + row.page) {
@@ -55,7 +56,7 @@
         </section>
 
         <section aria-labelledby="daily-visits">
-          <h2 id="daily-visits" class="font-heading text-lg font-semibold" i18n="@@visitsDaily">Views by UTC day</h2>
+          <h2 appUI uiSize="sm" id="daily-visits" i18n="@@visitsDaily">Views by UTC day</h2>
 
           <dl class="mt-3 divide-y divide-zinc-200 dark:divide-zinc-700">
             @for (row of data.daily; track row.day) {
@@ -72,8 +73,10 @@
       </div>
     }
   } @else if (summary()?.state === 'disabled') {
-    <p role="status" i18n="@@visitsDisabled">Visit analytics collection is disabled.</p>
+    <div appUI="alert" tone="neutral" role="status" i18n="@@visitsDisabled">
+      Visit analytics collection is disabled.
+    </div>
   } @else {
-    <p role="alert" i18n="@@visitsUnavailable">Visit analytics could not be loaded.</p>
+    <div appUI="alert" tone="danger" role="alert" i18n="@@visitsUnavailable">Visit analytics could not be loaded.</div>
   }
 </section>

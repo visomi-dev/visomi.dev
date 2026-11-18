@@ -4,12 +4,17 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { OwnerSession } from '../../auth/session/owner-session';
 import { NavigationHeading } from '../../shared/navigation-heading';
+import { Alert } from '../../ui/feedback/alert';
+import { Card } from '../../ui/layout/card';
+import { Heading } from '../../ui/typography/heading';
+import { Link } from '../../ui/typography/link';
+import { Text } from '../../ui/typography/text';
 
 import type { DashboardData } from './dashboard.resolver';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [NavigationHeading, RouterLink],
+  imports: [NavigationHeading, RouterLink, Alert, Card, Heading, Link, Text],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

@@ -44,9 +44,15 @@
 
       @if (challenge()) {
         <form class="space-y-5" (ngSubmit)="verify()">
-          <app-field controlId="code" [label]="codeLabel" [manualError]="failed() ? failureMessage : null">
+          <app-field
+            controlId="code"
+            [label]="codeLabel"
+            [manualError]="failed() ? failureMessage : null"
+            data-show-error
+          >
             <app-pin-input
               required
+              acceptFormattedPaste
               autocomplete="one-time-code"
               [value]="code()"
               [disabled]="busy()"

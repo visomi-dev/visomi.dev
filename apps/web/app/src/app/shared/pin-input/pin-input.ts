@@ -26,6 +26,7 @@ export class PinInput {
   readonly disabled = input(false);
   readonly autocomplete = input('off');
   readonly required = input(false, { transform: booleanAttribute });
+  readonly acceptFormattedPaste = input(false, { transform: booleanAttribute });
   readonly value = input.required<string>();
   readonly valueChange = output<string>();
 
@@ -36,6 +37,10 @@ export class PinInput {
   private readonly control = viewChild.required<ElementRef<HTMLInputElement>>('control');
 
   protected paste(event: ClipboardEvent): void {
+    if (!this.acceptFormattedPaste() || event.defaultPrevented) {
+      return;
+    }
+
     const text = event.clipboardData?.getData('text/plain') ?? '';
     const digits = text.replace(/[^0-9]/g, '');
 

@@ -85,6 +85,9 @@ test('the owner can compare public page views without collecting URLs or exposin
 
   await page.setViewportSize({ width: 390, height: 844 });
 
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+
+  expect(overflow).toBe(false);
   const accessibility = await new AxeBuilder({ page }).analyze();
 
   expect(accessibility.violations).toEqual([]);

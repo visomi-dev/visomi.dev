@@ -1,0 +1,6 @@
+:host([data-show-error]) > [data-slot='error']:not([hidden]) {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  opacity: 1;
+  margin-top: 0;
+}

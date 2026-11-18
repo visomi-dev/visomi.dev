@@ -5,12 +5,32 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { OwnerSession } from '../../auth/session/owner-session';
 import { NavigationHeading } from '../../shared/navigation-heading';
+import { Button } from '../../ui/actions/button';
+import { DescriptionList } from '../../ui/data/description-list';
+import { Alert } from '../../ui/feedback/alert';
+import { Card } from '../../ui/layout/card';
+import { Disclosure } from '../../ui/overlays/disclosure';
+import { Code } from '../../ui/typography/code';
+import { Heading } from '../../ui/typography/heading';
+import { Text } from '../../ui/typography/text';
 
 import type { MetricsData } from './metrics.resolver';
 
 @Component({
   selector: 'app-metrics',
-  imports: [NavigationHeading, DatePipe, DecimalPipe],
+  imports: [
+    NavigationHeading,
+    DatePipe,
+    DecimalPipe,
+    Button,
+    DescriptionList,
+    Alert,
+    Card,
+    Disclosure,
+    Code,
+    Heading,
+    Text,
+  ],
   templateUrl: './metrics.html',
   styleUrl: './metrics.css',
 })

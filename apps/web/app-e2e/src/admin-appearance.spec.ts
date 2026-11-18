@@ -69,6 +69,12 @@ for (const locale of ['en', 'es'] as const) {
       }
     }
     expect(errors).toEqual([]);
+    const current = page.locator('[data-language-switcher][aria-current=page]');
+
+    await expect(current).toHaveAttribute('href', `/app/${locale}/admin/auth/sign-in`);
+
+    await expect(current).toHaveText(locale === 'en' ? 'English' : 'Español');
+
     const other = page.getByRole('link', { name: locale === 'en' ? 'Español' : 'English', exact: true });
 
     await other.click();
@@ -151,5 +157,19 @@ for (const locale of ['en', 'es'] as const) {
     await expect(dialog).toBeHidden();
 
     await expect(menu).toBeFocused();
+
+    await menu.press('Enter');
+
+    await expect(dialog).toBeVisible();
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+
+    await expect(dialog).toBeHidden();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    await expect(menu).toBeVisible();
+
+    await expect(dialog).toBeHidden();
   });
 }

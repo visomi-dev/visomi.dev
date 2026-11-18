@@ -3,15 +3,19 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { linkButton } from '@visomi-stack/web-frontend-ui/lib/button';
 import { visitPeriods, type VisitSummary } from '@visomi-stack/web-shared-observability/lib/visits';
 
 import { OwnerSession } from '../../auth/session/owner-session';
 import { NavigationHeading } from '../../shared/navigation-heading';
+import { LinkButton } from '../../ui/actions/link-button';
+import { Alert } from '../../ui/feedback/alert';
+import { Card } from '../../ui/layout/card';
+import { Heading } from '../../ui/typography/heading';
+import { Text } from '../../ui/typography/text';
 
 @Component({
   selector: 'app-visits',
-  imports: [NavigationHeading, DecimalPipe, RouterLink],
+  imports: [NavigationHeading, DecimalPipe, RouterLink, LinkButton, Alert, Card, Heading, Text],
   templateUrl: './visits.html',
   styleUrl: './visits.css',
 })
@@ -60,5 +64,4 @@ export class Visits {
   });
 
   protected readonly periods = visitPeriods;
-  protected readonly button = linkButton.classes({ variant: 'secondary' });
 }

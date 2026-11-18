@@ -1,10 +1,15 @@
 import { booleanAttribute, Component, computed, input } from '@angular/core';
 
-import { description, errorMessage, field as styles, label } from '@visomi-stack/web-frontend-ui/lib/forms';
+import { field as styles } from '@visomi-stack/web-frontend-ui/lib/forms';
+
+import { Description } from '../../ui/forms/description';
+import { ErrorMessage } from '../../ui/forms/error-message';
+import { Label } from '../../ui/forms/label';
 
 @Component({
   selector: 'app-field',
   exportAs: 'appField',
+  imports: [Description, ErrorMessage, Label],
   templateUrl: './field.html',
   styleUrl: './field.css',
   host: {
@@ -32,8 +37,4 @@ export class Field {
 
     return ids.filter(Boolean).join(' ') || null;
   });
-
-  protected readonly labelClasses = label.classes();
-  protected readonly descriptionClasses = description.classes();
-  protected readonly errorClasses = errorMessage.classes();
 }

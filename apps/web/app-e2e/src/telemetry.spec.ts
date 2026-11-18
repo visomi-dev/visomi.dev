@@ -177,10 +177,22 @@ for (const [path, application] of [
     await page.goto('/app/en/admin/metrics');
 
     const details = page.locator('details', { hasText: traceId });
+    const summary = details.locator('summary');
+    const trace = details.getByText(traceId, { exact: true });
 
-    await details.locator('summary').click();
+    await expect(trace).toBeHidden();
 
-    await expect(details.getByText(traceId, { exact: true })).toBeVisible();
+    await summary.click();
+
+    await expect(trace).toBeVisible();
+
+    await summary.press('Enter');
+
+    await expect(trace).toBeHidden();
+
+    await summary.press('Space');
+
+    await expect(trace).toBeVisible();
 
     await page.screenshot({ path: info.outputPath(`browser-diagnostics-${application}.png`), animations: 'disabled' });
   });
