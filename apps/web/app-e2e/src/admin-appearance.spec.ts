@@ -11,6 +11,8 @@ async function setDarkTheme(control: Locator, dark: boolean) {
   if (pressed !== String(dark)) {
     await control.click();
   }
+
+  await expect(control).toHaveAttribute('aria-pressed', String(dark));
 }
 
 for (const locale of ['en', 'es'] as const) {
@@ -48,8 +50,6 @@ for (const locale of ['en', 'es'] as const) {
 
       for (const dark of [false, true]) {
         await setDarkTheme(theme, dark);
-
-        await expect(theme).toHaveAttribute('aria-pressed', String(dark));
 
         await expect(page.locator('app-root')).not.toHaveAttribute('data-theme-transition', '');
 
