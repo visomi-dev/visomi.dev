@@ -67,18 +67,24 @@ it('records bounded anonymous page views, survives a new receiver and expires ol
 
     expect(responses.map(({ status }) => status)).toEqual([204, 204, 204, 400, 400, 403, 204]);
     const restarted = createVisitAnalytics(options);
-    const summary = await restarted.summary(7);
-    const isoDay = expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/);
 
-    expect(summary).toMatchObject({
-      state: 'ready',
-      firstDay: isoDay,
-      days: [
-        { day: isoDay, page: 'docs', locale: 'es', views: 1 },
-        { day: isoDay, page: 'home', locale: 'en', views: 2 },
-        { day: isoDay, page: 'home', locale: 'en', views: 4 },
-      ],
-    });
+    try {
+      const summary = await restarted.summary(7);
+      const isoDay = expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/);
+
+      expect(summary).toMatchObject({
+        state: 'ready',
+        firstDay: isoDay,
+        days: [
+          { day: isoDay, page: 'docs', locale: 'es', views: 1 },
+          { day: isoDay, page: 'home', locale: 'en', views: 2 },
+          { day: isoDay, page: 'home', locale: 'en', views: 4 },
+        ],
+      });
+    } finally {
+      restarted.close();
+    }
+
     const history = await pool!.query('SELECT views::integer AS views FROM site_visit_days ORDER BY views');
 
     expect(history.rows.map((row) => row.views)).toEqual([1, 2, 4, 100]);
