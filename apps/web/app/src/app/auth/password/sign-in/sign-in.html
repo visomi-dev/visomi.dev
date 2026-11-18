@@ -19,40 +19,27 @@
   </header>
 
   <main id="auth-main" class="flex flex-1 items-center justify-center px-5 py-8 sm:py-14">
-    <section class="w-full max-w-md space-y-6 shadow-sm" [class]="cardClasses">
+    <section appUI="card" layout="plain" padding="lg" class="w-full max-w-md space-y-6 shadow-sm">
       <header class="space-y-3">
         @if (challenge()) {
-          <h1 appNavigationHeading class="font-heading text-2xl font-semibold sm:text-3xl" i18n="@@signInVerifyTitle">
-            Confirm your sign-in
-          </h1>
+          <h1 appUI appNavigationHeading i18n="@@signInVerifyTitle">Confirm your sign-in</h1>
 
           @if (factor() === 'email') {
-            <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300" i18n="@@signInVerifyEmail">
-              Enter the six-digit code from your email.
-            </p>
+            <p appUI uiSize="sm" tone="muted" i18n="@@signInVerifyEmail">Enter the six-digit code from your email.</p>
           } @else {
-            <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300" i18n="@@signInVerifyTotp">
+            <p appUI uiSize="sm" tone="muted" i18n="@@signInVerifyTotp">
               Enter the six-digit code from your authenticator.
             </p>
           }
         } @else {
-          <h1
-            appNavigationHeading
-            class="font-heading text-2xl font-semibold sm:text-3xl"
-            tabindex="-1"
-            i18n="@@signInHeroTitle"
-          >
-            Owner sign-in
-          </h1>
+          <h1 appUI appNavigationHeading i18n="@@signInHeroTitle">Owner sign-in</h1>
 
-          <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300" i18n="@@dashboardAccessDenied">
-            Owner access required.
-          </p>
+          <p appUI uiSize="sm" tone="muted" i18n="@@dashboardAccessDenied">Owner access required.</p>
         }
       </header>
 
       @if (!challenge() && failed()) {
-        <p role="alert" class="text-sm text-red-700 dark:text-red-300">{{ failureMessage }}</p>
+        <div appUI="alert" tone="danger" role="alert">{{ failureMessage }}</div>
       }
 
       @if (challenge()) {
@@ -68,27 +55,22 @@
           </app-field>
 
           <button
+            appUI
             class="w-full"
-            [class]="submitClasses"
             [disabled]="busy() || !validCode()"
             type="submit"
             [attr.aria-busy]="busy()"
+            i18n="@@dashboardAccessVerify"
           >
-            @if (busy()) {
-              <span
-                aria-hidden="true"
-                class="mr-2 inline-block size-4 animate-spin rounded-full border-2 border-current border-r-transparent motion-reduce:animate-none"
-              ></span>
-            }
-
-            <span i18n="@@dashboardAccessVerify">Verify access</span>
+            Verify access
           </button>
         </form>
 
         <button
+          appUI
+          variant="secondary"
           type="button"
           class="w-full"
-          [class]="restartClasses"
           [disabled]="busy()"
           (click)="restart()"
           i18n="@@signInVerifyRestart"
@@ -99,8 +81,7 @@
         <form class="space-y-5" (ngSubmit)="signIn()">
           <app-field controlId="email" [label]="emailLabel">
             <input
-              class="w-full"
-              [class]="controlClasses"
+              appUI
               id="email"
               name="email"
               type="email"
@@ -114,8 +95,8 @@
           <app-field controlId="password" [label]="passwordLabel">
             <div class="relative">
               <input
-                class="w-full pr-24"
-                [class]="controlClasses"
+                appUI
+                class="pr-24"
                 id="password"
                 name="password"
                 [type]="passwordVisible() ? 'text' : 'password'"
@@ -126,7 +107,9 @@
               />
 
               <button
-                [class]="passwordButton"
+                appUI
+                variant="ghost"
+                size="sm"
                 type="button"
                 class="absolute inset-y-0 right-0 min-w-16"
                 aria-label="Show or hide password"
@@ -140,26 +123,26 @@
             </div>
           </app-field>
 
-          <button class="w-full" [class]="submitClasses" [disabled]="busy()" type="submit" [attr.aria-busy]="busy()">
-            @if (busy()) {
-              <span
-                aria-hidden="true"
-                class="mr-2 inline-block size-4 animate-spin rounded-full border-2 border-current border-r-transparent motion-reduce:animate-none"
-              ></span>
-            }
-
-            <span i18n="@@dashboardAccessSignIn">Access dashboard</span>
+          <button
+            appUI
+            class="w-full"
+            [disabled]="busy()"
+            type="submit"
+            [attr.aria-busy]="busy()"
+            i18n="@@dashboardAccessSignIn"
+          >
+            Access dashboard
           </button>
         </form>
       }
 
       @if (busy()) {
-        <p role="status" i18n="@@dashboardAccessLoading">Verifying access…</p>
+        <p appUI uiSize="sm" tone="muted" role="status" i18n="@@dashboardAccessLoading">Verifying access…</p>
       }
     </section>
   </main>
 
-  <footer class="px-5 pb-6 text-center text-xs text-zinc-600 dark:text-zinc-400" i18n="@@signInFooterLabel">
-    Private administration · VISOMI.DEV
+  <footer class="px-5 pb-6 text-center">
+    <p appUI uiSize="xs" tone="muted" i18n="@@signInFooterLabel">Private administration · VISOMI.DEV</p>
   </footer>
 </div>

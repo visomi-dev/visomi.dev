@@ -147,7 +147,27 @@ test('private access completes the stack password and email second-factor flow',
 
   await page.getByLabel('Password', { exact: true }).fill('Synthetic password 42!');
 
-  await page.getByRole('button', { name: 'Access dashboard' }).click();
+  const submit = page.getByRole('button', { name: 'Access dashboard' });
+
+  await page.route(
+    '**/api/auth/password/sign-in',
+    async (route) => {
+      try {
+        await expect(submit).toBeDisabled();
+
+        await expect(submit).toHaveAttribute('aria-busy', 'true');
+
+        const mask = await submit.evaluate((element) => getComputedStyle(element, '::after').maskImage);
+
+        expect(mask).toContain('url(');
+      } finally {
+        await route.continue();
+      }
+    },
+    { times: 1 },
+  );
+
+  await submit.click();
 
   const verification = page.getByLabel('Verification code');
 

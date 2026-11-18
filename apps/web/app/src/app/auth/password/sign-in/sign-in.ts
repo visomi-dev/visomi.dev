@@ -5,19 +5,34 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom, takeUntil } from 'rxjs';
 
-import { button } from '@visomi-stack/web-frontend-ui/lib/button';
-import { input as control } from '@visomi-stack/web-frontend-ui/lib/forms';
-import { card } from '@visomi-stack/web-frontend-ui/lib/layout';
-
 import { Field } from '../../../shared/field/field';
 import { Preferences } from '../../../shared/layout/preferences/preferences';
 import { NavigationHeading } from '../../../shared/navigation-heading';
 import { PinInput } from '../../../shared/pin-input/pin-input';
+import { Button } from '../../../ui/actions/button';
+import { Alert } from '../../../ui/feedback/alert';
+import { Input } from '../../../ui/forms/input';
+import { Card } from '../../../ui/layout/card';
+import { Heading } from '../../../ui/typography/heading';
+import { Text } from '../../../ui/typography/text';
 import { OwnerSession } from '../../session/owner-session';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [NavigationHeading, FormsModule, Preferences, NgOptimizedImage, Field, PinInput],
+  imports: [
+    NavigationHeading,
+    FormsModule,
+    Preferences,
+    NgOptimizedImage,
+    Field,
+    PinInput,
+    Button,
+    Alert,
+    Input,
+    Card,
+    Heading,
+    Text,
+  ],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css',
 })
@@ -39,13 +54,8 @@ export class SignIn {
 
   protected readonly validCode = computed(() => /^[0-9]{6}$/.test(this.code()));
 
-  protected readonly cardClasses = card.classes({ layout: 'plain', padding: 'lg' });
-  protected readonly controlClasses = control.classes();
-  protected readonly submitClasses = button.classes();
-  protected readonly passwordButton = button.classes({ variant: 'ghost', size: 'sm' });
   protected readonly passwordShow = $localize`:@@signInPasswordShow:Show`;
   protected readonly passwordHide = $localize`:@@signInPasswordHide:Hide`;
-  protected readonly restartClasses = button.classes({ variant: 'secondary' });
   protected readonly codeLabel = $localize`:@@dashboardAccessCode:Verification code`;
   protected readonly emailLabel = $localize`:@@dashboardAccessEmail:Verified email`;
   protected readonly passwordLabel = $localize`:@@dashboardAccessPassword:Password`;
