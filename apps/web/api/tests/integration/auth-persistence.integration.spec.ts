@@ -9,7 +9,6 @@ import { Cookie } from 'express-session';
 import type { SessionData } from 'express-session';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { authenticator } from '@visomi-stack/dev-testing/lib/authenticator';
-import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
 
 import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
@@ -21,9 +20,11 @@ import { rateLimit } from '../../src/auth/shared/security';
 import { RequestLimitStore } from '../../src/auth/shared/request-limit-store';
 import { SessionStore } from '../../src/auth/sessions/store';
 
+import { suitePostgres } from './support/postgres';
+
 const { challenges, credentials, sessions, users } = authSchema;
 
-let postgres: Awaited<ReturnType<typeof testPostgres>>;
+let postgres: Awaited<ReturnType<typeof suitePostgres>>;
 let resource: ReturnType<typeof createDatabase>;
 const execute = promisify(execFile);
 const config = authConfig({
@@ -33,7 +34,7 @@ const config = authConfig({
 });
 
 beforeAll(async () => {
-  const isolated = await testPostgres();
+  const isolated = await suitePostgres();
 
   postgres = isolated;
   resource = createDatabase(postgres.url);
@@ -599,11 +600,12 @@ describe('isolated PostgreSQL authentication persistence', () => {
     }
   });
   it('applies the explicit Drizzle Kit command to an empty dedicated database and reruns safely', async () => {
-    await resource.pool.query('CREATE DATABASE visomi_auth_cli_test');
-
     const url = new URL(postgres.url);
+    const cliDatabase = url.pathname.slice(1) + '_cli';
 
-    url.pathname = '/visomi_auth_cli_test';
+    await resource.pool.query(`CREATE DATABASE "${cliDatabase}"`);
+
+    url.pathname = '/' + cliDatabase;
     const command = () =>
       execute('pnpm', ['nx', 'run', 'backend-shared:db-migrate', '--output-style=static'], {
         cwd: resolve(__dirname, '../../../../..'),
@@ -611,12 +613,12 @@ describe('isolated PostgreSQL authentication persistence', () => {
         timeout: 20000,
       });
 
-    await command();
-
     const migrated = createDatabase(url.toString());
     const id = randomUUID();
 
     try {
+      await command();
+
       await migrated.db.insert(users).values({ id });
 
       await command();
@@ -626,6 +628,8 @@ describe('isolated PostgreSQL authentication persistence', () => {
       expect(identities.map((user) => user.id)).toEqual([id]);
     } finally {
       await migrated.close();
+
+      await resource.pool.query(`DROP DATABASE "${cliDatabase}"`);
     }
   }, 30000);
 });

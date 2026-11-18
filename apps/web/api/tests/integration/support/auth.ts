@@ -2,7 +2,6 @@ import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { randomUUID } from 'node:crypto';
 
-import { testPostgres } from '@visomi-stack/dev-testing/lib/postgres';
 import { SMTPServer } from 'smtp-server';
 import { beforeAll, afterAll, beforeEach, expect } from 'vitest';
 import express from 'express';
@@ -16,11 +15,12 @@ import type { PrivateMetrics } from '@visomi-stack/web-backend-shared/lib/observ
 import { createApp, createAuthentication, authConfig } from '../../../src/app';
 
 import { createAuthRouter } from './stack-auth-router';
+import { suitePostgres } from './postgres';
 
 export const password = 'Synthetic password 42!';
 
 export function authenticationFixture(options: { privateMetrics?: PrivateMetrics } = {}) {
-  let postgres: Awaited<ReturnType<typeof testPostgres>>;
+  let postgres: Awaited<ReturnType<typeof suitePostgres>>;
   let resource: ReturnType<typeof createDatabase>;
   let server: Server;
   let smtp: SMTPServer;
@@ -31,7 +31,7 @@ export function authenticationFixture(options: { privateMetrics?: PrivateMetrics
   let failMail = false;
 
   beforeAll(async () => {
-    const result1 = await testPostgres();
+    const result1 = await suitePostgres();
 
     postgres = result1;
     resource = createDatabase(postgres.url);

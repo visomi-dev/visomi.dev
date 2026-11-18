@@ -52,11 +52,7 @@ async function main() {
 
     signal.throwIfAborted();
 
-    const database = await testPostgres(
-      resolve(postgresRoot, 'postgres.json'),
-      'web-api',
-      AbortSignal.any([signal, AbortSignal.timeout(40000)]),
-    );
+    const database = await testPostgres(resolve(postgresRoot, 'postgres.json'), 'web-api', signal);
 
     resources.database = database;
     signal.throwIfAborted();

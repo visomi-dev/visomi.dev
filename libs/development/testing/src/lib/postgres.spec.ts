@@ -74,7 +74,7 @@ beforeEach(async () => {
   vi.mocked(createTestCompose).mockImplementation(async (cluster, telemetryDirectory, app) => ({
     ...descriptor(cluster),
     telemetryDirectory,
-    app,
+    app: app === 'postgres' ? 'web-api' : app,
   }));
   const actual = await vi.importActual<typeof ImportedModule1>('node:fs/promises');
 
@@ -117,6 +117,14 @@ describe('Compose PostgreSQL resource', () => {
     await first;
 
     await expect(stat(resource.directory)).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
+  it('requests a host-only database for callers that only connect over loopback', async () => {
+    const resource = await testPostgres(undefined, 'postgres');
+
+    expect(createTestCompose).toHaveBeenCalledWith(resource.directory, expect.any(String), 'postgres');
+
+    await resource.stop();
   });
 
   it('records ownership before startup and selects the gateway build without reading a developer env file', async () => {
@@ -185,15 +193,46 @@ describe('Compose PostgreSQL resource', () => {
     await resource.stop();
   });
 
-  it('bounds readiness retries and cleans the container and pool after a timeout', async () => {
+  it('migrates a database that becomes ready after 100 fast refusals within its deadline', async () => {
     boundary.failures = 100;
+    const resource = await testPostgres();
 
-    await expect(testPostgres()).rejects.toThrow('isolated_postgres_setup_failed');
+    try {
+      expect(boundary.clients[0].query).toHaveBeenCalledTimes(101);
+      expect(delay).toHaveBeenCalledTimes(100);
+      expect(migrate).toHaveBeenCalledOnce();
+    } finally {
+      await resource.stop();
+    }
+  });
 
-    expect(boundary.clients[0].query).toHaveBeenCalledTimes(100);
-    expect(delay).toHaveBeenCalledTimes(99);
-    expect(boundary.clients[0].end).toHaveBeenCalledOnce();
-    expect(migrate).not.toHaveBeenCalled();
+  it('bounds readiness by the fixture deadline even when the caller supplies a live signal', async () => {
+    const deadline = new AbortController();
+    const caller = new AbortController();
+    const timeout = vi.spyOn(AbortSignal, 'timeout').mockReturnValueOnce(deadline.signal);
+
+    boundary.failures = 100;
+    boundary.onQuery.mockImplementation(() => {
+      if (boundary.failures === 1) {
+        deadline.abort();
+      }
+    });
+
+    try {
+      await expect(testPostgres(undefined, 'web-api', caller.signal)).rejects.toThrow(
+        'isolated_postgres_setup_failed:readiness:timeout',
+      );
+
+      expect(timeout).toHaveBeenCalledWith(40000);
+      expect(caller.signal.aborted).toBe(false);
+      expect(boundary.clients[0].query).toHaveBeenCalledTimes(100);
+      expect(delay).toHaveBeenCalledTimes(99);
+      expect(boundary.clients[0].end).toHaveBeenCalledOnce();
+      expect(stopTestCompose).toHaveBeenCalledOnce();
+      expect(migrate).not.toHaveBeenCalled();
+    } finally {
+      timeout.mockRestore();
+    }
   });
 
   it.each(['readiness', 'migration'] as const)(
@@ -209,7 +248,7 @@ describe('Compose PostgreSQL resource', () => {
       }
 
       await expect(testPostgres(undefined, 'web-api', controller.signal)).rejects.toThrow(
-        `isolated_postgres_setup_failed:${phase}`,
+        `isolated_postgres_setup_failed:${phase}:cancelled`,
       );
 
       expect(migrate).toHaveBeenCalledTimes(Number(phase === 'migration'));

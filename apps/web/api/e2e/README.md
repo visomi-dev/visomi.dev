@@ -131,7 +131,14 @@ and starts its compiled `main.js`. API binds loopback port 3307; gateway binds
 The gateway build also produces the compiled API it imports as a sibling artifact.
 There is no Nx serve watcher or native PostgreSQL server in this E2E startup.
 
-Every run owns its project name, PostgreSQL volume, network, synthetic credentials,
+Each disposable PostgreSQL cluster stores its data and WAL on a 256 MiB tmpfs to
+isolate migrations from build-disk writeback. Its 40-second setup deadline includes
+container startup, SQL readiness and migrations. Host-only API templates and browser
+fixtures on rootless Podman use its configured pasta or slirp4netns network and a
+single loopback-published container. Docker and Podman installations without a
+recognized private network driver use Compose.
+
+Every run owns its project name, temporary PostgreSQL storage, network, synthetic credentials,
 and ignored `tmp/api-e2e/run-*` or `gateway-run-*` directory. PostgreSQL is published
 on an automatically assigned loopback port for fixture queries. The empty explicit
 Compose env file and controlled settings prevent use of developer database
