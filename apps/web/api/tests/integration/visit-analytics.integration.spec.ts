@@ -17,7 +17,7 @@ beforeAll(async () => {
   const started = await testPostgres();
 
   postgres = started;
-  pool = new Pool({ connectionString: postgres.url });
+  pool = new Pool({ connectionString: postgres.url, options: '-c DateStyle=German' });
 }, 60_000);
 
 afterAll(async () => {
@@ -68,13 +68,15 @@ it('records bounded anonymous page views, survives a new receiver and expires ol
     expect(responses.map(({ status }) => status)).toEqual([204, 204, 204, 400, 400, 403, 204]);
     const restarted = createVisitAnalytics(options);
     const summary = await restarted.summary(7);
+    const isoDay = expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/);
 
     expect(summary).toMatchObject({
       state: 'ready',
+      firstDay: isoDay,
       days: [
-        { page: 'docs', locale: 'es', views: 1 },
-        { page: 'home', locale: 'en', views: 2 },
-        { page: 'home', locale: 'en', views: 4 },
+        { day: isoDay, page: 'docs', locale: 'es', views: 1 },
+        { day: isoDay, page: 'home', locale: 'en', views: 2 },
+        { day: isoDay, page: 'home', locale: 'en', views: 4 },
       ],
     });
     const history = await pool!.query('SELECT views::integer AS views FROM site_visit_days ORDER BY views');
