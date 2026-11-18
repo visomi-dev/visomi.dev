@@ -49,9 +49,14 @@ it('uses a caller-selected PIN length in a form independent of vault services', 
   control.dispatchEvent(new Event('input'));
   expect(control.checkValidity()).toBe(true);
   expect(view.componentInstance.code()).toBe('00123');
+  view.detectChanges();
+
+  expect(container.querySelectorAll('[aria-hidden=true] .slot > [data-slot=mask]')).toHaveLength(5);
+  expect(container.textContent).not.toContain('00123');
   view.componentInstance.code.set('');
   view.detectChanges();
   expect(control.value).toBe('');
+  expect(container.querySelector('[data-slot=mask]')).toBeNull();
 });
 
 it('emits a native edit once and restores the supplied value when the owner declines it', () => {

@@ -15,7 +15,7 @@ import { Field } from '../field/field';
 @Component({
   selector: 'app-pin-input',
   templateUrl: './pin-input.html',
-  host: { '[style.--digits]': 'digits()' },
+  host: { class: /* tw */ 'block min-w-0 w-full', '[style.--digits]': 'digits()' },
   styleUrl: './pin-input.css',
 })
 export class PinInput {

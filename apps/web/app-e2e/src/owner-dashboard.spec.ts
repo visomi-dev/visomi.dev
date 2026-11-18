@@ -169,6 +169,81 @@ test('private access completes the stack password and email second-factor flow',
 
   await expect(verification).toHaveValue('001234');
 
+  const pin = page.locator('app-pin-input');
+
+  for (const width of [320, 1440]) {
+    await page.setViewportSize({ width, height: 844 });
+
+    await page.evaluate(() => document.fonts.ready);
+
+    const geometry = await pin.evaluate((host) => {
+      const field = host.parentElement!.getBoundingClientRect();
+      const component = host.getBoundingClientRect();
+      const grid = host.querySelector('[aria-hidden=true]')!.getBoundingClientRect();
+      const input = host.querySelector('input')!.getBoundingClientRect();
+      const cells = Array.from(host.querySelectorAll('.slot'));
+      const boxes = cells.map((cell) => cell.getBoundingClientRect());
+      const widths = boxes.map((box) => box.width);
+      const centers = cells.flatMap((cell, index) => {
+        const mask = cell.querySelector('[data-slot=mask]');
+
+        if (!mask) {
+          return [];
+        }
+
+        const box = boxes[index];
+        const dot = mask.getBoundingClientRect();
+
+        return [
+          Math.abs(dot.x + dot.width / 2 - box.x - box.width / 2),
+          Math.abs(dot.y + dot.height / 2 - box.y - box.height / 2),
+        ];
+      });
+
+      return {
+        edgeOffset: Math.max(
+          Math.abs(component.left - field.left),
+          Math.abs(component.right - field.right),
+          Math.abs(grid.left - component.left),
+          Math.abs(grid.right - component.right),
+          Math.abs(boxes[0].left - grid.left),
+          Math.abs(boxes.at(-1)!.right - grid.right),
+          Math.abs(input.left - grid.left),
+          Math.abs(input.right - grid.right),
+        ),
+        widthSpread: Math.max(...widths) - Math.min(...widths),
+        centers,
+        overflow: host.scrollWidth > host.clientWidth || document.documentElement.scrollWidth > window.innerWidth,
+      };
+    });
+
+    expect.soft(geometry.edgeOffset, `field, cells and input edges at ${width}px`).toBeLessThan(1);
+    expect.soft(geometry.widthSpread, `equal cell widths at ${width}px`).toBeLessThan(1);
+    expect.soft(geometry.centers, `individual horizontal and vertical offsets at ${width}px`).toHaveLength(12);
+    expect.soft(Math.max(...geometry.centers), `largest centering error at ${width}px`).toBeLessThan(1);
+    expect.soft(geometry.overflow, `no horizontal overflow at ${width}px`).toBe(false);
+
+    const responsiveAccessibility = await new AxeBuilder({ page }).analyze();
+
+    expect(responsiveAccessibility.violations).toEqual([]);
+
+    await page.screenshot({ path: info.outputPath(`verification-${width}.png`), animations: 'disabled' });
+  }
+
+  await verification.press('Home');
+
+  await verification.press('ArrowRight');
+
+  await verification.press('Shift+ArrowRight');
+
+  const selection = await verification.evaluate((element) => {
+    const input = element as HTMLInputElement;
+
+    return [input.selectionStart, input.selectionEnd];
+  });
+
+  expect(selection).toEqual([1, 2]);
+
   await verification.press('End');
 
   await verification.press('Backspace');
