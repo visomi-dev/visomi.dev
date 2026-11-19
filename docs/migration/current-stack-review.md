@@ -46,6 +46,11 @@ Browser verification covers both locales, narrow and desktop viewports, light an
 navigation and dialog focus, OTP paste and slot geometry, contact pages, visit periods, and opening and closing
 technical report details by keyboard. Physical devices and OS autofill are tracked separately under VIS-80.
 
+The Portfolio Angular source groups its private routes under `admin/admin.routes.ts`, loaded lazily by the root
+router. Dashboard, metrics, visits, and the shell live in that feature. Its password sign-in component lives at
+`admin/auth/sign-in/password`, and its session service at `admin/auth/session.ts`. The canonical sign-in URL remains
+`/admin/auth/sign-in` in both localized app mounts. The app-wide 404 lives at `not-found/not-found.ts`.
+
 ## Workspace decisions
 
 | Area                              | Difference and disposition                                                                                                                                                                                                                                                                                                                                                                                                  |

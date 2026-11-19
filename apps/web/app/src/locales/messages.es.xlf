@@ -14,7 +14,7 @@
         <source>Contact requests</source>
         <target>Solicitudes de contacto</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">2,4</context>
         </context-group>
       </trans-unit>
@@ -22,7 +22,7 @@
         <source>Language</source>
         <target>Idioma</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
@@ -30,7 +30,7 @@
         <source>Sign out</source>
         <target>Cerrar sesión</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">6,8</context>
         </context-group>
       </trans-unit>
@@ -38,7 +38,7 @@
         <source>This area is for the site owner.</source>
         <target>Esta área es para la persona propietaria del sitio.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">9,11</context>
         </context-group>
       </trans-unit>
@@ -46,7 +46,7 @@
         <source>Access could not be verified. Please try again.</source>
         <target>No se pudo verificar el acceso. Inténtalo de nuevo.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">11,14</context>
         </context-group>
       </trans-unit>
@@ -54,7 +54,7 @@
         <source>Verification code</source>
         <target>Código de verificación</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">15,17</context>
         </context-group>
       </trans-unit>
@@ -62,7 +62,7 @@
         <source>Verify code</source>
         <target>Verificar código</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">19,21</context>
         </context-group>
       </trans-unit>
@@ -70,7 +70,7 @@
         <source>Verified email</source>
         <target>Correo verificado</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">23,25</context>
         </context-group>
       </trans-unit>
@@ -78,7 +78,7 @@
         <source>Password</source>
         <target>Contraseña</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">27,29</context>
         </context-group>
       </trans-unit>
@@ -86,7 +86,7 @@
         <source>Continue</source>
         <target>Continuar</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">31,35</context>
         </context-group>
       </trans-unit>
@@ -94,7 +94,7 @@
         <source>Checking access…</source>
         <target>Comprobando el acceso…</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">35,36</context>
         </context-group>
       </trans-unit>
@@ -102,7 +102,7 @@
         <source>Requests could not be loaded.</source>
         <target>No se pudieron cargar las solicitudes.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">37,39</context>
         </context-group>
       </trans-unit>
@@ -110,7 +110,7 @@
         <source>Return to requests</source>
         <target>Volver a las solicitudes</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">39,40</context>
         </context-group>
       </trans-unit>
@@ -118,7 +118,7 @@
         <source>All requests</source>
         <target>Todas las solicitudes</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">41,43</context>
         </context-group>
       </trans-unit>
@@ -126,7 +126,7 @@
         <source>No contact requests yet.</source>
         <target>Todavía no hay solicitudes de contacto.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">61,63</context>
         </context-group>
       </trans-unit>
@@ -134,7 +134,7 @@
         <source>Older requests</source>
         <target>Solicitudes anteriores</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">64,68</context>
         </context-group>
       </trans-unit>
@@ -142,7 +142,7 @@
         <source>Technical metrics</source>
         <target>Métricas técnicas</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">10,13</context>
         </context-group>
       </trans-unit>
@@ -150,7 +150,7 @@
         <source>Technical metrics</source>
         <target>Métricas técnicas</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">3,5</context>
         </context-group>
       </trans-unit>
@@ -158,7 +158,7 @@
         <source>Private navigation</source>
         <target>Navegación privada</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
@@ -166,7 +166,7 @@
         <source>Contact requests</source>
         <target>Solicitudes de contacto</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">6,8</context>
         </context-group>
       </trans-unit>
@@ -174,7 +174,7 @@
         <source> HTTP measurements from this process over the last 15 minutes. Local counters reset on restart. Latency is capped at 60 seconds. </source>
         <target>Mediciones HTTP de este proceso durante los últimos 15 minutos. Los contadores locales se reinician con el proceso. La latencia está limitada a 60 segundos.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">14,19</context>
         </context-group>
       </trans-unit>
@@ -182,7 +182,7 @@
         <source> Refresh metrics </source>
         <target>Actualizar métricas</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">25,28</context>
         </context-group>
       </trans-unit>
@@ -190,7 +190,7 @@
         <source>Refreshing metrics…</source>
         <target>Actualizando métricas…</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">29,32</context>
         </context-group>
       </trans-unit>
@@ -198,7 +198,7 @@
         <source>Process:</source>
         <target>Proceso:</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">33,35</context>
         </context-group>
       </trans-unit>
@@ -206,7 +206,7 @@
         <source>Private trace export is configured.</source>
         <target>La exportación privada de trazas está configurada.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">36,38</context>
         </context-group>
       </trans-unit>
@@ -214,7 +214,7 @@
         <source>Private trace export is off.</source>
         <target>La exportación privada de trazas está desactivada.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">38,41</context>
         </context-group>
       </trans-unit>
@@ -222,7 +222,7 @@
         <source>Waiting for HTTP measurements.</source>
         <target>Esperando mediciones HTTP.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">43,46</context>
         </context-group>
       </trans-unit>
@@ -230,7 +230,7 @@
         <source>HTTP requests</source>
         <target>Solicitudes HTTP</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">48,50</context>
         </context-group>
       </trans-unit>
@@ -238,7 +238,7 @@
         <source>HTTP 4xx responses</source>
         <target>Respuestas HTTP 4xx</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">54,56</context>
         </context-group>
       </trans-unit>
@@ -246,7 +246,7 @@
         <source>HTTP 5xx responses</source>
         <target>Respuestas HTTP 5xx</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">60,62</context>
         </context-group>
       </trans-unit>
@@ -254,7 +254,7 @@
         <source>Aborted requests</source>
         <target>Solicitudes interrumpidas</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">66,68</context>
         </context-group>
       </trans-unit>
@@ -262,7 +262,7 @@
         <source>Mean latency</source>
         <target>Latencia media</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">72,74</context>
         </context-group>
       </trans-unit>
@@ -270,7 +270,7 @@
         <source>Maximum latency</source>
         <target>Latencia máxima</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">78,80</context>
         </context-group>
       </trans-unit>
@@ -278,7 +278,7 @@
         <source> Local metrics collection is disabled. Enable it in the service configuration before collecting measurements. </source>
         <target>La recopilación local de métricas está desactivada. Actívala en la configuración del servicio antes de recopilar mediciones.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">85,88</context>
         </context-group>
       </trans-unit>
@@ -286,7 +286,7 @@
         <source>Metrics could not be loaded. Please try again.</source>
         <target>No se pudieron cargar las métricas. Inténtalo de nuevo.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">89,93</context>
         </context-group>
       </trans-unit>

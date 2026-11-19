@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { firstValueFrom, takeUntil } from 'rxjs';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
-import { OwnerSession } from './owner-session';
-import { sessionInterceptor } from './interceptor';
+import { Session } from './session';
+import { sessionInterceptor } from './session.interceptor';
 
 const realtime = vi.hoisted(() => {
   const listeners = new Map<string, (...args: unknown[]) => void>();
@@ -23,7 +23,7 @@ const realtime = vi.hoisted(() => {
 
 vi.mock('socket.io-client', () => ({ io: realtime.io }));
 
-let session: OwnerSession;
+let session: Session;
 let http: HttpTestingController;
 const router = { url: '/admin/dashboard', navigate: vi.fn().mockResolvedValue(true) };
 const owner = { authenticated: true, csrfToken: 'synthetic-csrf', user: { id: 'synthetic-owner' } };
@@ -42,7 +42,7 @@ beforeEach(() => {
     ],
   });
 
-  session = TestBed.inject(OwnerSession);
+  session = TestBed.inject(Session);
   http = TestBed.inject(HttpTestingController);
 });
 

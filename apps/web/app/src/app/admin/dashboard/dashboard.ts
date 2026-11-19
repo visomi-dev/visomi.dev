@@ -2,7 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { OwnerSession } from '../../auth/session/owner-session';
+import { Session } from '../auth/session';
 import { NavigationHeading } from '../../shared/navigation-heading';
 import { Alert } from '../../ui/feedback/alert';
 import { Card } from '../../ui/layout/card';
@@ -19,7 +19,7 @@ import type { DashboardData } from './dashboard.resolver';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-  private readonly session = inject(OwnerSession);
+  private readonly session = inject(Session);
 
   private readonly routeData = toSignal(inject(ActivatedRoute).data);
 

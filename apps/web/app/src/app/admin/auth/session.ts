@@ -9,7 +9,7 @@ type SessionView = { authenticated: boolean; csrfToken: string; user: { id: stri
 
 // eslint-disable-next-line @angular-eslint/prefer-service-decorator -- Keep explicit singleton scope.
 @Injectable({ providedIn: 'root' })
-export class OwnerSession {
+export class Session {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly document = inject(DOCUMENT);

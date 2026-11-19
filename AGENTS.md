@@ -212,7 +212,7 @@ This convention applies to **all** uses of `effect()` in both services and compo
   export const appRoutes: Route[] = [
     {
       path: '',
-      loadComponent: () => import('./pages/home/home').then((m) => m.Home),
+      loadComponent: () => import('./home/home').then((m) => m.Home),
     },
   ];
   ```
@@ -244,7 +244,7 @@ This convention applies to **all** uses of `effect()` in both services and compo
   ```ts
   {
     path: 'user/:id',
-    loadComponent: () => import('./pages/user/user').then((m) => m.User),
+    loadComponent: () => import('./user/user').then((m) => m.User),
     resolve: {
       user: userResolver,
     },
@@ -278,7 +278,7 @@ This convention applies to **all** uses of `effect()` in both services and compo
   ```ts
   {
     path: 'dashboard',
-    loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
+    loadComponent: () => import('./dashboard/dashboard').then((m) => m.Dashboard),
     canActivate: [authGuard],
   }
   ```
@@ -392,7 +392,7 @@ describe('Deps', () => {
 ## Code Generation
 
 ```bash
-pnpm nx g @nx/angular:component apps/website/src/app/pages/some-page/some-page
+pnpm nx g @nx/angular:component apps/web/app/src/app/admin/some-feature/some-feature
 ```
 
 Generated components must be adjusted to follow **all** the conventions above (e.g., remove `Component` suffix, remove `standalone: true`, adjust file names, etc.).
@@ -425,35 +425,32 @@ Generated components must be adjusted to follow **all** the conventions above (e
 Follow **Screaming Architecture** — folder names reveal what the app does, not what framework concepts it uses:
 
 ```
-apps/website/src/app/
+apps/web/app/src/app/
 ├── app.ts                     # Root component
 ├── app.html / app.css         # Root template & styles
 ├── app.config.ts              # Client providers
 ├── app.config.server.ts       # Server providers
 ├── app.routes.ts              # Client routes
 ├── app.routes.server.ts       # Server routes (SSR)
-├── pages/                     # Route-level "smart" components
-│   └── home/
-│       ├── home.ts / .html / .css / .spec.ts
-│       ├── background/        # Page-specific child components
-│       └── hero/
-└── shared/                    # Cross-cutting concerns
-    ├── deps.ts                # Lazy-loaded external dependencies
-    ├── settings.ts            # Theme, locale, device preferences
-    ├── ui.ts                  # UI state (loading, sidebar, navigation)
-    ├── seo.ts                 # SEO/meta tag management
-    ├── constants/             # Constant values
-    │   └── storage.ts
-    └── layout/                # Layout components
-        ├── navbar/
-        ├── theme-switcher/
-        └── page-navigation-loader/
+├── admin/
+│   ├── admin.routes.ts        # Lazy route group for /admin
+│   ├── admin-shell/
+│   ├── auth/
+│   │   ├── session.ts
+│   │   └── sign-in/password/
+│   ├── dashboard/
+│   ├── metrics/
+│   └── visits/
+├── not-found/                 # Application-wide fallback
+├── shared/                    # Cross-cutting concerns
+│   └── layout/                # Reusable layout components
+└── ui/                        # App UI directives and components
 ```
 
 ### Rules
 
 1. **Never** create top-level `services/`, `models/`, or `components/` directories that mix multiple domains.
-2. Route pages live under `pages/`. Each page is a feature directory.
+2. Group Angular routes, their components, resolvers, and tests by feature. Place feature-specific auth and layouts with the feature. Group child routes in a feature `*.routes.ts` when the feature has its own route tree.
 3. Reusable layout components live under `shared/layout/`.
 4. Shared services live directly in `shared/`.
 5. Constants live under `shared/constants/`.

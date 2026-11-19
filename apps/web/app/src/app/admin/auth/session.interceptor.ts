@@ -2,14 +2,14 @@ import { HttpErrorResponse, type HttpInterceptorFn } from '@angular/common/http'
 import { inject } from '@angular/core';
 import { catchError, takeUntil, throwError } from 'rxjs';
 
-import { OwnerSession } from './owner-session';
+import { Session } from './session';
 
 export const sessionInterceptor: HttpInterceptorFn = (request, next) => {
   if (!/^\/api\/(?:contact\/submissions(?:\/|$)|private\/metrics$)/.test(request.url)) {
     return next(request);
   }
 
-  const session = inject(OwnerSession);
+  const session = inject(Session);
 
   return next(request).pipe(
     takeUntil(session.cancelled),

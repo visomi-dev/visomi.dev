@@ -5,7 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { visitPeriods, type VisitSummary } from '@visomi-stack/web-shared-observability/lib/visits';
 
-import { OwnerSession } from '../../auth/session/owner-session';
+import { Session } from '../auth/session';
 import { NavigationHeading } from '../../shared/navigation-heading';
 import { LinkButton } from '../../ui/actions/link-button';
 import { Alert } from '../../ui/feedback/alert';
@@ -20,7 +20,7 @@ import { Text } from '../../ui/typography/text';
   styleUrl: './visits.css',
 })
 export class Visits {
-  private readonly session = inject(OwnerSession);
+  private readonly session = inject(Session);
   private readonly route = inject(ActivatedRoute);
 
   private readonly routeData = toSignal(this.route.data);

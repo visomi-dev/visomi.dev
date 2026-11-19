@@ -2,20 +2,20 @@ import { DOCUMENT, NgOptimizedImage } from '@angular/common';
 import { Component, DestroyRef, afterNextRender, inject, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
-import { OwnerSession } from '../../../auth/session/owner-session';
-import { Button } from '../../../ui/actions/button';
-import { Alert } from '../../../ui/feedback/alert';
-import { NavItem } from '../../../ui/layout/nav-item';
-import { Navbar } from '../../../ui/layout/navbar';
-import { Dialog } from '../../../ui/overlays/dialog';
-import { Heading } from '../../../ui/typography/heading';
-import { Text } from '../../../ui/typography/text';
-import { AppShell } from '../app-shell/app-shell';
-import { Preferences } from '../preferences/preferences';
-import { Sidebar } from '../sidebar/sidebar';
-import { Topbar } from '../topbar/topbar';
-import { ConsentNotice } from '../../observability/consent-notice/consent-notice';
-import { PrivacyLink } from '../../observability/privacy-link/privacy-link';
+import { Session } from '../auth/session';
+import { Button } from '../../ui/actions/button';
+import { Alert } from '../../ui/feedback/alert';
+import { NavItem } from '../../ui/layout/nav-item';
+import { Navbar } from '../../ui/layout/navbar';
+import { Dialog } from '../../ui/overlays/dialog';
+import { Heading } from '../../ui/typography/heading';
+import { Text } from '../../ui/typography/text';
+import { AppShell } from '../../shared/layout/app-shell/app-shell';
+import { Preferences } from '../../shared/layout/preferences/preferences';
+import { Sidebar } from '../../shared/layout/sidebar/sidebar';
+import { Topbar } from '../../shared/layout/topbar/topbar';
+import { ConsentNotice } from '../../shared/observability/consent-notice/consent-notice';
+import { PrivacyLink } from '../../shared/observability/privacy-link/privacy-link';
 
 @Component({
   selector: 'app-admin-shell',
@@ -42,7 +42,7 @@ import { PrivacyLink } from '../../observability/privacy-link/privacy-link';
   styleUrl: './admin-shell.css',
 })
 export class AdminShell {
-  private readonly session = inject(OwnerSession);
+  private readonly session = inject(Session);
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
 

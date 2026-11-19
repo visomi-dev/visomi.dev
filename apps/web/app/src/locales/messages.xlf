@@ -12,291 +12,291 @@
       <trans-unit id="dashboardHeroTitle" datatype="html">
         <source>Contact requests</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">2,4</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">14,16</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">31,33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardRequestsError" datatype="html">
         <source>Requests could not be loaded.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">5,7</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardRequestsRetry" datatype="html">
         <source>Return to requests</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">7,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardRequestsBack" datatype="html">
         <source>All requests</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">9,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardRequestsEmpty" datatype="html">
         <source>No contact requests yet.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">34,37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardRequestsNext" datatype="html">
         <source>Older requests</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">39,44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsHeroTitle" datatype="html">
         <source>Technical metrics</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">3,5</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">16,19</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">33,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsScopeDescription" datatype="html">
         <source> HTTP measurements from this process over the last 15 minutes. Local counters reset on restart. Latency is capped at 60 seconds. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">6,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsRefreshButton" datatype="html">
         <source> Refresh metrics </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">17,20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsRefreshLoading" datatype="html">
         <source>Refreshing metrics…</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">21,24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsProcessLabel" datatype="html">
         <source>Process:</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">25,27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsExportEnabled" datatype="html">
         <source>Private trace export is configured.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">29,31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsExportDisabled" datatype="html">
         <source>Private trace export is off.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">31,34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsEmptyState" datatype="html">
         <source>Waiting for HTTP measurements.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">35,38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsRequestsLabel" datatype="html">
         <source>HTTP requests</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">40,42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsClientErrorsLabel" datatype="html">
         <source>Client errors</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">46,48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsServerErrorsLabel" datatype="html">
         <source>Server errors</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">52,54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsAbortedLabel" datatype="html">
         <source>Aborted requests</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">58,60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsMeanLatencyLabel" datatype="html">
         <source>Mean latency</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">64,66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsMaxLatencyLabel" datatype="html">
         <source>Maximum latency</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">70,72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsDisabledState" datatype="html">
         <source> Local metrics collection is disabled. Enable it in the service configuration before collecting measurements. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">77,80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsErrorState" datatype="html">
         <source>Metrics could not be loaded. Please try again.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">81,85</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notFoundHeroTitle" datatype="html">
         <source>Page not found</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/not-found/not-found.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/not-found/not-found.html</context>
           <context context-type="linenumber">4,6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="notFoundHeroLink" datatype="html">
         <source>Return to website</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/not-found/not-found.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/not-found/not-found.html</context>
           <context context-type="linenumber">6,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="signInHeroTitle" datatype="html">
         <source>Owner sign-in</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">11,13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessDenied" datatype="html">
         <source>This area is for the site owner.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">39,43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessError" datatype="html">
         <source>Access could not be verified. Please try again.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">17,20</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">24,26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessCode" datatype="html">
         <source>Verification code</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">22,25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessVerify" datatype="html">
         <source> Verify code </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">73,75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="signInVerifyRestart" datatype="html">
         <source>Start again</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">51,53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessEmail" datatype="html">
         <source>Verified email</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">54,57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessPassword" datatype="html">
         <source>Password</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">67,70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessSignIn" datatype="html">
         <source> Continue </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">142,144</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessLoading" datatype="html">
         <source>Checking access…</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">148,151</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">75,79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminHeaderSkip" datatype="html">
         <source>Skip to content</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">2,4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsNavigationLabel" datatype="html">
         <source>Private navigation</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessSignOut" datatype="html">
         <source>Sign out</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">19,23</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/admin-shell/admin-shell.html</context>
           <context context-type="linenumber">35,38</context>
         </context-group>
       </trans-unit>
@@ -317,28 +317,28 @@
       <trans-unit id="signInVerifyTitle" datatype="html">
         <source>Enter your verification code</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
           <context context-type="linenumber">27,29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visitsEmpty" datatype="html">
         <source>No page views were reported in this period.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/visits/visits.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/visits/visits.html</context>
           <context context-type="linenumber">41,43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visitsScope" datatype="html">
         <source> These counts include portfolio pages opened by visitors who allow automatic sharing. The current UTC day is still in progress. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/visits/visits.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/visits/visits.html</context>
           <context context-type="linenumber">6,9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="browserDiagnosticsEmpty" datatype="html">
         <source> No browser error reports in this window. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">149,151</context>
         </context-group>
       </trans-unit>

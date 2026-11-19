@@ -3,7 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { OwnerSession } from '../../auth/session/owner-session';
+import { Session } from '../auth/session';
 import { NavigationHeading } from '../../shared/navigation-heading';
 import { Button } from '../../ui/actions/button';
 import { DescriptionList } from '../../ui/data/description-list';
@@ -35,7 +35,7 @@ import type { MetricsData } from './metrics.resolver';
   styleUrl: './metrics.css',
 })
 export class Metrics {
-  private readonly session = inject(OwnerSession);
+  private readonly session = inject(Session);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 

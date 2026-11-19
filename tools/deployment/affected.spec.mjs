@@ -14,7 +14,7 @@ const cases = [
     ['app-e2e', 'site-e2e', 'web-app', 'web-frontend-ui', 'web-gateway', 'web-site'],
   ],
   ['libs/web/frontend/ui/src/lib/forms.ts', 'container-check', ['web-gateway']],
-  ['apps/web/app/src/app/pages/dashboard/dashboard.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
+  ['apps/web/app/src/app/admin/dashboard/dashboard.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   ['apps/web/site/src/components/theme-switcher.astro', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   ['apps/web/gateway/src/app.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-gateway', 'worker']],
   ['apps/web/api/src/app.ts', 'e2e', ['app-e2e', 'site-e2e', 'web-api', 'web-gateway', 'worker']],

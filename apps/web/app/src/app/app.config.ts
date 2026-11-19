@@ -8,12 +8,12 @@ import {
   withI18nSupport,
 } from '@angular/platform-browser';
 
-import { OwnerSession } from './auth/session/owner-session';
+import { Session } from './admin/auth/session';
 import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    OwnerSession,
+    Session,
     provideHttpClient(withFetch()),
     provideClientHydration(withEventReplay(), withNoHttpTransferCache(), withI18nSupport()),
     provideRouter(appRoutes),

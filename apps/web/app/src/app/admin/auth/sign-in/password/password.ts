@@ -5,19 +5,19 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom, takeUntil } from 'rxjs';
 
-import { Field } from '../../../shared/field/field';
-import { Preferences } from '../../../shared/layout/preferences/preferences';
-import { NavigationHeading } from '../../../shared/navigation-heading';
-import { PinInput } from '../../../shared/pin-input/pin-input';
-import { Button } from '../../../ui/actions/button';
-import { Alert } from '../../../ui/feedback/alert';
-import { Input } from '../../../ui/forms/input';
-import { Card } from '../../../ui/layout/card';
-import { Heading } from '../../../ui/typography/heading';
-import { Text } from '../../../ui/typography/text';
-import { OwnerSession } from '../../session/owner-session';
-import { ConsentNotice } from '../../../shared/observability/consent-notice/consent-notice';
-import { PrivacyLink } from '../../../shared/observability/privacy-link/privacy-link';
+import { Field } from '../../../../shared/field/field';
+import { Preferences } from '../../../../shared/layout/preferences/preferences';
+import { NavigationHeading } from '../../../../shared/navigation-heading';
+import { PinInput } from '../../../../shared/pin-input/pin-input';
+import { Button } from '../../../../ui/actions/button';
+import { Alert } from '../../../../ui/feedback/alert';
+import { Input } from '../../../../ui/forms/input';
+import { Card } from '../../../../ui/layout/card';
+import { Heading } from '../../../../ui/typography/heading';
+import { Text } from '../../../../ui/typography/text';
+import { Session } from '../../session';
+import { ConsentNotice } from '../../../../shared/observability/consent-notice/consent-notice';
+import { PrivacyLink } from '../../../../shared/observability/privacy-link/privacy-link';
 
 @Component({
   selector: 'app-sign-in',
@@ -37,13 +37,13 @@ import { PrivacyLink } from '../../../shared/observability/privacy-link/privacy-
     Heading,
     Text,
   ],
-  templateUrl: './sign-in.html',
-  styleUrl: './sign-in.css',
+  templateUrl: './password.html',
+  styleUrl: './password.css',
 })
-export class SignIn {
+export class Password {
   private readonly router = inject(Router);
   private readonly http = inject(HttpClient);
-  private readonly session = inject(OwnerSession);
+  private readonly session = inject(Session);
 
   readonly busy = signal(false);
   readonly failed = signal(false);
