@@ -140,9 +140,13 @@ for (const width of [375, 1440]) {
         try {
           await follow(page, otherJourney, width);
 
-          await expect(page.locator('#page-navigation-loader')).toBeVisible();
+          const loader = page.locator('#page-navigation-loader');
 
-          await expect(page.getByRole('status')).toHaveText(otherLocale === 'es' ? 'Cargando página' : 'Loading page');
+          await expect(loader).toBeVisible();
+
+          await expect(loader.getByRole('status')).toHaveText(
+            otherLocale === 'es' ? 'Cargando página' : 'Loading page',
+          );
         } finally {
           release();
         }
