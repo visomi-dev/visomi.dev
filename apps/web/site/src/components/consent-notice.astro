@@ -14,11 +14,15 @@ const copy = browserPrivacyCopy[locale];
   data-consent={settings ? 'settings' : 'notice'}
   hidden
   aria-label={copy.title}
-  class="my-4 grid gap-2 rounded-lg border border-zinc-300 p-3 text-sm dark:border-zinc-700 [hidden]:hidden"
+  class:list={[
+    ui.card,
+    'my-4 grid gap-2 rounded-lg border border-border-light p-3 text-sm dark:border-border-dark [hidden]:hidden',
+    !settings && 'w-full max-w-sm bg-white dark:bg-surface-dark',
+  ]}
 >
   {!settings && <p>{copy.invitation}</p>}
 
-  <div class="grid w-fit grid-cols-2 gap-2">
+  <div class="grid w-fit max-w-full grid-cols-2 gap-2">
     <button type="button" class={button.classes({ variant: 'secondary', size: 'sm' })} data-choice="reject">
       {copy.reject}
     </button>

@@ -134,6 +134,8 @@ test('shares a revocable origin decision between Astro and the owner admin', asy
 
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 
+  await notice.scrollIntoViewIfNeeded();
+
   await page.screenshot({ path: info.outputPath('portfolio-consent-es-mobile.png'), animations: 'disabled' });
 
   await accept.focus();

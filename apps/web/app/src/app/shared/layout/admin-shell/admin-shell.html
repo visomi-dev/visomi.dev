@@ -60,8 +60,6 @@
     <app-preferences data-slot="actions" />
   </header>
 
-  <app-consent-notice />
-
   <div class="flex min-w-0 flex-col gap-6">
     @if (failed()) {
       <div appUI="alert" tone="danger" role="alert" i18n="@@dashboardAccessError">
@@ -75,6 +73,8 @@
       <p appUI tone="muted" role="status" i18n="@@dashboardAccessLoading">Checking access…</p>
     }
   </div>
+
+  <app-consent-notice />
 
   <footer data-shell-footer class="flex shrink-0 justify-center border-t border-zinc-200 px-4 dark:border-zinc-800">
     <app-privacy-link />

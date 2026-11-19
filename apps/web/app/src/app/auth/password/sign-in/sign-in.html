@@ -18,8 +18,6 @@
     <app-preferences />
   </header>
 
-  <app-consent-notice class="mx-auto block w-full max-w-7xl px-5 sm:px-8" />
-
   <main id="auth-main" class="flex flex-1 items-center justify-center px-5 py-8 sm:py-14">
     <section appUI="card" layout="plain" padding="lg" class="w-full max-w-md space-y-6 shadow-sm">
       <header class="space-y-3">
@@ -150,7 +148,9 @@
     </section>
   </main>
 
-  <footer class="px-5 pb-6 text-center">
+  <footer class="mx-auto w-full max-w-md px-5 pb-6 text-center">
+    <app-consent-notice class="flex justify-center" />
+
     <app-privacy-link />
   </footer>
 </div>

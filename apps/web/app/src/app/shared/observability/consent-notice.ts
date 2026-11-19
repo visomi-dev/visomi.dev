@@ -3,6 +3,7 @@ import { Component, DestroyRef, LOCALE_ID, afterNextRender, inject, signal } fro
 import { browserPrivacyCopy } from '@visomi-stack/web-shared-observability/lib/privacy-copy';
 
 import { Button } from '../../ui/actions/button';
+import { Card } from '../../ui/layout/card';
 import { Link } from '../../ui/typography/link';
 import { Text } from '../../ui/typography/text';
 
@@ -10,7 +11,7 @@ import { BROWSER_ERROR_REPORTER } from './browser-telemetry';
 
 @Component({
   selector: 'app-consent-notice',
-  imports: [Button, Link, Text],
+  imports: [Button, Card, Link, Text],
   templateUrl: './consent-notice.html',
   styleUrl: './consent-notice.css',
 })

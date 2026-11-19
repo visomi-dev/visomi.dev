@@ -127,20 +127,17 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
 
     <Navbar locale={locale} currentPage={page} />
 
-    {page !== 'privacy' && (
-      <div
-        class="relative z-10 mx-auto max-w-7xl px-6 pt-20 empty:hidden lg:px-12 has-[aside[hidden]]:hidden"
-        data-print-hidden
-      >
-        <ConsentNotice locale={locale} />
-      </div>
-    )}
-
     <ContentElement class="relative z-10 min-h-screen">
       <slot />
     </ContentElement>
 
     <div class="site-footer relative z-10" data-print-hidden>
+      {page !== 'privacy' && (
+        <div class="mx-auto max-w-6xl px-4 has-[aside[hidden]]:hidden">
+          <ConsentNotice locale={locale} />
+        </div>
+      )}
+
       <Footer locale={locale} />
     </div>
   </body>

@@ -14,6 +14,15 @@ increment at `39911d36dab2a87904317041258bfc3a274419bc` on `codex/fix/stack-admi
 | Bilingual editorial review                             | Portfolio copy and structure stay in place. Functional text is adjusted for the owner and privacy flows.                                                      |
 | Optional Vault example in VIS-87                       | Omitted by the cloud-only PostgreSQL product decision.                                                                                                        |
 
+## Interim consent presentation
+
+VIS-88 keeps a compact notice after the primary content while Stack validates
+its visual follow-up in VIS-84. This placement leaves the portfolio hero in its
+existing position and keeps the sign-in fields unobstructed. It uses the current
+portfolio tokens and Angular `appUI` primitives. Review the validated Stack
+presentation before reconciling the visual treatment. The consent and manual
+reporting contracts are independently reviewable here.
+
 ## Browser behavior
 
 The choice begins off and is shared by documents on the exact same origin,
