@@ -1,0 +1,9 @@
+:host {
+  container-type: inline-size;
+}
+
+/* Keep the native caret and selection aligned with the grid while the slots render the masks. */
+input {
+  -webkit-text-fill-color: transparent;
+  letter-spacing: calc((100cqi - var(--spacing)) / var(--digits) - 1ch);
+}

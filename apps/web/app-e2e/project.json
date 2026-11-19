@@ -10,6 +10,7 @@
       "dependsOn": ["web-gateway:build"],
       "inputs": [
         { "env": "PLAYWRIGHT_BROWSERS" },
+        { "env": "PW_TEST_CONNECT_WS_ENDPOINT" },
         "default",
         "^default",
         "{workspaceRoot}/tools/testing/**/*",

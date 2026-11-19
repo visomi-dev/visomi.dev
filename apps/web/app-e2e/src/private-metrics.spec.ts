@@ -60,7 +60,7 @@ test('the owner opens and refreshes real process metrics without exposing contac
 
   await expect(page.getByRole('heading', { name: 'Technical metrics' })).toBeVisible();
 
-  await expect(page.locator('dl dd')).toHaveCount(6);
+  await expect(page.locator('[data-http-metrics] dd')).toHaveCount(6);
 
   await expect(page.locator('[data-metric="requests"]')).toHaveText(/[1-9]/);
 
@@ -76,7 +76,7 @@ test('the owner opens and refreshes real process metrics without exposing contac
 
   await expect(page).toHaveURL(/metrics\?refresh=/);
 
-  await expect(page.locator('dl dd')).toHaveCount(6);
+  await expect(page.locator('[data-http-metrics] dd')).toHaveCount(6);
 
   const accessibility = await new AxeBuilder({ page }).analyze();
 

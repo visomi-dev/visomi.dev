@@ -13,6 +13,10 @@ import {
   screens,
 } from '@visomi-stack/web-shared-observability/lib/contract';
 import type { BrowserErrorReport } from '@visomi-stack/web-shared-observability/lib/contract';
+import type {
+  BrowserDiagnostics,
+  RecentBrowserError,
+} from '@visomi-stack/web-shared-observability/lib/private-metrics';
 
 import type { Observability } from '../lib/observability';
 import type { Correlation } from '../lib/policy';
@@ -67,9 +71,8 @@ export function createBrowserTelemetry(options: {
   observability: Observability;
   assets: Partial<Record<BrowserErrorReport['application'], BrowserAssets>>;
   origin: string;
-  performance?: boolean;
   now?: () => number;
-}): { context: RequestHandler; router: Router; close: () => void } {
+}): { context: RequestHandler; router: Router; diagnostics: () => BrowserDiagnostics; close: () => void } {
   const origin = new URL(options.origin).origin;
   const now = options.now ?? Date.now;
   const secret = randomBytes(32);
@@ -83,6 +86,15 @@ export function createBrowserTelemetry(options: {
   );
   const router = Router();
   const store = new MemoryStore();
+  const events: RecentBrowserError[] = [];
+  const windowMinutes = 15;
+  const limit = 50;
+
+  function diagnostics(): BrowserDiagnostics {
+    const cutoff = now() - windowMinutes * 60000;
+
+    return { windowMinutes, limit, events: events.filter(({ receivedAt }) => Date.parse(receivedAt) > cutoff) };
+  }
 
   function sign(purpose: 'report' | 'correlate', context?: Correlation): string {
     const body = Buffer.from(
@@ -151,7 +163,6 @@ export function createBrowserTelemetry(options: {
       assets: Object.values(options.assets).flatMap((assets) =>
         [...assets].flatMap(([id, asset]) => asset.paths.map((path) => ({ id, path }))),
       ),
-      ...(options.performance ? { performance: true } : {}),
     }),
   );
   router.post(
@@ -174,7 +185,7 @@ export function createBrowserTelemetry(options: {
       if (request.path === '/performance') {
         const parsed = performanceSchema.safeParse(request.body);
 
-        if (!options.performance || !parsed.success || !options.assets[parsed.data.application]) {
+        if (!parsed.success || !options.assets[parsed.data.application]) {
           response.status(400).json({ error: 'telemetry_invalid' });
 
           return;
@@ -228,14 +239,19 @@ export function createBrowserTelemetry(options: {
 
       const parent = verify(correlation, 'correlate')?.context;
 
-      options.observability.frontendError(
-        {
-          ...report,
-          ...(location ? { location } : {}),
-          release: location ? releases.get(report.application)! : 'unknown',
-        },
-        parent,
-      );
+      const accepted = {
+        ...report,
+        ...(location ? { location } : {}),
+        release: location ? releases.get(report.application)! : 'unknown',
+      };
+      const traceId = options.observability.frontendError(accepted, parent);
+
+      events.unshift({
+        ...accepted,
+        receivedAt: new Date(now()).toISOString(),
+        ...(traceId ? { traceId } : {}),
+      });
+      events.length = Math.min(events.length, limit);
       response.sendStatus(202);
     },
   );
@@ -244,5 +260,5 @@ export function createBrowserTelemetry(options: {
     response.status(400).json({ error: 'telemetry_invalid' });
   }) satisfies ErrorRequestHandler);
 
-  return { context, router, close: () => store.shutdown() };
+  return { context, router, diagnostics, close: () => store.shutdown() };
 }

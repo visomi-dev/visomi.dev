@@ -110,7 +110,7 @@ async function main(): Promise<void> {
       proxy = created;
     }
 
-    if (process.env['VISOMI_E2E_BROWSER_TELEMETRY'] === 'true') {
+    if (process.env['VISOMI_E2E_PRIVATE_COLLECTOR'] === 'true') {
       phase = 'collector';
       const createdCollector = await browserCollector(signal);
 
@@ -208,7 +208,6 @@ async function main(): Promise<void> {
           AUTH_TRUST_PROXY: tls ? '1-hop' : undefined,
           DATABASE_URL: postgres.url,
           AUTH_ORIGIN: origin,
-          BROWSER_TELEMETRY_ORIGIN: origin,
           AUTH_RP_ID: tls ? 'visomi.dev' : '127.0.0.1',
           SESSION_SECRET: secret,
           OWNER_EMAIL: 'owner@example.test',
@@ -218,12 +217,9 @@ async function main(): Promise<void> {
           SMTP_FROM: 'auth@example.test',
           SMTP_ALLOW_INSECURE_LOCAL: 'true',
           ASTRO_TELEMETRY_DISABLED: '1',
-          VISOMI_OTLP_TRACING: collector ? 'true' : 'false',
           OTEL_EXPORTER_OTLP_ENDPOINT: collector?.receiver,
-          OTEL_EXPORTER_OTLP_PROTOCOL: 'http/protobuf',
+          OTEL_EXPORTER_OTLP_PROTOCOL: collector ? 'http/protobuf' : undefined,
           OTEL_EXPORTER_OTLP_HEADERS: collector?.headers,
-          VISOMI_BROWSER_TELEMETRY: process.env['VISOMI_E2E_BROWSER_TELEMETRY'] ?? 'false',
-          VISOMI_BROWSER_PERFORMANCE: process.env['VISOMI_E2E_BROWSER_PERFORMANCE'] ?? 'false',
         },
       },
     );

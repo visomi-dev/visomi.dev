@@ -4673,7 +4673,7 @@
       "destinationSha256": "0b3bf2a0036e16a0b19c4f99fafc541578f509539133a0eabc44b638ea4018cf",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
       "migrationDestinationSha256": "bde0a5be32e20ba7e3179a478f8c8c13870d695f80acedb1c04cddb90dc866b3",
-      "relocatedTo": "apps/web/app/src/app/auth/session/owner-session.ts"
+      "relocatedTo": "apps/web/app/src/app/admin/auth/session.ts"
     },
     {
       "source": "apps/web/app/src/app/auth/session/browser-session.spec.ts",
@@ -4684,7 +4684,7 @@
       "destinationSha256": "6a520d372f5bd9973a16705231d23fbb1a18a5dbb3bbd877de2ae15cb93e4827",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
       "migrationDestinationSha256": "7ea962e35e7469a135787ac5107fd9acfe58769bfb2524ef386f75b0f4803f8a",
-      "relocatedTo": "apps/web/app/src/app/auth/session/owner-session.spec.ts"
+      "relocatedTo": "apps/web/app/src/app/admin/auth/session.spec.ts"
     },
     {
       "source": "apps/web/app/src/app/auth/session/browser-session.ts",
@@ -4695,7 +4695,7 @@
       "destinationSha256": "0b3bf2a0036e16a0b19c4f99fafc541578f509539133a0eabc44b638ea4018cf",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
       "migrationDestinationSha256": "bde0a5be32e20ba7e3179a478f8c8c13870d695f80acedb1c04cddb90dc866b3",
-      "relocatedTo": "apps/web/app/src/app/auth/session/owner-session.ts"
+      "relocatedTo": "apps/web/app/src/app/admin/auth/session.ts"
     },
     {
       "source": "apps/web/app/src/app/auth/session/interceptor.spec.ts",
@@ -4706,7 +4706,7 @@
       "destinationSha256": "6a520d372f5bd9973a16705231d23fbb1a18a5dbb3bbd877de2ae15cb93e4827",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
       "migrationDestinationSha256": "7ea962e35e7469a135787ac5107fd9acfe58769bfb2524ef386f75b0f4803f8a",
-      "relocatedTo": "apps/web/app/src/app/auth/session/owner-session.spec.ts"
+      "relocatedTo": "apps/web/app/src/app/admin/auth/session.spec.ts"
     },
     {
       "source": "apps/web/app/src/app/auth/session/interceptor.ts",
@@ -4716,7 +4716,7 @@
       "destination": "apps/web/app/src/app/shared/session-interceptor.ts",
       "destinationSha256": "3a594442742f7cb57d288d137a1c9d4b862bda87f6d49bfd5b747a98cf48ceb9",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
-      "relocatedTo": "apps/web/app/src/app/auth/session/interceptor.ts"
+      "relocatedTo": "apps/web/app/src/app/admin/auth/session.interceptor.ts"
     },
     {
       "source": "apps/web/app/src/app/auth/session/logout.spec.ts",
@@ -4737,7 +4737,7 @@
       "destinationSha256": "0b3bf2a0036e16a0b19c4f99fafc541578f509539133a0eabc44b638ea4018cf",
       "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
       "migrationDestinationSha256": "bde0a5be32e20ba7e3179a478f8c8c13870d695f80acedb1c04cddb90dc866b3",
-      "relocatedTo": "apps/web/app/src/app/auth/session/owner-session.ts"
+      "relocatedTo": "apps/web/app/src/app/admin/auth/session.ts"
     },
     {
       "source": "apps/web/app/src/app/auth/session/methods.ts",
@@ -4809,7 +4809,8 @@
       "sourceSha256": "727d01b214eefc6fef0ae03979906ce33f0c577fc95f9ea38408a19851e094b7",
       "destination": "apps/web/app/src/app/private-api.server.spec.ts",
       "destinationSha256": "a2a911ca92324dbecc2fff21a4986ff4869e97e16da2b8201f2bcba84d0e8ea2",
-      "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
+      "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
+      "relocatedTo": "apps/web/app/src/app/admin/private-api.server.spec.ts"
     },
     {
       "source": "apps/web/app/src/app/auth/session/server-session.ts",
@@ -4818,7 +4819,8 @@
       "sourceSha256": "fb7ac93a99fb1b49b34cf05d28b0031a2bf862a17388895499f9cdfffa7ea04b",
       "destination": "apps/web/app/src/app/private-api.server.ts",
       "destinationSha256": "e0e3c0fdcca4b42a7b0d78f026b1587a02865a37695c4b2531fcbe8d8e32eefe",
-      "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately."
+      "reconciliation": "Snapshot after approved post-migration fixes and VIS-50\u201364 repairs; historical source ref and migration destination digest are retained. Future drift is reported separately.",
+      "relocatedTo": "apps/web/app/src/app/admin/private-api.server.ts"
     },
     {
       "source": "apps/web/app/src/app/auth/session/session.ts",

@@ -46,6 +46,37 @@ function apiFixture(handler: RequestHandler = (request, response) => response.js
 }
 
 describe('gateway composition', () => {
+  it('serves disabled visitor configuration and mounts its optional gateway router', async () => {
+    const api = apiFixture();
+    const disabled = await dispatch(createGatewayApp({ api }), '/telemetry/visits/config');
+    const router = Router();
+
+    router.get('/config', (_request, response) => response.json({ enabled: true }));
+    const visits = { router, summary: vi.fn(), close: vi.fn() };
+    const enabled = await dispatch(createGatewayApp({ api, visits }), '/telemetry/visits/config');
+
+    expect(disabled.body).toEqual({ enabled: false });
+    expect(enabled.body).toEqual({ enabled: true });
+  });
+
+  it('passes accepted browser diagnostics to the embedded API without a public diagnostics route', async () => {
+    const api = apiFixture();
+    const snapshot = { windowMinutes: 15 as const, limit: 50 as const, events: [] };
+    const app = createGatewayApp({
+      api,
+      browserTelemetry: {
+        context: (_request, _response, next) => next(),
+        router: Router(),
+        diagnostics: () => snapshot,
+      },
+    });
+    const args = api.createApp.mock.calls[0] as unknown as [Parameters<ApiModule['createApp']>[0]];
+    const response = await dispatch(app, '/telemetry/visits/config');
+
+    expect(response.status).toBe(200);
+    expect(args[0].privateMetrics?.snapshot().browserErrors).toEqual(snapshot);
+  });
+
   it('shares one opted-in collector with the embedded API without double-counting a response', async () => {
     const privateMetrics = createPrivateMetrics({ scope: 'web-gateway', enabled: true });
     const api = apiFixture((request, response) =>
@@ -56,7 +87,10 @@ describe('gateway composition', () => {
 
     expect(result.status).toBe(200);
     expect(privateMetrics.snapshot().metrics?.requests).toBe(1);
-    expect(api.createApp).toHaveBeenCalledWith(expect.objectContaining({ privateMetrics }));
+    const embedded = api.createApp.mock.calls[0] as unknown as [Parameters<ApiModule['createApp']>[0]];
+
+    expect(embedded[0].privateMetrics?.middleware).toBe(privateMetrics.middleware);
+    expect(embedded[0].privateMetrics?.snapshot()).toMatchObject({ browserErrors: null });
   });
   it.each([undefined, { middleware: [(_request: Request, _response: Response, next: () => void) => next()] }])(
     'renders an unavailable context when the host has no snapshot integration',
@@ -102,6 +136,21 @@ describe('gateway composition', () => {
 
     expect(apiHeaders.mock.calls[0][0]['content-security-policy']).not.toContain('accounts.google.com');
   });
+  it('provides no-store for an Astro fallback that bypasses website middleware', async () => {
+    const headers = vi.fn();
+    const app = createGatewayApp({
+      api: apiFixture(),
+      site: {
+        clientDirectory: '/synthetic/site/client',
+        handler: (_request, response) => response.status(500).json({ error: 'render_failed' }),
+      },
+    });
+    const result = await dispatch(app, '/synthetic-render-check/', headers);
+
+    expect(result.status).toBe(500);
+    expect(headers.mock.calls[0][0]['cache-control']).toBe('no-store');
+  });
+
   it('serves a silent disabled configuration without entering authentication', async () => {
     const authenticate = vi.fn<RequestHandler>();
     const inspect = vi.fn();

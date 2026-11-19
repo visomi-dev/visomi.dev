@@ -1,0 +1,79 @@
+---
+import { browserPrivacyCopy } from '@visomi-stack/web-shared-observability/lib/privacy-copy';
+import { consentConfirmationSeconds } from '@visomi-stack/web-shared-observability/lib/consent-notice';
+import { button } from '@visomi-stack/web-frontend-ui/lib/button';
+import { ui } from '../shared/ui';
+import { getPagePath, type Locale } from '../i18n/translations';
+
+type Props = { locale: Locale; settings?: boolean };
+const { locale, settings } = Astro.props;
+const copy = browserPrivacyCopy[locale];
+const noticeClasses = 'ui-consent-card bg-white shadow-xl dark:bg-surface-dark';
+const cardClasses =
+  'grid gap-2 rounded-lg border border-border-light p-3 text-sm dark:border-border-dark [hidden]:hidden';
+---
+
+<div data-consent-root>
+  <aside
+    role="region"
+    data-consent={settings ? 'settings' : 'notice'}
+    hidden
+    aria-label={copy.title}
+    class:list={[ui.card, cardClasses, settings ? 'my-4' : noticeClasses]}
+  >
+    {!settings && <p>{copy.invitation}</p>}
+
+    <div
+      class={
+        settings
+          ? 'grid w-fit max-w-full grid-cols-2 gap-2'
+          : 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,7rem),1fr))] gap-2'
+      }
+    >
+      <button type="button" class={button.classes({ variant: 'secondary', size: 'sm' })} data-choice="reject">
+        {copy.reject}
+      </button>
+
+      <button type="button" class={button.classes({ variant: 'secondary', size: 'sm' })} data-choice="accept">
+        {copy.accept}
+      </button>
+    </div>
+
+    {!settings && (
+      <a class:list={[ui.link, 'justify-self-start underline']} href={getPagePath(locale, 'privacy')}>
+        {copy.purposeLink}
+      </a>
+    )}
+
+    <p
+      role="status"
+      class="empty:hidden"
+      data-choice-status
+      data-on={settings ? copy.on : undefined}
+      data-off={copy.off}
+      data-blocked={copy.blocked}
+    ></p>
+  </aside>
+
+  {!settings && (
+    <>
+      <p role="status" class="sr-only" data-consent-announcement data-thanks={copy.thanks}></p>
+
+      <div class:list={[ui.card, cardClasses, noticeClasses]} data-consent-confirmation hidden aria-hidden="true">
+        <div class="flex flex-wrap items-baseline justify-between gap-x-2">
+          <p>{copy.thanks}</p>
+
+          <span class="tabular-nums" data-consent-seconds>
+            {consentConfirmationSeconds} s
+          </span>
+        </div>
+
+        <progress
+          class="ui-consent-progress"
+          max={consentConfirmationSeconds}
+          value={consentConfirmationSeconds}
+        ></progress>
+      </div>
+    </>
+  )}
+</div>

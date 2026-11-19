@@ -1,0 +1,3 @@
+<ng-content select="[data-slot=brand]" />
+<nav [attr.id]="navigationId() || null" [attr.aria-label]="label()" [class]="navigationClasses"><ng-content /></nav>
+<ng-content select="[data-slot=footer]" />

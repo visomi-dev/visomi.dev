@@ -7,15 +7,12 @@ The owning executable explicitly initializes and shuts down telemetry. Importing
 this library does not initialize it. Applications can supply a runtime to their
 HTTP adapters or use the current runtime within the same process.
 
-The owning runtime can opt into the official OTLP/HTTP protobuf exporter with
-`VISOMI_OTLP_TRACING=true` and the `OTEL_EXPORTER_OTLP_*` receiver variables.
-The flag controls application export independently of the hosting provider.
-Export requires an authenticated private receiver. Platform-managed telemetry
-must independently satisfy the capture policy.
-Only the facade's allowlisted spans are exported, without global instrumentation
-or resource discovery. See the
-[telemetry guide](../../../../docs/deployment.md#observability-and-future-workers)
-for configuration, capture boundaries, receiver verification and rollback.
+The owning runtime exports only allowlisted spans through the OTLP/HTTP protobuf
+exporter when the complete `OTEL_EXPORTER_OTLP_*` configuration names an
+authenticated private receiver. It fails startup on partial or invalid settings.
+The SDK uses explicit transport settings and has no global instrumentation or
+resource discovery. See the [receiver guide](../../../../.railway/README.md) for
+configuration, verification and rollback.
 
 `src/lib/http/` owns `HttpError`, `AuthHttpError`, `httpErrorHandler` and
 `securityHeaders`. Application factories compose these exports; they do not

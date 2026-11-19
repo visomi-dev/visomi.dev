@@ -1,31 +1,43 @@
+<app-browser-privacy [fallback]="languagesNav" />
+
 <nav
-  class="flex flex-wrap items-center gap-3 text-sm"
+  #languagesNav
+  tabindex="-1"
+  class="inline-flex items-center gap-1.5"
   aria-label="Language"
   i18n-aria-label="@@dashboardAccessLanguage"
 >
-  <a
-    [href]="languageUrl('en')"
-    lang="en"
-    [attr.aria-current]="language.startsWith('en') ? 'page' : null"
-    class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg px-2"
-    >English</a
+  <svg
+    class="hidden size-4 shrink-0 sm:block"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    focusable="false"
   >
+    <path d="m5 8 6 6m-7 0 6-6 2-3H2m5-3v3M13 21l5-11 5 11m-8-4h6" />
+  </svg>
 
-  <a
-    [href]="languageUrl('es')"
-    lang="es"
-    [attr.aria-current]="language === 'es' ? 'page' : null"
-    class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg px-2"
-    >Español</a
-  >
-
-  <button
-    class="ui-focus-ring min-h-11 rounded-lg border border-zinc-300 px-3 dark:border-zinc-600"
-    type="button"
-    (click)="toggle()"
-    [attr.aria-pressed]="dark()"
-    i18n="@@adminHeaderTheme"
-  >
-    Dark theme
-  </button>
+  <ul [class]="styles.classes()">
+    @for (language of languages; track language.code) {
+      <li>
+        <a
+          [class]="styles.optionClasses(locale.startsWith(language.code))"
+          [href]="language.code === 'en' ? english() : spanish()"
+          [attr.hreflang]="language.code"
+          [attr.lang]="language.code"
+          [attr.aria-current]="locale.startsWith(language.code) ? 'page' : null"
+          rel="alternate"
+          data-language-switcher
+        >
+          {{ language.label }}
+        </a>
+      </li>
+    }
+  </ul>
 </nav>
+
+<button app-theme-switcher aria-label="Dark theme" i18n-aria-label="@@adminHeaderTheme"></button>

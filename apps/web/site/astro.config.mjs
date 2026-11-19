@@ -44,6 +44,9 @@ export default defineConfig({
       tsconfigPaths: true,
       // Astro component IDs are not TypeScript files; resolve the same source library explicitly.
       alias: {
+        '@visomi-stack/web-shared-observability': fileURLToPath(
+          new URL('../../../libs/web/shared/observability/src', import.meta.url),
+        ),
         '@visomi-stack/web-frontend-ui': fileURLToPath(new URL('../../../libs/web/frontend/ui/src', import.meta.url)),
       },
     },

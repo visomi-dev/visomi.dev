@@ -1,0 +1,7 @@
+<label appUI [for]="controlId()">{{ label() }}</label>
+<ng-content />
+@if (description()) {
+  <p appUI="description" [id]="descriptionId()">{{ description() }}</p>
+}
+
+<p app-error [id]="errorId()" [hidden]="!message()">{{ message() }}</p>

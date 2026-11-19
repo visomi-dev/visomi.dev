@@ -15,6 +15,8 @@ it('reports a rejected application bootstrap once through the same function used
   const browser = Object.assign(new EventTarget(), {
     fetch: transport,
     location: new URL('https://frontend.example.test/app/en/admin/auth/sign-in'),
+    navigator: {},
+    localStorage: { getItem: () => 'accept:1-2-3-4' },
   });
 
   vi.stubGlobal('ngDevMode', false);
@@ -30,6 +32,12 @@ it('reports a rejected application bootstrap once through the same function used
   expect(transport).toHaveBeenCalledTimes(2);
   const payload = JSON.parse(transport.mock.calls[1][1].body);
 
-  expect(payload).toEqual({ application: 'web-app', code: 'startup_failed', kind: 'TypeError', screen: 'unknown' });
+  expect(payload).toEqual({
+    application: 'web-app',
+    code: 'startup_failed',
+    kind: 'TypeError',
+    screen: 'admin_sign_in',
+  });
+
   expect(log).not.toHaveBeenCalled();
 });

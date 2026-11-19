@@ -5,7 +5,7 @@ import { provideServerRendering, withRoutes } from '@angular/ssr';
 import { appConfig } from './app.config';
 import { serverRoutes } from './app.routes.server';
 import { ServerErrors } from './shared/observability/server-errors';
-import { privateApiInterceptor } from './private-api.server';
+import { privateApiInterceptor } from './admin/private-api.server';
 
 const serverConfig: ApplicationConfig = {
   providers: [

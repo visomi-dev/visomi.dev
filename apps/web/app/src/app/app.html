@@ -1,5 +1,3 @@
-@if (loading()) {
-  <p role="status" class="p-6" i18n="@@appNavigationLoading">Loading…</p>
-}
+<app-page-loader [active]="loading()" />
 
 <router-outlet />

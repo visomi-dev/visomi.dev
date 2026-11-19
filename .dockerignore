@@ -32,6 +32,8 @@ core.*
 **/.private-operations
 .qmd/*.sqlite*
 **/.qmd/*.sqlite*
+.codegraph
+**/.codegraph
 .angular
 .playwright-mcp
 artifacts

@@ -1,0 +1,19 @@
+<a [href]="skipHref()" [class]="skipClasses" (click)="skipToContent($event, main)">{{ skipLabel() }}</a>
+
+<div [class]="frameClasses()">
+  <div [class]="sidebarClasses()"><ng-content select="app-sidebar,[data-shell-sidebar]" /></div>
+
+  <div [class]="panelClasses" data-slot="shell-panel">
+    <div [class]="headerClasses"><ng-content select="[app-topbar],[data-shell-header]" /></div>
+
+    <main #main data-slot="page-scroll" [id]="contentId()" tabindex="-1" [class]="scrollClasses">
+      <div data-slot="page-content" [class]="contentClasses"><ng-content /></div>
+    </main>
+
+    <ng-content select="[data-shell-footer]" />
+  </div>
+</div>
+
+<div [class]="mobileClasses">
+  <ng-content select="[appUI=navbar],[data-shell-mobile]" />
+</div>

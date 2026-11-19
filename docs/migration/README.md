@@ -15,6 +15,8 @@ automatic inclusion of subsequent stack changes.
 
 `baseline.json` records source hashes before migration. `stack-files.json` inventories
 all tracked source-stack files, including hidden files, with copy destinations and exclusions.
+The [current scope matrix](current-stack-review.md#persistence-scope-by-source-path) records
+decisions for capabilities added after that baseline.
 Only tracked files were read/copied; no local env files, credentials, sessions or database
 contents were imported. MCP configuration is versioned without starting its connections.
 
@@ -66,8 +68,8 @@ screens are carried into the application's routes.
 Configuration is listed by name only: `HOST`, `PORT`, `SITE_URL`, `DATABASE_URL`, `REDIS_URL`,
 `AUTH_ORIGIN`, `AUTH_RP_ID`, `SESSION_SECRET`, `OWNER_EMAIL`, `OWNER_USER_ID`,
 `AUTH_TOTP_ENCRYPTION_KEY`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_FROM`, `SMTP_USER`, `SMTP_PASSWORD`,
-`SOCIAL_IMAGE_INTERNAL_TOKEN`, `DISABLE_WORKER`, `VISOMI_OTLP_TRACING`,
-`VISOMI_PRIVATE_METRICS`, `VISOMI_BROWSER_TELEMETRY`, `VISOMI_BROWSER_PERFORMANCE`,
+`SOCIAL_IMAGE_INTERNAL_TOKEN`, `DISABLE_WORKER`, `VISOMI_PRIVATE_METRICS`,
+`OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_PROTOCOL`, `OTEL_EXPORTER_OTLP_HEADERS`,
 `CONTACT_LEGACY_DATABASE_URL`, `CONTACT_LEGACY_DATABASE_AUTH_TOKEN`.
 Legacy migration input is an explicit offline export; the application no longer requires
 `ASTRO_DB_REMOTE_URL` or `ASTRO_DB_APP_TOKEN`.
@@ -77,6 +79,11 @@ Legacy migration input is an explicit offline export; the application no longer 
 - Keep original Astro components, CSS, fonts, content, scripts, assets, unprefixed English URLs,
   prerender/cache/CV improvements and identity. Template public pages are excluded.
 - Keep existing social-image generation, BullMQ/Redis worker, contracts and public artifact URLs.
+- Use cloud-only persistence for visomi.dev. Keep its PostgreSQL contracts and migrations for
+  contacts, authentication, sessions and visit aggregates. The stack's optional offline vault,
+  local key custody, PIN/PRF unlock and encrypted sync are outside this product's parity scope.
+- Use the shared PinInput for six-digit email and TOTP verification in the owner sign-in flow.
+  Preserve the server-side owner check, CSRF, cookie and private no-store contracts.
 - Angular provides owner contact list/detail, technical metrics and a separate private sign-in under the adapted stack shell;
   template public login/signup and account-management screens are excluded.
 - Adapt source package/repository/domain names and commands; remove developer-specific PATH values.
@@ -187,11 +194,11 @@ client/server errors, aborted requests, mean latency and maximum latency. Durati
 read into these counters. They reset on restart and are not a durable/global view across replicas.
 The gateway passes the same collector to its embedded API, counting each response only once.
 
-The trace-export indicator describes the process's `VISOMI_OTLP_TRACING` configuration, not collector
-availability or confirmed delivery. Local aggregate capture does not enable trace/browser export.
-Exporter/browser opt-ins and owner authorization remain separate. Runtime browser capture defaults
-to disabled; IaC preserves its previously authorized environment value. Browser performance remains
-explicitly false in IaC. These repairs do not apply hosted configuration or infer new opt-in authority.
+The trace-export indicator describes whether the process has a valid authenticated
+private OTLP receiver configured. Delivery is verified separately with a stored
+trace. Browser reporting follows the origin's default-off, revocable consent.
+See [browser privacy and rollout](browser-privacy.md) for the follow-up to the
+visit and diagnostic implementations.
 The private browser suite covers the real enabled response, anonymous/non-owner denial, no-store,
 empty/disabled/error views, English/Spanish, mobile overflow and AXE.
 
@@ -227,3 +234,6 @@ source digest, counts, classifications and destination existence. Hashes are sna
 is reported independently rather than prohibiting future changes. When a file moves,
 `relocatedTo` identifies its current checked destination while preserving the original
 `source`, `destination` and digest fields. Invalid or missing relocation targets fail validation.
+
+See [current stack reconciliation](current-stack-review.md) for the updated upstream comparison
+and [visit analytics](visit-analytics.md) for opt-in public page views.

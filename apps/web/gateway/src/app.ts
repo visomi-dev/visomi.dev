@@ -8,6 +8,7 @@ import express, {
   type RequestHandler,
 } from 'express';
 
+import { otlpReceiver } from '@visomi-stack/web-backend-shared/lib/observability/lib/otlp';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import type { createBrowserTelemetry } from '@visomi-stack/web-backend-shared/lib/observability/browser/intake';
 import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
@@ -17,6 +18,7 @@ import {
   createPrivateMetrics,
   type PrivateMetrics,
 } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
+import type { VisitAnalytics } from '@visomi-stack/web-backend-shared/lib/analytics/visits';
 
 import type { ApiModule, EmbeddedAuthentication } from './api-module';
 import type { SiteModule } from './site-module';
@@ -26,6 +28,7 @@ import { websiteAssets, redirectTrailingSlash } from './website';
 
 export function createGatewayApp(options: {
   api: ApiModule;
+  visits?: VisitAnalytics;
   pool?: Pool;
   socialImages?: RequestHandler;
   site?: SiteModule;
@@ -33,7 +36,8 @@ export function createGatewayApp(options: {
   auth?: EmbeddedAuthentication;
   observability?: Observability;
   privateMetrics?: PrivateMetrics;
-  browserTelemetry?: Pick<ReturnType<typeof createBrowserTelemetry>, 'context' | 'router'>;
+  browserTelemetry?: Pick<ReturnType<typeof createBrowserTelemetry>, 'context' | 'router'> &
+    Partial<Pick<ReturnType<typeof createBrowserTelemetry>, 'diagnostics'>>;
   trustProxy?: string[] | 1;
   helmetMode?: 'managed' | 'inherited';
   errorMode?: 'managed' | 'inherited';
@@ -45,7 +49,7 @@ export function createGatewayApp(options: {
     createPrivateMetrics({
       scope: 'web-gateway',
       enabled: process.env['VISOMI_PRIVATE_METRICS'] === 'true',
-      traceExportEnabled: process.env['VISOMI_OTLP_TRACING'] === 'true',
+      traceExportEnabled: Boolean(otlpReceiver(process.env)),
     });
 
   app.disable('x-powered-by');
@@ -94,6 +98,14 @@ export function createGatewayApp(options: {
     next();
   });
 
+  if (options.visits) {
+    app.use('/telemetry/visits', options.visits.router);
+  }
+
+  app.get('/telemetry/visits/config', (_request, response) =>
+    response.set('cache-control', 'no-store').json({ enabled: false }),
+  );
+
   if (options.browserTelemetry) {
     app.use(options.browserTelemetry.context);
     app.use('/telemetry', options.browserTelemetry.router);
@@ -134,7 +146,14 @@ export function createGatewayApp(options: {
       helmetMode: 'inherited',
       auth: options.auth,
       observability: options.observability,
-      privateMetrics,
+      visits: options.visits,
+      privateMetrics: {
+        middleware: privateMetrics.middleware,
+        snapshot: () => ({
+          ...privateMetrics.snapshot(),
+          browserErrors: options.browserTelemetry?.diagnostics?.() ?? null,
+        }),
+      },
     }),
   );
 
@@ -173,7 +192,10 @@ export function createGatewayApp(options: {
     app.use(websiteAssets(options.site.clientDirectory));
     app.use(serveStatic(options.site.clientDirectory, { index: false, redirect: false }));
     app.use(redirectTrailingSlash);
-    app.use((request, _response, next) => {
+    app.use((request, response, next) => {
+      // Astro's own render fallback can run outside the website middleware.
+      response.setHeader('cache-control', 'no-store');
+
       // Astro accepts forwarded addresses after host validation. Trust only Express's configured proxy policy.
       request.headers['x-forwarded-for'] = request.ip;
       next();

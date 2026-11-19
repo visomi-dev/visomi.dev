@@ -14,7 +14,7 @@
         <source>Contact requests</source>
         <target>Solicitudes de contacto</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">2,4</context>
         </context-group>
       </trans-unit>
@@ -22,7 +22,7 @@
         <source>Language</source>
         <target>Idioma</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
@@ -30,15 +30,15 @@
         <source>Sign out</source>
         <target>Cerrar sesión</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">6,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessDenied" datatype="html">
-        <source>Owner access required.</source>
-        <target>Se requiere acceso del propietario.</target>
+        <source>This area is for the site owner.</source>
+        <target>Esta área es para la persona propietaria del sitio.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">9,11</context>
         </context-group>
       </trans-unit>
@@ -46,7 +46,7 @@
         <source>Access could not be verified. Please try again.</source>
         <target>No se pudo verificar el acceso. Inténtalo de nuevo.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">11,14</context>
         </context-group>
       </trans-unit>
@@ -54,15 +54,15 @@
         <source>Verification code</source>
         <target>Código de verificación</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">15,17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessVerify" datatype="html">
-        <source>Verify access</source>
-        <target>Verificar acceso</target>
+        <source>Verify code</source>
+        <target>Verificar código</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">19,21</context>
         </context-group>
       </trans-unit>
@@ -70,7 +70,7 @@
         <source>Verified email</source>
         <target>Correo verificado</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">23,25</context>
         </context-group>
       </trans-unit>
@@ -78,23 +78,23 @@
         <source>Password</source>
         <target>Contraseña</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">27,29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessSignIn" datatype="html">
-        <source>Access dashboard</source>
-        <target>Acceder al panel</target>
+        <source>Continue</source>
+        <target>Continuar</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">31,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessLoading" datatype="html">
-        <source>Verifying access…</source>
-        <target>Verificando acceso…</target>
+        <source>Checking access…</source>
+        <target>Comprobando el acceso…</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">35,36</context>
         </context-group>
       </trans-unit>
@@ -102,7 +102,7 @@
         <source>Requests could not be loaded.</source>
         <target>No se pudieron cargar las solicitudes.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">37,39</context>
         </context-group>
       </trans-unit>
@@ -110,7 +110,7 @@
         <source>Return to requests</source>
         <target>Volver a las solicitudes</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">39,40</context>
         </context-group>
       </trans-unit>
@@ -118,7 +118,7 @@
         <source>All requests</source>
         <target>Todas las solicitudes</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">41,43</context>
         </context-group>
       </trans-unit>
@@ -126,7 +126,7 @@
         <source>No contact requests yet.</source>
         <target>Todavía no hay solicitudes de contacto.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">61,63</context>
         </context-group>
       </trans-unit>
@@ -134,7 +134,7 @@
         <source>Older requests</source>
         <target>Solicitudes anteriores</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">64,68</context>
         </context-group>
       </trans-unit>
@@ -142,7 +142,7 @@
         <source>Technical metrics</source>
         <target>Métricas técnicas</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
           <context context-type="linenumber">10,13</context>
         </context-group>
       </trans-unit>
@@ -150,7 +150,7 @@
         <source>Technical metrics</source>
         <target>Métricas técnicas</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">3,5</context>
         </context-group>
       </trans-unit>
@@ -158,7 +158,7 @@
         <source>Private navigation</source>
         <target>Navegación privada</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
@@ -166,7 +166,7 @@
         <source>Contact requests</source>
         <target>Solicitudes de contacto</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">6,8</context>
         </context-group>
       </trans-unit>
@@ -174,7 +174,7 @@
         <source> HTTP measurements from this process over the last 15 minutes. Local counters reset on restart. Latency is capped at 60 seconds. </source>
         <target>Mediciones HTTP de este proceso durante los últimos 15 minutos. Los contadores locales se reinician con el proceso. La latencia está limitada a 60 segundos.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">14,19</context>
         </context-group>
       </trans-unit>
@@ -182,7 +182,7 @@
         <source> Refresh metrics </source>
         <target>Actualizar métricas</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">25,28</context>
         </context-group>
       </trans-unit>
@@ -190,7 +190,7 @@
         <source>Refreshing metrics…</source>
         <target>Actualizando métricas…</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">29,32</context>
         </context-group>
       </trans-unit>
@@ -198,23 +198,23 @@
         <source>Process:</source>
         <target>Proceso:</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">33,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsExportEnabled" datatype="html">
-        <source>External trace export is enabled in the configuration.</source>
-        <target>La exportación externa de trazas está activada en la configuración.</target>
+        <source>Private trace export is configured.</source>
+        <target>La exportación privada de trazas está configurada.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">36,38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsExportDisabled" datatype="html">
-        <source>External trace export is disabled in the configuration.</source>
-        <target>La exportación externa de trazas está desactivada en la configuración.</target>
+        <source>Private trace export is off.</source>
+        <target>La exportación privada de trazas está desactivada.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">38,41</context>
         </context-group>
       </trans-unit>
@@ -222,7 +222,7 @@
         <source>Waiting for HTTP measurements.</source>
         <target>Esperando mediciones HTTP.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">43,46</context>
         </context-group>
       </trans-unit>
@@ -230,23 +230,23 @@
         <source>HTTP requests</source>
         <target>Solicitudes HTTP</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">48,50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsClientErrorsLabel" datatype="html">
-        <source>Client errors</source>
-        <target>Errores del cliente</target>
+        <source>HTTP 4xx responses</source>
+        <target>Respuestas HTTP 4xx</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">54,56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsServerErrorsLabel" datatype="html">
-        <source>Server errors</source>
-        <target>Errores del servidor</target>
+        <source>HTTP 5xx responses</source>
+        <target>Respuestas HTTP 5xx</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">60,62</context>
         </context-group>
       </trans-unit>
@@ -254,7 +254,7 @@
         <source>Aborted requests</source>
         <target>Solicitudes interrumpidas</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">66,68</context>
         </context-group>
       </trans-unit>
@@ -262,7 +262,7 @@
         <source>Mean latency</source>
         <target>Latencia media</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">72,74</context>
         </context-group>
       </trans-unit>
@@ -270,7 +270,7 @@
         <source>Maximum latency</source>
         <target>Latencia máxima</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">78,80</context>
         </context-group>
       </trans-unit>
@@ -278,7 +278,7 @@
         <source> Local metrics collection is disabled. Enable it in the service configuration before collecting measurements. </source>
         <target>La recopilación local de métricas está desactivada. Actívala en la configuración del servicio antes de recopilar mediciones.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">85,88</context>
         </context-group>
       </trans-unit>
@@ -286,7 +286,7 @@
         <source>Metrics could not be loaded. Please try again.</source>
         <target>No se pudieron cargar las métricas. Inténtalo de nuevo.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="sourcefile">apps/web/app/src/app/admin/metrics/metrics.html</context>
           <context context-type="linenumber">89,93</context>
         </context-group>
       </trans-unit>
@@ -294,9 +294,40 @@
       <trans-unit id="notFoundHeroLink" datatype="html"><source>Return to website</source><target>Volver al sitio</target></trans-unit>
       <trans-unit id="signInHeroTitle" datatype="html"><source>Owner sign-in</source><target>Ingreso del propietario</target></trans-unit>
       <trans-unit id="signInVerifyRestart" datatype="html"><source>Start again</source><target>Volver a empezar</target></trans-unit>
-      <trans-unit id="signInFooterLabel" datatype="html"><source>Private administration · VISOMI.DEV</source><target>Administración privada · VISOMI.DEV</target></trans-unit>
       <trans-unit id="adminHeaderSkip" datatype="html"><source>Skip to content</source><target>Saltar al contenido</target></trans-unit>
+      <trans-unit id="adminShellMenu" datatype="html"><source>Menu</source><target>Menú</target></trans-unit>
+      <trans-unit id="adminShellCloseNavigation" datatype="html"><source>Close navigation</source><target>Cerrar navegación</target></trans-unit>
       <trans-unit id="adminHeaderTheme" datatype="html"><source>Dark theme</source><target>Tema oscuro</target></trans-unit>
+      <trans-unit id="browserDiagnosticsTitle" datatype="html"><source>Browser error reports</source><target>Informes de errores del navegador</target></trans-unit>
+      <trans-unit id="browserDiagnosticsScope" datatype="html"><source>The receiver shows up to 50 recent reports for this gateway process, within 15 minutes. These reports come from the browser capture pipeline. The HTTP counters above come from server responses and interruptions.</source><target>El receptor muestra hasta 50 informes recientes de este proceso del gateway, en una ventana de 15 minutos. Estos informes provienen de la captura del navegador. Los contadores HTTP anteriores provienen de respuestas e interrupciones del servidor.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsTraceHelp" datatype="html"><source>A trace ID identifies the generated trace. If trace export is configured, look up the ID in the private Jaeger instance to confirm delivery. Collapsing a report only hides its details.</source><target>El ID identifica la traza generada. Si la exportación está configurada, busca el ID en la instancia privada de Jaeger para confirmar la entrega. Cerrar un informe solo oculta sus detalles.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsCode" datatype="html"><source>Report code</source><target>Código del informe</target></trans-unit>
+      <trans-unit id="browserDiagnosticsScreen" datatype="html"><source>Screen category</source><target>Categoría de pantalla</target></trans-unit>
+      <trans-unit id="browserDiagnosticsTrace" datatype="html"><source>Trace ID</source><target>ID de traza</target></trans-unit>
+      <trans-unit id="browserDiagnosticsAsset" datatype="html"><source>Compiled asset and position</source><target>Recurso compilado y posición</target></trans-unit>
+      <trans-unit id="browserDiagnosticsRelease" datatype="html"><source>Release fingerprint</source><target>Huella de la versión</target></trans-unit>
+      <trans-unit id="browserDiagnosticsEmpty" datatype="html"><source>No browser error reports in this window.</source><target>No se recibieron reportes de errores del navegador en este intervalo.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsDisabled" datatype="html"><source>Browser error capture is disabled.</source><target>La captura de errores del navegador está desactivada.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsUnavailable" datatype="html"><source>Browser error reports are unavailable from this process.</source><target>Los informes de errores del navegador no están disponibles en este proceso.</target></trans-unit>
+      <trans-unit id="visitsTitle" datatype="html"><source>Visit analytics</source><target>Analítica de visitas</target></trans-unit>
+      <trans-unit id="visitsScope" datatype="html"><source>These counts include portfolio pages opened by visitors who allow automatic sharing. The current UTC day is still in progress.</source><target>Estos conteos incluyen las páginas del portafolio que abren quienes aceptan el envío automático. El día actual en UTC aún no termina.</target></trans-unit>
+      <trans-unit id="visitsPeriod" datatype="html"><source>Reporting period</source><target>Periodo del informe</target></trans-unit>
+      <trans-unit id="visitsDaysChoice" datatype="html"><source><x id="INTERPOLATION" equiv-text="{{ days }}"/> days</source><target><x id="INTERPOLATION" equiv-text="{{ days }}"/> días</target></trans-unit>
+      <trans-unit id="visitsCurrent" datatype="html"><source>Page views in this period</source><target>Vistas en este periodo</target></trans-unit>
+      <trans-unit id="visitsPrevious" datatype="html"><source>Page views in the previous period</source><target>Vistas en el periodo anterior</target></trans-unit>
+      <trans-unit id="visitsEmpty" datatype="html"><source>No page views were reported in this period.</source><target>No se reportaron visitas en este periodo.</target></trans-unit>
+      <trans-unit id="visitsPages" datatype="html"><source>Most viewed pages</source><target>Páginas más vistas</target></trans-unit>
+      <trans-unit id="visitsDaily" datatype="html"><source>Views by UTC day</source><target>Vistas por día UTC</target></trans-unit>
+      <trans-unit id="visitsDisabled" datatype="html"><source>Visit analytics collection is disabled.</source><target>La recopilación de visitas está desactivada.</target></trans-unit>
+      <trans-unit id="visitsUnavailable" datatype="html"><source>Visit analytics could not be loaded.</source><target>No se pudo cargar la analítica de visitas.</target></trans-unit>
+      <trans-unit id="signInVerifyTitle" datatype="html"><source>Enter your verification code</source><target>Ingresa tu código de verificación</target></trans-unit>
+      <trans-unit id="signInVerifyEmail" datatype="html"><source>Enter the six-digit code from your email.</source><target>Introduce el código de seis dígitos de tu correo.</target></trans-unit>
+      <trans-unit id="signInVerifyTotp" datatype="html"><source>Enter the six-digit code from your authenticator.</source><target>Introduce el código de seis dígitos de tu autenticador.</target></trans-unit>
+      <trans-unit id="signInPasswordShow" datatype="html"><source>Show</source><target>Mostrar</target></trans-unit>
+      <trans-unit id="signInPasswordHide" datatype="html"><source>Hide</source><target>Ocultar</target></trans-unit>
+      <trans-unit id="signInPasswordVisibility" datatype="html"><source>Show or hide password</source><target>Mostrar u ocultar contraseña</target></trans-unit>
+      <trans-unit id="shellExpandSidebar" datatype="html"><source>Expand sidebar</source><target>Expandir menú lateral</target></trans-unit>
+      <trans-unit id="shellCollapseSidebar" datatype="html"><source>Collapse sidebar</source><target>Contraer menú lateral</target></trans-unit>
     </body>
   </file>
 </xliff>

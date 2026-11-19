@@ -5,6 +5,7 @@ import type { Database } from '@visomi-stack/backend-shared/lib/database/databas
 import type { MailTransport } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import type { RealtimePublisher } from '@visomi-stack/backend-shared/lib/realtime';
 import type { Observability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
+import type { VisitAnalytics } from '@visomi-stack/web-backend-shared/lib/analytics/visits';
 import type { PrivateMetrics } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 
 import type { AuthSnapshot } from './application-module';
@@ -25,6 +26,7 @@ export type ApiModule = {
   createApp(options: {
     observability?: Observability;
     privateMetrics?: PrivateMetrics;
+    visits?: Pick<VisitAnalytics, 'summary'>;
     basePath?: string;
     pool?: Pool;
     auth?: EmbeddedAuthentication;

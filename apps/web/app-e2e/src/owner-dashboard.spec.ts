@@ -2,8 +2,33 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { workspaceRoot } from '@nx/devkit';
+
+async function enterSyntheticCode(page: Page, verification: Locator, browserName: string) {
+  const code = '00 12-34';
+
+  await verification.focus();
+
+  if (browserName !== 'chromium') {
+    await verification.evaluate((control, text) => {
+      const clipboardData = new DataTransfer();
+      const paste = new ClipboardEvent('paste', { bubbles: true, cancelable: true });
+
+      clipboardData.setData('text/plain', text);
+      Object.defineProperty(paste, 'clipboardData', { value: clipboardData });
+      control.dispatchEvent(paste);
+    }, code);
+
+    return;
+  }
+
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+
+  await page.evaluate((text) => navigator.clipboard.writeText(text), code);
+
+  await verification.press('ControlOrMeta+V');
+}
 
 test('anonymous users and authenticated non-owners cannot open requests', async ({
   page,
@@ -33,7 +58,7 @@ test('anonymous users and authenticated non-owners cannot open requests', async 
 
   await expect(page).toHaveURL(/\/app\/en\/admin\/auth\/sign-in$/);
 
-  await expect(page.getByText('Owner access required.')).toBeVisible();
+  await expect(page.getByText('This area is for the site owner.', { exact: true })).toBeVisible();
 
   const accessibility = await new AxeBuilder({ page }).analyze();
 
@@ -109,7 +134,11 @@ test('the owner reads paginated requests and escaped message content from the pr
   expect(revoked.status()).toBe(401);
 });
 
-test('private access completes the stack password and email second-factor flow', async ({ page, baseURL }) => {
+test('private access completes the stack password and email second-factor flow', async ({
+  page,
+  baseURL,
+  browserName,
+}, info) => {
   const directory = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL!).port}`);
 
   await page.goto('/app/en/admin/auth/sign-in');
@@ -118,9 +147,130 @@ test('private access completes the stack password and email second-factor flow',
 
   await page.getByLabel('Password', { exact: true }).fill('Synthetic password 42!');
 
-  await page.getByRole('button', { name: 'Access dashboard' }).click();
+  const submit = page.getByRole('button', { name: 'Continue' });
 
-  await expect(page.getByLabel('Verification code')).toBeVisible();
+  await page.route(
+    '**/api/auth/password/sign-in',
+    async (route) => {
+      try {
+        await expect(submit).toBeDisabled();
+
+        await expect(submit).toHaveAttribute('aria-busy', 'true');
+
+        const mask = await submit.evaluate((element) => getComputedStyle(element, '::after').maskImage);
+
+        expect(mask).toContain('url(');
+      } finally {
+        await route.continue();
+      }
+    },
+    { times: 1 },
+  );
+
+  await submit.click();
+
+  const verification = page.getByLabel('Verification code');
+
+  await expect(verification).toBeVisible();
+
+  await expect(verification).toHaveAttribute('autocomplete', 'one-time-code');
+
+  await expect(verification).toHaveAttribute('inputmode', 'numeric');
+
+  await expect(page.locator('app-pin-input .slot')).toHaveCount(6);
+
+  const accessibility = await new AxeBuilder({ page }).analyze();
+
+  expect(accessibility.violations).toEqual([]);
+
+  await page.screenshot({ path: info.outputPath('verification.png'), animations: 'disabled' });
+
+  await enterSyntheticCode(page, verification, browserName);
+
+  await expect(verification).toHaveValue('001234');
+
+  const pin = page.locator('app-pin-input');
+
+  for (const width of [320, 1440]) {
+    await page.setViewportSize({ width, height: 844 });
+
+    await page.evaluate(() => document.fonts.ready);
+
+    const geometry = await pin.evaluate((host) => {
+      const field = host.parentElement!.getBoundingClientRect();
+      const component = host.getBoundingClientRect();
+      const grid = host.querySelector('[aria-hidden=true]')!.getBoundingClientRect();
+      const input = host.querySelector('input')!.getBoundingClientRect();
+      const cells = Array.from(host.querySelectorAll('.slot'));
+      const boxes = cells.map((cell) => cell.getBoundingClientRect());
+      const widths = boxes.map((box) => box.width);
+      const centers = cells.flatMap((cell, index) => {
+        const mask = cell.querySelector('[data-slot=mask]');
+
+        if (!mask) {
+          return [];
+        }
+
+        const box = boxes[index];
+        const dot = mask.getBoundingClientRect();
+
+        return [
+          Math.abs(dot.x + dot.width / 2 - box.x - box.width / 2),
+          Math.abs(dot.y + dot.height / 2 - box.y - box.height / 2),
+        ];
+      });
+
+      return {
+        edgeOffset: Math.max(
+          Math.abs(component.left - field.left),
+          Math.abs(component.right - field.right),
+          Math.abs(grid.left - component.left),
+          Math.abs(grid.right - component.right),
+          Math.abs(boxes[0].left - grid.left),
+          Math.abs(boxes.at(-1)!.right - grid.right),
+          Math.abs(input.left - grid.left),
+          Math.abs(input.right - grid.right),
+        ),
+        widthSpread: Math.max(...widths) - Math.min(...widths),
+        centers,
+        overflow: host.scrollWidth > host.clientWidth || document.documentElement.scrollWidth > window.innerWidth,
+      };
+    });
+
+    expect.soft(geometry.edgeOffset, `field, cells and input edges at ${width}px`).toBeLessThan(1);
+    expect.soft(geometry.widthSpread, `equal cell widths at ${width}px`).toBeLessThan(1);
+    expect.soft(geometry.centers, `individual horizontal and vertical offsets at ${width}px`).toHaveLength(12);
+    expect.soft(Math.max(...geometry.centers), `largest centering error at ${width}px`).toBeLessThan(1);
+    expect.soft(geometry.overflow, `no horizontal overflow at ${width}px`).toBe(false);
+
+    const responsiveAccessibility = await new AxeBuilder({ page }).analyze();
+
+    expect(responsiveAccessibility.violations).toEqual([]);
+
+    await page.screenshot({ path: info.outputPath(`verification-${width}.png`), animations: 'disabled' });
+  }
+
+  await verification.press('Home');
+
+  await verification.press('ArrowRight');
+
+  await verification.press('Shift+ArrowRight');
+
+  const selection = await verification.evaluate((element) => {
+    const input = element as HTMLInputElement;
+
+    return [input.selectionStart, input.selectionEnd];
+  });
+
+  expect(selection).toEqual([1, 2]);
+
+  await verification.press('End');
+
+  await verification.press('Backspace');
+
+  await expect(verification).toHaveValue('00123');
+
+  await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 
   let code = '';
 
@@ -134,9 +284,9 @@ test('private access completes the stack password and email second-factor flow',
     })
     .toMatch(/^\d{6}$/);
 
-  await page.getByLabel('Verification code').fill(code);
+  await verification.fill(code);
 
-  await page.getByRole('button', { name: 'Verify access' }).click();
+  await page.getByRole('button', { name: 'Verify code' }).click();
 
   await expect(page).toHaveURL(/\/app\/en\/admin\/dashboard$/);
 

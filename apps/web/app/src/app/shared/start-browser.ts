@@ -1,5 +1,6 @@
 import { isDevMode, type ApplicationConfig } from '@angular/core';
 
+import { createBrowserConsent } from '@visomi-stack/web-shared-observability/lib/consent';
 import { createBrowserReporter } from '@visomi-stack/web-shared-observability/lib/browser';
 
 import { BROWSER_ERROR_REPORTER } from './observability/browser-telemetry';
@@ -9,7 +10,8 @@ export function startBrowser(
   configuration: ApplicationConfig,
   browser: Window,
 ): Promise<void> {
-  const reporter = createBrowserReporter('web-app', browser, { globalErrors: false });
+  const consent = createBrowserConsent(browser);
+  const reporter = createBrowserReporter('web-app', browser, consent, { globalErrors: false });
 
   return bootstrap({
     ...configuration,
@@ -21,6 +23,9 @@ export function startBrowser(
         console.error(error);
       }
 
-      return reporter.report('startup_failed', error).finally(() => reporter.stop());
+      return reporter.report('startup_failed', error).finally(() => {
+        reporter.stop();
+        consent.stop();
+      });
     });
 }

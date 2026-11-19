@@ -24,7 +24,7 @@ for (const { locale, heading, missing, theme } of [
     expect(html).toContain(`base href="/app/${locale}/"`);
     expect(html).toContain('ng-server-context="ssr"');
 
-    for (const route of ['admin/dashboard', 'admin/contacts/1', 'admin/metrics']) {
+    for (const route of ['admin/dashboard', 'admin/contacts/1', 'admin/metrics', 'admin/visits']) {
       const guarded = await request.get(`/app/${locale}/${route}`, {
         headers: { accept: 'text/html' },
         maxRedirects: 0,
@@ -46,6 +46,7 @@ for (const { locale, heading, missing, theme } of [
       'sign-in',
       'auth/sign-in',
       'admin/access',
+      'admin/auth/sign-in/password',
     ]) {
       const legacy = await request.get(`/app/${locale}/${route}`, {
         headers: { accept: 'text/html' },
@@ -114,7 +115,14 @@ for (const { locale, heading, missing, theme } of [
 
     await expect(page.getByRole('button', { name: theme, exact: true })).toHaveAttribute('aria-pressed', 'true');
 
-    for (const route of ['access', 'access/extra', 'sign-in', 'auth/sign-in', 'admin/access']) {
+    for (const route of [
+      'access',
+      'access/extra',
+      'sign-in',
+      'auth/sign-in',
+      'admin/access',
+      'admin/auth/sign-in/password',
+    ]) {
       const legacy = `/app/${locale}/${route}`;
 
       await page.evaluate((path) => {

@@ -1,0 +1,166 @@
+<section class="text-zinc-950 dark:text-zinc-50">
+  <div class="mx-auto max-w-5xl space-y-6">
+    <h1 appUI appNavigationHeading i18n="@@metricsHeroTitle">Technical metrics</h1>
+
+    <p appUI tone="muted" i18n="@@metricsScopeDescription">
+      HTTP measurements from this process over the last 15 minutes. Local counters reset on restart. Latency is capped
+      at 60 seconds.
+    </p>
+
+    <button
+      appUI
+      type="button"
+      [disabled]="refreshing()"
+      [attr.aria-busy]="refreshing()"
+      (click)="refresh()"
+      i18n="@@metricsRefreshButton"
+    >
+      Refresh metrics
+    </button>
+
+    @if (refreshing()) {
+      <p appUI tone="muted" role="status" i18n="@@metricsRefreshLoading">Refreshing metrics…</p>
+    }
+
+    @if (snapshot(); as snapshot) {
+      <p appUI><span i18n="@@metricsProcessLabel">Process:</span> {{ snapshot.scope }}</p>
+
+      @if (snapshot.traceExportEnabled) {
+        <p appUI tone="muted" i18n="@@metricsExportEnabled">Private trace export is configured.</p>
+      } @else {
+        <p appUI tone="muted" i18n="@@metricsExportDisabled">Private trace export is off.</p>
+      }
+
+      @if (snapshot.metrics; as metrics) {
+        @if (metrics.requests === 0) {
+          <p appUI tone="muted" role="status" i18n="@@metricsEmptyState">Waiting for HTTP measurements.</p>
+        }
+
+        <dl data-http-metrics class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div appUI="card" layout="plain">
+            <dt i18n="@@metricsRequestsLabel">HTTP requests</dt>
+
+            <dd class="mt-2 text-3xl" data-metric="requests">{{ metrics.requests | number }}</dd>
+          </div>
+
+          <div appUI="card" layout="plain">
+            <dt i18n="@@metricsClientErrorsLabel">HTTP 4xx responses</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.clientErrors | number }}</dd>
+          </div>
+
+          <div appUI="card" layout="plain">
+            <dt i18n="@@metricsServerErrorsLabel">HTTP 5xx responses</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.serverErrors | number }}</dd>
+          </div>
+
+          <div appUI="card" layout="plain">
+            <dt i18n="@@metricsAbortedLabel">Aborted requests</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.aborted | number }}</dd>
+          </div>
+
+          <div appUI="card" layout="plain">
+            <dt i18n="@@metricsMeanLatencyLabel">Mean latency</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.meanLatencyMs | number: '1.0-1' }} ms</dd>
+          </div>
+
+          <div appUI="card" layout="plain">
+            <dt i18n="@@metricsMaxLatencyLabel">Maximum latency</dt>
+
+            <dd class="mt-2 text-3xl">{{ metrics.maxLatencyMs | number: '1.0-1' }} ms</dd>
+          </div>
+        </dl>
+      } @else {
+        <p appUI tone="muted" role="status" i18n="@@metricsDisabledState">
+          Local metrics collection is disabled. Enable it in the service configuration before collecting measurements.
+        </p>
+      }
+
+      <section class="space-y-3" aria-labelledby="browser-errors">
+        <h2 appUI uiSize="md" id="browser-errors" i18n="@@browserDiagnosticsTitle">Browser error reports</h2>
+
+        <p appUI tone="muted" i18n="@@browserDiagnosticsScope">
+          The receiver shows up to 50 recent reports for this gateway process, within 15 minutes. These reports come
+          from the browser capture pipeline. The HTTP counters above come from server responses and interruptions.
+        </p>
+
+        @if (snapshot.browserErrors; as browserErrors) {
+          @if (browserErrors.events.length) {
+            <p appUI uiSize="sm" tone="muted" i18n="@@browserDiagnosticsTraceHelp">
+              A trace ID identifies the generated trace. If trace export is configured, look up the ID in the private
+              Jaeger instance to confirm delivery. Collapsing a report only hides its details.
+            </p>
+
+            <ul class="space-y-2">
+              @for (event of browserErrors.events; track $index) {
+                <li>
+                  <details appUI>
+                    <summary>
+                      <time [attr.datetime]="event.receivedAt">{{ event.receivedAt | date: 'short' : 'UTC' }} UTC</time>
+                      · {{ event.application }} · {{ event.kind }}
+                    </summary>
+
+                    <dl appUI>
+                      <dt i18n="@@browserDiagnosticsCode">Report code</dt>
+
+                      <dd>
+                        <code appUI variant="plain">{{ event.code }}</code>
+                      </dd>
+
+                      <dt i18n="@@browserDiagnosticsScreen">Screen category</dt>
+
+                      <dd>
+                        <code appUI variant="plain">{{ event.screen }}</code>
+                      </dd>
+
+                      @if (event.traceId; as traceId) {
+                        <dt i18n="@@browserDiagnosticsTrace">Trace ID</dt>
+
+                        <dd class="break-all">
+                          <code appUI variant="plain">{{ traceId }}</code>
+                        </dd>
+                      }
+
+                      @if (event.location; as location) {
+                        <dt i18n="@@browserDiagnosticsAsset">Compiled asset and position</dt>
+
+                        <dd class="break-all">
+                          <code appUI variant="plain"
+                            >{{ location.asset }}:{{ location.line }}:{{ location.column }}</code
+                          >
+                        </dd>
+
+                        <dt i18n="@@browserDiagnosticsRelease">Release fingerprint</dt>
+
+                        <dd class="break-all">
+                          <code appUI variant="plain">{{ event.release }}</code>
+                        </dd>
+                      }
+                    </dl>
+                  </details>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p appUI tone="muted" role="status" i18n="@@browserDiagnosticsEmpty">
+              No browser error reports in this window.
+            </p>
+          }
+        } @else if (snapshot.browserErrors === null) {
+          <p appUI tone="muted" role="status" i18n="@@browserDiagnosticsDisabled">Browser error capture is disabled.</p>
+        } @else {
+          <p appUI tone="muted" role="status" i18n="@@browserDiagnosticsUnavailable">
+            Browser error reports are unavailable from this process.
+          </p>
+        }
+      </section>
+    } @else {
+      <div appUI="alert" tone="danger" role="alert" i18n="@@metricsErrorState">
+        Metrics could not be loaded. Please try again.
+      </div>
+    }
+  </div>
+</section>

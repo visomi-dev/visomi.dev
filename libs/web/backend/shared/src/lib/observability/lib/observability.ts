@@ -172,7 +172,10 @@ class ObservabilityRuntime implements Observability {
     return this.begin('http.request');
   }
 
-  frontendError(report: Omit<BrowserErrorReport, 'correlation'> & { release: string }, parent?: Correlation): void {
+  frontendError(
+    report: Omit<BrowserErrorReport, 'correlation'> & { release: string },
+    parent?: Correlation,
+  ): string | undefined {
     const approved = jobContext(parent ? { version: 1, ...parent } : undefined);
     const ctx = approved
       ? trace.setSpanContext(ROOT_CONTEXT, {
@@ -201,6 +204,8 @@ class ObservabilityRuntime implements Observability {
       }),
     );
     operation.finish('client_error');
+
+    return trace.getSpanContext(operation.ctx)?.traceId;
   }
 
   captureJobContext(): ReturnType<Observability['captureJobContext']> {
@@ -380,7 +385,10 @@ class ObservabilityRuntime implements Observability {
 
 export type Observability = {
   frontendPerformance: (report: BrowserPerformanceReport) => void;
-  frontendError: (report: Omit<BrowserErrorReport, 'correlation'> & { release: string }, parent?: Correlation) => void;
+  frontendError: (
+    report: Omit<BrowserErrorReport, 'correlation'> & { release: string },
+    parent?: Correlation,
+  ) => string | undefined;
   event: (name: RuntimeEvent, code?: ErrorCode) => void;
   correlation: () => Correlation | undefined;
   beginHttp: () => { run: <T>(work: () => T) => T; finish: (outcome: Outcome, status?: number) => void };

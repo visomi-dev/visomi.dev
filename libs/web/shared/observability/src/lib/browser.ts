@@ -1,34 +1,16 @@
-import type * as ImportedModule1 from './performance';
-import { browserErrorKinds } from './contract';
+import type * as ImportedPerformance from './performance';
+import type { BrowserConsent } from './consent';
 import type {
   BrowserApplication,
   BrowserErrorCode,
-  BrowserErrorKind,
   BrowserErrorReport,
   BrowserLocation,
-  BrowserScreen,
   BrowserTelemetryConfig,
   BrowserRouteMetric,
 } from './contract';
-
-// Only known page names cross the boundary; paths and navigation history stay in the browser.
-export function browserScreen(path: string): BrowserScreen {
-  if (/^(?:\/app)?\/(?:en|es)\/?$/.test(path) || /^\/app\/(?:en|es)\/foundations\/?$/.test(path)) {
-    return 'home';
-  }
-
-  return /^(?:\/app)?\/(?:en|es)\/ui\/?$/.test(path) ? 'ui' : 'unknown';
-}
-
-export function browserErrorKind(error: unknown): BrowserErrorKind {
-  try {
-    const name = error instanceof Error ? error.name : undefined;
-
-    return browserErrorKinds.find((kind) => kind === name) ?? 'unknown';
-  } catch {
-    return 'unknown';
-  }
-}
+import { browserScreen, describeBrowserError } from './error-description';
+import { createPendingReports } from './pending-reports';
+import { telemetryPost } from './transport';
 
 export function browserLocation(
   error: unknown,
@@ -80,88 +62,158 @@ export function browserLocation(
 export function createBrowserReporter(
   application: BrowserApplication,
   browser: Window,
-  options: { globalErrors?: boolean } = {},
+  consent: BrowserConsent,
+  options: { globalErrors?: boolean; documentPermit?: string | null } = {},
 ) {
   const transport = browser.fetch.bind(browser);
   let configuration: BrowserTelemetryConfig | undefined;
+  let loading: Promise<void>;
+  let refreshedAt = 0;
   let stopped = false;
   let windowStart = Date.now();
   let count = 0;
   const seen = new Set<string>();
-  const errorReports = new WeakMap<object, Promise<void>>();
-  let refreshedAt = Date.now();
-  let ready = loadConfiguration();
-  let performanceRuntime: ReturnType<(typeof ImportedModule1)['createBrowserPerformance']> | undefined;
+  const captured = new WeakMap<object, Promise<void>>();
+  const pending = createPendingReports();
+  let sending = false;
+  let performanceRuntime: ReturnType<(typeof ImportedPerformance)['createBrowserPerformance']> | undefined;
+  let documentPermit = options.documentPermit === undefined ? consent.permit() : options.documentPermit;
   const performanceScreen = browserScreen(browser.location.pathname);
+  const performanceAllowed = () => !stopped && !!documentPermit && consent.permit() === documentPermit;
 
-  // Neither the SDK nor its observers are loaded when performance capture is disabled.
-  const performanceReady = ready
-    .then(async () => {
-      if (stopped || configuration?.performance !== true) {
-        return false;
-      }
-
-      const { createBrowserPerformance } = await import('./performance');
-
-      if (!stopped) {
-        performanceRuntime = createBrowserPerformance(application, performanceScreen, browser, currentConfiguration);
-
-        return true;
-      }
-
-      return false;
-    })
-    .catch(() => false);
-
-  async function currentConfiguration(): Promise<BrowserTelemetryConfig | undefined> {
-    if (Date.now() - refreshedAt >= 240000) {
-      ready = loadConfiguration();
+  const unsubscribe = consent.subscribe(() => {
+    if (!performanceAllowed()) {
+      documentPermit = undefined;
+      performanceRuntime?.stop();
+      performanceRuntime = undefined;
     }
 
-    await ready;
+    pending.refresh();
+  });
+
+  // Document timings include buffered measurements, so they require a grant at document startup.
+  const performanceReady = (async () => {
+    if (!performanceAllowed()) {
+      return false;
+    }
+
+    const config = await currentConfiguration();
+
+    if (!config || !performanceAllowed()) {
+      return false;
+    }
+
+    const { createBrowserPerformance } = await import('./performance');
+
+    if (!performanceAllowed()) {
+      return false;
+    }
+
+    performanceRuntime = createBrowserPerformance(
+      application,
+      performanceScreen,
+      browser,
+      currentConfiguration,
+      performanceAllowed,
+    );
+
+    return true;
+  })().catch(() => false);
+
+  async function currentConfiguration(): Promise<BrowserTelemetryConfig | undefined> {
+    if (!loading || Date.now() - refreshedAt >= 240000) {
+      refreshedAt = Date.now();
+      configuration = undefined;
+      loading = loadConfiguration();
+    }
+
+    await loading;
 
     return configuration;
   }
 
-  function loadConfiguration(): Promise<void> {
-    refreshedAt = Date.now();
-    configuration = undefined;
+  async function loadConfiguration(): Promise<void> {
+    try {
+      const response = await transport('/telemetry/config', {
+        credentials: 'omit',
+        cache: 'no-store',
+        referrerPolicy: 'no-referrer',
+        mode: 'same-origin',
+        redirect: 'error',
+        signal: AbortSignal.timeout(3000),
+      });
 
-    return Promise.resolve()
-      .then(() =>
-        transport('/telemetry/config', {
-          credentials: 'omit',
-          cache: 'no-store',
-          referrerPolicy: 'no-referrer',
-          mode: 'same-origin',
-          redirect: 'error',
-          signal: AbortSignal.timeout(3000),
-        }),
-      )
-      .then(async (response) => {
-        if (!response.ok) {
-          return;
-        }
+      if (!response.ok) {
+        return;
+      }
 
-        const value = await response.json();
+      const value = await response.json();
 
-        if (
-          typeof value?.token === 'string' &&
-          value.token.length <= 1024 &&
-          Array.isArray(value.assets) &&
-          value.assets.length <= 512 &&
-          value.assets.every(
-            (asset: { path?: unknown; id?: unknown }) =>
-              typeof asset?.path === 'string' &&
-              asset.path.startsWith('/') &&
-              typeof asset.id === 'string' &&
-              /^[a-f0-9]{64}$/.test(asset.id),
-          )
-        ) {
-          configuration = value;
-        }
-      })
-      .catch(() => undefined);
+      if (
+        typeof value?.token === 'string' &&
+        value.token.length <= 1024 &&
+        Array.isArray(value.assets) &&
+        value.assets.length <= 512 &&
+        value.assets.every(
+          (asset: { path?: unknown; id?: unknown }) =>
+            typeof asset?.path === 'string' &&
+            asset.path.startsWith('/') &&
+            typeof asset.id === 'string' &&
+            /^[a-f0-9]{64}$/.test(asset.id),
+        )
+      ) {
+        configuration = value;
+      }
+    } catch {
+      // Configuration errors never produce further telemetry.
+    }
+  }
+
+  async function send(
+    report: BrowserErrorReport,
+    allowed: () => boolean,
+    automatic?: (configuration: BrowserTelemetryConfig) => BrowserErrorReport,
+  ): Promise<boolean> {
+    try {
+      if (Date.now() - windowStart >= 60000) {
+        windowStart = Date.now();
+        count = 0;
+        seen.clear();
+      }
+
+      if (stopped || !allowed() || count >= 5) {
+        return false;
+      }
+
+      count++;
+      const config = await currentConfiguration();
+
+      if (stopped || !config || !allowed()) {
+        return false;
+      }
+
+      const body = JSON.stringify(automatic ? automatic(config) : report);
+
+      if (automatic && seen.has(body)) {
+        return false;
+      }
+
+      if (automatic) {
+        seen.add(body);
+      }
+
+      const response = await transport(browser.location.origin + '/telemetry/errors', {
+        ...telemetryPost,
+        headers: { 'content-type': 'application/json', 'x-browser-telemetry': config.token },
+        body,
+        signal: AbortSignal.timeout(3000),
+      });
+
+      return response.status === 202;
+    } catch {
+      // Telemetry failures never report themselves.
+      return false;
+    }
   }
 
   function report(
@@ -170,81 +222,69 @@ export function createBrowserReporter(
     source?: { filename: string; lineno: number; colno: number },
     correlation?: string,
   ): Promise<void> {
+    if (stopped) {
+      return Promise.resolve();
+    }
+
     if (typeof error !== 'object' || error === null) {
-      return sendReport(code, error, source, correlation);
+      return capture(code, error, source, correlation);
     }
 
-    const existing = errorReports.get(error);
-
-    if (existing) {
-      return existing;
+    if (!captured.has(error)) {
+      captured.set(error, capture(code, error, source, correlation));
     }
 
-    // Framework error handling and bootstrap rejection can observe the same failure.
-    const pending = sendReport(code, error, source, correlation);
-
-    errorReports.set(error, pending);
-
-    return pending;
+    return captured.get(error)!;
   }
 
-  async function sendReport(
+  function capture(
     code: BrowserErrorCode,
-    error?: unknown,
-    source?: { filename: string; lineno: number; colno: number },
-    correlation?: string,
+    error: unknown,
+    source: { filename: string; lineno: number; colno: number } | undefined,
+    correlation: string | undefined,
   ): Promise<void> {
-    try {
-      if (Date.now() - windowStart >= 60000) {
-        windowStart = Date.now();
-        count = 0;
-        seen.clear();
-      }
+    const permit = consent.permit();
+    const sanitized = describeBrowserError(application, browser.location.pathname, code, error);
 
-      if (stopped || count >= 5) {
-        return;
-      }
-
-      count++;
-
-      await currentConfiguration();
-
-      if (stopped || !configuration) {
-        return;
-      }
-
-      const location = browserLocation(error, browser.location.origin, configuration.assets, source);
-      const payload: BrowserErrorReport = {
-        application,
-        code,
-        kind: browserErrorKind(error),
-        screen: browserScreen(browser.location.pathname),
-        ...(location ? { location } : {}),
-        ...(typeof correlation === 'string' && correlation.length <= 1024 ? { correlation } : {}),
-      };
-      const serialized = JSON.stringify(payload);
-
-      if (seen.has(serialized)) {
-        return;
-      }
-
-      seen.add(serialized);
-
-      await transport('/telemetry/errors', {
-        method: 'POST',
-        credentials: 'omit',
-        referrerPolicy: 'no-referrer',
-        keepalive: true,
-        // Preserve the browser's Origin with no-referrer in Firefox/WebKit. The endpoint is fixed and redirects fail.
-        mode: 'cors',
-        redirect: 'error',
-        headers: { 'content-type': 'application/json', 'x-browser-telemetry': configuration.token },
-        body: serialized,
-        signal: AbortSignal.timeout(3000),
-      });
-    } catch {
-      // Telemetry failures must not create unhandled rejections or report themselves recursively.
+    if (permit) {
+      return captureWithPermit(sanitized, permit, error, source, correlation);
     }
+
+    if (code !== 'request_failed') {
+      pending.add(sanitized);
+    }
+
+    return Promise.resolve();
+  }
+
+  function captureWithPermit(
+    report: BrowserErrorReport,
+    permit: string,
+    error: unknown,
+    source: { filename: string; lineno: number; colno: number } | undefined,
+    correlation: string | undefined,
+  ): Promise<void> {
+    return send(
+      report,
+      () => consent.permit() === permit,
+      (config) => {
+        const location = browserLocation(error, browser.location.origin, config.assets, source);
+
+        return {
+          ...report,
+          ...(location ? { location } : {}),
+          ...(typeof correlation === 'string' && correlation.length <= 1024 ? { correlation } : {}),
+        };
+      },
+    ).then(() => undefined);
+  }
+
+  function sendCaptured(report: BrowserErrorReport, permit: string): Promise<void> {
+    return send(
+      report,
+      () => consent.permit() === permit,
+      () => report,
+    ).then(() => undefined);
   }
 
   function onError(event: ErrorEvent): void {
@@ -261,11 +301,38 @@ export function createBrowserReporter(
   }
 
   return {
+    consent,
     report,
-    ready,
     performanceReady,
+    performanceAllowed,
+    pending: pending.items,
+    subscribePending: pending.subscribe,
+    discard: pending.discard,
+    sendCaptured,
+    remember: pending.add,
+    async sendPending(report: BrowserErrorReport): Promise<boolean> {
+      const allowed = () => pending.has(report);
+
+      if (sending || !allowed()) {
+        return false;
+      }
+
+      sending = true;
+
+      try {
+        const accepted = await send(report, allowed);
+
+        if (accepted) {
+          pending.discard(report);
+        }
+
+        return accepted;
+      } finally {
+        sending = false;
+      }
+    },
     routeTransition(name: BrowserRouteMetric, duration: number): void {
-      if (!stopped && application === 'web-app') {
+      if (application === 'web-app' && performanceAllowed()) {
         performanceRuntime?.routeTransition(name, duration);
       }
     },
@@ -291,6 +358,8 @@ export function createBrowserReporter(
     },
     stop(): void {
       stopped = true;
+      unsubscribe();
+      pending.clear();
       performanceRuntime?.stop();
 
       if (options.globalErrors !== false) {

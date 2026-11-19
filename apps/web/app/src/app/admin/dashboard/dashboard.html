@@ -1,0 +1,43 @@
+<section class="space-y-6">
+  <h1 appUI appNavigationHeading i18n="@@dashboardHeroTitle">Contact requests</h1>
+
+  @if (data().state === 'error') {
+    <div appUI="alert" tone="danger" role="alert" i18n="@@dashboardRequestsError">Requests could not be loaded.</div>
+
+    <a appUI routerLink="/admin/dashboard" i18n="@@dashboardRequestsRetry">Return to requests</a>
+  } @else if (data().item; as item) {
+    <a appUI routerLink="/admin/dashboard" i18n="@@dashboardRequestsBack">All requests</a>
+
+    <article appUI layout="plain" class="space-y-4 break-words">
+      <h2 appUI uiSize="md">{{ item.name }}</h2>
+
+      <p appUI>{{ item.email }}</p>
+
+      <p appUI tone="muted">
+        <time [attr.datetime]="item.createdAt">{{ item.createdAt }}</time> · {{ item.type }} · {{ item.locale }}
+      </p>
+
+      <p appUI class="whitespace-pre-wrap">{{ item.message }}</p>
+    </article>
+  } @else {
+    @for (item of data().items; track item.id) {
+      <article appUI layout="plain" class="break-words">
+        <h2 appUI uiSize="sm">
+          <a appUI [routerLink]="['/admin/contacts', item.id]">{{ item.name }}</a>
+        </h2>
+
+        <p appUI>{{ item.email }}</p>
+
+        <time [attr.datetime]="item.createdAt">{{ item.createdAt }}</time>
+      </article>
+    } @empty {
+      <p appUI tone="muted" role="status" i18n="@@dashboardRequestsEmpty">No contact requests yet.</p>
+    }
+
+    @if (data().next; as next) {
+      <a appUI routerLink="/admin/dashboard" [queryParams]="{ before: next }" i18n="@@dashboardRequestsNext"
+        >Older requests</a
+      >
+    }
+  }
+</section>

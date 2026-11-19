@@ -21,8 +21,10 @@ import type { MailTransport } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import type { DatabaseResource } from '@visomi-stack/backend-shared/lib/database/database';
 import type { RealtimeRuntime } from '@visomi-stack/backend-shared/lib/realtime';
 import { browserAssets } from '@visomi-stack/web-backend-shared/lib/observability/browser/assets';
+import { createVisitAnalytics } from '@visomi-stack/web-backend-shared/lib/analytics/visits';
 import { createBrowserTelemetry } from '@visomi-stack/web-backend-shared/lib/observability/browser/intake';
 import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
+import { siteVisitPages } from '@visomi-stack/web-shared-observability/lib/visits';
 
 import packageJson from '../package.json' with { type: 'json' };
 
@@ -50,6 +52,7 @@ let stopping = false;
 let socialImages: ReturnType<typeof createSocialImageRuntime> | undefined;
 let worker: ChildProcess | undefined;
 let browserTelemetry: ReturnType<typeof createBrowserTelemetry> | undefined;
+let visits: ReturnType<typeof createVisitAnalytics> | undefined;
 
 async function stop(exitCode: number): Promise<void> {
   if (stopping) {
@@ -99,6 +102,7 @@ async function stop(exitCode: number): Promise<void> {
 
   try {
     browserTelemetry?.close();
+    visits?.close();
     mail?.close();
   } catch {
     databaseClosed = false;
@@ -135,6 +139,13 @@ async function bootstrap() {
   process.env['CONTACT_API_URL'] = `http://127.0.0.1:${port}/api/contact/submissions`;
 
   if (!Number.isInteger(port) || port < 0 || port > 65535) {
+    throw new Error('gateway_configuration_invalid');
+  }
+
+  const publicUrl = new URL(process.env.AUTH_ORIGIN || 'https://visomi.dev');
+  const origin = publicUrl.origin;
+
+  if (!['http:', 'https:'].includes(publicUrl.protocol) || publicUrl.href !== origin + '/') {
     throw new Error('gateway_configuration_invalid');
   }
 
@@ -198,23 +209,20 @@ async function bootstrap() {
     return;
   }
 
-  if (process.env.VISOMI_BROWSER_TELEMETRY === 'true') {
-    const [applicationAssets, siteAssets] = await Promise.all([
-      browserAssets(angular.clientDirectory, '/app'),
-      site ? browserAssets(site.clientDirectory) : Promise.resolve(undefined),
-    ]);
+  const [applicationAssets, siteAssets] = await Promise.all([
+    browserAssets(angular.clientDirectory, '/app'),
+    site ? browserAssets(site.clientDirectory) : Promise.resolve(undefined),
+  ]);
 
-    if (stopping) {
-      return;
-    }
-
-    browserTelemetry = createBrowserTelemetry({
-      observability,
-      assets: { 'web-app': applicationAssets, ...(siteAssets ? { 'web-site': siteAssets } : {}) },
-      origin: process.env.BROWSER_TELEMETRY_ORIGIN ?? 'https://visomi.dev',
-      performance: process.env.VISOMI_BROWSER_PERFORMANCE === 'true',
-    });
+  if (stopping) {
+    return;
   }
+
+  browserTelemetry = createBrowserTelemetry({
+    observability,
+    assets: { 'web-app': applicationAssets, ...(siteAssets ? { 'web-site': siteAssets } : {}) },
+    origin,
+  });
 
   if (process.env['DISABLE_WORKER'] !== 'true') {
     socialImages = createSocialImageRuntime();
@@ -233,7 +241,16 @@ async function bootstrap() {
     });
   }
 
+  visits = createVisitAnalytics({
+    enabled: true,
+    pool: database?.pool,
+    site: 'visomi-dev',
+    origin,
+    pages: siteVisitPages,
+  });
+
   const application = createGatewayApp({
+    visits,
     socialImages: socialImages?.router,
     api,
     pool: database?.pool,
@@ -241,7 +258,7 @@ async function bootstrap() {
     application: angular,
     auth,
     observability,
-    ...(browserTelemetry ? { browserTelemetry } : {}),
+    browserTelemetry,
     ...proxyConfiguration(process.env.AUTH_TRUST_PROXY),
   });
 

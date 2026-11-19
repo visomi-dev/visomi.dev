@@ -1,0 +1,45 @@
+---
+import { browserPrivacyCopy } from '@visomi-stack/web-shared-observability/lib/privacy-copy';
+
+import BaseLayout from '../layouts/base-layout.astro';
+import type { Locale } from '../i18n/translations';
+import ConsentNotice from './consent-notice.astro';
+
+type Props = { locale: Locale };
+const { locale } = Astro.props;
+const copy = browserPrivacyCopy[locale];
+---
+
+<BaseLayout locale={locale} page="privacy" title={copy.title} description={copy.invitation}>
+  <main class="mx-auto max-w-3xl space-y-8 px-6 pt-32 pb-12">
+    <h1 class="text-3xl font-semibold">{copy.title}</h1>
+
+    <section aria-labelledby="sharing-title" class="space-y-3">
+      <h2 id="sharing-title" class="text-xl font-semibold">
+        {copy.purpose}
+      </h2>
+
+      <p>{copy.analytics}</p>
+
+      <p>{copy.telemetry}</p>
+    </section>
+
+    <section aria-labelledby="manual-report-title" class="space-y-3">
+      <h2 id="manual-report-title" class="text-xl font-semibold">
+        {copy.manualHeading}
+      </h2>
+
+      <p>{copy.manualDetail}</p>
+    </section>
+
+    <section aria-labelledby="choice-title" class="space-y-3">
+      <h2 id="choice-title" class="text-xl font-semibold">
+        {copy.settingsHeading}
+      </h2>
+
+      <p>{copy.revoke}</p>
+
+      <ConsentNotice locale={locale} settings />
+    </section>
+  </main>
+</BaseLayout>

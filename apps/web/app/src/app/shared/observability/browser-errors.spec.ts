@@ -3,6 +3,7 @@ import { ErrorHandler, provideBrowserGlobalErrorListeners } from '@angular/core'
 import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { createBrowserConsent } from '@visomi-stack/web-shared-observability/lib/consent';
 import { createBrowserReporter } from '@visomi-stack/web-shared-observability/lib/browser';
 
 import { BrowserErrors } from './browser-errors';
@@ -50,10 +51,17 @@ describe('Angular browser error handler', () => {
     const browser = Object.assign(new EventTarget(), {
       fetch,
       location: new URL('https://frontend.example.test/app/en/'),
+      navigator: {},
+      localStorage: { getItem: () => 'accept:1-2-3-4' },
     });
     const add = vi.spyOn(browser, 'addEventListener');
     const remove = vi.spyOn(browser, 'removeEventListener');
-    const reporter = createBrowserReporter('web-app', browser as unknown as Window, { globalErrors: false });
+    const reporter = createBrowserReporter(
+      'web-app',
+      browser as unknown as Window,
+      createBrowserConsent(browser as unknown as Window),
+      { globalErrors: false, documentPermit: null },
+    );
     const stop = vi.spyOn(reporter, 'stop');
 
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
@@ -70,7 +78,10 @@ describe('Angular browser error handler', () => {
     });
 
     TestBed.inject(ErrorHandler);
-    expect(add.mock.calls.map(([type]) => type).sort()).toEqual(['error', 'unhandledrejection']);
+    const listenerTypes = ['error', 'focus', 'pageshow', 'storage', 'unhandledrejection'];
+
+    expect(add.mock.calls.map(([type]) => type).sort()).toEqual(listenerTypes);
+
     browser.dispatchEvent(Object.assign(new Event('error'), { error: new TypeError(marker) }));
     browser.dispatchEvent(Object.assign(new Event('unhandledrejection'), { reason: { customer: marker } }));
 
@@ -86,7 +97,8 @@ describe('Angular browser error handler', () => {
     expect(JSON.stringify(reports)).not.toContain(marker);
     TestBed.resetTestingModule();
     expect(stop).toHaveBeenCalledOnce();
-    expect(remove.mock.calls.map(([type]) => type).sort()).toEqual(['error', 'unhandledrejection']);
+    expect(remove.mock.calls.map(([type]) => type).sort()).toEqual(listenerTypes);
+
     browser.dispatchEvent(Object.assign(new Event('error'), { error: new RangeError(marker) }));
 
     await reporter.report('startup_failed', new Error(marker));

@@ -4,6 +4,7 @@ import isotypeUrl from '../../../../../assets/brand/isotype.svg?url';
 import logotypeUrl from '../../../../../assets/brand/logotype.svg?url';
 
 import { createTranslator, getPagePath, locales, type Locale, type PageId } from '../i18n/translations';
+import BrowserPrivacy from './browser-privacy.astro';
 import ThemeSwitcher from './theme-switcher.astro';
 
 type Props = {
@@ -75,6 +76,8 @@ const navItems = [
         ))}
       </div>
 
+      <BrowserPrivacy locale={locale} />
+
       <ThemeSwitcher locale={locale} />
 
       <button
@@ -83,7 +86,9 @@ const navItems = [
           ui.button,
           'p-2 text-neutral-500 transition-colors hover:text-black md:hidden dark:text-neutral-400 dark:hover:text-white',
         ]}
-        aria-label="Open menu"
+        aria-label={t('navMenu')}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
       >
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>

@@ -32,7 +32,7 @@ afterEach(async () => {
   vi.useRealTimers();
 });
 
-async function fixture(useClock = true, includeApp = false, performance = false) {
+async function fixture(useClock = true, includeApp = false) {
   if (useClock) {
     vi.useFakeTimers({ toFake: ['Date'] });
   }
@@ -49,7 +49,6 @@ async function fixture(useClock = true, includeApp = false, performance = false)
   const telemetry = createBrowserTelemetry({
     observability: runtime,
     origin,
-    performance,
     assets: {
       'web-site': new Map([[asset, { paths: ['/_astro/synthetic.js'], lines: [100, 10] }]]),
       ...(includeApp
@@ -101,6 +100,7 @@ async function fixture(useClock = true, includeApp = false, performance = false)
     url,
     send,
     configuration,
+    diagnostics: telemetry.diagnostics,
     advance: (ms: number) => {
       now += ms;
       vi.setSystemTime(now);
@@ -115,8 +115,41 @@ function signed(value: unknown): string {
 }
 
 describe('private browser error intake', () => {
+  it('keeps only the last 50 accepted reports and expires them after 15 minutes', async () => {
+    const f = await fixture();
+
+    expect(f.diagnostics()).toEqual({ events: [], windowMinutes: 15, limit: 50 });
+
+    await f.send({ ...report, query: marker });
+
+    expect(f.diagnostics().events).toHaveLength(0);
+
+    const responses = await Promise.all(Array.from({ length: 51 }, () => f.send()));
+
+    expect(responses.every((response) => response.status === 202)).toBe(true);
+    const { events } = f.diagnostics();
+
+    expect(events).toHaveLength(50);
+    expect(events[0]).toMatchObject({ ...report, traceId: expect.stringMatching(/^[a-f0-9]{32}$/) });
+    expect(JSON.stringify(events)).not.toContain(marker);
+
+    f.advance(15 * 60_000);
+    expect(f.diagnostics().events).toHaveLength(0);
+  });
+
+  it('keeps an accepted report visible when no trace span can be created', async () => {
+    const f = await fixture();
+
+    vi.spyOn(f.runtime, 'frontendError').mockReturnValue(undefined);
+    const result = await f.send();
+
+    expect(result.status).toBe(202);
+    expect(f.diagnostics().events[0]).toMatchObject(report);
+    expect(f.diagnostics().events[0]).not.toHaveProperty('traceId');
+  });
+
   it('accepts only Angular route measurements and never exports navigation material', async () => {
-    const f = await fixture(true, true, true);
+    const f = await fixture(true, true);
     const body = {
       application: 'web-app',
       screen: 'home',
@@ -144,10 +177,10 @@ describe('private browser error intake', () => {
     });
     expect(JSON.stringify(span.attributes) + f.lines.join('')).not.toContain(marker);
   });
-  it('requires a separate performance opt-in and accepts only approved measurements from both applications', async () => {
-    const f = await fixture(true, true, true);
+  it('accepts only approved measurements from both applications', async () => {
+    const f = await fixture(true, true);
 
-    expect(f.config.performance).toBe(true);
+    expect(f.config).not.toHaveProperty('performance');
     for (const application of ['web-app', 'web-site']) {
       const response = await f.send(
         {
@@ -206,29 +239,27 @@ describe('private browser error intake', () => {
     },
     { application: 'web-site', screen: 'home', measurements: [] },
   ])('rejects uncontrolled performance data %j', async (body) => {
-    const f = await fixture(true, false, true);
+    const f = await fixture(true, false);
     const response = await f.send(body, {}, '/performance');
 
     expect(response.status).toBe(400);
     expect(f.spans.getFinishedSpans().some((span) => span.name === 'frontend.performance')).toBe(false);
   });
 
-  it('applies performance origin/permit and opt-in checks before accepting reports', async () => {
+  it('applies performance origin and permit checks before accepting reports', async () => {
     const f = await fixture();
     const body = { application: 'web-site', screen: 'home', measurements: [{ name: 'lcp', value: 1 }] };
 
     expect(f.config).not.toHaveProperty('performance');
-    const disabled = await f.send(body, {}, '/performance');
     const invalidPermit = await f.send(body, { 'x-browser-telemetry': marker }, '/performance');
     const invalidOrigin = await f.send(body, { origin: marker }, '/performance');
 
-    expect(disabled.status).toBe(400);
     expect(invalidPermit.status).toBe(403);
     expect(invalidOrigin.status).toBe(403);
   });
 
   it('bounds performance intake without spending the error/configuration budget', async () => {
-    const f = await fixture(true, false, true);
+    const f = await fixture(true, false);
     const body = { application: 'web-site', screen: 'home', measurements: [{ name: 'lcp', value: 120 }] };
 
     for (let count = 0; count < 120; count++) {
