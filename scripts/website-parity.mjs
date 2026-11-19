@@ -41,30 +41,37 @@ try {
           reducedMotion: 'reduce',
         });
 
-        await context.addInitScript((value) => {
-          const frame = window.requestAnimationFrame.bind(window);
-          const cancel = window.cancelAnimationFrame.bind(window);
-          const pending = new Set();
+        await context.addInitScript(
+          ({ value, compare }) => {
+            const frame = window.requestAnimationFrame.bind(window);
+            const cancel = window.cancelAnimationFrame.bind(window);
+            const pending = new Set();
 
-          window.requestAnimationFrame = (callback) => {
-            const id = frame((time) => {
-              pending.delete(id);
-              callback(time);
-            });
+            window.requestAnimationFrame = (callback) => {
+              const id = frame((time) => {
+                pending.delete(id);
+                callback(time);
+              });
 
-            pending.add(id);
+              pending.add(id);
 
-            return id;
-          };
-          window.__stopParityAnimations = () => {
-            for (const id of pending) {
-              cancel(id);
+              return id;
+            };
+            window.__stopParityAnimations = () => {
+              for (const id of pending) {
+                cancel(id);
+              }
+              pending.clear();
+            };
+            localStorage.setItem('theme', value);
+            localStorage.setItem('visomi-theme', value);
+
+            if (compare) {
+              localStorage.setItem('visomi:browser-consent:v1', 'reject');
             }
-            pending.clear();
-          };
-          localStorage.setItem('theme', value);
-          localStorage.setItem('visomi-theme', value);
-        }, theme);
+          },
+          { value: theme, compare: mode === 'compare' },
+        );
 
         for (const pageName of ['home', 'journey', 'projects', 'resume', 'contact']) {
           const path = `${locale === 'es' ? '/es' : ''}/${pageName === 'home' ? '' : `${pageName}/`}`;
@@ -92,7 +99,7 @@ try {
           if (mode === 'compare') {
             // VIS-34 intentionally replaces only the home-link artwork. Restore that link's
             // original contents for this migration comparison; branding has its own browser checks.
-            await page.evaluate(() => {
+            await page.evaluate((locale) => {
               const brand = document.querySelector('[data-brand-home]');
 
               if (!brand) {
@@ -102,7 +109,19 @@ try {
               brand.innerHTML =
                 '<div class="h-2 w-2 rounded-full bg-black dark:bg-white"></div>' +
                 '<span class="font-mono text-lg font-bold tracking-tight dark:text-white">VISOMI.DEV</span>';
-            });
+
+              // VIS-88 adds one footer link. Verify the new entry point before isolating the existing portfolio.
+              const links = document.querySelectorAll('footer a[href$="/privacy/"]');
+              const privacy = links[0];
+              const privacyUrl = locale === 'es' ? '/es/privacy/' : '/privacy/';
+              const consent = document.querySelector('[data-consent="notice"]');
+
+              if (links.length !== 1 || privacy?.getAttribute('href') !== privacyUrl || !consent?.hidden) {
+                throw new Error('portfolio_privacy_composition_invalid');
+              }
+
+              privacy.remove();
+            }, locale);
           }
 
           let contrastChanges;
@@ -176,7 +195,11 @@ try {
           } else {
             const awaitedResult2 = await readFile(join(baseline, `${name}.json`), 'utf8');
 
-            assert.deepEqual(metadata, JSON.parse(awaitedResult2), `${name}: content or metadata changed`);
+            const expected = JSON.parse(awaitedResult2);
+
+            // VIS-91 removes the duplicate screen-reader string, keeping the localized button label.
+            expected.text = expected.text.replace(' Toggle theme ', ' ');
+            assert.deepEqual(metadata, expected, `${name}: content or metadata changed`);
             const before = await sharp(join(baseline, `${name}.png`))
               .ensureAlpha()
               .raw()

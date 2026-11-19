@@ -61,5 +61,4 @@ export type BrowserErrorReport = {
 export type BrowserTelemetryConfig = {
   token: string;
   assets: { path: string; id: string }[];
-  performance?: boolean;
 };

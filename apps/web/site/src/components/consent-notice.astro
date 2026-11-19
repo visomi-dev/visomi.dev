@@ -1,0 +1,45 @@
+---
+import { browserPrivacyCopy } from '@visomi-stack/web-shared-observability/lib/privacy-copy';
+import { button } from '@visomi-stack/web-frontend-ui/lib/button';
+import { ui } from '../shared/ui';
+import { getPagePath, type Locale } from '../i18n/translations';
+
+type Props = { locale: Locale; settings?: boolean };
+const { locale, settings } = Astro.props;
+const copy = browserPrivacyCopy[locale];
+---
+
+<aside
+  role="region"
+  data-consent={settings ? 'settings' : 'notice'}
+  hidden
+  aria-label={copy.title}
+  class="my-4 grid gap-2 rounded-lg border border-zinc-300 p-3 text-sm dark:border-zinc-700 [hidden]:hidden"
+>
+  {!settings && <p>{copy.invitation}</p>}
+
+  <div class="grid w-fit grid-cols-2 gap-2">
+    <button type="button" class={button.classes({ variant: 'secondary', size: 'sm' })} data-choice="reject">
+      {copy.reject}
+    </button>
+
+    <button type="button" class={button.classes({ variant: 'secondary', size: 'sm' })} data-choice="accept">
+      {copy.accept}
+    </button>
+  </div>
+
+  {!settings && (
+    <a class:list={[ui.link, 'justify-self-start underline']} href={getPagePath(locale, 'privacy')}>
+      {copy.purpose}
+    </a>
+  )}
+
+  <p
+    role="status"
+    class="empty:hidden"
+    data-choice-status
+    data-on={copy.on}
+    data-off={copy.off}
+    data-blocked={copy.blocked}
+  ></p>
+</aside>

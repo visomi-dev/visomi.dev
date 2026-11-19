@@ -1,4 +1,12 @@
-<nav class="inline-flex items-center gap-1.5" aria-label="Language" i18n-aria-label="@@dashboardAccessLanguage">
+<app-browser-privacy [fallback]="languagesNav" />
+
+<nav
+  #languagesNav
+  tabindex="-1"
+  class="inline-flex items-center gap-1.5"
+  aria-label="Language"
+  i18n-aria-label="@@dashboardAccessLanguage"
+>
   <svg
     class="hidden size-4 shrink-0 sm:block"
     viewBox="0 0 24 24"

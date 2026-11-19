@@ -1,0 +1,20 @@
+@if (visible()) {
+  <section
+    [attr.aria-label]="copy.title"
+    class="mb-4 grid gap-2 rounded-lg border border-zinc-300 p-3 text-sm dark:border-zinc-700"
+  >
+    <p appUI uiSize="sm">{{ copy.invitation }}</p>
+
+    <div class="grid w-fit max-w-full grid-cols-2 gap-2">
+      <button appUI type="button" variant="secondary" size="sm" (click)="choose(false)">{{ copy.reject }}</button>
+
+      <button appUI type="button" variant="secondary" size="sm" [disabled]="blocked()" (click)="choose(true)">
+        {{ copy.accept }}
+      </button>
+    </div>
+
+    <a appUI class="justify-self-start" [href]="copy.privacyUrl">{{ copy.purpose }}</a>
+
+    <p role="status" class="empty:hidden">{{ feedback() }}</p>
+  </section>
+}

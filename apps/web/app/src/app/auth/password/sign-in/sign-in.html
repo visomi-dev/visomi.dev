@@ -18,11 +18,13 @@
     <app-preferences />
   </header>
 
+  <app-consent-notice class="mx-auto block w-full max-w-7xl px-5 sm:px-8" />
+
   <main id="auth-main" class="flex flex-1 items-center justify-center px-5 py-8 sm:py-14">
     <section appUI="card" layout="plain" padding="lg" class="w-full max-w-md space-y-6 shadow-sm">
       <header class="space-y-3">
         @if (challenge()) {
-          <h1 appUI appNavigationHeading i18n="@@signInVerifyTitle">Confirm your sign-in</h1>
+          <h1 appUI appNavigationHeading i18n="@@signInVerifyTitle">Enter your verification code</h1>
 
           @if (factor() === 'email') {
             <p appUI uiSize="sm" tone="muted" i18n="@@signInVerifyEmail">Enter the six-digit code from your email.</p>
@@ -34,7 +36,7 @@
         } @else {
           <h1 appUI appNavigationHeading i18n="@@signInHeroTitle">Owner sign-in</h1>
 
-          <p appUI uiSize="sm" tone="muted" i18n="@@dashboardAccessDenied">Owner access required.</p>
+          <p appUI uiSize="sm" tone="muted" i18n="@@dashboardAccessDenied">This area is for the site owner.</p>
         }
       </header>
 
@@ -68,7 +70,7 @@
             [attr.aria-busy]="busy()"
             i18n="@@dashboardAccessVerify"
           >
-            Verify access
+            Verify code
           </button>
         </form>
 
@@ -137,18 +139,18 @@
             [attr.aria-busy]="busy()"
             i18n="@@dashboardAccessSignIn"
           >
-            Access dashboard
+            Continue
           </button>
         </form>
       }
 
       @if (busy()) {
-        <p appUI uiSize="sm" tone="muted" role="status" i18n="@@dashboardAccessLoading">Verifying access…</p>
+        <p appUI uiSize="sm" tone="muted" role="status" i18n="@@dashboardAccessLoading">Checking access…</p>
       }
     </section>
   </main>
 
   <footer class="px-5 pb-6 text-center">
-    <p appUI uiSize="xs" tone="muted" i18n="@@signInFooterLabel">Private administration · VISOMI.DEV</p>
+    <app-privacy-link />
   </footer>
 </div>

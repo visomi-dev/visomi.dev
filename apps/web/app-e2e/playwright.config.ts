@@ -4,17 +4,15 @@ import { workspaceRoot } from '@nx/devkit';
 
 const selectedBrowser = process.env['PLAYWRIGHT_BROWSERS'];
 const allBrowsers = process.env['PLAYWRIGHT_BROWSERS'] === 'all';
-const fixture = (port: number, visits = false) => ({
+const fixture = (port: number, collector = true) => ({
   command: 'exec node --import tsx tools/testing/browser-server.ts',
   url: `https://127.0.0.1:${port}/api/ready`,
   env: {
     VISOMI_E2E_PORT: String(port),
     VISOMI_E2E_HTTPS: 'true',
     TSX_TSCONFIG_PATH: 'tsconfig.base.json',
-    VISOMI_E2E_VISITS: String(visits),
+    VISOMI_E2E_PRIVATE_COLLECTOR: String(collector),
     VISOMI_E2E_PRIVATE_METRICS: 'true',
-    VISOMI_E2E_BROWSER_TELEMETRY: String(!visits),
-    VISOMI_E2E_BROWSER_PERFORMANCE: String(!visits),
   },
   ignoreHTTPSErrors: true,
   reuseExistingServer: false,
@@ -58,7 +56,7 @@ export default defineConfig({
   webServer: [
     ...engines.flatMap((engine) => [fixture(engine.port), fixture(engine.port + 20), fixture(engine.port + 30)]),
     fixture(8194),
-    fixture(8195, true),
+    fixture(8195, false),
   ],
   projects: engines.flatMap((engine) => [
     {

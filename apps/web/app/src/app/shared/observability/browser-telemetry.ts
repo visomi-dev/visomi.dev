@@ -13,7 +13,10 @@ export class BrowserTelemetry {
   private readonly reporter = inject(BROWSER_ERROR_REPORTER, { optional: true });
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly cleanup = this.destroyRef.onDestroy(() => this.reporter?.stop());
+  private readonly cleanup = this.destroyRef.onDestroy(() => {
+    this.reporter?.stop();
+    this.reporter?.consent.stop();
+  });
 
   report(code: BrowserErrorCode, error?: unknown, correlation?: string): void {
     void this.reporter?.report(code, error, undefined, correlation);

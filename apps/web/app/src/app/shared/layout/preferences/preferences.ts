@@ -4,10 +4,11 @@ import { Router } from '@angular/router';
 import { languageSwitcher } from '@visomi-stack/web-frontend-ui/lib/language-switcher';
 
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
+import { BrowserPrivacy } from '../../observability/browser-privacy';
 
 @Component({
   selector: 'app-preferences',
-  imports: [ThemeSwitcher],
+  imports: [BrowserPrivacy, ThemeSwitcher],
   templateUrl: './preferences.html',
   styleUrl: './preferences.css',
   host: { class: /* tw */ 'flex flex-wrap items-center gap-2 sm:gap-4' },

@@ -9,7 +9,7 @@ const IMAGE_VERSION = '2026-04-10';
 
 const appendVersion = (path: string) => `${path}?v=${IMAGE_VERSION.replace(/\//g, '.')}`;
 
-const seoImagesByPage: Record<PageId, Record<Locale, SeoImage>> = {
+const seoImagesByPage: Record<Exclude<PageId, 'privacy'>, Record<Locale, SeoImage>> = {
   contact: {
     en: {
       alt: 'Contact page preview for VISOMI.DEV',
@@ -62,6 +62,6 @@ const seoImagesByPage: Record<PageId, Record<Locale, SeoImage>> = {
   },
 };
 
-const getSeoImage = (page: PageId, locale: Locale) => seoImagesByPage[page][locale];
+const getSeoImage = (page: PageId, locale: Locale) => seoImagesByPage[page === 'privacy' ? 'home' : page][locale];
 
 export { getSeoImage };

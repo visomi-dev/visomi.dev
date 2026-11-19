@@ -1,6 +1,7 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
 import type { Pool } from 'pg';
 
+import { otlpReceiver } from '@visomi-stack/web-backend-shared/lib/observability/lib/otlp';
 import { currentObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
 import {
   createPrivateMetrics,
@@ -50,7 +51,7 @@ export function createApp(options: AppOptions = {}) {
     createPrivateMetrics({
       scope: 'web-api',
       enabled: process.env['VISOMI_PRIVATE_METRICS'] === 'true',
-      traceExportEnabled: process.env['VISOMI_OTLP_TRACING'] === 'true',
+      traceExportEnabled: Boolean(otlpReceiver(process.env)),
     });
 
   app.disable('x-powered-by');

@@ -13,7 +13,7 @@ export const initNavbar = () => {
 
     button.dataset['navbarBound'] = 'true';
     button.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
+      button.setAttribute('aria-expanded', String(!menu.classList.toggle('hidden')));
     });
   };
 

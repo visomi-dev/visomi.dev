@@ -6,6 +6,7 @@ import faviconUrl from '../../../../../assets/brand/favicon.svg?url';
 import type { Locale, PageId } from '../i18n/translations';
 import { getSeoImage } from '../content/seo-images';
 import { getPagePath, locales } from '../i18n/translations';
+import ConsentNotice from '../components/consent-notice.astro';
 import Background from '../components/background.astro';
 import Footer from '../components/footer.astro';
 import Navbar from '../components/navbar.astro';
@@ -117,10 +118,6 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
     </script>
 
     <ClientRouter />
-
-    <script>
-      import '../visit-analytics';
-    </script>
   </head>
 
   <body class="min-h-full">
@@ -129,6 +126,15 @@ const prefetchTargets = ['/', '/journey/', '/projects/', '/resume/', '/contact/'
     <Background />
 
     <Navbar locale={locale} currentPage={page} />
+
+    {page !== 'privacy' && (
+      <div
+        class="relative z-10 mx-auto max-w-7xl px-6 pt-20 empty:hidden lg:px-12 has-[aside[hidden]]:hidden"
+        data-print-hidden
+      >
+        <ConsentNotice locale={locale} />
+      </div>
+    )}
 
     <ContentElement class="relative z-10 min-h-screen">
       <slot />

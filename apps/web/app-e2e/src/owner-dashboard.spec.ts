@@ -58,7 +58,7 @@ test('anonymous users and authenticated non-owners cannot open requests', async 
 
   await expect(page).toHaveURL(/\/app\/en\/admin\/auth\/sign-in$/);
 
-  await expect(page.getByText('Owner access required.')).toBeVisible();
+  await expect(page.getByText('This area is for the site owner.', { exact: true })).toBeVisible();
 
   const accessibility = await new AxeBuilder({ page }).analyze();
 
@@ -147,7 +147,7 @@ test('private access completes the stack password and email second-factor flow',
 
   await page.getByLabel('Password', { exact: true }).fill('Synthetic password 42!');
 
-  const submit = page.getByRole('button', { name: 'Access dashboard' });
+  const submit = page.getByRole('button', { name: 'Continue' });
 
   await page.route(
     '**/api/auth/password/sign-in',
@@ -286,7 +286,7 @@ test('private access completes the stack password and email second-factor flow',
 
   await verification.fill(code);
 
-  await page.getByRole('button', { name: 'Verify access' }).click();
+  await page.getByRole('button', { name: 'Verify code' }).click();
 
   await expect(page).toHaveURL(/\/app\/en\/admin\/dashboard$/);
 

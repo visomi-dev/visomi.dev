@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { browserErrorKind, browserLocation, browserScreen, createBrowserReporter } from './browser';
+import { browserLocation, createBrowserReporter } from './browser';
+import { createBrowserConsent } from './consent';
+import { browserErrorKind, browserScreen } from './error-description';
 
 const marker = 'SYNTHETIC_PRIVATE_BROWSER_DATA_71d3';
 const id = 'a'.repeat(64);
@@ -12,8 +14,18 @@ function fixture(configuration: unknown = config) {
   const transport = vi.fn<typeof fetch>().mockResolvedValue(new Response(undefined, { status: 202 }));
 
   transport.mockResolvedValueOnce(Response.json(configuration));
-  const browser = Object.assign(host, { fetch: transport, location: new URL('https://frontend.example.test/en/ui/') });
-  const reporter = createBrowserReporter('web-site', browser as unknown as Window);
+  const browser = Object.assign(host, {
+    fetch: transport,
+    location: new URL('https://frontend.example.test/en/ui/'),
+    navigator: {},
+    localStorage: { getItem: () => 'accept:1-2-3-4' },
+  });
+  const reporter = createBrowserReporter(
+    'web-site',
+    browser as unknown as Window,
+    createBrowserConsent(browser as unknown as Window),
+    { documentPermit: null },
+  );
 
   return { browser, transport, reporter };
 }
@@ -96,8 +108,6 @@ describe('browser error capture policy', () => {
   it('captures global errors and rejections without recording rejection objects or private data', async () => {
     const f = fixture();
 
-    await f.reporter.ready;
-
     f.browser.dispatchEvent(
       Object.assign(new Event('error'), { error: new TypeError(marker), filename: marker, lineno: 1, colno: 1 }),
     );
@@ -150,10 +160,45 @@ describe('browser error capture policy', () => {
     f.reporter.stop();
   });
 
+  it('does not release an automatic error after receiving a replacement grant', async () => {
+    const transport = vi.fn<typeof fetch>();
+    let resolveConfiguration!: (response: Response) => void;
+
+    transport.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveConfiguration = resolve;
+        }),
+    );
+    let value = 'accept:1-2-3-4';
+    const browser = Object.assign(new EventTarget(), {
+      fetch: transport,
+      location: new URL('https://frontend.example.test/'),
+      navigator: {},
+      localStorage: { getItem: () => value },
+    }) as unknown as Window;
+    const consent = createBrowserConsent(browser);
+    const reporter = createBrowserReporter('web-site', browser, consent, { documentPermit: null });
+    const automatic = reporter.report('unhandled_exception', new TypeError(marker));
+
+    value = 'reject';
+    value = 'accept:5-6-7-8';
+    resolveConfiguration(Response.json(config));
+
+    await automatic;
+
+    expect(transport).toHaveBeenCalledExactlyOnceWith('/telemetry/config', expect.anything());
+    expect(reporter.pending()).toEqual([]);
+    reporter.stop();
+    consent.stop();
+  });
+
   it('lets frameworks own global listeners and shares in-flight reports of the same error', async () => {
     const browser = Object.assign(new EventTarget(), {
       fetch: vi.fn<typeof fetch>().mockResolvedValue(new Response(undefined, { status: 202 })),
       location: new URL('https://frontend.example.test/app/en/'),
+      navigator: {},
+      localStorage: { getItem: () => 'accept:1-2-3-4' },
     });
     let resolveConfiguration!: (response: Response) => void;
 
@@ -163,9 +208,13 @@ describe('browser error capture policy', () => {
           resolveConfiguration = resolve;
         }),
     );
+    const consent = createBrowserConsent(browser as unknown as Window);
     const add = vi.spyOn(browser, 'addEventListener');
     const remove = vi.spyOn(browser, 'removeEventListener');
-    const reporter = createBrowserReporter('web-app', browser as unknown as Window, { globalErrors: false });
+    const reporter = createBrowserReporter('web-app', browser as unknown as Window, consent, {
+      globalErrors: false,
+      documentPermit: null,
+    });
     const error = new TypeError(marker);
     const frameworkReport = reporter.report('unhandled_exception', error);
     const startupReport = reporter.report('startup_failed', error);
@@ -207,8 +256,6 @@ describe('browser error capture policy', () => {
   it('never lets transport errors create reporting loops', async () => {
     const f = fixture();
 
-    await f.reporter.ready;
-
     f.transport.mockRejectedValue(new Error(marker));
 
     await expect(f.reporter.report('startup_failed', new Error(marker))).resolves.toBeUndefined();
@@ -220,8 +267,7 @@ describe('browser error capture policy', () => {
   it('observes only explicitly requested same-origin API failures and preserves responses and exceptions', async () => {
     const f = fixture();
 
-    await f.reporter.ready;
-
+    f.transport.mockReset().mockResolvedValue(new Response(undefined, { status: 202 }));
     f.transport.mockResolvedValueOnce(
       new Response(undefined, {
         status: 503,
@@ -230,6 +276,7 @@ describe('browser error capture policy', () => {
         },
       }),
     );
+    f.transport.mockResolvedValueOnce(Response.json(config));
     const response = await f.reporter.fetch('/api/session');
 
     expect(response.status).toBe(503);

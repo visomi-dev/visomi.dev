@@ -24,6 +24,7 @@ import { browserAssets } from '@visomi-stack/web-backend-shared/lib/observabilit
 import { createVisitAnalytics } from '@visomi-stack/web-backend-shared/lib/analytics/visits';
 import { createBrowserTelemetry } from '@visomi-stack/web-backend-shared/lib/observability/browser/intake';
 import { initializeObservability } from '@visomi-stack/web-backend-shared/lib/observability/lib/observability';
+import { siteVisitPages } from '@visomi-stack/web-shared-observability/lib/visits';
 
 import packageJson from '../package.json' with { type: 'json' };
 
@@ -141,6 +142,13 @@ async function bootstrap() {
     throw new Error('gateway_configuration_invalid');
   }
 
+  const publicUrl = new URL(process.env.AUTH_ORIGIN || 'https://visomi.dev');
+  const origin = publicUrl.origin;
+
+  if (!['http:', 'https:'].includes(publicUrl.protocol) || publicUrl.href !== origin + '/') {
+    throw new Error('gateway_configuration_invalid');
+  }
+
   const entry = process.env.API_APP_PATH
     ? pathToFileURL(resolve(process.env.API_APP_PATH))
     : new URL('../api/app.js', import.meta.url);
@@ -201,23 +209,20 @@ async function bootstrap() {
     return;
   }
 
-  if (process.env.VISOMI_BROWSER_TELEMETRY === 'true') {
-    const [applicationAssets, siteAssets] = await Promise.all([
-      browserAssets(angular.clientDirectory, '/app'),
-      site ? browserAssets(site.clientDirectory) : Promise.resolve(undefined),
-    ]);
+  const [applicationAssets, siteAssets] = await Promise.all([
+    browserAssets(angular.clientDirectory, '/app'),
+    site ? browserAssets(site.clientDirectory) : Promise.resolve(undefined),
+  ]);
 
-    if (stopping) {
-      return;
-    }
-
-    browserTelemetry = createBrowserTelemetry({
-      observability,
-      assets: { 'web-app': applicationAssets, ...(siteAssets ? { 'web-site': siteAssets } : {}) },
-      origin: process.env.BROWSER_TELEMETRY_ORIGIN ?? 'https://visomi.dev',
-      performance: process.env.VISOMI_BROWSER_PERFORMANCE === 'true',
-    });
+  if (stopping) {
+    return;
   }
+
+  browserTelemetry = createBrowserTelemetry({
+    observability,
+    assets: { 'web-app': applicationAssets, ...(siteAssets ? { 'web-site': siteAssets } : {}) },
+    origin,
+  });
 
   if (process.env['DISABLE_WORKER'] !== 'true') {
     socialImages = createSocialImageRuntime();
@@ -236,18 +241,16 @@ async function bootstrap() {
     });
   }
 
-  if (process.env['VISOMI_VISIT_ANALYTICS'] === 'true') {
-    visits = createVisitAnalytics({
-      enabled: true,
-      pool: database?.pool,
-      site: 'visomi-dev',
-      origin: process.env['BROWSER_TELEMETRY_ORIGIN'] ?? 'https://visomi.dev',
-      pages: ['home', 'journey', 'projects', 'resume', 'contact'],
-    });
-  }
+  visits = createVisitAnalytics({
+    enabled: true,
+    pool: database?.pool,
+    site: 'visomi-dev',
+    origin,
+    pages: siteVisitPages,
+  });
 
   const application = createGatewayApp({
-    ...(visits ? { visits } : {}),
+    visits,
     socialImages: socialImages?.router,
     api,
     pool: database?.pool,
@@ -255,7 +258,7 @@ async function bootstrap() {
     application: angular,
     auth,
     observability,
-    ...(browserTelemetry ? { browserTelemetry } : {}),
+    browserTelemetry,
     ...proxyConfiguration(process.env.AUTH_TRUST_PROXY),
   });
 

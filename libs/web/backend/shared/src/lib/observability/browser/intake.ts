@@ -71,7 +71,6 @@ export function createBrowserTelemetry(options: {
   observability: Observability;
   assets: Partial<Record<BrowserErrorReport['application'], BrowserAssets>>;
   origin: string;
-  performance?: boolean;
   now?: () => number;
 }): { context: RequestHandler; router: Router; diagnostics: () => BrowserDiagnostics; close: () => void } {
   const origin = new URL(options.origin).origin;
@@ -164,7 +163,6 @@ export function createBrowserTelemetry(options: {
       assets: Object.values(options.assets).flatMap((assets) =>
         [...assets].flatMap(([id, asset]) => asset.paths.map((path) => ({ id, path }))),
       ),
-      ...(options.performance ? { performance: true } : {}),
     }),
   );
   router.post(
@@ -187,7 +185,7 @@ export function createBrowserTelemetry(options: {
       if (request.path === '/performance') {
         const parsed = performanceSchema.safeParse(request.body);
 
-        if (!options.performance || !parsed.success || !options.assets[parsed.data.application]) {
+        if (!parsed.success || !options.assets[parsed.data.application]) {
           response.status(400).json({ error: 'telemetry_invalid' });
 
           return;

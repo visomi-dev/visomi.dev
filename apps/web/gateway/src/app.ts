@@ -8,6 +8,7 @@ import express, {
   type RequestHandler,
 } from 'express';
 
+import { otlpReceiver } from '@visomi-stack/web-backend-shared/lib/observability/lib/otlp';
 import { HttpError } from '@visomi-stack/web-backend-shared/lib/http/http-error';
 import type { createBrowserTelemetry } from '@visomi-stack/web-backend-shared/lib/observability/browser/intake';
 import { httpObservability } from '@visomi-stack/web-backend-shared/lib/observability/middleware/http';
@@ -48,7 +49,7 @@ export function createGatewayApp(options: {
     createPrivateMetrics({
       scope: 'web-gateway',
       enabled: process.env['VISOMI_PRIVATE_METRICS'] === 'true',
-      traceExportEnabled: process.env['VISOMI_OTLP_TRACING'] === 'true',
+      traceExportEnabled: Boolean(otlpReceiver(process.env)),
     });
 
   app.disable('x-powered-by');

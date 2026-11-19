@@ -1,6 +1,9 @@
 ---
 import '../../../styles/global.css';
 
+import { browserPrivacyCopy } from '@visomi-stack/web-shared-observability/lib/privacy-copy';
+
+import { getPagePath } from '../../../i18n/translations';
 import { ui } from '../../../shared/ui';
 
 export const prerender = true;
@@ -58,6 +61,12 @@ const back = locale === 'es' ? 'Volver al sitio' : 'Return to website';
       >
         {back}
       </a>
+
+      <footer>
+        <a class:list={[ui.link, 'inline-flex min-h-11 items-center underline']} href={getPagePath(locale, 'privacy')}>
+          {browserPrivacyCopy[locale].privacy}
+        </a>
+      </footer>
     </main>
   </body>
 </html>

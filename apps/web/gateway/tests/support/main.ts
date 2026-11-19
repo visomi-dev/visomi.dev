@@ -131,9 +131,6 @@ beforeEach(() => {
   vi.stubEnv('PORT', '3456');
   vi.stubEnv('NODE_ENV', 'test');
   vi.stubEnv('NX_READY_SIGNAL_SOCKET', '');
-  vi.stubEnv('VISOMI_BROWSER_TELEMETRY', '');
-  vi.stubEnv('VISOMI_BROWSER_PERFORMANCE', '');
-  vi.stubEnv('BROWSER_TELEMETRY_ORIGIN', undefined);
   boundary.browserAssets.mockResolvedValue(new Map());
   boundary.browserTelemetry.mockReturnValue({
     context: 'synthetic-context',

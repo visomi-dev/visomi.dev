@@ -5,6 +5,7 @@ import { setImmediate } from 'node:timers/promises';
 
 import { expect, it, vi } from 'vitest';
 
+import { createBrowserConsent } from './consent';
 import { trackVisits } from './visit-browser';
 
 const configuration = '/telemetry/visits/config';
@@ -25,7 +26,7 @@ it('sends only page and locale without credentials or a referrer', async () => {
   expect(transport).toHaveBeenNthCalledWith(1, configuration, expect.objectContaining(privacy));
   expect(transport).toHaveBeenNthCalledWith(
     2,
-    intake,
+    'https://frontend.example.test' + intake,
     expect.objectContaining({ ...privacy, method: 'POST', keepalive: true, body: '{"page":"home","locale":"en"}' }),
   );
 });
@@ -59,13 +60,13 @@ it.each([configuration, intake])('rejects a redirect from %s without reaching it
 
   const origin = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
   const transport = vi.fn((path: string | URL | Request, init?: RequestInit) =>
-    fetch(`${origin}${String(path)}`, init),
+    fetch(new URL(String(path), origin), init),
   );
   const expectedRequests =
     endpoint === configuration ? [`GET ${configuration}`] : [`GET ${configuration}`, `POST ${intake}`];
 
   try {
-    observeVisit(transport);
+    observeVisit(transport, origin);
 
     await vi.waitFor(() => expect(transport).toHaveBeenCalledTimes(expectedRequests.length));
 
@@ -79,13 +80,15 @@ it.each([configuration, intake])('rejects a redirect from %s without reaching it
   }
 });
 
-function observeVisit(transport: Window['fetch']): void {
+function observeVisit(transport: Window['fetch'], origin = 'https://frontend.example.test'): void {
   const browser = {
     fetch: transport,
     document: Object.assign(new EventTarget(), { visibilityState: 'visible', readyState: 'complete' }),
-    location: new URL('https://frontend.example.test/home'),
+    location: new URL('/home', origin),
     navigator: {},
+    addEventListener: () => undefined,
+    localStorage: { getItem: () => 'accept:1-2-3-4' },
   } as unknown as Window;
 
-  trackVisits(browser, () => page);
+  trackVisits(browser, createBrowserConsent(browser), () => page);
 }

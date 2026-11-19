@@ -18,7 +18,7 @@ function fixture(enabled = true, configured = true) {
   const slowEntered = new Promise<void>((resolve) => {
     enterSlow = resolve;
   });
-  const reporter = { performanceReady: Promise.resolve(enabled), routeTransition };
+  const reporter = { performanceReady: Promise.resolve(enabled), performanceAllowed: () => enabled, routeTransition };
 
   TestBed.configureTestingModule({
     providers: [

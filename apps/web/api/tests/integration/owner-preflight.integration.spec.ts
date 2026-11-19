@@ -36,7 +36,6 @@ function probe(changes: NodeJS.ProcessEnv = {}) {
       SMTP_USER: '',
       SMTP_PASSWORD: '',
       VISOMI_PRIVATE_METRICS: 'false',
-      VISOMI_OTLP_TRACING: 'false',
       ...changes,
     },
   });

@@ -44,17 +44,13 @@ test('collector credentials are preserved and gateway references them without ex
     literal('http://${{jaeger.RAILWAY_PRIVATE_DOMAIN}}:4318'),
   );
   assert.deepEqual(gateway.variables.OTEL_EXPORTER_OTLP_PROTOCOL, literal('http/protobuf'));
-  assert.deepEqual(gateway.variables.VISOMI_OTLP_TRACING, literal('true'));
 });
 
 test('native tracing and unrelated capture remain off; existing dependencies stay preserved', () => {
   for (const service of [gateway, jaeger]) {
     assert.deepEqual(service.tracing, { enabled: false, autoInstrumentation: false });
   }
-  for (const flag of ['VISOMI_PRIVATE_METRICS', 'VISOMI_BROWSER_TELEMETRY']) {
-    assert.deepEqual(gateway.variables[flag], { type: 'preserve' });
-  }
-  assert.deepEqual(gateway.variables.VISOMI_BROWSER_PERFORMANCE, literal('false'));
+  assert.deepEqual(gateway.variables.VISOMI_PRIVATE_METRICS, { type: 'preserve' });
   for (const flag of ['OTEL_METRICS_EXPORTER', 'OTEL_LOGS_EXPORTER']) {
     assert.deepEqual(gateway.variables[flag], literal('none'));
   }

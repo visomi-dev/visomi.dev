@@ -3,9 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { boundary, start } from '../tests/support/main';
 
 describe('gateway executable ownership', () => {
-  it.each([undefined, 'https://synthetic.example.test'])('owns opt-in visit collection for %s', async (origin) => {
-    vi.stubEnv('VISOMI_VISIT_ANALYTICS', 'true');
-    vi.stubEnv('BROWSER_TELEMETRY_ORIGIN', origin);
+  it.each([undefined, 'https://synthetic.example.test'])('owns visit intake for %s', async (origin) => {
+    vi.stubEnv('AUTH_ORIGIN', origin);
 
     await start();
 
@@ -134,40 +133,34 @@ describe('gateway executable ownership', () => {
     expect(boundary.server.listen).not.toHaveBeenCalled();
   });
 
-  it.each([undefined, 'https://frontend.example.test'])(
-    'owns opt-in browser telemetry using origin %s',
-    async (origin) => {
-      vi.stubEnv('VISOMI_BROWSER_TELEMETRY', 'true');
-      vi.stubEnv('BROWSER_TELEMETRY_ORIGIN', origin);
+  it.each([undefined, 'https://frontend.example.test'])('owns browser intake using origin %s', async (origin) => {
+    vi.stubEnv('AUTH_ORIGIN', origin);
 
-      await start();
+    await start();
 
-      expect(boundary.browserAssets).toHaveBeenCalledWith(boundary.site.clientDirectory);
-      expect(boundary.browserTelemetry).toHaveBeenCalledWith({
-        observability: boundary.observability,
-        assets: { 'web-site': new Map(), 'web-app': new Map() },
-        origin: origin ?? 'https://visomi.dev',
-        performance: false,
-      });
-      expect(boundary.createGatewayApp).toHaveBeenCalledWith(
-        expect.objectContaining({
-          browserTelemetry: {
-            context: 'synthetic-context',
-            router: 'synthetic-router',
-            close: boundary.closeBrowserTelemetry,
-          },
-        }),
-      );
-      boundary.signals.get('SIGTERM')!();
+    expect(boundary.browserAssets).toHaveBeenCalledWith(boundary.site.clientDirectory);
+    expect(boundary.browserTelemetry).toHaveBeenCalledWith({
+      observability: boundary.observability,
+      assets: { 'web-site': new Map(), 'web-app': new Map() },
+      origin: origin ?? 'https://visomi.dev',
+    });
+    expect(boundary.createGatewayApp).toHaveBeenCalledWith(
+      expect.objectContaining({
+        browserTelemetry: {
+          context: 'synthetic-context',
+          router: 'synthetic-router',
+          close: boundary.closeBrowserTelemetry,
+        },
+      }),
+    );
+    boundary.signals.get('SIGTERM')!();
 
-      await vi.advanceTimersByTimeAsync(0);
+    await vi.advanceTimersByTimeAsync(0);
 
-      expect(boundary.closeBrowserTelemetry).toHaveBeenCalledOnce();
-    },
-  );
+    expect(boundary.closeBrowserTelemetry).toHaveBeenCalledOnce();
+  });
 
   it('still captures Angular errors when the website is unavailable', async () => {
-    vi.stubEnv('VISOMI_BROWSER_TELEMETRY', 'true');
     boundary.loadSite.mockResolvedValue(undefined);
 
     await start();
@@ -176,18 +169,9 @@ describe('gateway executable ownership', () => {
       expect.objectContaining({ assets: { 'web-app': new Map() } }),
     );
   });
-  it('forwards the explicit browser performance opt-in to the shared intake', async () => {
-    vi.stubEnv('VISOMI_BROWSER_TELEMETRY', 'true');
-    vi.stubEnv('VISOMI_BROWSER_PERFORMANCE', 'true');
-
-    await start();
-
-    expect(boundary.browserTelemetry).toHaveBeenCalledWith(expect.objectContaining({ performance: true }));
-  });
   it('does not create intake resources after shutdown while the asset allowlist is loading', async () => {
     let loaded!: (assets: Map<string, unknown>) => void;
 
-    vi.stubEnv('VISOMI_BROWSER_TELEMETRY', 'true');
     boundary.browserAssets.mockReturnValue(
       new Promise((resolve) => {
         loaded = resolve;
@@ -287,6 +271,12 @@ describe('gateway executable ownership', () => {
       application: boundary.application,
       auth: undefined,
       observability: boundary.observability,
+      visits: { router: expect.any(Function), summary: expect.any(Function), close: expect.any(Function) },
+      browserTelemetry: {
+        context: 'synthetic-context',
+        router: 'synthetic-router',
+        close: boundary.closeBrowserTelemetry,
+      },
     });
     expect(boundary.server.on).toHaveBeenCalledWith('request', 'synthetic-app');
     expect(boundary.server.listen).toHaveBeenCalledWith(3456, '127.0.0.1', expect.any(Function));
@@ -352,6 +342,18 @@ describe('gateway executable ownership', () => {
     expect(boundary.observability.event).toHaveBeenCalledExactlyOnceWith('runtime.failed', 'startup_failed');
     expect(process.exitCode).toBe(1);
   });
+
+  it.each(['https://visomi.dev/admin', 'file:///tmp/test', 'https://visomi.dev/?q=test'])(
+    'rejects %s as a canonical origin',
+    async (origin) => {
+      vi.stubEnv('AUTH_ORIGIN', origin);
+
+      await start();
+
+      expect(boundary.server.listen).not.toHaveBeenCalled();
+      expect(process.exitCode).toBe(1);
+    },
+  );
 
   it('rejects invalid networking configuration before importing the API', async () => {
     vi.stubEnv('PORT', 'invalid');

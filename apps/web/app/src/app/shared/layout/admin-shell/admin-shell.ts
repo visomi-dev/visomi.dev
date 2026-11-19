@@ -14,10 +14,14 @@ import { AppShell } from '../app-shell/app-shell';
 import { Preferences } from '../preferences/preferences';
 import { Sidebar } from '../sidebar/sidebar';
 import { Topbar } from '../topbar/topbar';
+import { ConsentNotice } from '../../observability/consent-notice';
+import { PrivacyLink } from '../../observability/privacy-link';
 
 @Component({
   selector: 'app-admin-shell',
   imports: [
+    ConsentNotice,
+    PrivacyLink,
     NgOptimizedImage,
     RouterLink,
     RouterLinkActive,

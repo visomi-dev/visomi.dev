@@ -5,7 +5,7 @@ export const defaultLocale = 'en';
 export const locales = ['en', 'es'] as const;
 
 export type Locale = (typeof locales)[number];
-export type PageId = 'home' | 'journey' | 'projects' | 'resume' | 'contact';
+export type PageId = 'home' | 'journey' | 'projects' | 'resume' | 'contact' | 'privacy';
 
 const translations = {
   en,
@@ -20,6 +20,7 @@ const pageSegments: Record<PageId, string> = {
   projects: 'projects',
   resume: 'resume',
   contact: 'contact',
+  privacy: 'privacy',
 };
 const basePath = import.meta.env.BASE_URL;
 

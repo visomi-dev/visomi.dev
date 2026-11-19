@@ -17,7 +17,9 @@ URL, cookie or identifier. The intake honors Global Privacy Control and Do
 Not Track. Origin checking, a small strict input, and a global rate limit
 bound the write path without storing any client identifier.
 
-VISOMI_VISIT_ANALYTICS is a separate runtime opt-in and defaults off. The
+The gateway offers intake when PostgreSQL is available. The observer requires a
+current browser grant before configuration or submission. The first eligible
+observation follows an explicit choice, with no backfill of previously opened pages. The
 report compares the selected 7- or 30-day UTC window, including today,
 with the preceding window of the same length. Today is partial. The report
 includes page and language totals and reported dates. Empty, disabled and

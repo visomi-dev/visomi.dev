@@ -5,6 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { firstValueFrom, throwError } from 'rxjs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { createBrowserConsent } from '@visomi-stack/web-shared-observability/lib/consent';
 import { createBrowserReporter } from '@visomi-stack/web-shared-observability/lib/browser';
 
 import { browserErrorsInterceptor } from './browser-errors-interceptor';
@@ -24,9 +25,16 @@ function fixture(hasWindow = true) {
   const browser = Object.assign(new EventTarget(), {
     fetch,
     location: new URL('https://frontend.example.test/app/en/'),
+    navigator: {},
+    localStorage: { getItem: () => 'accept:1-2-3-4' },
   });
   const reporter = hasWindow
-    ? createBrowserReporter('web-app', browser as unknown as Window, { globalErrors: false })
+    ? createBrowserReporter(
+        'web-app',
+        browser as unknown as Window,
+        createBrowserConsent(browser as unknown as Window),
+        { globalErrors: false, documentPermit: null },
+      )
     : undefined;
 
   TestBed.configureTestingModule({

@@ -1,6 +1,8 @@
 ---
+import { browserPrivacyCopy } from '@visomi-stack/web-shared-observability/lib/privacy-copy';
+
 import { ui } from '../shared/ui';
-import { createTranslator, type Locale } from '../i18n/translations';
+import { createTranslator, getPagePath, type Locale } from '../i18n/translations';
 
 type Props = {
   locale: Locale;
@@ -17,6 +19,13 @@ const t = createTranslator(locale);
   <div class="text-muted-light dark:text-muted-dark text-sm">{t('homeFooterCopyright')}</div>
 
   <div class="flex space-x-6">
+    <a
+      class:list={[ui.link, 'text-muted-light self-center text-sm underline dark:text-muted-dark']}
+      href={getPagePath(locale, 'privacy')}
+    >
+      {browserPrivacyCopy[locale].privacy}
+    </a>
+
     {/* Exempt only the public email link, including its mailto target. */}
     <!--email_off-->
     <a

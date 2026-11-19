@@ -35,8 +35,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessDenied" datatype="html">
-        <source>Owner access required.</source>
-        <target>Se requiere acceso del propietario.</target>
+        <source>This area is for the site owner.</source>
+        <target>Esta área es para la persona propietaria del sitio.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
           <context context-type="linenumber">9,11</context>
@@ -59,8 +59,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessVerify" datatype="html">
-        <source>Verify access</source>
-        <target>Verificar acceso</target>
+        <source>Verify code</source>
+        <target>Verificar código</target>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
           <context context-type="linenumber">19,21</context>
@@ -83,16 +83,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessSignIn" datatype="html">
-        <source>Access dashboard</source>
-        <target>Acceder al panel</target>
+        <source>Continue</source>
+        <target>Continuar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
           <context context-type="linenumber">31,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessLoading" datatype="html">
-        <source>Verifying access…</source>
-        <target>Verificando acceso…</target>
+        <source>Checking access…</source>
+        <target>Comprobando el acceso…</target>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/pages/dashboard/dashboard.html</context>
           <context context-type="linenumber">35,36</context>
@@ -203,16 +203,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="metricsExportEnabled" datatype="html">
-        <source>External trace export is enabled in the configuration.</source>
-        <target>La exportación externa de trazas está activada en la configuración.</target>
+        <source>Private trace export is configured.</source>
+        <target>La exportación privada de trazas está configurada.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
           <context context-type="linenumber">36,38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsExportDisabled" datatype="html">
-        <source>External trace export is disabled in the configuration.</source>
-        <target>La exportación externa de trazas está desactivada en la configuración.</target>
+        <source>Private trace export is off.</source>
+        <target>La exportación privada de trazas está desactivada.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
           <context context-type="linenumber">38,41</context>
@@ -294,7 +294,6 @@
       <trans-unit id="notFoundHeroLink" datatype="html"><source>Return to website</source><target>Volver al sitio</target></trans-unit>
       <trans-unit id="signInHeroTitle" datatype="html"><source>Owner sign-in</source><target>Ingreso del propietario</target></trans-unit>
       <trans-unit id="signInVerifyRestart" datatype="html"><source>Start again</source><target>Volver a empezar</target></trans-unit>
-      <trans-unit id="signInFooterLabel" datatype="html"><source>Private administration · VISOMI.DEV</source><target>Administración privada · VISOMI.DEV</target></trans-unit>
       <trans-unit id="adminHeaderSkip" datatype="html"><source>Skip to content</source><target>Saltar al contenido</target></trans-unit>
       <trans-unit id="adminShellMenu" datatype="html"><source>Menu</source><target>Menú</target></trans-unit>
       <trans-unit id="adminShellCloseNavigation" datatype="html"><source>Close navigation</source><target>Cerrar navegación</target></trans-unit>
@@ -307,21 +306,21 @@
       <trans-unit id="browserDiagnosticsTrace" datatype="html"><source>Trace ID</source><target>ID de traza</target></trans-unit>
       <trans-unit id="browserDiagnosticsAsset" datatype="html"><source>Compiled asset and position</source><target>Recurso compilado y posición</target></trans-unit>
       <trans-unit id="browserDiagnosticsRelease" datatype="html"><source>Release fingerprint</source><target>Huella de la versión</target></trans-unit>
-      <trans-unit id="browserDiagnosticsEmpty" datatype="html"><source>Zero browser error reports in this window.</source><target>Cero informes de errores del navegador en esta ventana.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsEmpty" datatype="html"><source>No browser error reports in this window.</source><target>No se recibieron reportes de errores del navegador en este intervalo.</target></trans-unit>
       <trans-unit id="browserDiagnosticsDisabled" datatype="html"><source>Browser error capture is disabled.</source><target>La captura de errores del navegador está desactivada.</target></trans-unit>
       <trans-unit id="browserDiagnosticsUnavailable" datatype="html"><source>Browser error reports are unavailable from this process.</source><target>Los informes de errores del navegador no están disponibles en este proceso.</target></trans-unit>
       <trans-unit id="visitsTitle" datatype="html"><source>Visit analytics</source><target>Analítica de visitas</target></trans-unit>
-      <trans-unit id="visitsScope" datatype="html"><source>Public page views reported by the browser. Each transition to another page or reload can add a view. The current UTC day is partial. A view is one page opening.</source><target>Vistas públicas registradas por el navegador. Cambiar de página o recargar puede sumar una vista. El día actual en UTC es parcial. Cada vista corresponde a una apertura de página.</target></trans-unit>
+      <trans-unit id="visitsScope" datatype="html"><source>These counts include portfolio pages opened by visitors who allow automatic sharing. The current UTC day is still in progress.</source><target>Estos conteos incluyen las páginas del portafolio que abren quienes aceptan el envío automático. El día actual en UTC aún no termina.</target></trans-unit>
       <trans-unit id="visitsPeriod" datatype="html"><source>Reporting period</source><target>Periodo del informe</target></trans-unit>
       <trans-unit id="visitsDaysChoice" datatype="html"><source><x id="INTERPOLATION" equiv-text="{{ days }}"/> days</source><target><x id="INTERPOLATION" equiv-text="{{ days }}"/> días</target></trans-unit>
       <trans-unit id="visitsCurrent" datatype="html"><source>Page views in this period</source><target>Vistas en este periodo</target></trans-unit>
       <trans-unit id="visitsPrevious" datatype="html"><source>Page views in the previous period</source><target>Vistas en el periodo anterior</target></trans-unit>
-      <trans-unit id="visitsEmpty" datatype="html"><source>No page views recorded in this period.</source><target>No se registraron vistas en este periodo.</target></trans-unit>
+      <trans-unit id="visitsEmpty" datatype="html"><source>No page views were reported in this period.</source><target>No se reportaron visitas en este periodo.</target></trans-unit>
       <trans-unit id="visitsPages" datatype="html"><source>Most viewed pages</source><target>Páginas más vistas</target></trans-unit>
       <trans-unit id="visitsDaily" datatype="html"><source>Views by UTC day</source><target>Vistas por día UTC</target></trans-unit>
       <trans-unit id="visitsDisabled" datatype="html"><source>Visit analytics collection is disabled.</source><target>La recopilación de visitas está desactivada.</target></trans-unit>
       <trans-unit id="visitsUnavailable" datatype="html"><source>Visit analytics could not be loaded.</source><target>No se pudo cargar la analítica de visitas.</target></trans-unit>
-      <trans-unit id="signInVerifyTitle" datatype="html"><source>Confirm your sign-in</source><target>Confirma tu ingreso</target></trans-unit>
+      <trans-unit id="signInVerifyTitle" datatype="html"><source>Enter your verification code</source><target>Ingresa tu código de verificación</target></trans-unit>
       <trans-unit id="signInVerifyEmail" datatype="html"><source>Enter the six-digit code from your email.</source><target>Introduce el código de seis dígitos de tu correo.</target></trans-unit>
       <trans-unit id="signInVerifyTotp" datatype="html"><source>Enter the six-digit code from your authenticator.</source><target>Introduce el código de seis dígitos de tu autenticador.</target></trans-unit>
       <trans-unit id="signInPasswordShow" datatype="html"><source>Show</source><target>Mostrar</target></trans-unit>

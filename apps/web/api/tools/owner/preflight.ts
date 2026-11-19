@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import { z } from 'zod';
 
+import { otlpReceiver } from '@visomi-stack/web-backend-shared/lib/observability/lib/otlp';
 import { createSmtp, smtpConfig } from '@visomi-stack/backend-shared/lib/mail/smtp';
 
 import { authConfig } from '../../src/auth/shared/config';
@@ -76,7 +77,7 @@ async function run(): Promise<void> {
           prepared: true,
           checks: 'configuration-and-existing-account',
           privateMetrics: env['VISOMI_PRIVATE_METRICS'] === 'true',
-          traceExport: env['VISOMI_OTLP_TRACING'] === 'true',
+          traceExport: Boolean(otlpReceiver(env)),
           interactiveAcceptanceRequired: true,
         }) + '\n',
       );

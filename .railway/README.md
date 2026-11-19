@@ -31,26 +31,24 @@ Supply `JAEGER_HTPASSWD` (bcrypt htpasswd record) and matching `OTLP_AUTH_HEADER
 Both values are `preserve()` so subsequent applies retain them. Never commit them,
 print them in CI, or copy credentials from another project's collector.
 
-Deploy and check the collector first. Unauthenticated/wrong-credential requests
-must fail; an authenticated synthetic trace must be accepted. Then enable the
-configured gateway OTLP connection. The endpoint is the collector's private domain
-on port 4318, protocol `http/protobuf`; authentication comes from the collector's
-preserved variable reference. Missing receiver configuration can prevent application
-startup, so do not deploy the enabled gateway before provisioning both secrets.
+Before a future release, provision the private collector and verify that requests
+with missing or wrong credentials are denied. The gateway exports eligible spans
+when the complete `OTEL_EXPORTER_OTLP_*` receiver configuration is valid. Use
+Jaeger's private domain on port 4318, protocol `http/protobuf`, and the preserved
+Authorization header reference. A partial, malformed or non-private configuration
+prevents startup. Leave all three variables unset for environments with no receiver.
 
 Confirm a synthetic application trace reaches Jaeger and survives a collector restart.
-A `/status` response or dashboard `traceExportEnabled` flag is not delivery evidence.
-Disable `VISOMI_OTLP_TRACING` to stop application export during rollback; leave the
-collector volume and credentials intact. Reconcile the IaC flag with that operational
-rollback before the next apply so it does not silently re-enable export.
+The `/status` response and `traceExportEnabled` indicate health and configuration,
+respectively. Delivery requires a stored trace. To stop export on this version,
+unset the complete OTLP configuration as a set and reconcile the declaration
+before the next apply. Keep the collector volume and credentials for rollback.
 
-Native Railway tracing/auto-instrumentation remains disabled. Only the application's
-allowlisted operational spans are exported. Private dashboard metrics and browser error capture preserve their existing environment opt-ins
-(`VISOMI_PRIVATE_METRICS`, `VISOMI_BROWSER_TELEMETRY`). The owner has already approved both
-for the bound production service; applying unrelated IaC must preserve those values. New
-environments still default to disabled in the runtime until explicitly configured. Browser
-performance remains explicitly disabled independently. OTLP metrics and logs
-export remain `none`; local dashboard metrics are process-local, not Jaeger history.
+Native Railway tracing and Astro tool telemetry keep their existing settings.
+`VISOMI_PRIVATE_METRICS` keeps its independent opt-in. Browser intake is available
+for the canonical `AUTH_ORIGIN` and the available assets and PostgreSQL pool.
+Automatic browser reporting follows the browser's revocable choice. OTLP metrics
+and logs exports stay off. The dashboard reports process-local measurements.
 
 The contact cutover/rollback and owner acceptance gates are documented in
 [`docs/migration/contact-cutover.md`](../docs/migration/contact-cutover.md).

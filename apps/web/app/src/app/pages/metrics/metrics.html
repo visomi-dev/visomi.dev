@@ -26,9 +26,9 @@
       <p appUI><span i18n="@@metricsProcessLabel">Process:</span> {{ snapshot.scope }}</p>
 
       @if (snapshot.traceExportEnabled) {
-        <p appUI tone="muted" i18n="@@metricsExportEnabled">External trace export is enabled in the configuration.</p>
+        <p appUI tone="muted" i18n="@@metricsExportEnabled">Private trace export is configured.</p>
       } @else {
-        <p appUI tone="muted" i18n="@@metricsExportDisabled">External trace export is disabled in the configuration.</p>
+        <p appUI tone="muted" i18n="@@metricsExportDisabled">Private trace export is off.</p>
       }
 
       @if (snapshot.metrics; as metrics) {
@@ -146,7 +146,7 @@
             </ul>
           } @else {
             <p appUI tone="muted" role="status" i18n="@@browserDiagnosticsEmpty">
-              Zero browser error reports in this window.
+              No browser error reports in this window.
             </p>
           }
         } @else if (snapshot.browserErrors === null) {

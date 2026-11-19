@@ -3,8 +3,8 @@
     <h1 appUI appNavigationHeading i18n="@@visitsTitle">Visit analytics</h1>
 
     <p appUI tone="muted" i18n="@@visitsScope">
-      Public page views reported by the browser. Each transition to another page or reload can add a view. The current
-      UTC day is partial. A view is one page opening.
+      These counts include portfolio pages opened by visitors who allow automatic sharing. The current UTC day is still
+      in progress.
     </p>
   </header>
 
@@ -38,7 +38,7 @@
     </dl>
 
     @if (data.current === 0) {
-      <p appUI tone="muted" role="status" i18n="@@visitsEmpty">No page views recorded in this period.</p>
+      <p appUI tone="muted" role="status" i18n="@@visitsEmpty">No page views were reported in this period.</p>
     } @else {
       <div class="grid gap-6 md:grid-cols-2">
         <section aria-labelledby="visited-pages">

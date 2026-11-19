@@ -42,6 +42,12 @@ test('the owner can compare public page views without collecting URLs or exposin
     }
   });
 
+  await page.goto('/privacy/');
+
+  await page.getByRole('button', { name: 'Accept', exact: true }).click();
+
+  await expect(page.getByRole('status')).toHaveText('Automatic sharing is on.');
+
   await page.goto('/?private=synthetic-visit-query#synthetic-section');
 
   await expect.poll(() => received).toEqual([{ page: 'home', locale: 'en' }]);
@@ -93,4 +99,119 @@ test('the owner can compare public page views without collecting URLs or exposin
   expect(accessibility.violations).toEqual([]);
 
   await page.screenshot({ path: info.outputPath('visits-es-mobile.png'), animations: 'disabled' });
+});
+
+test('shares a revocable origin decision between Astro and the owner admin', async ({
+  page,
+  baseURL,
+  browserName,
+}, info) => {
+  const telemetry: string[] = [];
+
+  page.on('request', (entry) => {
+    const { pathname } = new URL(entry.url());
+
+    if (pathname.startsWith('/telemetry/')) {
+      telemetry.push(pathname);
+    }
+  });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  await page.goto('/es/');
+
+  const notice = page.getByRole('region', { name: 'Configuración de privacidad' });
+  const accept = notice.getByRole('button', { name: 'Aceptar', exact: true });
+  const reject = notice.getByRole('button', { name: 'No aceptar', exact: true });
+
+  await expect(accept).toBeVisible();
+
+  const acceptStyle = await accept.getAttribute('class');
+
+  await expect(reject).toHaveAttribute('class', acceptStyle!);
+
+  expect(telemetry).toEqual([]);
+
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+
+  await page.screenshot({ path: info.outputPath('portfolio-consent-es-mobile.png'), animations: 'disabled' });
+
+  await accept.focus();
+
+  await page.keyboard.press('Enter');
+
+  await expect(notice.getByRole('status')).toHaveText('El envío automático está activado.');
+
+  expect(telemetry).toEqual([]);
+
+  const accepted = page.waitForResponse((response) => response.url().endsWith('/telemetry/visits'));
+
+  await page.goto('/journey/?synthetic=visit#private');
+
+  const visit = await accepted;
+
+  expect(visit.status()).toBe(204);
+  expect(visit.request().postDataJSON()).toEqual({ page: 'journey', locale: 'en' });
+  const headers = await visit.request().allHeaders();
+
+  expect(headers['origin']).toBe(new URL(baseURL!).origin);
+  expect(headers['cookie']).toBeUndefined();
+  expect(headers['referer']).toBeUndefined();
+  const denied = await page.request.post('/telemetry/visits', {
+    headers: { origin: 'https://wrong.example.test' },
+    data: { page: 'journey', locale: 'en' },
+  });
+
+  expect(denied.status()).toBe(403);
+  const fixture = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL!).port}`, 'session.json');
+  const fixtureContent = await readFile(fixture, 'utf8');
+  const { cookies } = JSON.parse(fixtureContent) as { cookies: Record<string, string> };
+
+  await page.context().addCookies([
+    {
+      name: '__Host-visomi.sid',
+      value: encodeURIComponent(cookies[`metricsOwner-${browserName}`]),
+      url: baseURL!,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'Strict',
+    },
+  ]);
+
+  const admin = await page.context().newPage();
+
+  await admin.goto('/app/en/admin/metrics');
+
+  await expect(admin.getByRole('heading', { name: 'Technical metrics' })).toBeVisible();
+
+  await expect(admin.getByRole('region', { name: 'Privacy settings' })).toBeHidden();
+
+  await expect(admin.getByText('Private trace export is off.')).toBeVisible();
+
+  await admin.getByRole('link', { name: 'Privacy', exact: true }).click();
+
+  await expect(admin).toHaveURL(/\/privacy\/$/);
+
+  await expect(admin.getByRole('status')).toHaveText('Automatic sharing is on.');
+
+  await admin.getByRole('button', { name: 'Do not accept', exact: true }).click();
+
+  await expect(admin.getByRole('status')).toHaveText('Automatic sharing is off.');
+
+  const before = telemetry.length;
+
+  await page.evaluate(() => {
+    window.dispatchEvent(new Event('focus'));
+    window.dispatchEvent(new ErrorEvent('error', { error: new SyntaxError('SYNTHETIC_REVOKE') }));
+  });
+
+  await expect(page.getByRole('button', { name: 'Error report available' })).toBeVisible();
+
+  await page.goto('/projects/');
+
+  await expect(page.getByRole('link', { name: 'Privacy', exact: true })).toBeVisible();
+
+  expect(telemetry).toHaveLength(before);
+
+  await admin.close();
 });

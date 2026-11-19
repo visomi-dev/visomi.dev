@@ -103,17 +103,17 @@
         </context-group>
       </trans-unit>
       <trans-unit id="metricsExportEnabled" datatype="html">
-        <source>External trace export is enabled in the configuration.</source>
+        <source>Private trace export is configured.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
-          <context context-type="linenumber">28,30</context>
+          <context context-type="linenumber">29,31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsExportDisabled" datatype="html">
-        <source>External trace export is disabled in the configuration.</source>
+        <source>Private trace export is off.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
-          <context context-type="linenumber">30,33</context>
+          <context context-type="linenumber">31,34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="metricsEmptyState" datatype="html">
@@ -201,10 +201,10 @@
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessDenied" datatype="html">
-        <source>Owner access required.</source>
+        <source>This area is for the site owner.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
-          <context context-type="linenumber">13,16</context>
+          <context context-type="linenumber">39,43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessError" datatype="html">
@@ -226,10 +226,10 @@
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessVerify" datatype="html">
-        <source>Verify access</source>
+        <source> Verify code </source>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
-          <context context-type="linenumber">47,49</context>
+          <context context-type="linenumber">73,75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="signInVerifyRestart" datatype="html">
@@ -254,28 +254,21 @@
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessSignIn" datatype="html">
-        <source>Access dashboard</source>
+        <source> Continue </source>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
-          <context context-type="linenumber">93,95</context>
+          <context context-type="linenumber">142,144</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardAccessLoading" datatype="html">
-        <source>Verifying access…</source>
+        <source>Checking access…</source>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
-          <context context-type="linenumber">99,104</context>
+          <context context-type="linenumber">148,151</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/shared/layout/admin-shell/admin-shell.html</context>
-          <context context-type="linenumber">26,30</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="signInFooterLabel" datatype="html">
-        <source>Private administration · VISOMI.DEV</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
-          <context context-type="linenumber">105,107</context>
+          <context context-type="linenumber">75,79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminHeaderSkip" datatype="html">
@@ -319,6 +312,34 @@
         <context-group purpose="location">
           <context context-type="sourcefile">apps/web/app/src/app/shared/layout/preferences/preferences.html</context>
           <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="signInVerifyTitle" datatype="html">
+        <source>Enter your verification code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/auth/password/sign-in/sign-in.html</context>
+          <context context-type="linenumber">27,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="visitsEmpty" datatype="html">
+        <source>No page views were reported in this period.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/visits/visits.html</context>
+          <context context-type="linenumber">41,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="visitsScope" datatype="html">
+        <source> These counts include portfolio pages opened by visitors who allow automatic sharing. The current UTC day is still in progress. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/visits/visits.html</context>
+          <context context-type="linenumber">6,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="browserDiagnosticsEmpty" datatype="html">
+        <source> No browser error reports in this window. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/web/app/src/app/pages/metrics/metrics.html</context>
+          <context context-type="linenumber">149,151</context>
         </context-group>
       </trans-unit>
     </body>

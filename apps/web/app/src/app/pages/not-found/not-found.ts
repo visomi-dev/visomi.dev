@@ -5,10 +5,11 @@ import { LinkButton } from '../../ui/actions/link-button';
 import { Card } from '../../ui/layout/card';
 import { Heading } from '../../ui/typography/heading';
 import { Text } from '../../ui/typography/text';
+import { PrivacyLink } from '../../shared/observability/privacy-link';
 
 @Component({
   selector: 'app-not-found',
-  imports: [NavigationHeading, LinkButton, Card, Heading, Text],
+  imports: [PrivacyLink, NavigationHeading, LinkButton, Card, Heading, Text],
   templateUrl: './not-found.html',
   styleUrl: './not-found.css',
 })
