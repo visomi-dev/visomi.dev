@@ -10,7 +10,7 @@ const marker = 'SYNTHETIC_PRIVATE_BROWSER_MARKER';
 async function allowSharing(page: Page) {
   await page.goto('/privacy/');
 
-  await page.getByRole('button', { name: 'Accept', exact: true }).click();
+  await page.getByRole('button', { name: 'Share', exact: true }).click();
 
   await expect(page.getByRole('status')).toHaveText('Automatic sharing is on.');
 }
@@ -298,7 +298,7 @@ for (const testCase of [
     application: 'web-site',
     locale: 'en',
     label: 'Error report available',
-    reject: 'Do not accept',
+    reject: 'No thanks',
     sent: 'Report sent.',
     discard: 'Discard',
     send: 'Send this report',
@@ -311,7 +311,7 @@ for (const testCase of [
     application: 'web-app',
     locale: 'es',
     label: 'Reporte de error disponible',
-    reject: 'No aceptar',
+    reject: 'No compartir',
     sent: 'Reporte enviado.',
     discard: 'Descartar',
     send: 'Enviar este reporte',
@@ -519,7 +519,7 @@ for (const [setting, value] of [
 
     await page.goto('/es/privacy/');
 
-    await expect(page.getByRole('button', { name: 'Aceptar', exact: true })).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'Compartir', exact: true })).toBeDisabled();
 
     await page.goto('/app/es/admin/auth/sign-in');
 

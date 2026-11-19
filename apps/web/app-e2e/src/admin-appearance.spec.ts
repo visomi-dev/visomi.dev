@@ -109,11 +109,14 @@ for (const locale of ['en', 'es'] as const) {
     await page.goto(`/app/${locale}/admin/metrics`);
 
     const shell = page.locator('app-shell');
+    const scroll = shell.locator('[data-slot="page-scroll"]');
+    const content = shell.locator('[data-slot="page-content"]');
+    const header = shell.locator('header[app-topbar]');
     const theme = page.getByRole('button', { name: locale === 'es' ? 'Tema oscuro' : 'Dark theme' });
 
-    await expect(shell.locator('[data-slot="page-scroll"]')).toBeVisible();
+    await expect(scroll).toBeVisible();
 
-    await expect(shell.locator('header[app-topbar]')).toBeVisible();
+    await expect(header).toBeVisible();
 
     for (const width of [390, 1440]) {
       await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
@@ -133,6 +136,67 @@ for (const locale of ['en', 'es'] as const) {
         });
       }
     }
+
+    await page.setViewportSize({ width: 1680, height: 620 });
+
+    const collapse = page.getByRole('button', {
+      name: locale === 'es' ? 'Contraer menú lateral' : 'Collapse sidebar',
+    });
+    const expanded = await scroll.boundingBox();
+
+    await collapse.press('Enter');
+
+    const expand = page.getByRole('button', { name: locale === 'es' ? 'Expandir menú lateral' : 'Expand sidebar' });
+
+    await expect(expand).toBeFocused();
+
+    await expect(expand).toHaveAttribute('aria-expanded', 'false');
+
+    await expect
+      .poll(async () => {
+        const bounds = await scroll.boundingBox();
+
+        return bounds?.x;
+      })
+      .toBeLessThan(expanded!.x - 100);
+
+    await expect
+      .poll(async () => {
+        const bounds = await scroll.boundingBox();
+
+        return bounds!.x + bounds!.width;
+      })
+      .toBe(1680);
+
+    await expect
+      .poll(async () => {
+        const bounds = await content.boundingBox();
+
+        return bounds?.width;
+      })
+      .toBeLessThan(1500);
+
+    const headerBounds = await header.boundingBox();
+
+    await scroll.evaluate((element) => (element.scrollTop = element.scrollHeight));
+
+    await expect.poll(() => scroll.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+
+    await expect
+      .poll(async () => {
+        const bounds = await header.boundingBox();
+
+        return bounds?.y;
+      })
+      .toBe(headerBounds!.y);
+
+    const skip = page.getByRole('link', { name: locale === 'es' ? 'Saltar al contenido' : 'Skip to content' });
+
+    await skip.press('Enter');
+
+    await expect(scroll).toBeFocused();
+
+    await page.screenshot({ path: info.outputPath(`shell-${locale}-desktop-compact.png`), animations: 'disabled' });
 
     await page.setViewportSize({ width: 390, height: 844 });
 

@@ -3,12 +3,11 @@ import { Component, DestroyRef, LOCALE_ID, afterNextRender, inject, input, signa
 import { browserPrivacyCopy } from '@visomi-stack/web-shared-observability/lib/privacy-copy';
 import type { BrowserErrorReport } from '@visomi-stack/web-shared-observability/lib/contract';
 
-import { Button } from '../../ui/actions/button';
-import { Dialog } from '../../ui/overlays/dialog';
-import { Heading } from '../../ui/typography/heading';
-import { Text } from '../../ui/typography/text';
-
-import { BROWSER_ERROR_REPORTER } from './browser-telemetry';
+import { Button } from '../../../ui/actions/button';
+import { Dialog } from '../../../ui/overlays/dialog';
+import { Heading } from '../../../ui/typography/heading';
+import { Text } from '../../../ui/typography/text';
+import { BROWSER_ERROR_REPORTER } from '../browser-telemetry';
 
 @Component({
   selector: 'app-browser-privacy',

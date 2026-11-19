@@ -3,7 +3,7 @@ import { booleanAttribute, Component, computed, input } from '@angular/core';
 import { field as styles } from '@visomi-stack/web-frontend-ui/lib/forms';
 
 import { Description } from '../../ui/forms/description';
-import { ErrorMessage } from '../../ui/forms/error-message';
+import { ErrorMessage } from '../../ui/forms/error-message/error-message';
 import { Label } from '../../ui/forms/label';
 
 @Component({

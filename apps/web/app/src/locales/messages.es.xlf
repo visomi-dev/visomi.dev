@@ -326,6 +326,8 @@
       <trans-unit id="signInPasswordShow" datatype="html"><source>Show</source><target>Mostrar</target></trans-unit>
       <trans-unit id="signInPasswordHide" datatype="html"><source>Hide</source><target>Ocultar</target></trans-unit>
       <trans-unit id="signInPasswordVisibility" datatype="html"><source>Show or hide password</source><target>Mostrar u ocultar contraseña</target></trans-unit>
+      <trans-unit id="shellExpandSidebar" datatype="html"><source>Expand sidebar</source><target>Expandir menú lateral</target></trans-unit>
+      <trans-unit id="shellCollapseSidebar" datatype="html"><source>Collapse sidebar</source><target>Contraer menú lateral</target></trans-unit>
     </body>
   </file>
 </xliff>

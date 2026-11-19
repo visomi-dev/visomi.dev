@@ -2,7 +2,7 @@ import { Component, LOCALE_ID, inject } from '@angular/core';
 
 import { browserPrivacyCopy } from '@visomi-stack/web-shared-observability/lib/privacy-copy';
 
-import { Link } from '../../ui/typography/link';
+import { Link } from '../../../ui/typography/link';
 
 @Component({
   selector: 'app-privacy-link',

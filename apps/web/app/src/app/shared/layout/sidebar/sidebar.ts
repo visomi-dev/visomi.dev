@@ -10,6 +10,7 @@ import { sidebar } from '@visomi-stack/web-frontend-ui/lib/shell';
 })
 export class Sidebar {
   readonly label = input.required<string>();
+  readonly navigationId = input<string>('');
 
   protected readonly classes = sidebar.classes();
   protected readonly navigationClasses = sidebar.navigationClasses();

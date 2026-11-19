@@ -16,8 +16,8 @@ import { Card } from '../../../ui/layout/card';
 import { Heading } from '../../../ui/typography/heading';
 import { Text } from '../../../ui/typography/text';
 import { OwnerSession } from '../../session/owner-session';
-import { ConsentNotice } from '../../../shared/observability/consent-notice';
-import { PrivacyLink } from '../../../shared/observability/privacy-link';
+import { ConsentNotice } from '../../../shared/observability/consent-notice/consent-notice';
+import { PrivacyLink } from '../../../shared/observability/privacy-link/privacy-link';
 
 @Component({
   selector: 'app-sign-in',

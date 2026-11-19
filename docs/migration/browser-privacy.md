@@ -14,14 +14,39 @@ increment at `39911d36dab2a87904317041258bfc3a274419bc` on `codex/fix/stack-admi
 | Bilingual editorial review                             | Portfolio copy and structure stay in place. Functional text is adjusted for the owner and privacy flows.                                                      |
 | Optional Vault example in VIS-87                       | Omitted by the cloud-only PostgreSQL product decision.                                                                                                        |
 
-## Interim consent presentation
+## VIS-88 consent presentation
 
-VIS-88 keeps a compact notice after the primary content while Stack validates
-its visual follow-up in VIS-84. This placement leaves the portfolio hero in its
-existing position and keeps the sign-in fields unobstructed. It uses the current
-portfolio tokens and Angular `appUI` primitives. Review the validated Stack
-presentation before reconciling the visual treatment. The consent and manual
-reporting contracts are independently reviewable here.
+The Portfolio reconciliation starts at `c602f9d0f12be160d6f1d8c82f81c680b36f39cf`
+on PR #52. Its Stack source is main `7ab065ca29d92c6ea34f71abe09bb094102611e4`,
+tree `173dd53474d2a5b568084f06381e60604be2d659`, the merge of
+[Stack PR #36](https://github.com/visomi-dev/visomi-stack/pull/36) after
+[Stack PR #35](https://github.com/visomi-dev/visomi-stack/pull/35).
+The Portfolio and Angular use the same placement and countdown utilities as
+Stack with their existing tokens, components and localized routes.
+
+The compact card sits at the bottom left on tall desktop viewports with a fine
+pointer. It yields when keyboard focus moves outside the card. On narrow, short
+and touch viewports, it stays in flow after the primary content. The Portfolio
+hero, `/privacy/` and `/es/privacy/`, and the persistent footer links keep their
+existing roles. Both controls use the same variant and size. The sign-in card
+flows after the viewport-height form and footer so its appearance cannot recenter
+the form during hydration.
+
+A fresh grant replaces the local notice with a 10-second confirmation. The
+es-MX acknowledgment is “Gracias.” The countdown is visual and its separate
+status region announces the acknowledgment once. Revocation, a browser privacy
+signal, or navigation ends the confirmation. Expiry leaves the grant in place.
+The public Privacy settings continue to show the effective status and allow
+revocation while a notice is dismissed. Cross-tab consent propagates without
+replaying the confirmation on receiving surfaces.
+
+The Angular shell follows the Stack component-folder convention. Its centered
+content uses a full-width scroll region with a stationary header and compact
+desktop sidebar. The Portfolio preserves its owner navigation and mobile drawer
+destinations. Stack's Google loading change was reviewed against the Portfolio's
+password and email/TOTP sign-in contract. Google is not exposed by this sign-in,
+so the provider UI and skeleton have no Portfolio entry point. See the
+[owner-auth scope](current-stack-review.md).
 
 ## Browser behavior
 

@@ -14,8 +14,8 @@ import { AppShell } from '../app-shell/app-shell';
 import { Preferences } from '../preferences/preferences';
 import { Sidebar } from '../sidebar/sidebar';
 import { Topbar } from '../topbar/topbar';
-import { ConsentNotice } from '../../observability/consent-notice';
-import { PrivacyLink } from '../../observability/privacy-link';
+import { ConsentNotice } from '../../observability/consent-notice/consent-notice';
+import { PrivacyLink } from '../../observability/privacy-link/privacy-link';
 
 @Component({
   selector: 'app-admin-shell',
@@ -50,13 +50,28 @@ export class AdminShell {
 
   readonly busy = signal(false);
   readonly failed = signal(false);
+  protected readonly sidebarCompact = signal(false);
 
   readonly valid = this.session.valid;
 
+  protected readonly expandSidebar = $localize`:@@shellExpandSidebar:Expand sidebar`;
+  protected readonly collapseSidebar = $localize`:@@shellCollapseSidebar:Collapse sidebar`;
   protected readonly links = [
-    { path: '/admin/dashboard', label: $localize`:@@dashboardHeroTitle:Contact requests` },
-    { path: '/admin/metrics', label: $localize`:@@metricsHeroTitle:Technical metrics` },
-    { path: '/admin/visits', label: $localize`:@@visitsTitle:Visit analytics` },
+    {
+      path: '/admin/dashboard',
+      label: $localize`:@@dashboardHeroTitle:Contact requests`,
+      icon: 'M3 5h18v14H3zM3 5l9 8 9-8',
+    },
+    {
+      path: '/admin/metrics',
+      label: $localize`:@@metricsHeroTitle:Technical metrics`,
+      icon: 'M3 3v18h18M8 16v-4m5 4V8m5 8V5',
+    },
+    {
+      path: '/admin/visits',
+      label: $localize`:@@visitsTitle:Visit analytics`,
+      icon: 'M3 18h18M5 15l5-5 4 3 6-7',
+    },
   ] as const;
 
   async signOut(): Promise<void> {
@@ -74,6 +89,10 @@ export class AdminShell {
     } finally {
       this.busy.set(false);
     }
+  }
+
+  protected toggleSidebar(): void {
+    this.sidebarCompact.update((compact) => !compact);
   }
 
   private readonly closeDesktopMenu = afterNextRender(() => {

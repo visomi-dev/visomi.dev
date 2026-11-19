@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { languageSwitcher } from '@visomi-stack/web-frontend-ui/lib/language-switcher';
 
 import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
-import { BrowserPrivacy } from '../../observability/browser-privacy';
+import { BrowserPrivacy } from '../../observability/browser-privacy/browser-privacy';
 
 @Component({
   selector: 'app-preferences',

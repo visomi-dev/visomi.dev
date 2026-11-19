@@ -1,47 +1,112 @@
-<app-shell contentId="admin-main" skipLabel="Skip to content" i18n-skipLabel="@@adminHeaderSkip">
-  <app-sidebar label="Private navigation" i18n-label="@@metricsNavigationLabel">
+<app-shell
+  contentId="admin-main"
+  skipLabel="Skip to content"
+  i18n-skipLabel="@@adminHeaderSkip"
+  [sidebarCompact]="sidebarCompact()"
+>
+  <app-sidebar
+    label="Private navigation"
+    i18n-label="@@metricsNavigationLabel"
+    navigationId="admin-sidebar-navigation"
+    class="lg:gap-4 lg:p-3"
+  >
     <a
       data-slot="brand"
       routerLink="/admin/dashboard"
       class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg"
+      [class.justify-center]="sidebarCompact()"
     >
-      <img
-        ngSrc="brand/logotype.svg"
-        alt="VISOMI.DEV"
-        width="194"
-        height="40"
-        priority
-        class="h-10 w-[194px] object-contain dark:invert"
-      />
+      @if (sidebarCompact()) {
+        <img ngSrc="brand/isotype.svg" alt="VISOMI.DEV" width="36" height="36" priority class="size-9 dark:invert" />
+      } @else {
+        <img
+          ngSrc="brand/logotype.svg"
+          alt="VISOMI.DEV"
+          width="148"
+          height="40"
+          priority
+          class="h-9 w-auto max-w-full object-contain dark:invert"
+        />
+      }
     </a>
 
     <div class="space-y-1">
       @for (link of links; track link.path) {
-        <a appUI="nav-item" [routerLink]="link.path" routerLinkActive="active" ariaCurrentWhenActive="page">{{
-          link.label
-        }}</a>
+        <a
+          appUI="nav-item"
+          [compact]="sidebarCompact()"
+          [attr.title]="sidebarCompact() ? link.label : null"
+          [routerLink]="link.path"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          <svg
+            data-slot="icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"
+          >
+            <path [attr.d]="link.icon" />
+          </svg>
+
+          <span data-slot="label">{{ link.label }}</span>
+        </a>
       }
     </div>
 
-    <div data-slot="footer">
+    <div data-slot="footer" class="grid gap-1 border-t border-zinc-200 pt-3 dark:border-zinc-800">
       <button
         appUI
         type="button"
+        variant="ghost"
+        [size]="sidebarCompact() ? 'icon' : 'sm'"
+        [class.justify-self-center]="sidebarCompact()"
+        [class.justify-self-start]="!sidebarCompact()"
         [disabled]="busy()"
         [attr.aria-busy]="busy()"
         (click)="signOut()"
-        i18n="@@dashboardAccessSignOut"
       >
-        Sign out
+        <svg
+          class="size-5 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path d="M10 4H4v16h6m-1-8h11m-4-4 4 4-4 4" />
+        </svg>
+
+        <span [class.sr-only]="sidebarCompact()" i18n="@@dashboardAccessSignOut">Sign out</span>
       </button>
     </div>
   </app-sidebar>
 
-  <header app-topbar>
+  <header app-topbar compact>
+    <button
+      appUI
+      data-slot="title"
+      type="button"
+      variant="ghost"
+      size="icon"
+      class="max-lg:hidden lg:inline-flex"
+      aria-controls="admin-sidebar-navigation"
+      [attr.aria-expanded]="!sidebarCompact()"
+      [attr.aria-label]="sidebarCompact() ? expandSidebar : collapseSidebar"
+      [attr.title]="sidebarCompact() ? expandSidebar : collapseSidebar"
+      (click)="toggleSidebar()"
+    >
+      <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M3 5h18v14H3zM9 5v14" />
+      </svg>
+    </button>
+
     <a
       data-slot="title"
       routerLink="/admin/dashboard"
-      class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg"
+      class="ui-focus-ring inline-flex min-h-11 items-center rounded-lg lg:hidden"
     >
       <picture>
         <source media="(min-width: 640px)" srcset="brand/logotype.svg" />
@@ -74,14 +139,14 @@
     }
   </div>
 
-  <app-consent-notice />
+  <app-consent-notice class="block [--ui-consent-bottom:4rem]" />
 
   <footer data-shell-footer class="flex shrink-0 justify-center border-t border-zinc-200 px-4 dark:border-zinc-800">
     <app-privacy-link />
   </footer>
 
   <nav appUI="navbar" aria-label="Private navigation" i18n-aria-label="@@metricsNavigationLabel">
-    @for (link of links; track link.path; let first = $first) {
+    @for (link of links; track link.path) {
       <a
         appUI="nav-item"
         placement="navbar"
@@ -97,11 +162,7 @@
           stroke-width="1.5"
           aria-hidden="true"
         >
-          @if (first) {
-            <path d="M3 5h18v14H3zM3 5l9 8 9-8" />
-          } @else {
-            <path d="M3 3v18h18M8 16v-4m5 4V8m5 8V5" />
-          }
+          <path [attr.d]="link.icon" />
         </svg>
 
         <span>{{ link.label }}</span>
