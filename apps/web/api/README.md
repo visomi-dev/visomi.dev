@@ -42,17 +42,15 @@ proxy addresses may influence forwarded-protocol handling.
 
 ### Railway deployment
 
-The [Railway migration partial](../../../.railway/README.md) scopes IaC to
-the existing gateway service. Railway keeps its private PostgreSQL and Redis
-connections, volumes, auth and SMTP variables. Redis provides the private
-realtime transport. Authentication sessions remain in PostgreSQL. Revalidate the
-proxy allowlist when ingress networking changes.
+The [Railway IaC migration](../../../.railway/README.md) models the existing
+production gateway, Postgres, Redis, Jaeger and their volumes. The gateway
+retains its private PostgreSQL and Redis references. Redis supports realtime
+transport when configured. Authentication sessions remain in PostgreSQL.
+Revalidate the proxy allowlist when ingress networking changes.
 
-Provision PostgreSQL in the same project and environment as `web-gateway` and
-reference its private `DATABASE_URL`. Set `AUTH_ORIGIN` to the public HTTPS origin,
-`AUTH_RP_ID` to its hostname, and generate a high-entropy `SESSION_SECRET` directly
-through a secure variable workflow. Keep SMTP, Google and TOTP configuration
-independent; do not enable optional providers to work around missing persistence.
+The existing Railway environment holds the public HTTPS `AUTH_ORIGIN`,
+`AUTH_RP_ID`, `SESSION_SECRET` and SMTP settings. Google and TOTP remain
+optional and can be configured independently.
 
 The production image includes the existing SQL migrations and a separate command
 that uses the installed Drizzle ORM migrator, without development dependencies:

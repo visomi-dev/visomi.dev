@@ -1,53 +1,80 @@
-# Railway Config as Code migration (VIS-62)
+# Adopt the existing Railway production configuration (VIS-62)
 
-Railway stops reading `railway.json` on **December 1, 2026**. The running
-deployment stays up. The stored service settings take over on the next
-deployment after the cutoff or after the deployed commit no longer contains the
-auto-detected file. Changing the TypeScript in Git alone has no effect on Railway.
+Railway stops reading the legacy `railway.json` on **December 1, 2026**.
+The existing gateway has an empty Config File setting and auto-detects the JSON
+at the repository root. Keep it through the authorized cutover and validation.
+The current deployment resolved `/railway.json` from commit `14954908`.
 [Railway migration guide](https://docs.railway.com/infrastructure-as-code#migrating-from-config-as-code)
 
-## Scope and evidence
+## Existing production inventory
 
-- The named partial `visomi.dev` targets the existing `visomi.dev` service in
-  project `visomi`, environment `production`. The old `web-gateway` declaration
-  was an incomplete model of production. Use the existing service identity and
-  GitHub source `visomi-dev/visomi.dev` on `main`.
-- The [production service](https://railway.com/project/866f46e7-1d66-4cb7-9793-0b89db25990b/service/8efe2ba3-1921-462c-b0b9-3375c26f531d?environmentId=3711cead-a360-4880-abc8-6472f21dbb68)
-  has no stored Config File path and no IaC owners as observed on November 20, 2026. It auto-detects the root `railway.json`. Keep that file until the
-  replacement settings are in effect and verified. A path-clearing cutover and
-  its undo have nothing to change for this service.
-- The deployment evidence in [VIS-62](https://linear.app/visomi/issue/VIS-62)
-  showed 18 effective watch patterns and `/api/ready` at 60 seconds. The stored
-  service settings have three patterns and no readiness check. The partial
-  persists the legacy settings along with `ON_FAILURE` and three retries.
-  It retains the existing Dockerfile, entrypoint and schema migration
-  `node libs/backend/shared/tools/database/migrate.mjs` with the platform's
-  existing pre-deploy timeout. The older proposed 120-second override was
-  absent from both the stored settings and the reviewed deployment.
-- Railway continues to manage both domains. The apex `visomi.dev` has an
-  implicit target port and `www.visomi.dev` explicitly targets 8080. Both
-  domain records, the private Jaeger service and its existing `jaeger-data`
-  mount at `/badger`, Postgres and Redis and their volumes are outside the
-  proposed changes. Jaeger has no public domain or TCP proxy.
-- The partial leaves all Railway variables unmanaged. Preserve the existing
-  `DATABASE_URL`, `REDIS_URL`, `AUTH_ORIGIN`, auth and SMTP settings,
-  `VISOMI_PRIVATE_METRICS` and the complete `OTEL_EXPORTER_OTLP_*` receiver
-  configuration and references. Check reference targets privately before
-  cutover. This review retrieved names and binding metadata only.
-- Stale names still present include `VISOMI_BROWSER_TELEMETRY`,
-  `VISOMI_BROWSER_PERFORMANCE` and `VISOMI_OTLP_TRACING`. The current app uses
-  the browser's default-off, revocable consent for automatic reporting and
-  performance. Manual sanitized reports remain independently explicit.
-  Leave the old variables in Railway so the prior release can still roll
-  back with its matching settings. See [browser privacy](../docs/migration/browser-privacy.md).
+The definition covers the whole existing `production` environment in `visomi`.
+A read-only check on November 20, 2026 found an empty IaC ownership map in that
+environment. The four service names and three volume names below matched the
+redacted Railway import. The IDs are for review and stay out of the IaC file.
+[Production environment and gateway](https://railway.com/project/866f46e7-1d66-4cb7-9793-0b89db25990b/service/8efe2ba3-1921-462c-b0b9-3375c26f531d?environmentId=3711cead-a360-4880-abc8-6472f21dbb68)
+
+| Service    | Existing service ID                  | Source                                                 |
+| ---------- | ------------------------------------ | ------------------------------------------------------ |
+| visomi.dev | 8efe2ba3-1921-462c-b0b9-3375c26f531d | `visomi-dev/visomi.dev`, `main`, Dockerfile            |
+| Postgres   | e1bb76f5-a785-4a41-ab6d-b478188f6a3a | `ghcr.io/railwayapp-templates/postgres-ssl:18`         |
+| Redis      | 9654c534-9e42-4747-aab7-da8942d2c5d5 | `redis:8.2.9`                                          |
+| jaeger     | cb238562-2b11-402f-adb7-fa861169f536 | Shared Jaeger 2.22.0 image digest in `jaeger-image.ts` |
+
+| Volume          | Existing volume ID                   | Service and mount                   | Size (MB) |
+| --------------- | ------------------------------------ | ----------------------------------- | --------- |
+| postgres-volume | 811ff583-f45e-4d82-81bc-944966486a2d | Postgres `/var/lib/postgresql/data` | 50000     |
+| redis-volume    | 9ff82c46-1cf5-4f24-a4a5-718905138222 | Redis `/data`                       | 5000      |
+| jaeger-data     | 9e4b7dcc-245b-4731-b625-88912f18a81f | jaeger `/badger`                    | 1024      |
+
+All three volumes remain in `us-east4-eqdc4a`. Railway's Postgres and Redis
+templates retain their existing volume attachments. The definition declares both
+disks and mount paths. Expressing either template attachment as a new
+`volumeAttachments` entry made the plan propose a mount update, so the code uses
+the database mount paths and preserves the existing template bindings. Jaeger's
+existing mount is explicit in IaC. [Railway database and volume reference](https://docs.railway.com/infrastructure-as-code/reference#databases)
+
+| Gateway domain | Existing domain ID                   | Target port |
+| -------------- | ------------------------------------ | ----------- |
+| visomi.dev     | e4d180df-c14a-4af4-8ea1-4ce8b1d47f1a | Implicit    |
+| www.visomi.dev | 0d8bbba8-4031-4b0f-9ef5-e3f06bf16127 | 8080        |
+
+The IaC definition records both custom domain bindings, including the implicit
+apex port. The gateway remains the only service with public domains. Jaeger
+intake on 4318 and its query UI stay private.
+
+## Variables and reference targets
+
+All 54 inventoried variables are declared with `preserve()`. The reference
+metadata resolves the gateway variables below to existing services. Keeping the
+stored expressions with `preserve()` avoids rewriting even an equivalent
+reference. Database template variables retain their internal references.
+
+| Gateway variable              | Existing target                 |
+| ----------------------------- | ------------------------------- |
+| `DATABASE_URL`                | `Postgres.DATABASE_URL`         |
+| `REDIS_URL`                   | `Redis.REDIS_URL`               |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | `jaeger.RAILWAY_PRIVATE_DOMAIN` |
+| `OTEL_EXPORTER_OTLP_HEADERS`  | `jaeger.OTLP_AUTH_HEADER`       |
+
+This review used the variable names, IDs and reference edges. The IaC plan
+leaves existing credentials, SMTP, owner access, private metrics and the
+complete OTLP setup in place. The application controls automatic browser
+reporting with revocable, default-off consent. Manual sanitized reports use an
+independent explicit action. The legacy names `VISOMI_BROWSER_TELEMETRY`,
+`VISOMI_BROWSER_PERFORMANCE` and `VISOMI_OTLP_TRACING` remain in Railway for
+compatibility with earlier releases. [Browser privacy](../docs/migration/browser-privacy.md)
 
 ## Read-only review
 
-Use an existing authorized CLI session. Set `RAILWAY_PROJECT_ID` and
-`RAILWAY_ENVIRONMENT_ID` to the verified project and production environment IDs
-from the service link. Check that an existing project-scoped token, if in use,
-targets that same environment. The recorded review used Railway CLI 5.74.0
-and the repository's locked SDK. Run from the repository root.
+Use the existing authorized CLI session to target project
+`866f46e7-1d66-4cb7-9793-0b89db25990b` and environment
+`3711cead-a360-4880-abc8-6472f21dbb68`. The review used Railway CLI 5.74.0 and
+the locked TypeScript SDK. The default import preserved variable values and
+served as an unchanged baseline. Use read-only metadata for the resource IDs,
+mounts, domain ports and reference targets. Keep the imported variable values
+redacted and any temporary import outside the working tree.
+[Railway import guidance](https://docs.railway.com/infrastructure-as-code#import-an-existing-project)
 
 ```sh
 railway config partials list --json
@@ -56,92 +83,41 @@ pnpm nx run web-gateway:deployment-check
 pnpm nx run web-gateway:jaeger-check
 ```
 
-The redacted plan on November 20 reported **0 to add, 2 to change, 0 to destroy**
-and 36 variables outside IaC. It proposed only the watch settings and readiness
-and retry updates for the existing service. The CLI normalizes the current retry
-default to an unset field in this diff. Ownership and the environment
-configuration etag matched before and after planning. Exit code 2 means changes
-are pending. Keep values redacted and share only the reviewed summary. A plan is
-a comparison against stored settings. It does not attest to variable values,
-reference targets, DNS, ingress, private connectivity or a future deployment.
+The full-environment plan reported **0 to add, 2 to change, 0 to destroy**. The
+two updates target `visomi.dev` and persist the 18 watch patterns, `/api/ready`
+with a 60-second timeout, and the three retries from the legacy `ON_FAILURE`
+policy. The platform's stored retry default is normalized to an unset field in
+the plan. The existing build, source trigger, entrypoint and pre-deploy command
+`node libs/backend/shared/tools/database/migrate.mjs` stay in place. The stored
+pre-deploy timeout is unset. The older proposed 120-second override is outside
+this cutover.
+
+The pre- and post-plan inventories match across service, volume, domain and
+deployment IDs, mounts, reference edges and the configuration revision. Exit 2
+means changes are pending. The preview compares against stored configuration.
+An authorized post-cutover deployment still needs runtime verification.
 
 ## Future cutover and rollback
 
-1. Confirm the exact service, environment, source branch, empty Config File
-   path, current IaC owners and absence of staged changes. Record the current
-   successful deployment ID and the nonsecret settings to use for rollback.
-   Compare the effective deployment settings with the stored service settings.
-   Check that both domains and all existing service and volume IDs still match.
-2. Refresh the redacted plan immediately before any authorized change. Accept
-   only the two setting groups above on the existing gateway. Stop on any
-   create, delete, replacement, volume or domain change, source change,
-   variable or reference change, or edit to another service. Reconcile any
-   ownership or configuration drift before planning again.
-3. In an approved deployment window, apply only the reviewed partial. The
-   first apply claims ownership and can start a deployment. If IaC cannot be
-   used, the same authorized review can persist just the approved fields on
-   the existing service in Railway settings. Retain `railway.json` through
-   migration verification and handle its removal separately.
-4. Verify the persisted settings, expected pre-deploy result, readiness and
-   existing source trigger. Check HTTPS and the expected apex and www behavior,
-   authorized owner access, private PostgreSQL/Redis and Jaeger connectivity,
-   and consent behavior with synthetic acceptance data. Re-run the scoped plan
-   and compare service, domain and volume identities. Keep Jaeger's authenticated
-   intake on 4318 and its query UI on private networking.
-5. If verification fails, stop rollout. If deployment occurred, use the
-   previously approved revision and its compatible runtime settings. Restore
-   the saved gateway setting fields through the same reviewed scope. Preserve
-   the database, Redis, Jaeger volume, domains and existing references. The
-   auto-detected file can still provide its overrides before the cutoff, but
-   after December 1 a Git rollback alone cannot restore them. Consult the
+1. Confirm the exact project and environment IDs, service instances, mounts,
+   custom domains and reference targets. Check the Config File setting,
+   ownership map and pending changes. Record the prior successful deployment
+   and the stored and effective gateway settings for rollback.
+2. Refresh the redacted plan. Accept only the two gateway updates above. Stop
+   on any addition, deletion, replacement, volume attachment or mount change,
+   domain change, variable or reference write, or ownership conflict.
+3. After separate authorization, persist the reviewed settings in an approved
+   window and verify the first deployment. The gateway still auto-detects the
+   JSON, so there is no saved path to clear. Keep `railway.json` until the
+   persisted gateway settings are verified. Verify `/api/ready`, the migration
+   command, the source trigger, HTTPS for both domains, owner-only access and
+   consent, and the existing private PostgreSQL, Redis and Jaeger connections.
+4. If acceptance fails, stop the rollout. Restore the reviewed gateway settings
+   and, if a deployment occurred, the prior compatible release. Retain the
+   existing resource IDs and mounts. After December 1, a Git rollback alone
+   cannot restore the legacy overrides. Use the
    [contact rollback runbook](../docs/migration/contact-cutover.md) before any
    schema or data recovery action.
-
-## Replicate the full stack in Railway
-
-Use [`replica.ts`](./replica.ts) for a new project named `visomi-replica` or
-`visomi-replica-<suffix>`. The CLI must supply the linked project name, project
-ID and environment ID. This file rejects the live `visomi` project. The default
-`.railway/railway.ts` still describes the gateway migration.
-
-The replica builds the gateway from the same Dockerfile, provisions private
-PostgreSQL and Redis through Railway's managed helpers with fresh storage, and
-uses the pinned Jaeger image with its own 1 GiB volume at `/badger`. The gateway
-uses the replica's private database, Redis and authenticated OTLP references.
-Jaeger intake and query access stay private. Automatic browser sharing starts
-off and follows the existing consent rules. The replica provisions no owner
-records and imports no data. [Railway database helpers](https://docs.railway.com/infrastructure-as-code/reference#databases)
-
-In the new project's environment, provision these shared variables through
-Railway. Use credentials generated for this replica and a synthetic owner.
-
-| Shared variable                     | Input                                      |
-| ----------------------------------- | ------------------------------------------ |
-| `VISOMI_REPLICA_HOST`               | Replica HTTPS hostname, without a scheme   |
-| `VISOMI_REPLICA_OWNER_EMAIL`        | Synthetic owner address                    |
-| `VISOMI_REPLICA_SESSION_SECRET`     | Fresh session secret of at least 32 bytes  |
-| `VISOMI_REPLICA_SOCIAL_IMAGE_TOKEN` | Fresh internal token of at least 32 bytes  |
-| `VISOMI_REPLICA_JAEGER_HTPASSWD`    | Collector bcrypt htpasswd record           |
-| `VISOMI_REPLICA_OTLP_AUTH_HEADER`   | Matching encoded OTLP Authorization header |
-
-With the CLI linked to the new project and the intended environment, preview
-the replica explicitly from the repository root.
-
-```sh
-railway config plan --file .railway/replica.ts --verbose --detailed-exit-code
-```
-
-On an empty target, review creates for the gateway, Postgres, Redis, Jaeger and
-`jaeger-data`. Check that Railway's managed databases use private networking and
-confirm the configured region is available. Stop if the plan shows deletes,
-replacements or volume detachments. After approving the plan for the verified
-replica project, use `railway config apply --file .railway/replica.ts` and bind
-only the gateway to the replica hostname. Verify `/api/ready`, persisted
-Postgres and Redis data, an authenticated OTLP export and a stored trace.
-To verify owner sign-in, initialize a synthetic owner using the
-[owner setup runbook](../docs/migration/contact-cutover.md) and configure a
-replica mail sandbox or a replica TOTP key. Optional SMTP and TOTP values set
-on the replica gateway are preserved by subsequent plans.
 
 ## SSR proxy configuration and release gate
 

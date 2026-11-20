@@ -117,8 +117,8 @@ Implementation and verification evidence will be recorded per issue and in the f
   only session, password sign-in/verification and logout. Template registration/account-management E2Es
   were replaced with real owner-only API/browser tests. The worker E2E uses real Redis and Chromium,
   including interruption/recovery, and writes only into an owned temporary workspace.
-- Local Compose omits unrelated MinIO/opaque-sync services. Railway is a reviewable single-service
-  configuration that references existing PostgreSQL/Redis variables; no external plan/apply was executed.
+- Local Compose omits unrelated MinIO and opaque-sync services. The Railway definition models the
+  existing production estate. The [VIS-62 runbook](../../.railway/README.md) records the read-only plan.
 
 ## Accessibility and visual evidence
 
