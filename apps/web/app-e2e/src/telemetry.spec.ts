@@ -195,9 +195,13 @@ for (const [path, application] of [
 
     await expect(trace).toBeHidden();
 
-    await summary.click();
+    await summary.getByText('Report details', { exact: true }).click();
 
     await expect(trace).toBeVisible();
+
+    await expect(details).toContainText('Reproduce the affected action if the error repeats or interrupts a task.');
+
+    await expect(details).not.toContainText(marker);
 
     await summary.focus();
 
@@ -213,7 +217,10 @@ for (const [path, application] of [
 
     await expect(trace).toBeVisible();
 
-    await page.screenshot({ path: info.outputPath(`browser-diagnostics-${application}.png`), animations: 'disabled' });
+    await details.screenshot({
+      path: info.outputPath(`browser-diagnostics-${application}.png`),
+      animations: 'disabled',
+    });
   });
 }
 

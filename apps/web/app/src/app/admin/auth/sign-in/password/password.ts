@@ -1,6 +1,6 @@
 import { NgOptimizedImage } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom, takeUntil } from 'rxjs';
@@ -53,8 +53,6 @@ export class Password {
   readonly factor = signal<'email' | 'totp'>('email');
   private readonly csrf = signal('');
   private readonly flowId = signal('');
-
-  protected readonly validCode = computed(() => /^[0-9]{6}$/.test(this.code()));
 
   protected readonly passwordShow = $localize`:@@signInPasswordShow:Show`;
   protected readonly passwordHide = $localize`:@@signInPasswordHide:Hide`;
@@ -113,15 +111,21 @@ export class Password {
   }
 
   setCode(value: string): void {
-    this.code.set(value.replace(/[^0-9]/g, '').slice(0, 6));
-    this.failed.set(false);
-  }
+    const code = value.replace(/[^0-9]/g, '').slice(0, 6);
 
-  async verify(): Promise<void> {
-    if (this.busy() || !this.validCode()) {
+    if (!this.challenge() || this.busy() || code === this.code()) {
       return;
     }
 
+    this.code.set(code);
+    this.failed.set(false);
+
+    if (code.length === 6) {
+      void this.verify(code);
+    }
+  }
+
+  private async verify(code: string): Promise<void> {
     this.busy.set(true);
     this.failed.set(false);
 
@@ -132,7 +136,7 @@ export class Password {
             '/api/auth/password/verify',
             {
               flowId: this.flowId(),
-              factor: { kind: this.factor(), code: this.code() },
+              factor: { kind: this.factor(), code },
             },
             { headers: { 'x-csrf-token': this.csrf() } },
           )
@@ -145,6 +149,7 @@ export class Password {
 
       await this.router.navigate(['/admin/dashboard']);
     } catch {
+      this.code.set('');
       this.failed.set(true);
     } finally {
       this.busy.set(false);

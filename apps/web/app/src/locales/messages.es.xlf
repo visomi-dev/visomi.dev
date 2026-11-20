@@ -58,14 +58,6 @@
           <context context-type="linenumber">15,17</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="dashboardAccessVerify" datatype="html">
-        <source>Verify code</source>
-        <target>Verificar código</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/admin/dashboard/dashboard.html</context>
-          <context context-type="linenumber">19,21</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="dashboardAccessEmail" datatype="html">
         <source>Verified email</source>
         <target>Correo verificado</target>
@@ -300,7 +292,7 @@
       <trans-unit id="adminHeaderTheme" datatype="html"><source>Dark theme</source><target>Tema oscuro</target></trans-unit>
       <trans-unit id="browserDiagnosticsTitle" datatype="html"><source>Browser error reports</source><target>Informes de errores del navegador</target></trans-unit>
       <trans-unit id="browserDiagnosticsScope" datatype="html"><source>The receiver shows up to 50 recent reports for this gateway process, within 15 minutes. These reports come from the browser capture pipeline. The HTTP counters above come from server responses and interruptions.</source><target>El receptor muestra hasta 50 informes recientes de este proceso del gateway, en una ventana de 15 minutos. Estos informes provienen de la captura del navegador. Los contadores HTTP anteriores provienen de respuestas e interrupciones del servidor.</target></trans-unit>
-      <trans-unit id="browserDiagnosticsTraceHelp" datatype="html"><source>A trace ID identifies the generated trace. If trace export is configured, look up the ID in the private Jaeger instance to confirm delivery. Collapsing a report only hides its details.</source><target>El ID identifica la traza generada. Si la exportación está configurada, busca el ID en la instancia privada de Jaeger para confirmar la entrega. Cerrar un informe solo oculta sus detalles.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsTraceHelp" datatype="html"><source>Open a report to see its affected screen and diagnostic context. If trace export is configured, use the trace ID to look it up in the private Jaeger instance.</source><target>Abre un reporte para ver la pantalla afectada y el contexto de diagnóstico. Si la exportación de trazas está configurada, usa el ID para buscarla en la instancia privada de Jaeger.</target></trans-unit>
       <trans-unit id="browserDiagnosticsCode" datatype="html"><source>Report code</source><target>Código del informe</target></trans-unit>
       <trans-unit id="browserDiagnosticsScreen" datatype="html"><source>Screen category</source><target>Categoría de pantalla</target></trans-unit>
       <trans-unit id="browserDiagnosticsTrace" datatype="html"><source>Trace ID</source><target>ID de traza</target></trans-unit>
@@ -328,6 +320,17 @@
       <trans-unit id="signInPasswordVisibility" datatype="html"><source>Show or hide password</source><target>Mostrar u ocultar contraseña</target></trans-unit>
       <trans-unit id="shellExpandSidebar" datatype="html"><source>Expand sidebar</source><target>Expandir menú lateral</target></trans-unit>
       <trans-unit id="shellCollapseSidebar" datatype="html"><source>Collapse sidebar</source><target>Contraer menú lateral</target></trans-unit>
+      <trans-unit id="dashboardRequestsName" datatype="html"><source>Name</source><target>Nombre</target></trans-unit>
+      <trans-unit id="dashboardRequestsEmail" datatype="html"><source>Email</source><target>Correo</target></trans-unit>
+      <trans-unit id="dashboardRequestsDate" datatype="html"><source>Received</source><target>Fecha de recepción</target></trans-unit>
+      <trans-unit id="dashboardRequestsType" datatype="html"><source>Type</source><target>Tipo</target></trans-unit>
+      <trans-unit id="dashboardRequestsLocale" datatype="html"><source>Language</source><target>Idioma</target></trans-unit>
+      <trans-unit id="signInVerifyAutomatic" datatype="html"><source>Verification starts when you enter all six digits.</source><target>La verificación comienza al introducir los seis dígitos.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsOpenDetails" datatype="html"><source>Report details</source><target>Detalles del reporte</target></trans-unit>
+      <trans-unit id="browserDiagnosticsStartupGuidance" datatype="html"><source>The app reported a failure during startup. Check whether the affected screen can open.</source><target>La aplicación reportó un fallo al arrancar. Comprueba si se puede abrir la pantalla afectada.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsRequestGuidance" datatype="html"><source>A browser request failed. Check whether the action on the affected screen can complete.</source><target>Falló una solicitud del navegador. Comprueba si se puede completar la acción en la pantalla afectada.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsExceptionGuidance" datatype="html"><source>The browser reported an unhandled exception. Reproduce the affected action if the error repeats or interrupts a task.</source><target>El navegador reportó una excepción sin manejar. Repite la acción afectada si el error vuelve a ocurrir o interrumpe una tarea.</target></trans-unit>
+      <trans-unit id="browserDiagnosticsRejectionGuidance" datatype="html"><source>An asynchronous browser operation failed. Reproduce the affected action if the error repeats or interrupts a task.</source><target>Falló una operación asíncrona del navegador. Repite la acción afectada si el error vuelve a ocurrir o interrumpe una tarea.</target></trans-unit>
     </body>
   </file>
 </xliff>

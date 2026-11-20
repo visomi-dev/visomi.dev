@@ -1,5 +1,5 @@
 <section class="space-y-6">
-  <h1 appUI appNavigationHeading i18n="@@dashboardHeroTitle">Contact requests</h1>
+  <h1 appUI appNavigationHeading id="contact-requests" i18n="@@dashboardHeroTitle">Contact requests</h1>
 
   @if (data().state === 'error') {
     <div appUI="alert" tone="danger" role="alert" i18n="@@dashboardRequestsError">Requests could not be loaded.</div>
@@ -20,19 +20,49 @@
       <p appUI class="whitespace-pre-wrap">{{ item.message }}</p>
     </article>
   } @else {
-    @for (item of data().items; track item.id) {
-      <article appUI layout="plain" class="break-words">
-        <h2 appUI uiSize="sm">
-          <a appUI [routerLink]="['/admin/contacts', item.id]">{{ item.name }}</a>
-        </h2>
+    <div class="ui-focus-ring overflow-x-auto rounded-lg" role="region" aria-labelledby="contact-requests" tabindex="0">
+      <table appUI aria-labelledby="contact-requests">
+        <thead>
+          <tr>
+            <th scope="col" i18n="@@dashboardRequestsName">Name</th>
 
-        <p appUI>{{ item.email }}</p>
+            <th scope="col" i18n="@@dashboardRequestsEmail">Email</th>
 
-        <time [attr.datetime]="item.createdAt">{{ item.createdAt }}</time>
-      </article>
-    } @empty {
-      <p appUI tone="muted" role="status" i18n="@@dashboardRequestsEmpty">No contact requests yet.</p>
-    }
+            <th scope="col" i18n="@@dashboardRequestsDate">Received</th>
+
+            <th scope="col" i18n="@@dashboardRequestsType">Type</th>
+
+            <th scope="col" i18n="@@dashboardRequestsLocale">Language</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (item of data().items; track item.id) {
+            <tr>
+              <th scope="row" class="wrap-anywhere">
+                <a appUI [routerLink]="['/admin/contacts', item.id]">{{ item.name }}</a>
+              </th>
+
+              <td class="wrap-anywhere">{{ item.email }}</td>
+
+              <td>
+                <time [attr.datetime]="item.createdAt">{{ item.createdAt }}</time>
+              </td>
+
+              <td>{{ item.type }}</td>
+
+              <td>{{ item.locale }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5">
+                <p appUI tone="muted" role="status" i18n="@@dashboardRequestsEmpty">No contact requests yet.</p>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
 
     @if (data().next; as next) {
       <a appUI routerLink="/admin/dashboard" [queryParams]="{ before: next }" i18n="@@dashboardRequestsNext"
