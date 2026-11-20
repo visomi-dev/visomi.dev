@@ -97,6 +97,52 @@ reference targets, DNS, ingress, private connectivity or a future deployment.
    [contact rollback runbook](../docs/migration/contact-cutover.md) before any
    schema or data recovery action.
 
+## Replicate the full stack in Railway
+
+Use [`replica.ts`](./replica.ts) for a new project named `visomi-replica` or
+`visomi-replica-<suffix>`. The CLI must supply the linked project name, project
+ID and environment ID. This file rejects the live `visomi` project. The default
+`.railway/railway.ts` still describes the gateway migration.
+
+The replica builds the gateway from the same Dockerfile, provisions private
+PostgreSQL and Redis through Railway's managed helpers with fresh storage, and
+uses the pinned Jaeger image with its own 1 GiB volume at `/badger`. The gateway
+uses the replica's private database, Redis and authenticated OTLP references.
+Jaeger intake and query access stay private. Automatic browser sharing starts
+off and follows the existing consent rules. The replica provisions no owner
+records and imports no data. [Railway database helpers](https://docs.railway.com/infrastructure-as-code/reference#databases)
+
+In the new project's environment, provision these shared variables through
+Railway. Use credentials generated for this replica and a synthetic owner.
+
+| Shared variable                     | Input                                      |
+| ----------------------------------- | ------------------------------------------ |
+| `VISOMI_REPLICA_HOST`               | Replica HTTPS hostname, without a scheme   |
+| `VISOMI_REPLICA_OWNER_EMAIL`        | Synthetic owner address                    |
+| `VISOMI_REPLICA_SESSION_SECRET`     | Fresh session secret of at least 32 bytes  |
+| `VISOMI_REPLICA_SOCIAL_IMAGE_TOKEN` | Fresh internal token of at least 32 bytes  |
+| `VISOMI_REPLICA_JAEGER_HTPASSWD`    | Collector bcrypt htpasswd record           |
+| `VISOMI_REPLICA_OTLP_AUTH_HEADER`   | Matching encoded OTLP Authorization header |
+
+With the CLI linked to the new project and the intended environment, preview
+the replica explicitly from the repository root.
+
+```sh
+railway config plan --file .railway/replica.ts --verbose --detailed-exit-code
+```
+
+On an empty target, review creates for the gateway, Postgres, Redis, Jaeger and
+`jaeger-data`. Check that Railway's managed databases use private networking and
+confirm the configured region is available. Stop if the plan shows deletes,
+replacements or volume detachments. After approving the plan for the verified
+replica project, use `railway config apply --file .railway/replica.ts` and bind
+only the gateway to the replica hostname. Verify `/api/ready`, persisted
+Postgres and Redis data, an authenticated OTLP export and a stored trace.
+To verify owner sign-in, initialize a synthetic owner using the
+[owner setup runbook](../docs/migration/contact-cutover.md) and configure a
+replica mail sandbox or a replica TOTP key. Optional SMTP and TOTP values set
+on the replica gateway are preserved by subsequent plans.
+
 ## SSR proxy configuration and release gate
 
 With a public HTTPS `AUTH_ORIGIN`, production SSR uses Angular's official

@@ -47,6 +47,7 @@
       "inputs": [
         "default",
         "^production",
+        "{workspaceRoot}/.railway/jaeger-image.ts",
         "{workspaceRoot}/.railway/jaeger.yaml",
         "{workspaceRoot}/tools/deployment/jaeger-check.mjs",
         "{workspaceRoot}/tools/testing/jaeger-compose.ts",
@@ -65,7 +66,7 @@
       "dependsOn": ["development-check"],
       "options": {
         "commands": [
-          "tsc --noEmit --module esnext --moduleResolution bundler --allowImportingTsExtensions --target es2022 --types node --skipLibCheck .railway/railway.ts",
+          "tsc --noEmit --module esnext --moduleResolution bundler --allowImportingTsExtensions --target es2022 --types node --skipLibCheck .railway/railway.ts .railway/replica.ts",
           "tsc -p tools/testing/tsconfig.json",
           "eslint .railway tools/deployment/*.mjs tools/testing/*.ts tools/testing/*.mjs",
           "bash -n tools/deployment/container.sh",
