@@ -46,7 +46,7 @@ for (const { failure, role, respond } of [
   }) => {
     await openOwnerPage(page, baseURL!, `${role}-${browserName}`);
 
-    await expect(page.locator('article')).toHaveCount(25);
+    await expect(page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr')).toHaveCount(25);
 
     await page.route('**/api/auth/logout', respond);
 
@@ -56,7 +56,7 @@ for (const { failure, role, respond } of [
 
     await expect(page).toHaveURL(/\/admin\/dashboard$/);
 
-    await expect(page.locator('article')).toHaveCount(25);
+    await expect(page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr')).toHaveCount(25);
 
     const active = await page.request.get('/api/auth/session');
     const session = await active.json();
@@ -69,7 +69,7 @@ for (const { failure, role, respond } of [
 
     await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 
-    await expect(page.locator('article')).toHaveCount(0);
+    await expect(page.getByRole('table', { name: 'Contact requests' })).toHaveCount(0);
 
     const signedOut = await page.request.get('/api/auth/session');
     const anonymous = await signedOut.json();
@@ -113,19 +113,22 @@ function expectedContacts(payload: ContactPayload) {
   return 'items' in payload ? payload.items : [payload.item];
 }
 
-for (const { navigation, role, pattern, link, url } of [
+for (const { navigation, role, pattern, link, results, url } of [
   {
     navigation: 'pagination',
     role: 'paginationFocusOwner',
     pattern: '**/api/contact/submissions?*',
     link: (page: Page) => page.getByRole('link', { name: 'Older requests' }),
+    results: (page: Page) => page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr'),
     url: /\/admin\/dashboard\?before=/,
   },
   {
     navigation: 'detail',
     role: 'detailFocusOwner',
     pattern: '**/api/contact/submissions/*',
-    link: (page: Page) => page.locator('article a').first(),
+    link: (page: Page) =>
+      page.getByRole('table', { name: 'Contact requests' }).getByRole('rowheader').getByRole('link').first(),
+    results: (page: Page) => page.locator('article'),
     url: /\/admin\/contacts\/\d+$/,
   },
 ]) {
@@ -136,7 +139,7 @@ for (const { navigation, role, pattern, link, url } of [
   }) => {
     await openOwnerPage(page, baseURL!, `${role}-${browserName}`);
 
-    await expect(page.locator('article')).toHaveCount(25);
+    await expect(page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr')).toHaveCount(25);
 
     let release: () => void = () => undefined;
     const blocked = new Promise<void>((resolve) => {
@@ -190,9 +193,9 @@ for (const { navigation, role, pattern, link, url } of [
 
       await expect(page).toHaveURL(url);
 
-      await expect(page.locator('article')).toHaveCount(contacts.length);
+      await expect(results(page)).toHaveCount(contacts.length);
 
-      await expect(page.locator('article').first()).toContainText(contacts[0].name);
+      await expect(results(page).first()).toContainText(contacts[0].name);
 
       await expect(page.getByRole('alert')).toHaveCount(0);
     } finally {

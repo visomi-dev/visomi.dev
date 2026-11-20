@@ -70,19 +70,19 @@ test('logout removes private data from another open tab immediately', async ({ p
 
   await visitDashboard(page);
 
-  await expect(page.locator('article')).toHaveCount(25);
+  await expect(page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr')).toHaveCount(25);
 
   const second = await page.context().newPage();
 
   await visitDashboard(second);
 
-  await expect(second.locator('article')).toHaveCount(25);
+  await expect(second.getByRole('table', { name: 'Contact requests' }).locator('tbody tr')).toHaveCount(25);
 
   await second.getByRole('button', { name: 'Sign out', exact: true }).click();
 
   await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 
-  await expect(page.locator('article')).toHaveCount(0);
+  await expect(page.getByRole('table', { name: 'Contact requests' })).toHaveCount(0);
 
   await expect(second).toHaveURL(/\/admin\/auth\/sign-in$/);
 
@@ -106,7 +106,7 @@ test('focus revalidates expiry without BroadcastChannel or a realtime connection
 
   await visitDashboard(page);
 
-  await expect(page.locator('article')).toHaveCount(25);
+  await expect(page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr')).toHaveCount(25);
 
   await revoke(page);
 
@@ -114,7 +114,7 @@ test('focus revalidates expiry without BroadcastChannel or a realtime connection
 
   await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 
-  await expect(page.locator('article')).toHaveCount(0);
+  await expect(page.getByRole('table', { name: 'Contact requests' })).toHaveCount(0);
 });
 
 test('the existing realtime session channel clears revoked data without a tab notice', async ({
@@ -138,13 +138,13 @@ test('the existing realtime session channel clears revoked data without a tab no
 
   await connected;
 
-  await expect(page.locator('article')).toHaveCount(25);
+  await expect(page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr')).toHaveCount(25);
 
   await revoke(page);
 
   await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 
-  await expect(page.locator('article')).toHaveCount(0);
+  await expect(page.getByRole('table', { name: 'Contact requests' })).toHaveCount(0);
 });
 
 test('a late private response after logout never restores contact data', async ({ page, baseURL, browserName }) => {
@@ -160,7 +160,7 @@ test('a late private response after logout never restores contact data', async (
 
   await connected;
 
-  await expect(page.locator('article')).toHaveCount(25);
+  await expect(page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr')).toHaveCount(25);
 
   let release: () => void = () => undefined;
   const blocked = new Promise<void>((resolve) => {
@@ -198,5 +198,5 @@ test('a late private response after logout never restores contact data', async (
 
   await expect(page).toHaveURL(/\/admin\/auth\/sign-in$/);
 
-  await expect(page.locator('article')).toHaveCount(0);
+  await expect(page.getByRole('table', { name: 'Contact requests' })).toHaveCount(0);
 });
