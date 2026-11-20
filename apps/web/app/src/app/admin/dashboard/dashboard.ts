@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { Session } from '../auth/session';
 import { NavigationHeading } from '../../shared/navigation-heading';
+import { Table } from '../../ui/data/table';
 import { Alert } from '../../ui/feedback/alert';
 import { Card } from '../../ui/layout/card';
 import { Heading } from '../../ui/typography/heading';
@@ -14,7 +15,7 @@ import type { DashboardData } from './dashboard.resolver';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [NavigationHeading, RouterLink, Alert, Card, Heading, Link, Text],
+  imports: [NavigationHeading, RouterLink, Alert, Card, Heading, Link, Text, Table],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

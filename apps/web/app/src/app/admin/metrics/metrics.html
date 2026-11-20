@@ -90,8 +90,8 @@
         @if (snapshot.browserErrors; as browserErrors) {
           @if (browserErrors.events.length) {
             <p appUI uiSize="sm" tone="muted" i18n="@@browserDiagnosticsTraceHelp">
-              A trace ID identifies the generated trace. If trace export is configured, look up the ID in the private
-              Jaeger instance to confirm delivery. Collapsing a report only hides its details.
+              Open a report to see its affected screen and diagnostic context. If trace export is configured, use the
+              trace ID to look it up in the private Jaeger instance.
             </p>
 
             <ul class="space-y-2">
@@ -99,9 +99,21 @@
                 <li>
                   <details appUI>
                     <summary>
-                      <time [attr.datetime]="event.receivedAt">{{ event.receivedAt | date: 'short' : 'UTC' }} UTC</time>
-                      · {{ event.application }} · {{ event.kind }}
+                      <span class="inline-flex flex-wrap items-baseline gap-x-4 gap-y-1 align-middle">
+                        <span>
+                          <time [attr.datetime]="event.receivedAt"
+                            >{{ event.receivedAt | date: 'short' : 'UTC' }} UTC</time
+                          >
+                          · {{ event.application }} · {{ event.kind }}
+                        </span>
+
+                        <span class="underline underline-offset-2" i18n="@@browserDiagnosticsOpenDetails">
+                          Report details
+                        </span>
+                      </span>
                     </summary>
+
+                    <p appUI tone="muted">{{ reportGuidance[event.code] }}</p>
 
                     <dl appUI>
                       <dt i18n="@@browserDiagnosticsCode">Report code</dt>
@@ -132,11 +144,13 @@
                             >{{ location.asset }}:{{ location.line }}:{{ location.column }}</code
                           >
                         </dd>
+                      }
 
+                      @if (event.release; as release) {
                         <dt i18n="@@browserDiagnosticsRelease">Release fingerprint</dt>
 
                         <dd class="break-all">
-                          <code appUI variant="plain">{{ event.release }}</code>
+                          <code appUI variant="plain">{{ release }}</code>
                         </dd>
                       }
                     </dl>

@@ -225,13 +225,6 @@
           <context context-type="linenumber">22,25</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="dashboardAccessVerify" datatype="html">
-        <source> Verify code </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">apps/web/app/src/app/admin/auth/sign-in/password/password.html</context>
-          <context context-type="linenumber">73,75</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="signInVerifyRestart" datatype="html">
         <source>Start again</source>
         <context-group purpose="location">
@@ -344,6 +337,18 @@
       </trans-unit>
       <trans-unit id="shellExpandSidebar" datatype="html"><source>Expand sidebar</source></trans-unit>
       <trans-unit id="shellCollapseSidebar" datatype="html"><source>Collapse sidebar</source></trans-unit>
+      <trans-unit id="dashboardRequestsName" datatype="html"><source>Name</source></trans-unit>
+      <trans-unit id="dashboardRequestsEmail" datatype="html"><source>Email</source></trans-unit>
+      <trans-unit id="dashboardRequestsDate" datatype="html"><source>Received</source></trans-unit>
+      <trans-unit id="dashboardRequestsType" datatype="html"><source>Type</source></trans-unit>
+      <trans-unit id="dashboardRequestsLocale" datatype="html"><source>Language</source></trans-unit>
+      <trans-unit id="signInVerifyAutomatic" datatype="html"><source>Verification starts when you enter all six digits.</source></trans-unit>
+      <trans-unit id="browserDiagnosticsOpenDetails" datatype="html"><source>Report details</source></trans-unit>
+      <trans-unit id="browserDiagnosticsStartupGuidance" datatype="html"><source>The app reported a failure during startup. Check whether the affected screen can open.</source></trans-unit>
+      <trans-unit id="browserDiagnosticsRequestGuidance" datatype="html"><source>A browser request failed. Check whether the action on the affected screen can complete.</source></trans-unit>
+      <trans-unit id="browserDiagnosticsExceptionGuidance" datatype="html"><source>The browser reported an unhandled exception. Reproduce the affected action if the error repeats or interrupts a task.</source></trans-unit>
+      <trans-unit id="browserDiagnosticsRejectionGuidance" datatype="html"><source>An asynchronous browser operation failed. Reproduce the affected action if the error repeats or interrupts a task.</source></trans-unit>
+      <trans-unit id="browserDiagnosticsTraceHelp" datatype="html"><source>Open a report to see its affected screen and diagnostic context. If trace export is configured, use the trace ID to look it up in the private Jaeger instance.</source></trans-unit>
     </body>
   </file>
 </xliff>

@@ -3,6 +3,8 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import type { BrowserErrorCode } from '@visomi-stack/web-shared-observability/lib/contract';
+
 import { Session } from '../auth/session';
 import { NavigationHeading } from '../../shared/navigation-heading';
 import { Button } from '../../ui/actions/button';
@@ -47,6 +49,13 @@ export class Metrics {
 
     return this.session.valid() && data?.state === 'ready' ? data.snapshot : null;
   });
+
+  protected readonly reportGuidance = {
+    startup_failed: $localize`:@@browserDiagnosticsStartupGuidance:The app reported a failure during startup. Check whether the affected screen can open.`,
+    request_failed: $localize`:@@browserDiagnosticsRequestGuidance:A browser request failed. Check whether the action on the affected screen can complete.`,
+    unhandled_exception: $localize`:@@browserDiagnosticsExceptionGuidance:The browser reported an unhandled exception. Reproduce the affected action if the error repeats or interrupts a task.`,
+    unhandled_rejection: $localize`:@@browserDiagnosticsRejectionGuidance:An asynchronous browser operation failed. Reproduce the affected action if the error repeats or interrupts a task.`,
+  } satisfies Record<BrowserErrorCode, string>;
 
   async refresh(): Promise<void> {
     this.refreshing.set(true);
