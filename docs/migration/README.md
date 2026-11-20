@@ -211,9 +211,9 @@ actual gitignore matching in an owned isolated repository, including root anchor
 documentation. A drift assertion keeps both source configuration forms aligned. The application
 build already declares shared styles/PostCSS and canonical brand SVGs as Nx inputs.
 
-These source checks do not apply or observe hosted Railway settings. Before relying on a logo/style
-commit to trigger deployment, the authorized operator must reconcile the intended service's watch
-selection, apply the approved configuration and observe an approved source-trigger event.
+These source checks are local. The [Railway Config as Code migration runbook](../../.railway/README.md)
+records the redacted production plan and the remaining cutover gates. Validate the trigger with an
+approved source change after persisting the watch settings on the existing service.
 
 The owner account/configuration must also pass the read-only `web-api:owner-preflight` and subsequent
 interactive email/second-factor acceptance before enabling access. See [the cutover runbook](contact-cutover.md).

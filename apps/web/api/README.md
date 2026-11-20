@@ -42,12 +42,11 @@ proxy addresses may influence forwarded-protocol handling.
 
 ### Railway deployment
 
-`.railway/railway.ts` declares PostgreSQL and Redis with their volumes, the gateway's
-private database reference, authentication origin, relying party, ingress proxy
-allowlist and pre-deploy migration command. `preserve()` retains the session secret
-and SMTP configuration already held by Railway. Redis provides the private
-realtime transport; authentication sessions remain in PostgreSQL. Revalidate the proxy allowlist when ingress networking
-changes; it is a deployment setting rather than a platform-wide guarantee.
+The [Railway migration partial](../../../.railway/README.md) scopes IaC to
+the existing gateway service. Railway keeps its private PostgreSQL and Redis
+connections, volumes, auth and SMTP variables. Redis provides the private
+realtime transport. Authentication sessions remain in PostgreSQL. Revalidate the
+proxy allowlist when ingress networking changes.
 
 Provision PostgreSQL in the same project and environment as `web-gateway` and
 reference its private `DATABASE_URL`. Set `AUTH_ORIGIN` to the public HTTPS origin,
