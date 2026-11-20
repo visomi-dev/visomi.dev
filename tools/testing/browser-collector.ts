@@ -5,14 +5,11 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { bcrypt } from 'hash-wasm';
 import { runOwnedCommand } from '@visomi-stack/dev-testing/lib/owned-command';
 
-// Disposable, loopback-only collector for browser -> intake -> persisted trace acceptance.
-export async function browserCollector(signal?: AbortSignal) {
+import { jaegerImage, localJaeger } from './jaeger-compose';
+
+async function hostedCollector(configuration: string, htpasswd: string, signal?: AbortSignal) {
   const engine = process.env['CONTAINER_ENGINE'] || 'docker';
   const name = `visomi-browser-traces-${randomUUID()}`;
-  const image = 'jaegertracing/jaeger:2.22.0@sha256:4d9387a02389204ef9a256cf291a36cfbae91983010e403b4d300202d07eff2a';
-  const configuration = await readFile(new URL('../../.railway/jaeger.yaml', import.meta.url), 'utf8');
-  const password = randomBytes(24).toString('hex');
-  const hash = await bcrypt({ password, salt: randomBytes(16), costFactor: 4, outputType: 'encoded' });
   const command = async (args: string[], commandSignal?: AbortSignal) => {
     const result = await runOwnedCommand(engine, args, {
       timeout: 30000,
@@ -44,8 +41,8 @@ export async function browserCollector(signal?: AbortSignal) {
         '--env',
         `JAEGER_CONFIG=${configuration}`,
         '--env',
-        `JAEGER_HTPASSWD=browser:${hash}`,
-        image,
+        `JAEGER_HTPASSWD=${htpasswd}`,
+        jaegerImage,
         '--config',
         'env:JAEGER_CONFIG',
       ],
@@ -56,6 +53,31 @@ export async function browserCollector(signal?: AbortSignal) {
     const receiver = `http://${receiverPort}`;
     const queryPort = await command(['port', name, '16686/tcp'], signal);
     const query = `http://${queryPort}`;
+
+    return { query, receiver, stop };
+  } catch (error) {
+    await stop().catch(() => undefined);
+
+    throw error;
+  }
+}
+
+// Disposable, loopback-only collector for browser -> intake -> persisted trace acceptance.
+export async function browserCollector(signal?: AbortSignal) {
+  const configuration = await readFile(new URL('../../.railway/jaeger.yaml', import.meta.url), 'utf8');
+  const password = randomBytes(24).toString('hex');
+  const hash = await bcrypt({ password, salt: randomBytes(16), costFactor: 4, outputType: 'encoded' });
+  const htpasswd = `browser:${hash}`;
+  let cleanup: (() => Promise<void>) | undefined;
+
+  try {
+    const fixture =
+      process.env['GITHUB_ACTIONS'] === 'true'
+        ? hostedCollector(configuration, htpasswd, signal)
+        : localJaeger({ prefix: 'visomi-browser-traces', configuration, htpasswd, signal });
+    const { receiver, query, stop } = await fixture;
+
+    cleanup = stop;
 
     for (let attempt = 0; ; attempt++) {
       const timeout = AbortSignal.timeout(1000);
@@ -84,7 +106,7 @@ export async function browserCollector(signal?: AbortSignal) {
 
     return { query, receiver, headers: `authorization=${encodeURIComponent(authorization)}`, stop };
   } catch {
-    await stop().catch(() => undefined);
+    await cleanup?.();
 
     throw new Error('browser_collector_setup_failed');
   }
