@@ -15,13 +15,11 @@ import { Preferences } from '../../shared/layout/preferences/preferences';
 import { Sidebar } from '../../shared/layout/sidebar/sidebar';
 import { Topbar } from '../../shared/layout/topbar/topbar';
 import { ConsentNotice } from '../../shared/observability/consent-notice/consent-notice';
-import { PrivacyLink } from '../../shared/observability/privacy-link/privacy-link';
 
 @Component({
   selector: 'app-admin-shell',
   imports: [
     ConsentNotice,
-    PrivacyLink,
     NgOptimizedImage,
     RouterLink,
     RouterLinkActive,

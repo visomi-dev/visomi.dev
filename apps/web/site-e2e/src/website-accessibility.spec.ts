@@ -25,9 +25,10 @@ for (const theme of ['light', 'dark']) {
   }
 }
 
-for (const { url, width, height, theme, title, reject, position, inset, outsideOpacity } of [
+for (const { url, privacyPath, width, height, theme, title, reject, position, inset, outsideOpacity } of [
   {
     url: '/',
+    privacyPath: '/privacy/',
     width: 1440,
     height: 900,
     theme: 'light',
@@ -39,6 +40,7 @@ for (const { url, width, height, theme, title, reject, position, inset, outsideO
   },
   {
     url: '/es/',
+    privacyPath: '/es/privacy/',
     width: 375,
     height: 844,
     theme: 'dark',
@@ -50,6 +52,7 @@ for (const { url, width, height, theme, title, reject, position, inset, outsideO
   },
   {
     url: '/',
+    privacyPath: '/privacy/',
     width: 1440,
     height: 620,
     theme: 'dark',
@@ -107,7 +110,9 @@ for (const { url, width, height, theme, title, reject, position, inset, outsideO
 
     await page.keyboard.press('Tab');
 
-    await expect(page.locator('footer a[href$="/privacy/"]')).toBeFocused();
+    const privacy = page.locator(`footer a[href="${privacyPath}"]`);
+
+    await expect(privacy).toBeFocused();
 
     await choice.focus();
 
@@ -123,5 +128,9 @@ for (const { url, width, height, theme, title, reject, position, inset, outsideO
     const audit = await new AxeBuilder({ page }).analyze();
 
     expect(audit.violations).toEqual([]);
+
+    await privacy.click();
+
+    await expect(page).toHaveURL(privacyPath);
   });
 }

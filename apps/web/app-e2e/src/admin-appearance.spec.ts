@@ -26,6 +26,7 @@ for (const locale of ['en', 'es'] as const) {
     await page.goto(`/app/${locale}/admin/auth/sign-in`);
 
     const theme = page.getByRole('button', { name: locale === 'es' ? 'Tema oscuro' : 'Dark theme' });
+    const privacy = page.getByRole('link', { name: locale === 'es' ? 'Privacidad' : 'Privacy', exact: true });
 
     await expect(theme).toBeVisible();
 
@@ -47,6 +48,8 @@ for (const locale of ['en', 'es'] as const) {
       { width: 1440, height: 900 },
     ]) {
       await page.setViewportSize(viewport);
+
+      await expect(privacy).toHaveCount(0);
 
       for (const dark of [false, true]) {
         await setDarkTheme(theme, dark);
@@ -113,6 +116,7 @@ for (const locale of ['en', 'es'] as const) {
     const content = shell.locator('[data-slot="page-content"]');
     const header = shell.locator('header[app-topbar]');
     const theme = page.getByRole('button', { name: locale === 'es' ? 'Tema oscuro' : 'Dark theme' });
+    const privacy = page.getByRole('link', { name: locale === 'es' ? 'Privacidad' : 'Privacy', exact: true });
 
     await expect(scroll).toBeVisible();
 
@@ -120,6 +124,10 @@ for (const locale of ['en', 'es'] as const) {
 
     for (const width of [390, 1440]) {
       await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+
+      await expect(privacy).toHaveCount(0);
+
+      await expect(shell.locator('[data-shell-footer]')).toHaveCount(0);
 
       for (const dark of [false, true]) {
         await setDarkTheme(theme, dark);
@@ -136,6 +144,10 @@ for (const locale of ['en', 'es'] as const) {
         });
       }
     }
+
+    const signOut = page.getByRole('button', { name: locale === 'es' ? 'Cerrar sesión' : 'Sign out', exact: true });
+
+    await signOut.click({ trial: true });
 
     await page.setViewportSize({ width: 1680, height: 620 });
 

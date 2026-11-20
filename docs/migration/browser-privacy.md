@@ -26,11 +26,12 @@ Stack with their existing tokens, components and localized routes.
 
 The compact card sits at the bottom left on tall desktop viewports with a fine
 pointer. It yields when keyboard focus moves outside the card. On narrow, short
-and touch viewports, it stays in flow after the primary content. The Portfolio
-hero, `/privacy/` and `/es/privacy/`, and the persistent footer links keep their
-existing roles. Both controls use the same variant and size. The sign-in card
-flows after the viewport-height form and footer so its appearance cannot recenter
-the form during hydration.
+and touch viewports, it stays in flow after the primary content. The persistent
+footer link lives on the public Portfolio and leads to `/privacy/` or
+`/es/privacy/`. The shared consent notice links to the explanation of how data
+is used. Both controls use the same variant and size. The sign-in notice flows
+after the viewport-height form so its appearance cannot recenter the form during
+hydration.
 
 A fresh grant replaces the local notice with a 10-second confirmation. The
 es-MX acknowledgment is “Gracias.” The countdown is visual and its separate
