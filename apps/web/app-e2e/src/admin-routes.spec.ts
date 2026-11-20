@@ -22,6 +22,7 @@ for (const locale of ['en', 'es']) {
       const html = await response.text();
 
       expect(html).toContain(locale === 'es' ? 'Página no encontrada' : 'Page not found');
+      expect(html).not.toMatch(/href="\/(?:es\/)?privacy\/"/);
       expect(html).not.toContain('Synthetic request');
     }
   });

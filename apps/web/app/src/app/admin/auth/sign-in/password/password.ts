@@ -17,13 +17,11 @@ import { Heading } from '../../../../ui/typography/heading';
 import { Text } from '../../../../ui/typography/text';
 import { Session } from '../../session';
 import { ConsentNotice } from '../../../../shared/observability/consent-notice/consent-notice';
-import { PrivacyLink } from '../../../../shared/observability/privacy-link/privacy-link';
 
 @Component({
   selector: 'app-sign-in',
   imports: [
     ConsentNotice,
-    PrivacyLink,
     NavigationHeading,
     FormsModule,
     Preferences,
