@@ -44,7 +44,7 @@ export class AppShell {
       return;
     }
 
-    // Keep Angular's route heading focus from taking over on a hash navigation.
+    // Move focus within the current page without navigating the router.
     event.preventDefault();
     main.scrollTop = 0;
     main.focus();

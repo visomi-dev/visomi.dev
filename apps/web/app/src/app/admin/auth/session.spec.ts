@@ -58,7 +58,9 @@ it('drops a late session response after invalidation and refreshes the CSRF toke
   const old = session.revalidate();
   const previous = http.expectOne('/api/auth/session');
 
+  expect(session.checking()).toBe(true);
   session.invalidate();
+  expect(session.checking()).toBe(false);
   const fresh = session.revalidate();
 
   previous.flush(owner);
@@ -66,6 +68,7 @@ it('drops a late session response after invalidation and refreshes the CSRF toke
   await old;
 
   expect(session.valid()).toBe(false);
+  expect(session.checking()).toBe(true);
   http.expectOne('/api/auth/session').flush({ ...owner, csrfToken: 'synthetic-rotated' });
 
   await Promise.resolve();
@@ -75,6 +78,7 @@ it('drops a late session response after invalidation and refreshes the CSRF toke
   await fresh;
 
   expect(session.valid()).toBe(true);
+  expect(session.checking()).toBe(false);
 
   const token = await session.csrf();
 
@@ -107,6 +111,7 @@ it('clears private visibility and redirects on expiry or failed revalidation', a
   await failed;
 
   expect(session.valid()).toBe(false);
+  expect(session.checking()).toBe(false);
 });
 
 async function authorizeOwner() {

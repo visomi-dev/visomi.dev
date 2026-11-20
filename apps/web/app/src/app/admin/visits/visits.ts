@@ -6,7 +6,6 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { visitPeriods, type VisitSummary } from '@visomi-stack/web-shared-observability/lib/visits';
 
 import { Session } from '../auth/session';
-import { NavigationHeading } from '../../shared/navigation-heading';
 import { LinkButton } from '../../ui/actions/link-button';
 import { Alert } from '../../ui/feedback/alert';
 import { Card } from '../../ui/layout/card';
@@ -15,7 +14,7 @@ import { Text } from '../../ui/typography/text';
 
 @Component({
   selector: 'app-visits',
-  imports: [NavigationHeading, DecimalPipe, RouterLink, LinkButton, Alert, Card, Heading, Text],
+  imports: [DecimalPipe, RouterLink, LinkButton, Alert, Card, Heading, Text],
   templateUrl: './visits.html',
   styleUrl: './visits.css',
 })

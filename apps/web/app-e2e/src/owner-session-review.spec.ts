@@ -119,7 +119,7 @@ for (const { navigation, role, pattern, link, results, url } of [
     role: 'paginationFocusOwner',
     pattern: '**/api/contact/submissions?*',
     link: (page: Page) => page.getByRole('link', { name: 'Older requests' }),
-    results: (page: Page) => page.getByRole('table', { name: 'Contact requests' }).locator('tbody tr'),
+    results: (page: Page) => page.getByRole('table', { name: 'Contact requests' }).getByRole('rowheader'),
     url: /\/admin\/dashboard\?before=/,
   },
   {
@@ -128,7 +128,7 @@ for (const { navigation, role, pattern, link, results, url } of [
     pattern: '**/api/contact/submissions/*',
     link: (page: Page) =>
       page.getByRole('table', { name: 'Contact requests' }).getByRole('rowheader').getByRole('link').first(),
-    results: (page: Page) => page.locator('article'),
+    results: (page: Page) => page.getByRole('article'),
     url: /\/admin\/contacts\/\d+$/,
   },
 ]) {
@@ -195,7 +195,7 @@ for (const { navigation, role, pattern, link, results, url } of [
 
       await expect(results(page)).toHaveCount(contacts.length);
 
-      await expect(results(page).first()).toContainText(contacts[0].name);
+      await expect(results(page).first()).toHaveAccessibleName(contacts[0].name);
 
       await expect(page.getByRole('alert')).toHaveCount(0);
     } finally {

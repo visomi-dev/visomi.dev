@@ -126,17 +126,31 @@
   </header>
 
   <div class="flex min-w-0 flex-col gap-6">
+    @if (!valid()) {
+      <h1 appUI class="sr-only" i18n="@@adminAccessHeading">Administration</h1>
+    }
+
     @if (failed()) {
       <div appUI="alert" tone="danger" role="alert" i18n="@@dashboardAccessError">
         Access could not be verified. Please try again.
       </div>
     }
 
-    @if (valid()) {
-      <router-outlet class="hidden" />
-    } @else {
-      <p appUI tone="muted" role="status" i18n="@@dashboardAccessLoading">Checking access…</p>
-    }
+    <div class="relative min-h-7" [attr.aria-busy]="checkingAccess()">
+      @if (valid()) {
+        <router-outlet class="hidden" />
+      } @else if (checkingAccess()) {
+        <div class="absolute inset-x-0 top-0 flex h-7 items-center" aria-hidden="true">
+          <span [class]="loaderClasses"></span>
+        </div>
+      }
+    </div>
+
+    <p role="status" class="sr-only">
+      @if (checkingAccess()) {
+        <span i18n="@@dashboardAccessLoading">Checking access…</span>
+      }
+    </p>
   </div>
 
   <app-consent-notice class="block [--ui-consent-bottom:4rem]" />

@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page, type Route } from '@playwright/test';
 import { workspaceRoot } from '@nx/devkit';
 
 async function enterSyntheticCode(page: Page, verification: Locator, browserName: string) {
@@ -28,6 +28,52 @@ async function enterSyntheticCode(page: Page, verification: Locator, browserName
   await page.evaluate((text) => navigator.clipboard.writeText(text), code);
 
   await verification.press('ControlOrMeta+V');
+}
+
+async function submitWithPendingCheck(
+  page: Page,
+  submit: Locator,
+  loading: string,
+  complete: (route: Route) => Promise<void>,
+) {
+  const form = page.locator('main form');
+  const buttonBox = await submit.boundingBox();
+  const formBox = await form.boundingBox();
+
+  await expect(submit).toHaveAttribute('aria-busy', 'false');
+
+  await page.route(
+    '**/api/auth/password/sign-in',
+    async (route) => {
+      try {
+        await expect(submit).toBeDisabled();
+
+        await expect(submit).toHaveAttribute('aria-busy', 'true');
+
+        const mask = await submit.evaluate((element) => getComputedStyle(element, '::after').maskImage);
+
+        expect(mask).toContain('url(');
+        const announcement = page.getByRole('status').filter({ hasText: loading });
+
+        await expect(announcement).toHaveClass('sr-only');
+
+        await expect(announcement).toHaveCSS('width', '1px');
+
+        await expect(page.getByText(loading, { exact: true })).toHaveCount(1);
+
+        const waitingButtonBox = await submit.boundingBox();
+        const waitingFormBox = await form.boundingBox();
+
+        expect(waitingButtonBox).toEqual(buttonBox);
+        expect(waitingFormBox).toEqual(formBox);
+      } finally {
+        await complete(route);
+      }
+    },
+    { times: 1 },
+  );
+
+  await submit.press('Enter');
 }
 
 test('anonymous users and authenticated non-owners cannot open requests', async ({
@@ -140,7 +186,20 @@ test('the owner reads paginated requests and escaped message content from the pr
 
   expect(executed).toBe(false);
 
-  await page.getByRole('link', { name: 'All requests' }).click();
+  const breadcrumb = page.getByRole('navigation', { name: 'Breadcrumb' });
+  const allRequests = breadcrumb.getByRole('link', { name: 'All requests', exact: true });
+
+  await expect(page.getByRole('heading', { level: 1, name: `Browser request ${browserName}` })).toBeVisible();
+
+  await expect(breadcrumb.getByText('Request details', { exact: true })).toHaveAttribute('aria-current', 'page');
+
+  await expect(page.getByRole('link', { name: 'All requests', exact: true })).toHaveCount(1);
+
+  await expect(allRequests).toHaveAttribute('href', '/app/en/admin/dashboard');
+
+  await allRequests.press('Enter');
+
+  await expect(page).toHaveURL(/\/app\/en\/admin\/dashboard$/);
 
   const olderRequests = page.getByRole('link', { name: 'Older requests' });
 
@@ -208,29 +267,37 @@ test('private access completes the stack password and email second-factor flow',
 
   const submit = page.getByRole('button', { name: 'Continue' });
 
-  await page.route(
-    '**/api/auth/password/sign-in',
-    async (route) => {
-      try {
-        await expect(submit).toBeDisabled();
-
-        await expect(submit).toHaveAttribute('aria-busy', 'true');
-
-        const mask = await submit.evaluate((element) => getComputedStyle(element, '::after').maskImage);
-
-        expect(mask).toContain('url(');
-      } finally {
-        await route.continue();
-      }
-    },
-    { times: 1 },
-  );
-
-  await submit.click();
+  await submitWithPendingCheck(page, submit, 'Checking access…', (route) => route.continue());
 
   const verification = page.getByLabel('Verification code');
+  const restart = page.getByRole('link', { name: 'Start again', exact: true });
+  const password = page.getByLabel('Password', { exact: true });
 
-  await expect(verification).toBeVisible();
+  await expect(verification).toBeFocused();
+
+  await expect(restart).toHaveAttribute('href', '/app/en/admin/auth/sign-in');
+
+  await page.keyboard.press('Tab');
+
+  await expect(restart).toBeFocused();
+
+  await expect(restart).toHaveCSS('outline-width', '2px');
+
+  await expect(restart).not.toHaveCSS('outline-color', 'rgba(0, 0, 0, 0)');
+
+  await page.keyboard.press('Enter');
+
+  await expect(page.getByLabel('Verified email')).toHaveValue('owner@example.test');
+
+  await expect(password).toHaveValue('');
+
+  await expect(password).toBeFocused();
+
+  await password.fill('Synthetic password 42!');
+
+  await password.press('Enter');
+
+  await expect(verification).toBeFocused();
 
   await expect(verification).toHaveAttribute('autocomplete', 'one-time-code');
 
@@ -297,6 +364,10 @@ test('private access completes the stack password and email second-factor flow',
     { times: 1 },
   );
 
+  const loader = page.locator('main .ui-loader');
+  const announcement = page.getByRole('status').filter({ hasText: 'Checking access…' });
+  const verificationStatus = page.locator('main [aria-busy]').filter({ has: verification });
+
   try {
     await enterSyntheticCode(page, verification, browserName);
 
@@ -304,7 +375,21 @@ test('private access completes the stack password and email second-factor flow',
 
     await expect(verification).toBeDisabled();
 
-    await expect(page.getByText('Checking access…', { exact: true })).toBeVisible();
+    await expect(verificationStatus).toHaveAttribute('aria-busy', 'true');
+
+    await expect(restart).toHaveAttribute('aria-disabled', 'true');
+
+    await expect(loader).toBeVisible();
+
+    await expect(loader).toHaveAttribute('aria-hidden', 'true');
+
+    const loaderMask = await loader.evaluate((element) => getComputedStyle(element).maskImage);
+
+    expect(loaderMask).toContain('url(');
+
+    await expect(announcement).toHaveClass('sr-only');
+
+    await verification.dispatchEvent('input');
 
     await expect.poll(() => verificationRequests).toBe(1);
 
@@ -314,6 +399,11 @@ test('private access completes the stack password and email second-factor flow',
       await page.setViewportSize({ width, height: 844 });
 
       await page.evaluate(() => document.fonts.ready);
+
+      const restartBox = await restart.boundingBox();
+      const pinBox = await pin.boundingBox();
+
+      expect(restartBox!.y - (pinBox!.y + pinBox!.height)).toBeGreaterThanOrEqual(16);
 
       const geometry = await pin.evaluate((host) => {
         const field = host.parentElement!.getBoundingClientRect();
@@ -374,6 +464,12 @@ test('private access completes the stack password and email second-factor flow',
 
   await expect(verification).toBeEnabled();
 
+  await expect(verificationStatus).toHaveAttribute('aria-busy', 'false');
+
+  await expect(loader).toHaveCount(0);
+
+  await expect(announcement).toHaveCount(0);
+
   await expect(verification).toHaveValue('');
 
   await expect(verification).toHaveAttribute('aria-invalid', 'true');
@@ -390,7 +486,40 @@ test('private access completes the stack password and email second-factor flow',
     })
     .toMatch(/^\d{6}$/);
 
-  await verification.fill(code);
+  let releaseOwnerCheck!: () => void;
+  const ownerCheck = new Promise<void>((resolve) => {
+    releaseOwnerCheck = resolve;
+  });
+
+  await page.route(
+    '**/api/contact/session',
+    async (route) => {
+      await ownerCheck;
+
+      await route.continue();
+    },
+    { times: 1 },
+  );
+
+  const checkingOwner = page.waitForRequest((request) => request.url().endsWith('/api/contact/session'));
+
+  try {
+    await verification.fill(code);
+
+    await checkingOwner;
+
+    await expect(page).toHaveURL(/\/app\/en\/admin\/auth\/sign-in$/);
+
+    await expect(page.locator('app-admin-shell')).toHaveCount(0);
+
+    await expect(verificationStatus).toHaveAttribute('aria-busy', 'true');
+
+    await expect(loader).toBeVisible();
+
+    await expect(announcement).toHaveClass('sr-only');
+  } finally {
+    releaseOwnerCheck();
+  }
 
   await expect(page).toHaveURL(/\/app\/en\/admin\/dashboard$/);
 
@@ -412,4 +541,79 @@ test('the private app keeps the stack Spanish locale without changing public URL
 
   expect(publicEnglish.status()).toBe(200);
   expect(publicEnglish.headers()['location']).toBeUndefined();
+
+  await page.getByLabel('Correo verificado').fill('owner@example.test');
+
+  const password = page.getByLabel('Contraseña', { exact: true });
+
+  await password.fill('Synthetic password 42!');
+
+  const submit = page.getByRole('button', { name: 'Continuar' });
+
+  await submitWithPendingCheck(page, submit, 'Comprobando el acceso…', (route) =>
+    route.fulfill({ json: { flowId: 'synthetic-localized-flow', factor: 'email' } }),
+  );
+
+  const restart = page.getByRole('link', { name: 'Volver a empezar', exact: true });
+
+  await expect(restart).toHaveAttribute('href', '/app/es/admin/auth/sign-in');
+});
+
+test('a mobile Spanish detail breadcrumb links to all contact requests', async ({ page, baseURL, browserName }) => {
+  const directory = resolve(workspaceRoot, 'tmp', `browser-fixture-${new URL(baseURL!).port}`);
+  const fixture = await readFile(resolve(directory, 'session.json'), 'utf8');
+  const { cookies } = JSON.parse(fixture) as { cookies: Record<string, string> };
+
+  await page.context().addCookies([
+    {
+      name: '__Host-visomi.sid',
+      value: encodeURIComponent(cookies[`metricsOwner-${browserName}`]),
+      url: baseURL!,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'Strict',
+    },
+  ]);
+
+  await page.setViewportSize({ width: 320, height: 844 });
+
+  await page.goto('/app/es/admin/contacts/1');
+
+  const breadcrumb = page.getByRole('navigation', { name: 'Ruta de navegación' });
+  const allRequests = breadcrumb.getByRole('link', { name: 'Todas las solicitudes', exact: true });
+
+  await expect(page.getByRole('heading', { level: 1, name: 'Synthetic request 1' })).toBeVisible();
+
+  await expect(breadcrumb.getByText('Detalle de la solicitud')).toHaveAttribute('aria-current', 'page');
+
+  await expect(allRequests).toHaveAttribute('href', '/app/es/admin/dashboard');
+
+  const layout = await breadcrumb.evaluate((element) => ({
+    page: document.documentElement.scrollWidth,
+    viewport: innerWidth,
+    breadcrumb: element.scrollWidth,
+    available: element.clientWidth,
+  }));
+
+  expect(layout.page).toBe(layout.viewport);
+  expect(layout.breadcrumb).toBe(layout.available);
+  const accessibility = await new AxeBuilder({ page }).analyze();
+
+  expect(accessibility.violations).toEqual([]);
+
+  await allRequests.press('Tab');
+
+  await page.keyboard.press('Shift+Tab');
+
+  await expect(allRequests).toBeFocused();
+
+  await expect(allRequests).toHaveCSS('outline-width', '2px');
+
+  await expect(allRequests).not.toHaveCSS('outline-color', 'rgba(0, 0, 0, 0)');
+
+  await page.keyboard.press('Enter');
+
+  await expect(page).toHaveURL(/\/app\/es\/admin\/dashboard$/);
+
+  await expect(page.getByRole('table', { name: 'Solicitudes de contacto' })).toBeVisible();
 });
