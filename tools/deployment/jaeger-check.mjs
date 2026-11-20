@@ -9,9 +9,11 @@ import { fileURLToPath } from 'node:url';
 
 import { bcrypt } from 'hash-wasm';
 
+import { jaegerImage, localJaeger } from '../testing/jaeger-compose';
+
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const engine = process.env.CONTAINER_ENGINE || 'docker';
-const image = 'jaegertracing/jaeger:2.22.0@sha256:4d9387a02389204ef9a256cf291a36cfbae91983010e403b4d300202d07eff2a';
+const hosted = process.env.GITHUB_ACTIONS === 'true';
 const name = `visomi-jaeger-check-${randomUUID()}`;
 const volume = `${name}-data`;
 const configuration = await readFile(new URL('../../.railway/jaeger.yaml', import.meta.url), 'utf8');
@@ -28,11 +30,24 @@ const htpasswd = `gateway:${passwordHash}`;
 const container = (...args) =>
   execFileSync(engine, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 let child;
+let local;
 let volumeCreated = false;
 let containerCreated = false;
+const controller = new AbortController();
+const { signal } = controller;
+const abort = (reason) => {
+  process.exitCode = reason === 'SIGINT' ? 130 : 143;
+  controller.abort();
+};
+const fetch = (input, options) => globalThis.fetch(input, { ...options, signal });
+
+process.on('SIGINT', abort);
+process.on('SIGTERM', abort);
 
 async function eventually(work) {
   for (let attempt = 0; attempt < 100; attempt++) {
+    signal.throwIfAborted();
+
     try {
       const result = await work();
 
@@ -43,13 +58,15 @@ async function eventually(work) {
       // Container readiness and storage visibility are asynchronous.
     }
 
-    await delay(100);
+    await delay(100, undefined, { signal });
   }
 
   throw new Error('jaeger_check_timeout');
 }
 
 async function startGateway(endpoint) {
+  signal.throwIfAborted();
+
   const reservation = createServer();
 
   reservation.listen(0, '127.0.0.1');
@@ -81,7 +98,7 @@ async function startGateway(endpoint) {
     {
       cwd: root,
       env: {
-        ...process.env,
+        ...(hosted ? process.env : { PATH: process.env.PATH }),
         HOST: '127.0.0.1',
         PORT: String(port),
         AUTH_ORIGIN: `http://127.0.0.1:${port}`,
@@ -122,7 +139,7 @@ async function startGateway(endpoint) {
   return {
     origin,
     async stop(requireFlush = true) {
-      const exited = once(child, 'exit', { signal: AbortSignal.timeout(10000) });
+      const exited = once(child, 'exit', { signal: AbortSignal.any([signal, AbortSignal.timeout(10000)]) });
 
       child.send('finish');
       const [code] = await exited;
@@ -145,32 +162,40 @@ async function startGateway(endpoint) {
 
 try {
   assert.match(configuration, /spans: 48h/);
-  container('volume', 'create', volume);
-  volumeCreated = true;
-  container(
-    'run',
-    '--detach',
-    '--name',
-    name,
-    '--user',
-    '0',
-    '--publish',
-    '127.0.0.1::4318',
-    '--publish',
-    '127.0.0.1::16686',
-    '--volume',
-    `${volume}:/badger`,
-    '--env',
-    `JAEGER_CONFIG=${configuration}`,
-    '--env',
-    `JAEGER_HTPASSWD=${htpasswd}`,
-    image,
-    '--config',
-    'env:JAEGER_CONFIG',
-  );
-  containerCreated = true;
-  const receiver = `http://${container('port', name, '4318/tcp')}`;
-  let query = `http://${container('port', name, '16686/tcp')}`;
+
+  if (hosted) {
+    container('volume', 'create', volume);
+    volumeCreated = true;
+    container(
+      'run',
+      '--detach',
+      '--name',
+      name,
+      '--user',
+      '0',
+      '--publish',
+      '127.0.0.1::4318',
+      '--publish',
+      '127.0.0.1::16686',
+      '--volume',
+      `${volume}:/badger`,
+      '--env',
+      `JAEGER_CONFIG=${configuration}`,
+      '--env',
+      `JAEGER_HTPASSWD=${htpasswd}`,
+      jaegerImage,
+      '--config',
+      'env:JAEGER_CONFIG',
+    );
+    containerCreated = true;
+  } else {
+    const fixture = await localJaeger({ prefix: 'visomi-jaeger-check', configuration, htpasswd, signal });
+
+    local = fixture;
+  }
+
+  const receiver = local?.receiver ?? `http://${container('port', name, '4318/tcp')}`;
+  let query = local?.query ?? `http://${container('port', name, '16686/tcp')}`;
 
   await eventually(async () => {
     const response = await fetch(`${query}/api/v3/services`);
@@ -376,7 +401,13 @@ try {
   assert.deepEqual([...verifiedApplications].sort(), ['web-app', 'web-site']);
   assert.deepEqual([...performanceApplications].sort(), ['web-app', 'web-site']);
   assert.ok(logs.some((log) => log.event === 'job.execute' && log.outcome === 'job_failed'));
-  container('stop', '--time', '10', name);
+
+  if (local) {
+    await local.stopReceiver();
+  } else {
+    container('stop', '--time', '10', name);
+  }
+
   const unavailable = await startGateway(receiver);
 
   const availableResponse = await fetch(`${unavailable.origin}/api/`);
@@ -385,26 +416,39 @@ try {
 
   await unavailable.stop(false);
 
-  container('start', name);
+  if (local) {
+    const ports = await local.startReceiver();
 
-  // Docker may assign a new ephemeral host port when the same container starts again.
-  query = `http://${container('port', name, '16686/tcp')}`;
+    query = ports.query;
+  } else {
+    container('start', name);
+    query = `http://${container('port', name, '16686/tcp')}`;
+  }
 
   await eventually(() => readTrace(logs[0].traceId));
 
   console.log(
     'Jaeger authentication, safe HTTP/job/browser traces, verified correlation, shutdown flush, receiver outage, persistence and 48h TTL configuration verified.',
   );
+} catch (error) {
+  if (!signal.aborted || (error !== signal.reason && error?.cause !== signal.reason)) {
+    throw error;
+  }
 } finally {
   child?.kill('SIGKILL');
 
   try {
-    if (containerCreated) {
+    if (local) {
+      await local.stop();
+    } else if (containerCreated) {
       container('rm', '--force', name);
     }
   } finally {
     if (volumeCreated) {
       container('volume', 'rm', volume);
     }
+
+    process.off('SIGINT', abort);
+    process.off('SIGTERM', abort);
   }
 }
