@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { after, test } from 'node:test';
@@ -62,17 +62,35 @@ for (const path of ['README.md', 'docs/branding/README.md', 'docs/assets/brand/l
   });
 }
 
-test('the generated service preserves legacy build, watch, readiness and restart settings', async () => {
-  const legacy = JSON.parse(readFileSync(new URL('../../railway.json', import.meta.url), 'utf8'));
+test('the gateway definition preserves the applied build, watch, readiness and restart settings', async () => {
   const {
     resources: [gateway],
   } = await railwayDefinition();
 
-  assert.equal(gateway.build.builder, legacy.build.builder);
-  assert.equal(gateway.build.dockerfilePath, `/${legacy.build.dockerfilePath}`);
-  assert.deepEqual(gateway.build.watchPatterns, legacy.build.watchPatterns);
-
-  for (const [name, value] of Object.entries(legacy.deploy)) {
-    assert.deepEqual(gateway.deploy[name], value, name);
-  }
+  assert.equal(gateway.build.builder, 'DOCKERFILE');
+  assert.equal(gateway.build.dockerfilePath, '/Dockerfile');
+  assert.deepEqual(gateway.build.watchPatterns, [
+    '/apps/web/**',
+    '/apps/worker/**',
+    '/assets/**',
+    '/libs/**',
+    '/tools/**',
+    '/patches/**',
+    '/package.json',
+    '/pnpm-lock.yaml',
+    '/pnpm-workspace.yaml',
+    '/nx.json',
+    '/tsconfig*.json',
+    '/.node-version',
+    '/styles.base.css',
+    '/.postcssrc.json',
+    '/railway.json',
+    '/Dockerfile',
+    '/.dockerignore',
+    '/.railway/**',
+  ]);
+  assert.equal(gateway.deploy.healthcheckPath, '/api/ready');
+  assert.equal(gateway.deploy.healthcheckTimeout, 60);
+  assert.equal(gateway.deploy.restartPolicyType, 'ON_FAILURE');
+  assert.equal(gateway.deploy.restartPolicyMaxRetries, 3);
 });

@@ -207,16 +207,17 @@ response for compatibility with an older API during rollout.
 
 ## Deployment selection and remaining release gates
 
-Railway IaC and the legacy `railway.json` now share watch selection for `/assets/**`, `styles.base.css`,
-`.postcssrc.json`, application/library code, dependency patches and configuration/build inputs.
+Railway IaC defines watch selection for `/assets/**`, `styles.base.css`, `.postcssrc.json`,
+application/library code, dependency patches and configuration/build inputs.
 `watch-patterns.spec.mjs` checks logo/favicon/loader-only and shared-style-only changes with Git's
-actual gitignore matching in an owned isolated repository, including root anchoring and unrelated
-documentation. A drift assertion keeps both source configuration forms aligned. The application
-build already declares shared styles/PostCSS and canonical brand SVGs as Nx inputs.
+actual gitignore matching in an isolated repository, including root anchoring and unrelated
+documentation. It also checks the 18 persisted watch patterns and the gateway's build, readiness
+and restart settings directly. The application build declares shared styles/PostCSS and canonical
+brand SVGs as Nx inputs.
 
-These source checks are local. The [Railway Config as Code migration runbook](../../.railway/README.md)
-records the redacted production plan and the remaining cutover gates. Validate the trigger with an
-approved source change after persisting the watch settings on the existing service.
+The [Railway migration runbook](../../.railway/README.md) records the applied production plan and
+the verification for the first deployment without `railway.json`. The removal itself matches the
+persisted watch list and can exercise the source trigger after an approved merge.
 
 The owner account/configuration must also pass the read-only `web-api:owner-preflight` and subsequent
 interactive email/second-factor acceptance before enabling access. See [the cutover runbook](contact-cutover.md).
