@@ -48,7 +48,6 @@ export function createGatewayApp(options: {
     options.privateMetrics ??
     createPrivateMetrics({
       scope: 'web-gateway',
-      enabled: process.env['VISOMI_PRIVATE_METRICS'] === 'true',
       traceExportEnabled: Boolean(otlpReceiver(process.env)),
     });
 

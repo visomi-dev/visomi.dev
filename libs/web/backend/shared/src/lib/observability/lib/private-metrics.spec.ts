@@ -10,14 +10,14 @@ function response(statusCode = 200, writableFinished = true) {
 }
 
 describe('private aggregate metrics', () => {
-  it('requires explicit capture opt-in and never retains request values', () => {
+  it('counts locally without trace export or reading request fields', () => {
     const metrics = createPrivateMetrics({ scope: 'web-api' });
     const next = vi.fn();
-    const request = {
-      body: { email: 'private@example.test' },
-      url: '/private/record?id=secret',
-      headers: { authorization: 'secret' },
-    } as unknown as Request;
+    const request = new Proxy({} as Request, {
+      get: () => {
+        throw new Error('unexpected_request_access');
+      },
+    });
     const result = response();
 
     metrics.middleware(request, result, next);
@@ -25,12 +25,12 @@ describe('private aggregate metrics', () => {
 
     expect(next).toHaveBeenCalledOnce();
     expect(result.listenerCount('finish')).toBe(0);
-    expect(metrics.snapshot()).toEqual({
-      enabled: false,
+    expect(metrics.snapshot()).toMatchObject({
+      enabled: true,
       scope: 'web-api',
       windowMinutes: 15,
       traceExportEnabled: false,
-      metrics: null,
+      metrics: { requests: 1, clientErrors: 0, serverErrors: 0, aborted: 0 },
     });
   });
 
@@ -38,7 +38,6 @@ describe('private aggregate metrics', () => {
     let time = 0;
     const metrics = createPrivateMetrics({
       scope: 'web-gateway',
-      enabled: true,
       traceExportEnabled: true,
       clock: () => time,
     });
@@ -80,7 +79,7 @@ describe('private aggregate metrics', () => {
 
   it('bounds duration and rolling-window storage, including clock corrections', () => {
     let time = 0;
-    const metrics = createPrivateMetrics({ scope: 'web-api', enabled: true, clock: () => time });
+    const metrics = createPrivateMetrics({ scope: 'web-api', clock: () => time });
     const incoming = {} as Request;
 
     for (let minute = 0; minute < 40; minute++) {

@@ -68,11 +68,14 @@ screens are carried into the application's routes.
 Configuration is listed by name only: `HOST`, `PORT`, `SITE_URL`, `DATABASE_URL`, `REDIS_URL`,
 `AUTH_ORIGIN`, `AUTH_RP_ID`, `SESSION_SECRET`, `OWNER_EMAIL`, `OWNER_USER_ID`,
 `AUTH_TOTP_ENCRYPTION_KEY`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_FROM`, `SMTP_USER`, `SMTP_PASSWORD`,
-`SOCIAL_IMAGE_INTERNAL_TOKEN`, `DISABLE_WORKER`, `VISOMI_PRIVATE_METRICS`,
+`SOCIAL_IMAGE_INTERNAL_TOKEN`, `DISABLE_WORKER`,
 `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_PROTOCOL`, `OTEL_EXPORTER_OTLP_HEADERS`,
 `CONTACT_LEGACY_DATABASE_URL`, `CONTACT_LEGACY_DATABASE_AUTH_TOKEN`.
 Legacy migration input is an explicit offline export; the application no longer requires
 `ASTRO_DB_REMOTE_URL` or `ASTRO_DB_APP_TOKEN`.
+
+The `VISOMI_E2E_*` and `VISOMI_TEST_*` families configure synthetic test fixtures.
+`__VISOMI_CSP_NONCE__` is the Angular HTML placeholder for the per-response CSP nonce.
 
 ## Necessary exceptions to the source stack
 
@@ -186,9 +189,8 @@ intermediate package-manager process.
 resolver load `/api/private/metrics`; every API request independently requires a full verified owner
 session and returns private/no-store responses. The route uses SSR with the same request-scoped cookie and private/no-store policy as contacts.
 
-`VISOMI_PRIVATE_METRICS=true` explicitly opts into local HTTP aggregates. The runtime default is false;
-Railway IaC preserves the bound environment's already authorized value. A disabled view reports that state instead of presenting fabricated
-zero measurements. Capture keeps 15 one-minute buckets per running process: request count,
+The API and gateway keep local HTTP aggregates without an environment switch.
+Capture keeps 15 one-minute buckets per running process with request count,
 client/server errors, aborted requests, mean latency and maximum latency. Durations are clipped to
 0–60 seconds. No request body, URL/query, email, IP, user agent, identifier, token or raw exception is
 read into these counters. They reset on restart and are not a durable/global view across replicas.
@@ -199,8 +201,9 @@ private OTLP receiver configured. Delivery is verified separately with a stored
 trace. Browser reporting follows the origin's default-off, revocable consent.
 See [browser privacy and rollout](browser-privacy.md) for the follow-up to the
 visit and diagnostic implementations.
-The private browser suite covers the real enabled response, anonymous/non-owner denial, no-store,
-empty/disabled/error views, English/Spanish, mobile overflow and AXE.
+The private browser suite covers the real response, anonymous/non-owner denial, no-store,
+empty and error views, English/Spanish, mobile overflow and AXE. It also covers the disabled
+response for compatibility with an older API during rollout.
 
 ## Deployment selection and remaining release gates
 

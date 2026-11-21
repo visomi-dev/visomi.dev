@@ -45,10 +45,10 @@ intake on 4318 and its query UI stay private.
 
 ## Variables and reference targets
 
-All 54 inventoried variables are declared with `preserve()`. The reference
-metadata resolves the gateway variables below to existing services. Keeping the
-stored expressions with `preserve()` avoids rewriting even an equivalent
-reference. Database template variables retain their internal references.
+The 48 retained variable declarations use `preserve()`. The reference metadata
+resolves the gateway variables below to existing services. Keeping the stored
+expressions with `preserve()` avoids rewriting even an equivalent reference.
+Database template variables retain their internal references.
 
 | Gateway variable              | Existing target                 |
 | ----------------------------- | ------------------------------- |
@@ -58,12 +58,20 @@ reference. Database template variables retain their internal references.
 | `OTEL_EXPORTER_OTLP_HEADERS`  | `jaeger.OTLP_AUTH_HEADER`       |
 
 This review used the variable names, IDs and reference edges. The IaC plan
-leaves existing credentials, SMTP, owner access, private metrics and the
-complete OTLP setup in place. The application controls automatic browser
-reporting with revocable, default-off consent. Manual sanitized reports use an
-independent explicit action. The legacy names `VISOMI_BROWSER_TELEMETRY`,
-`VISOMI_BROWSER_PERFORMANCE` and `VISOMI_OTLP_TRACING` remain in Railway for
-compatibility with earlier releases. [Browser privacy](../docs/migration/browser-privacy.md)
+leaves existing credentials, SMTP, owner access and the complete OTLP setup in
+place. The API and gateway aggregate HTTP measurements locally for the owner.
+Browser reporting, performance and visit measurement start off until explicit
+consent. Manual sanitized reports use an independent explicit action.
+[Browser privacy](../docs/migration/browser-privacy.md)
+
+Six retired gateway entries remain live during adoption. The CLI's
+`variables.ignore` policy matches each exact name on `visomi.dev` once and
+excludes it from the managed variable diff. These are the browser telemetry
+and performance switches, the OTLP tracing switch, the private metrics switch
+and the two proxy diagnostic entries. Keep those exclusions until a separately
+authorized Railway cleanup removes the entries. Simply omitting managed
+variables would propose deleting them. After live cleanup and rollback review,
+remove the exclusions and preview the plan again.
 
 ## Read-only review
 
@@ -95,7 +103,9 @@ this cutover.
 The pre- and post-plan inventories match across service, volume, domain and
 deployment IDs, mounts, reference edges and the configuration revision. Exit 2
 means changes are pending. The preview compares against stored configuration.
-An authorized post-cutover deployment still needs runtime verification.
+The updated variable policy matched six existing entries with zero proposed
+variable operations. An authorized post-cutover deployment still needs runtime
+verification.
 
 ## Future cutover and rollback
 

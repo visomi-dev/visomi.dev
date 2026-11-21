@@ -12,7 +12,6 @@ const fixture = (port: number, collector = true) => ({
     VISOMI_E2E_HTTPS: 'true',
     TSX_TSCONFIG_PATH: 'tsconfig.base.json',
     VISOMI_E2E_PRIVATE_COLLECTOR: String(collector),
-    VISOMI_E2E_PRIVATE_METRICS: 'true',
   },
   ignoreHTTPSErrors: true,
   reuseExistingServer: false,

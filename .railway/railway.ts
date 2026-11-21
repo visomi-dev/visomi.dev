@@ -150,12 +150,6 @@ export const railwayDefinition = defineRailway(() => {
       SMTP_PORT: preserve(),
       SMTP_SECURE: preserve(),
       SMTP_USER: preserve(),
-      VISOMI_BROWSER_PERFORMANCE: preserve(),
-      VISOMI_BROWSER_TELEMETRY: preserve(),
-      VISOMI_OTLP_TRACING: preserve(),
-      VISOMI_PRIVATE_METRICS: preserve(),
-      VISOMI_PROXY_DIAGNOSTIC_EXPIRES_AT: preserve(),
-      VISOMI_PROXY_DIAGNOSTIC_TOKEN: preserve(),
     },
   });
 
@@ -167,7 +161,18 @@ export const railwayDefinition = defineRailway(() => {
 
   return {
     ...project('visomi', { resources: [gateway, postgres, redis, jaeger, postgresVolume, redisVolume, jaegerData] }),
-    variables: { managed: true },
+    variables: {
+      managed: true,
+      // Keep these live entries through adoption. Their removal needs a separate Railway change.
+      ignore: [
+        'visomi.dev/VISOMI_BROWSER_PERFORMANCE',
+        'visomi.dev/VISOMI_BROWSER_TELEMETRY',
+        'visomi.dev/VISOMI_OTLP_TRACING',
+        'visomi.dev/VISOMI_PRIVATE_METRICS',
+        'visomi.dev/VISOMI_PROXY_DIAGNOSTIC_EXPIRES_AT',
+        'visomi.dev/VISOMI_PROXY_DIAGNOSTIC_TOKEN',
+      ],
+    },
   };
 });
 

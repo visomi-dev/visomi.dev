@@ -62,9 +62,26 @@ test('the managed databases retain their existing images, private endpoints and 
 });
 
 test('all inventoried service variables and references are preserved on Railway', () => {
-  assert.deepEqual(configuration.variables, { managed: true });
+  const retiredGatewayVariables = [
+    'VISOMI_BROWSER_PERFORMANCE',
+    'VISOMI_BROWSER_TELEMETRY',
+    'VISOMI_OTLP_TRACING',
+    'VISOMI_PRIVATE_METRICS',
+    'VISOMI_PROXY_DIAGNOSTIC_EXPIRES_AT',
+    'VISOMI_PROXY_DIAGNOSTIC_TOKEN',
+  ];
+
+  assert.deepEqual(configuration.variables, {
+    managed: true,
+    ignore: retiredGatewayVariables.map((name) => `visomi.dev/${name}`),
+  });
+
+  for (const name of retiredGatewayVariables) {
+    assert.equal(Object.hasOwn(gateway.variables, name), false);
+  }
+
   for (const [resource, count] of [
-    [gateway, 31],
+    [gateway, 25],
     [postgres, 12],
     [redis, 6],
     [jaeger, 5],
@@ -79,9 +96,6 @@ test('all inventoried service variables and references are preserved on Railway'
     'DATABASE_URL',
     'REDIS_URL',
     'AUTH_ORIGIN',
-    'VISOMI_PRIVATE_METRICS',
-    'VISOMI_BROWSER_PERFORMANCE',
-    'VISOMI_BROWSER_TELEMETRY',
     'OTEL_EXPORTER_OTLP_ENDPOINT',
     'OTEL_EXPORTER_OTLP_HEADERS',
     'OTEL_EXPORTER_OTLP_PROTOCOL',

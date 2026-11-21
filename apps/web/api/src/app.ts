@@ -50,7 +50,6 @@ export function createApp(options: AppOptions = {}) {
     options.privateMetrics ??
     createPrivateMetrics({
       scope: 'web-api',
-      enabled: process.env['VISOMI_PRIVATE_METRICS'] === 'true',
       traceExportEnabled: Boolean(otlpReceiver(process.env)),
     });
 

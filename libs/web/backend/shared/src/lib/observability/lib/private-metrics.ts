@@ -15,11 +15,9 @@ export type PrivateMetrics = { middleware: RequestHandler; snapshot(): PrivateMe
 
 export function createPrivateMetrics(options: {
   scope: PrivateMetricsSnapshot['scope'];
-  enabled?: boolean;
   traceExportEnabled?: boolean;
   clock?: () => number;
 }): PrivateMetrics {
-  const enabled = options.enabled === true;
   const clock = options.clock ?? Date.now;
   const buckets = new Map<number, Bucket>();
   const observed = new WeakSet<Response>();
@@ -37,7 +35,7 @@ export function createPrivateMetrics(options: {
   };
 
   const middleware: RequestHandler = (_request, response, next) => {
-    if (!enabled || observed.has(response)) {
+    if (observed.has(response)) {
       next();
 
       return;
@@ -94,20 +92,18 @@ export function createPrivateMetrics(options: {
     }
 
     return {
-      enabled,
+      enabled: true,
       scope: options.scope,
       windowMinutes: 15,
       traceExportEnabled: options.traceExportEnabled === true,
-      metrics: enabled
-        ? {
-            requests: total.requests,
-            clientErrors: total.clientErrors,
-            serverErrors: total.serverErrors,
-            aborted: total.aborted,
-            meanLatencyMs: total.requests ? total.totalLatencyMs / total.requests : 0,
-            maxLatencyMs: total.maxLatencyMs,
-          }
-        : null,
+      metrics: {
+        requests: total.requests,
+        clientErrors: total.clientErrors,
+        serverErrors: total.serverErrors,
+        aborted: total.aborted,
+        meanLatencyMs: total.requests ? total.totalLatencyMs / total.requests : 0,
+        maxLatencyMs: total.maxLatencyMs,
+      },
     };
   };
 
