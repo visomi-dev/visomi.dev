@@ -5,6 +5,8 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page, type Route } from '@playwright/test';
 import { workspaceRoot } from '@nx/devkit';
 
+import { checkPinInsertionPoints } from './pin-input-caret';
+
 async function enterSyntheticCode(page: Page, verification: Locator, browserName: string) {
   const code = '00 12-34';
 
@@ -305,6 +307,10 @@ test('private access completes the stack password and email second-factor flow',
 
   await expect(page.locator('app-pin-input .slot')).toHaveCount(6);
 
+  const pin = page.locator('app-pin-input');
+
+  await checkPinInsertionPoints(page, pin, verification, browserName, info);
+
   const accessibility = await new AxeBuilder({ page }).analyze();
 
   expect(accessibility.violations).toEqual([]);
@@ -393,8 +399,6 @@ test('private access completes the stack password and email second-factor flow',
 
     await expect.poll(() => verificationRequests).toBe(1);
 
-    const pin = page.locator('app-pin-input');
-
     for (const width of [320, 1440]) {
       await page.setViewportSize({ width, height: 844 });
 
@@ -438,7 +442,7 @@ test('private access completes the stack password and email second-factor flow',
             Math.abs(boxes[0].left - grid.left),
             Math.abs(boxes.at(-1)!.right - grid.right),
             Math.abs(input.left - grid.left),
-            Math.abs(input.right - grid.right),
+            Math.max(0, grid.right - input.right),
           ),
           widthSpread: Math.max(...widths) - Math.min(...widths),
           centers,
@@ -446,7 +450,9 @@ test('private access completes the stack password and email second-factor flow',
         };
       });
 
-      expect.soft(geometry.edgeOffset, `field, cells and input edges at ${width}px`).toBeLessThan(1);
+      expect
+        .soft(geometry.edgeOffset, `field and cells aligned and covered by the input at ${width}px`)
+        .toBeLessThan(1);
       expect.soft(geometry.widthSpread, `equal cell widths at ${width}px`).toBeLessThan(1);
       expect.soft(geometry.centers, `individual horizontal and vertical offsets at ${width}px`).toHaveLength(12);
       expect.soft(Math.max(...geometry.centers), `largest centering error at ${width}px`).toBeLessThan(1);
