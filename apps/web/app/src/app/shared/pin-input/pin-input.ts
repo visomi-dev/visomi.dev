@@ -36,6 +36,10 @@ export class PinInput {
 
   private readonly control = viewChild.required<ElementRef<HTMLInputElement>>('control');
 
+  focus(): void {
+    this.control().nativeElement.focus();
+  }
+
   protected paste(event: ClipboardEvent): void {
     if (!this.acceptFormattedPaste() || event.defaultPrevented) {
       return;

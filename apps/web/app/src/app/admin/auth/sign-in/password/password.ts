@@ -1,19 +1,21 @@
-import { NgOptimizedImage } from '@angular/common';
+import { Location, NgOptimizedImage } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, afterRenderEffect, inject, signal, untracked, viewChild, type ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom, takeUntil } from 'rxjs';
 
+import { loader } from '@visomi-stack/web-frontend-ui/lib/feedback';
+
 import { Field } from '../../../../shared/field/field';
 import { Preferences } from '../../../../shared/layout/preferences/preferences';
-import { NavigationHeading } from '../../../../shared/navigation-heading';
 import { PinInput } from '../../../../shared/pin-input/pin-input';
 import { Button } from '../../../../ui/actions/button';
 import { Alert } from '../../../../ui/feedback/alert';
 import { Input } from '../../../../ui/forms/input';
 import { Card } from '../../../../ui/layout/card';
 import { Heading } from '../../../../ui/typography/heading';
+import { Link } from '../../../../ui/typography/link';
 import { Text } from '../../../../ui/typography/text';
 import { Session } from '../../session';
 import { ConsentNotice } from '../../../../shared/observability/consent-notice/consent-notice';
@@ -22,7 +24,6 @@ import { ConsentNotice } from '../../../../shared/observability/consent-notice/c
   selector: 'app-sign-in',
   imports: [
     ConsentNotice,
-    NavigationHeading,
     FormsModule,
     Preferences,
     NgOptimizedImage,
@@ -33,6 +34,7 @@ import { ConsentNotice } from '../../../../shared/observability/consent-notice/c
     Input,
     Card,
     Heading,
+    Link,
     Text,
   ],
   templateUrl: './password.html',
@@ -42,6 +44,9 @@ export class Password {
   private readonly router = inject(Router);
   private readonly http = inject(HttpClient);
   private readonly session = inject(Session);
+  protected readonly restartHref = inject(Location).prepareExternalUrl('/admin/auth/sign-in');
+
+  private readonly pin = viewChild(PinInput);
 
   readonly busy = signal(false);
   readonly failed = signal(false);
@@ -54,12 +59,15 @@ export class Password {
   private readonly csrf = signal('');
   private readonly flowId = signal('');
 
+  protected readonly loaderClasses = loader.classes();
   protected readonly passwordShow = $localize`:@@signInPasswordShow:Show`;
   protected readonly passwordHide = $localize`:@@signInPasswordHide:Hide`;
   protected readonly codeLabel = $localize`:@@dashboardAccessCode:Verification code`;
   protected readonly emailLabel = $localize`:@@dashboardAccessEmail:Verified email`;
   protected readonly passwordLabel = $localize`:@@dashboardAccessPassword:Password`;
   protected readonly failureMessage = $localize`:@@dashboardAccessError:Access could not be verified. Please try again.`;
+
+  private readonly passwordInput = viewChild<ElementRef<HTMLInputElement>>('passwordInput');
 
   async signIn(): Promise<void> {
     if (this.busy()) {
@@ -102,7 +110,18 @@ export class Password {
     this.passwordVisible.update((visible) => !visible);
   }
 
-  restart(): void {
+  restart(event: MouseEvent): void {
+    if (this.busy()) {
+      event.preventDefault();
+
+      return;
+    }
+
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+
+    event.preventDefault();
     this.flowId.set('');
     this.code.set('');
     this.password.set('');
@@ -155,4 +174,19 @@ export class Password {
       this.busy.set(false);
     }
   }
+
+  private readonly focusPin = afterRenderEffect({
+    write: () => this.pin()?.focus(),
+  });
+
+  private readonly focusRestartedForm = afterRenderEffect({
+    write: () => {
+      const passwordInput = this.passwordInput();
+
+      // Returning from the PIN keeps the verified email. Leave focus alone on initial entry.
+      if (passwordInput && untracked(this.email)) {
+        passwordInput.nativeElement.focus();
+      }
+    },
+  });
 }

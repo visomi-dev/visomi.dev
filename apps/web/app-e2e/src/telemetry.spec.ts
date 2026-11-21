@@ -187,7 +187,9 @@ for (const [path, application] of [
 
     await page.goto('/app/en/admin/metrics');
 
-    await expect(page.getByRole('heading', { name: 'Technical metrics' })).toBeFocused();
+    await expect(page.getByRole('heading', { name: 'Technical metrics' })).toBeVisible();
+
+    await expect(page.getByRole('heading', { name: 'Technical metrics' })).not.toBeFocused();
 
     const details = page.locator('details', { hasText: traceId });
     const summary = details.locator('summary');

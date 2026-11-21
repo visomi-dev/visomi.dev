@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import type { BrowserErrorCode } from '@visomi-stack/web-shared-observability/lib/contract';
 
 import { Session } from '../auth/session';
-import { NavigationHeading } from '../../shared/navigation-heading';
 import { Button } from '../../ui/actions/button';
 import { DescriptionList } from '../../ui/data/description-list';
 import { Alert } from '../../ui/feedback/alert';
@@ -20,19 +19,7 @@ import type { MetricsData } from './metrics.resolver';
 
 @Component({
   selector: 'app-metrics',
-  imports: [
-    NavigationHeading,
-    DatePipe,
-    DecimalPipe,
-    Button,
-    DescriptionList,
-    Alert,
-    Card,
-    Disclosure,
-    Code,
-    Heading,
-    Text,
-  ],
+  imports: [DatePipe, DecimalPipe, Button, DescriptionList, Alert, Card, Disclosure, Code, Heading, Text],
   templateUrl: './metrics.html',
   styleUrl: './metrics.css',
 })

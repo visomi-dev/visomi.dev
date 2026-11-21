@@ -1,6 +1,8 @@
 import { DOCUMENT, NgOptimizedImage } from '@angular/common';
-import { Component, DestroyRef, afterNextRender, inject, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, afterNextRender, computed, inject, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+
+import { loader } from '@visomi-stack/web-frontend-ui/lib/feedback';
 
 import { Session } from '../auth/session';
 import { Button } from '../../ui/actions/button';
@@ -9,7 +11,6 @@ import { NavItem } from '../../ui/layout/nav-item';
 import { Navbar } from '../../ui/layout/navbar';
 import { Dialog } from '../../ui/overlays/dialog';
 import { Heading } from '../../ui/typography/heading';
-import { Text } from '../../ui/typography/text';
 import { AppShell } from '../../shared/layout/app-shell/app-shell';
 import { Preferences } from '../../shared/layout/preferences/preferences';
 import { Sidebar } from '../../shared/layout/sidebar/sidebar';
@@ -34,7 +35,6 @@ import { ConsentNotice } from '../../shared/observability/consent-notice/consent
     Navbar,
     Dialog,
     Heading,
-    Text,
   ],
   templateUrl: './admin-shell.html',
   styleUrl: './admin-shell.css',
@@ -52,6 +52,9 @@ export class AdminShell {
 
   readonly valid = this.session.valid;
 
+  protected readonly checkingAccess = computed(() => !this.valid() && this.session.checking());
+
+  protected readonly loaderClasses = loader.classes();
   protected readonly expandSidebar = $localize`:@@shellExpandSidebar:Expand sidebar`;
   protected readonly collapseSidebar = $localize`:@@shellCollapseSidebar:Collapse sidebar`;
   protected readonly links = [

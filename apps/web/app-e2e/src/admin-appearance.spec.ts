@@ -30,6 +30,12 @@ for (const locale of ['en', 'es'] as const) {
 
     await expect(theme).toBeVisible();
 
+    const title = page.getByRole('heading', { level: 1 });
+
+    await expect(title).toBeVisible();
+
+    await expect(title).not.toBeFocused();
+
     const toggle = page.getByRole('button', {
       name: locale === 'es' ? 'Mostrar u ocultar contraseña' : 'Show or hide password',
     });
@@ -247,5 +253,29 @@ for (const locale of ['en', 'es'] as const) {
     await expect(menu).toBeVisible();
 
     await expect(dialog).toBeHidden();
+
+    for (const width of [390, 1440]) {
+      await page.setViewportSize({ width, height: 844 });
+
+      for (const route of ['dashboard', 'visits', 'metrics']) {
+        const href = `/app/${locale}/admin/${route}`;
+        const link = shell.locator(`a[appUI="nav-item"][href="${href}"]`).filter({ visible: true });
+        const heading = page.getByRole('heading', { level: 1 });
+
+        await link.press('Enter');
+
+        await expect(page).toHaveURL(new RegExp(`${href}$`));
+
+        await expect(heading).toBeVisible();
+
+        await expect(heading).not.toBeFocused();
+
+        await expect(link).toBeFocused();
+
+        await expect(link).toHaveCSS('outline-width', '2px');
+
+        await expect(link).not.toHaveCSS('outline-color', 'rgba(0, 0, 0, 0)');
+      }
+    }
   });
 }

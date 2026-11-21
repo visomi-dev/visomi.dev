@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { DestroyRef, Injectable, afterNextRender, inject, signal } from '@angular/core';
+import { DestroyRef, Injectable, afterNextRender, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom, Subject } from 'rxjs';
 import { io, type Socket } from 'socket.io-client';
@@ -17,6 +17,10 @@ export class Session {
 
   private readonly visible = signal(true);
 
+  private readonly pending = signal<Promise<void> | undefined>(undefined);
+
+  readonly checking = computed(() => this.pending() !== undefined);
+
   readonly valid = this.visible.asReadonly();
   readonly cancelled = new Subject<void>();
 
@@ -25,19 +29,20 @@ export class Session {
   private identity: string | null | undefined;
   private channel?: BroadcastChannel;
   private socket?: Socket;
-  private pending?: Promise<void>;
 
   invalidate(): void {
     this.revision++;
     this.token = '';
-    this.pending = undefined;
+    this.pending.set(undefined);
     this.visible.set(false);
     this.cancelled.next();
   }
 
   async revalidate(): Promise<void> {
-    if (this.pending) {
-      return this.pending;
+    const current = this.pending();
+
+    if (current) {
+      return current;
     }
 
     const revision = this.revision;
@@ -94,12 +99,12 @@ export class Session {
         }
       })
       .finally(() => {
-        if (this.pending === pending) {
-          this.pending = undefined;
+        if (this.pending() === pending) {
+          this.pending.set(undefined);
         }
       });
 
-    this.pending = pending;
+    this.pending.set(pending);
 
     return pending;
   }

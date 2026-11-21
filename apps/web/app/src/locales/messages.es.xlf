@@ -82,6 +82,7 @@
           <context context-type="linenumber">31,35</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="adminAccessHeading" datatype="html"><source>Administration</source><target>Administración</target></trans-unit>
       <trans-unit id="dashboardAccessLoading" datatype="html">
         <source>Checking access…</source>
         <target>Comprobando el acceso…</target>
@@ -106,6 +107,8 @@
           <context context-type="linenumber">39,40</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="dashboardRequestBreadcrumb" datatype="html"><source>Breadcrumb</source><target>Ruta de navegación</target></trans-unit>
+      <trans-unit id="dashboardRequestDetail" datatype="html"><source>Request details</source><target>Detalle de la solicitud</target></trans-unit>
       <trans-unit id="dashboardRequestsBack" datatype="html">
         <source>All requests</source>
         <target>Todas las solicitudes</target>
