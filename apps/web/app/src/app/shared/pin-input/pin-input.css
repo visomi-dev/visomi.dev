@@ -2,8 +2,19 @@
   container-type: inline-size;
 }
 
-/* Keep the native caret and selection aligned with the grid while the slots render the masks. */
+.pin {
+  --slot-gap: min(0.25rem, 1.5cqi);
+  --slot-pitch: calc((100cqi + var(--slot-gap)) / var(--digits));
+  --slot-width: calc(var(--slot-pitch) - var(--slot-gap));
+  overflow: clip;
+}
+
 input {
+  /* Leave room beyond the clipped grid so the native input does not scroll after the last digit. */
+  width: calc(100% + var(--slot-pitch));
+  font-size: min(1em, var(--slot-width));
   -webkit-text-fill-color: transparent;
-  letter-spacing: calc((100cqi - var(--spacing)) / var(--digits) - 1ch);
+  /* The slots render masks independently, so align the insertion point rather than the glyph. */
+  padding-inline-start: calc(var(--slot-width) / 2);
+  letter-spacing: calc(var(--slot-pitch) - 1ch);
 }
