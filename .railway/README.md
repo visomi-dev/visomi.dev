@@ -1,9 +1,10 @@
-# Adopt the existing Railway production configuration (VIS-62)
+# Railway production IaC (VIS-62 and VIS-26)
 
-Railway stops reading the legacy `railway.json` on **December 1, 2026**.
-The existing gateway has an empty Config File setting and auto-detects the JSON
-at the repository root. Keep it through the authorized cutover and validation.
-The current deployment resolved `/railway.json` from commit `14954908`.
+Railway stops reading legacy Config as Code on **December 1, 2026**.
+The gateway's Config File setting is empty. Its last verified deployment
+auto-detected the root `railway.json` after the settings were persisted by IaC.
+The first deployment from a revision without that file is the remaining
+verification for the removal.
 [Railway migration guide](https://docs.railway.com/infrastructure-as-code#migrating-from-config-as-code)
 
 ## Existing production inventory
@@ -64,7 +65,7 @@ Browser reporting, performance and visit measurement start off until explicit
 consent. Manual sanitized reports use an independent explicit action.
 [Browser privacy](../docs/migration/browser-privacy.md)
 
-Six retired gateway entries remain live during adoption. The CLI's
+Six retired gateway entries remain live. The CLI's
 `variables.ignore` policy matches each exact name on `visomi.dev` once and
 excludes it from the managed variable diff. These are the browser telemetry
 and performance switches, the OTLP tracing switch, the private metrics switch
@@ -73,7 +74,7 @@ authorized Railway cleanup removes the entries. Simply omitting managed
 variables would propose deleting them. After live cleanup and rollback review,
 remove the exclusions and preview the plan again.
 
-## Read-only review
+## Planning and applied configuration
 
 Use the existing authorized CLI session to target project
 `866f46e7-1d66-4cb7-9793-0b89db25990b` and environment
@@ -91,43 +92,43 @@ pnpm nx run web-gateway:deployment-check
 pnpm nx run web-gateway:jaeger-check
 ```
 
-The full-environment plan reported **0 to add, 2 to change, 0 to destroy**. The
-two updates target `visomi.dev` and persist the 18 watch patterns, `/api/ready`
-with a 60-second timeout, and the three retries from the legacy `ON_FAILURE`
-policy. The platform's stored retry default is normalized to an unset field in
-the plan. The existing build, source trigger, entrypoint and pre-deploy command
-`node libs/backend/shared/tools/database/migrate.mjs` stay in place. The stored
-pre-deploy timeout is unset. The older proposed 120-second override is outside
-this cutover.
+On November 21, 2026, the authorized plan for release
+`58a622ade84ddbd9bbbb392cd5f46612df9c160a` applied the two gateway updates and
+included the whole-project claim for the seven existing resources. The gateway
+persisted 18 watch patterns, `/api/ready` with a 60-second timeout and three
+retries under `ON_FAILURE`. The build, source trigger, entrypoint and pre-deploy
+command `node libs/backend/shared/tools/database/migrate.mjs` remained in place.
+The stored pre-deploy timeout remained unset.
 
-The pre- and post-plan inventories match across service, volume, domain and
-deployment IDs, mounts, reference edges and the configuration revision. Exit 2
-means changes are pending. The preview compares against stored configuration.
-The updated variable policy matched six existing entries with zero proposed
-variable operations. An authorized post-cutover deployment still needs runtime
-verification.
+Deployment `907614b1-43e9-4e74-806d-90d064730e84` succeeded on that release.
+The follow-up plan showed zero changes, Railway reported no pending operations
+and its named ownership map was empty. The PostgreSQL, Redis and Jaeger
+deployments, disks, mounts, domain bindings, 54 variable names and 18 reference
+edges matched the pre-apply inventory. Public `/api/health` and `/api/ready`
+returned 200 at the apex and after the canonical redirect from `www`. The
+deployment manifest retained the migration command, with no independent
+execution marker in the filtered logs.
+[Verified deployment](https://railway.com/project/866f46e7-1d66-4cb7-9793-0b89db25990b/service/8efe2ba3-1921-462c-b0b9-3375c26f531d?environmentId=3711cead-a360-4880-abc8-6472f21dbb68&id=907614b1-43e9-4e74-806d-90d064730e84)
 
-## Future cutover and rollback
+## Verify the first release without Config as Code
 
-1. Confirm the exact project and environment IDs, service instances, mounts,
-   custom domains and reference targets. Check the Config File setting,
-   ownership map and pending changes. Record the prior successful deployment
-   and the stored and effective gateway settings for rollback.
-2. Refresh the redacted plan. Accept only the two gateway updates above. Stop
-   on any addition, deletion, replacement, volume attachment or mount change,
-   domain change, variable or reference write, or ownership conflict.
-3. After separate authorization, persist the reviewed settings in an approved
-   window and verify the first deployment. The gateway still auto-detects the
-   JSON, so there is no saved path to clear. Keep `railway.json` until the
-   persisted gateway settings are verified. Verify `/api/ready`, the migration
-   command, the source trigger, HTTPS for both domains, owner-only access and
-   consent, and the existing private PostgreSQL, Redis and Jaeger connections.
-4. If acceptance fails, stop the rollout. Restore the reviewed gateway settings
-   and, if a deployment occurred, the prior compatible release. Retain the
-   existing resource IDs and mounts. After December 1, a Git rollback alone
-   cannot restore the legacy overrides. Use the
-   [contact rollback runbook](../docs/migration/contact-cutover.md) before any
-   schema or data recovery action.
+1. Keep the persisted 18 watch patterns for this release. The
+   `/railway.json` pattern lets the removal trigger a deploy from `main`.
+   Railway's Config File setting is already empty. This removal needs no
+   second IaC apply or separate cutover command.
+2. After the approved merge, record the deployment ID and the exact commit
+   without `railway.json`. Wait for `SUCCESS`, check that the manifest used no
+   repository Config File and verify readiness, retries, and the existing
+   pre-deploy command. Check apex `/api/health` and `/api/ready` and confirm
+   both paths still reach the apex over HTTPS from `www`.
+3. Compare Railway metadata against the verified inventory above and run a
+   redacted plan. Confirm the same service and volume IDs, mounts, domain
+   bindings and references, zero proposed changes, and no pending operations.
+4. If validation fails, stop the rollout and review rollback separately. Use
+   the prior compatible release and the stored settings as rollback references.
+   After December 1, a Git rollback alone cannot restore legacy overrides.
+   Follow the [contact rollback runbook](../docs/migration/contact-cutover.md)
+   before any schema or data recovery action.
 
 ## SSR proxy configuration and release gate
 
