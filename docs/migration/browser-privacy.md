@@ -73,9 +73,7 @@ Private metrics, browser intake and server tracing have independent lifecycles.
   to `https://visomi.dev` when the variable is absent. Verify the exact externally
   reachable scheme, hostname and port against the configured origin before any
   future rollout. Verify the PostgreSQL readiness and asset allowlists separately.
-- `VISOMI_VISIT_ANALYTICS`, `VISOMI_BROWSER_TELEMETRY`, `VISOMI_BROWSER_PERFORMANCE`,
-  `BROWSER_TELEMETRY_ORIGIN` and `VISOMI_OTLP_TRACING` have been retired. For a future
-  release, review the full `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_PROTOCOL`
+- Server trace export uses the complete `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_PROTOCOL`
   and `OTEL_EXPORTER_OTLP_HEADERS` set privately. An absent set starts without
   export. Partial or unsafe settings fail startup. The receiver must be private
   and authenticated. Test a stored synthetic trace and an unauthenticated denial
@@ -83,7 +81,7 @@ Private metrics, browser intake and server tracing have independent lifecycles.
   stay at their existing settings.
 - To stop server export on the new version, remove the complete OTLP set together.
   To roll back application behavior, use the previous approved release and its
-  matching configuration, including the old flags. Keep the PostgreSQL data and
+  matching configuration. Keep the PostgreSQL data and
   Jaeger volume. Reconcile the declarative configuration before applying it again.
 
 ## Editorial examples

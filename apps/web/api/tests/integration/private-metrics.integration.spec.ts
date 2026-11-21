@@ -1,13 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { createPrivateMetrics } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 import type { PrivateMetricsSnapshot } from '@visomi-stack/web-shared-observability/lib/private-metrics';
 
 import { authenticationFixture } from './support/auth';
 
 describe('owner-only technical measurements', () => {
-  const metrics = createPrivateMetrics({ scope: 'web-api', enabled: true });
-  const fixture = authenticationFixture({ privateMetrics: metrics });
+  const fixture = authenticationFixture();
 
   it('denies anonymous/non-owner requests and returns only aggregate fields to a verified owner', async () => {
     const anonymous = await fetch(fixture.origin + '/api/private/metrics');
@@ -39,22 +37,6 @@ describe('owner-only technical measurements', () => {
       'requests',
       'serverErrors',
     ]);
-  });
-});
-
-describe('metrics capture is closed by default', () => {
-  const fixture = authenticationFixture();
-
-  it('reports disabled instead of reporting fabricated zero measurements', async () => {
-    const owner = await fixture.signup('owner@example.test');
-    const response = await fetch(fixture.origin + '/api/private/metrics', {
-      headers: { cookie: owner.browser.cookie },
-    });
-    const payload: PrivateMetricsSnapshot = await response.json();
-
-    expect(response.status).toBe(200);
-    expect(payload.enabled).toBe(false);
-    expect(payload.metrics).toBeNull();
     const visitResponse = await fetch(fixture.origin + '/api/private/visits?period=7', {
       headers: { cookie: owner.browser.cookie },
     });

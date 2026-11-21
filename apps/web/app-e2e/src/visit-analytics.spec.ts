@@ -34,6 +34,20 @@ test('the owner can compare public page views without collecting URLs or exposin
 
   await page.context().addCookies([cookie('metricsOwner')]);
 
+  const localMetrics = await page.request.get('/api/private/metrics');
+
+  expect(localMetrics.status()).toBe(200);
+  expect(localMetrics.headers()['cache-control']).toContain('no-store');
+
+  const localMetricsBody = await localMetrics.json();
+
+  expect(localMetricsBody).toMatchObject({
+    enabled: true,
+    scope: 'web-gateway',
+    traceExportEnabled: false,
+    metrics: { requests: expect.any(Number) },
+  });
+
   const received: unknown[] = [];
 
   page.on('response', (response) => {

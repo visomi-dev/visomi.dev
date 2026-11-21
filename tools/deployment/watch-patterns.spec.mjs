@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { after, test } from 'node:test';
 
-import { watchPatterns } from '../../.railway/railway';
+import { railwayDefinition, watchPatterns } from '../../.railway/railway';
 
 // Railway uses gitignore syntax, including root anchoring. Exercise that syntax with Git itself.
 const directory = mkdtempSync(join(tmpdir(), 'visomi-watch-patterns-'));
@@ -62,8 +62,17 @@ for (const path of ['README.md', 'docs/branding/README.md', 'docs/assets/brand/l
   });
 }
 
-test('legacy Railway configuration and IaC keep the same watch selection', () => {
-  const configuration = JSON.parse(readFileSync(new URL('../../railway.json', import.meta.url), 'utf8'));
+test('the generated service preserves legacy build, watch, readiness and restart settings', async () => {
+  const legacy = JSON.parse(readFileSync(new URL('../../railway.json', import.meta.url), 'utf8'));
+  const {
+    resources: [gateway],
+  } = await railwayDefinition();
 
-  assert.deepEqual(configuration.build.watchPatterns, watchPatterns);
+  assert.equal(gateway.build.builder, legacy.build.builder);
+  assert.equal(gateway.build.dockerfilePath, `/${legacy.build.dockerfilePath}`);
+  assert.deepEqual(gateway.build.watchPatterns, legacy.build.watchPatterns);
+
+  for (const [name, value] of Object.entries(legacy.deploy)) {
+    assert.deepEqual(gateway.deploy[name], value, name);
+  }
 });

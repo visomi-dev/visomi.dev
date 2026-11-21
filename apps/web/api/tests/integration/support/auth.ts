@@ -10,7 +10,6 @@ import { createSmtp } from '@visomi-stack/backend-shared/lib/mail/smtp';
 import { createDatabase } from '@visomi-stack/backend-shared/lib/database/database';
 import * as authSchema from '@visomi-stack/backend-shared/lib/database/schema-auth';
 import { httpErrorHandler } from '@visomi-stack/web-backend-shared/lib/http/http-error-handler';
-import type { PrivateMetrics } from '@visomi-stack/web-backend-shared/lib/observability/lib/private-metrics';
 
 import { createApp, createAuthentication, authConfig, type AppOptions } from '../../../src/app';
 
@@ -19,9 +18,7 @@ import { suitePostgres } from './postgres';
 
 export const password = 'Synthetic password 42!';
 
-export function authenticationFixture(
-  options: { privateMetrics?: PrivateMetrics; visits?: AppOptions['visits'] } = {},
-) {
+export function authenticationFixture(options: Pick<AppOptions, 'visits'> = {}) {
   let postgres: Awaited<ReturnType<typeof suitePostgres>>;
   let resource: ReturnType<typeof createDatabase>;
   let server: Server;
@@ -96,7 +93,6 @@ export function authenticationFixture(
         authMode: 'inherited',
         pool: resource.pool,
         owner: { email: 'owner@example.test' },
-        privateMetrics: options.privateMetrics,
         visits: options.visits,
       }),
     );

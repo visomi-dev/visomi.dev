@@ -78,7 +78,7 @@ describe('gateway composition', () => {
   });
 
   it('shares one opted-in collector with the embedded API without double-counting a response', async () => {
-    const privateMetrics = createPrivateMetrics({ scope: 'web-gateway', enabled: true });
+    const privateMetrics = createPrivateMetrics({ scope: 'web-gateway' });
     const api = apiFixture((request, response) =>
       privateMetrics.middleware(request, response, () => response.json({ ok: true })),
     );

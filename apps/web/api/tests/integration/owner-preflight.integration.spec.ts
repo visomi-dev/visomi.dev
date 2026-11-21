@@ -35,7 +35,6 @@ function probe(changes: NodeJS.ProcessEnv = {}) {
       SMTP_FROM: 'Synthetic <auth@example.test>',
       SMTP_USER: '',
       SMTP_PASSWORD: '',
-      VISOMI_PRIVATE_METRICS: 'false',
       ...changes,
     },
   });
@@ -49,7 +48,7 @@ it('prepares an existing verified owner without exposing identity or replacing c
   expect(JSON.parse(result.stdout)).toEqual({
     prepared: true,
     checks: 'configuration-and-existing-account',
-    privateMetrics: false,
+    privateMetrics: true,
     traceExport: false,
     interactiveAcceptanceRequired: true,
   });

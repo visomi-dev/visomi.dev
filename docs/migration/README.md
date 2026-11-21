@@ -68,11 +68,14 @@ screens are carried into the application's routes.
 Configuration is listed by name only: `HOST`, `PORT`, `SITE_URL`, `DATABASE_URL`, `REDIS_URL`,
 `AUTH_ORIGIN`, `AUTH_RP_ID`, `SESSION_SECRET`, `OWNER_EMAIL`, `OWNER_USER_ID`,
 `AUTH_TOTP_ENCRYPTION_KEY`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_FROM`, `SMTP_USER`, `SMTP_PASSWORD`,
-`SOCIAL_IMAGE_INTERNAL_TOKEN`, `DISABLE_WORKER`, `VISOMI_PRIVATE_METRICS`,
+`SOCIAL_IMAGE_INTERNAL_TOKEN`, `DISABLE_WORKER`,
 `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_PROTOCOL`, `OTEL_EXPORTER_OTLP_HEADERS`,
 `CONTACT_LEGACY_DATABASE_URL`, `CONTACT_LEGACY_DATABASE_AUTH_TOKEN`.
 Legacy migration input is an explicit offline export; the application no longer requires
 `ASTRO_DB_REMOTE_URL` or `ASTRO_DB_APP_TOKEN`.
+
+The `VISOMI_E2E_*` and `VISOMI_TEST_*` families configure synthetic test fixtures.
+`__VISOMI_CSP_NONCE__` is the Angular HTML placeholder for the per-response CSP nonce.
 
 ## Necessary exceptions to the source stack
 
@@ -117,8 +120,8 @@ Implementation and verification evidence will be recorded per issue and in the f
   only session, password sign-in/verification and logout. Template registration/account-management E2Es
   were replaced with real owner-only API/browser tests. The worker E2E uses real Redis and Chromium,
   including interruption/recovery, and writes only into an owned temporary workspace.
-- Local Compose omits unrelated MinIO/opaque-sync services. Railway is a reviewable single-service
-  configuration that references existing PostgreSQL/Redis variables; no external plan/apply was executed.
+- Local Compose omits unrelated MinIO and opaque-sync services. The Railway definition models the
+  existing production estate. The [VIS-62 runbook](../../.railway/README.md) records the read-only plan.
 
 ## Accessibility and visual evidence
 
@@ -186,9 +189,8 @@ intermediate package-manager process.
 resolver load `/api/private/metrics`; every API request independently requires a full verified owner
 session and returns private/no-store responses. The route uses SSR with the same request-scoped cookie and private/no-store policy as contacts.
 
-`VISOMI_PRIVATE_METRICS=true` explicitly opts into local HTTP aggregates. The runtime default is false;
-Railway IaC preserves the bound environment's already authorized value. A disabled view reports that state instead of presenting fabricated
-zero measurements. Capture keeps 15 one-minute buckets per running process: request count,
+The API and gateway keep local HTTP aggregates without an environment switch.
+Capture keeps 15 one-minute buckets per running process with request count,
 client/server errors, aborted requests, mean latency and maximum latency. Durations are clipped to
 0–60 seconds. No request body, URL/query, email, IP, user agent, identifier, token or raw exception is
 read into these counters. They reset on restart and are not a durable/global view across replicas.
@@ -199,8 +201,9 @@ private OTLP receiver configured. Delivery is verified separately with a stored
 trace. Browser reporting follows the origin's default-off, revocable consent.
 See [browser privacy and rollout](browser-privacy.md) for the follow-up to the
 visit and diagnostic implementations.
-The private browser suite covers the real enabled response, anonymous/non-owner denial, no-store,
-empty/disabled/error views, English/Spanish, mobile overflow and AXE.
+The private browser suite covers the real response, anonymous/non-owner denial, no-store,
+empty and error views, English/Spanish, mobile overflow and AXE. It also covers the disabled
+response for compatibility with an older API during rollout.
 
 ## Deployment selection and remaining release gates
 
@@ -211,9 +214,9 @@ actual gitignore matching in an owned isolated repository, including root anchor
 documentation. A drift assertion keeps both source configuration forms aligned. The application
 build already declares shared styles/PostCSS and canonical brand SVGs as Nx inputs.
 
-These source checks do not apply or observe hosted Railway settings. Before relying on a logo/style
-commit to trigger deployment, the authorized operator must reconcile the intended service's watch
-selection, apply the approved configuration and observe an approved source-trigger event.
+These source checks are local. The [Railway Config as Code migration runbook](../../.railway/README.md)
+records the redacted production plan and the remaining cutover gates. Validate the trigger with an
+approved source change after persisting the watch settings on the existing service.
 
 The owner account/configuration must also pass the read-only `web-api:owner-preflight` and subsequent
 interactive email/second-factor acceptance before enabling access. See [the cutover runbook](contact-cutover.md).

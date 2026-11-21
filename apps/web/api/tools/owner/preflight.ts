@@ -76,7 +76,7 @@ async function run(): Promise<void> {
         JSON.stringify({
           prepared: true,
           checks: 'configuration-and-existing-account',
-          privateMetrics: env['VISOMI_PRIVATE_METRICS'] === 'true',
+          privateMetrics: true,
           traceExport: Boolean(otlpReceiver(env)),
           interactiveAcceptanceRequired: true,
         }) + '\n',

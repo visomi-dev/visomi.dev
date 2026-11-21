@@ -200,7 +200,6 @@ async function main(): Promise<void> {
         env: {
           PATH: process.env['PATH'],
           NODE_ENV: 'production',
-          VISOMI_PRIVATE_METRICS: process.env['VISOMI_E2E_PRIVATE_METRICS'] ?? 'false',
           HOST: '127.0.0.1',
           PORT: String(runtimePort),
           NODE_EXTRA_CA_CERTS: proxy?.certificate,
